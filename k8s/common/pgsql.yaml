@@ -1,0 +1,91 @@
+apiVersion: stackgres.io/v1beta1
+kind: SGObjectStorage
+metadata:
+  name: r2
+  namespace: live
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+spec:
+  type: s3Compatible
+  s3Compatible:
+    awsCredentials:
+      secretKeySelectors:
+        accessKeyId:
+          key: accessKeyId
+          name: r2
+        secretAccessKey:
+          key: secretAccessKey
+          name: r2
+    bucket: k8s-pg-backup
+    enablePathStyleAddressing: true
+    endpoint: https://0294b327058e33bfa42e51c8f9d950ff.r2.cloudflarestorage.com
+    region: auto
+    storageClass: STANDARD_IA
+---
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: size-xs
+  namespace: live
+spec:
+  requests:
+    cpu: 1m
+    containers:
+      backup.create-backup:
+        cpu: 1m
+      cluster-controller:
+        cpu: 1m
+      dbops.run-dbops:
+        cpu: 1m
+      dbops.set-dbops-result:
+        cpu: 1m
+      distributedlogs-controller:
+        cpu: 1m
+      envoy:
+        cpu: 1m
+      fluent-bit:
+        cpu: 1m
+      fluentd:
+        cpu: 1m
+      pgbouncer:
+        cpu: 1m
+      postgres-util:
+        cpu: 1m
+      prometheus-postgres-exporter:
+        cpu: 1m
+---
+apiVersion: stackgres.io/v1
+kind: SGScript
+metadata:
+  name: live-pg-scripts
+  namespace: live
+spec:
+  scripts:
+    - name: create-databases
+      script: create database live owner postgres;
+---
+apiVersion: stackgres.io/v1
+kind: SGCluster
+metadata:
+  name: live-pg
+  namespace: live
+spec:
+  instances: 1
+  sgInstanceProfile: size-xs
+  postgres:
+    version: "16"
+    extensions:
+      - name: wal2json
+        version: "2.5"
+  pods:
+    persistentVolume:
+      size: "10Gi"
+  managedSql:
+    scripts:
+      - sgScript: live-pg-scripts
+  configurations:
+    backups:
+      - sgObjectStorage: r2
+        cronSchedule: "0 0 * * *"
+        retention: 30

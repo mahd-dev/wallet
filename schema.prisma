@@ -1,0 +1,121 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // extensions = [postgis]
+}
+
+enum UserGender {
+  Male
+  Female
+}
+
+model User {
+  oidcId             String               @id @unique
+  firstName          String?
+  lastName           String?
+  gender             UserGender?
+  birthDay           DateTime?
+  email              String?
+  tel                String?
+  picture            String?
+  UserDevices        UserDevice[]
+  TeamMembership     TeamMembership[]
+  Event              Event[]
+  Availability       Availability[]
+  CustomAvailability CustomAvailability[]
+  Booking            Booking[]
+}
+
+model UserDevice {
+  User   User   @relation(fields: [userId], references: [oidcId])
+  userId String
+  token  String @unique
+  ua     Json?
+
+  @@id([userId, token])
+}
+
+model Team {
+  id        String   @id @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members TeamMembership[]
+  events  Event[]
+}
+
+model TeamMembership {
+  id        String   @id @unique
+  userId    String
+  teamId    String
+  role      TeamRole @default(MEMBER)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [oidcId])
+  team Team @relation(fields: [teamId], references: [id])
+}
+
+enum TeamRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model Availability {
+  id        String    @id @unique
+  userId    String
+  dayOfWeek Int // 0 = Sunday, 6 = Saturday
+  startTime DateTime?
+  endTime   DateTime?
+
+  user User @relation(fields: [userId], references: [oidcId])
+}
+
+model CustomAvailability {
+  id        String   @id @unique
+  userId    String
+  startTime DateTime
+  endTime   DateTime
+  available Boolean  @default(false)
+  reason    String?
+
+  user User @relation(fields: [userId], references: [oidcId])
+}
+
+model Event {
+  id          String   @id @unique
+  title       String
+  description String?
+  duration    Int // Duration in minutes
+  location    String?
+  date        DateTime
+  userId      String?
+  teamId      String?
+
+  user     User?     @relation(fields: [userId], references: [oidcId])
+  team     Team?     @relation(fields: [teamId], references: [id])
+  bookings Booking[]
+}
+
+model Booking {
+  eventId String
+  userId  String
+  status  BookingStatus @default(PENDING)
+
+  event Event @relation(fields: [eventId], references: [id])
+  user  User  @relation(fields: [userId], references: [oidcId])
+
+  @@id([eventId, userId])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELED
+}

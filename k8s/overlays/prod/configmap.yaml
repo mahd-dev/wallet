@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: live
+  namespace: live
+data:
+  VAPID_KEYS: '{"kty":"EC","crv":"P-256","alg":"ES256","x":"XSAfAwfe1k8pPtRk8FDVu4w1txykiWKsMFazy34TbHY","y":"oMloIq1KFD_2VtiC_fIjKYBwpCLqbtmuriadiC-plxc","d":"fcUEsHS9i4a-3da8Iu2qSq2InK-tbUGdfUEYlwHdayQ","key_ops":["sign"],"ext":true}'
+
+  DATABASE_NAME: live
+
+  JWT_SECRET_SYSTEM: nF3xVG8mPqTBd4kaQSEvRz9LWDtKhyXAHWYxc6tPR3eJbMuaA28GmCEsjVQykqUg
+  SYS_TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeXN0ZW0iLCJpc3MiOiJzeXN0ZW0iLCJyb2xlIjoic3VwZXJfYWRtaW4iLCJpYXQiOjE3MTc1MzUxNTYsImV4cCI6MTc0OTU5ODk1NTZ9._-sD12u94lIEzj61Xlisw5AvVzexcwG5ywYLXombjBk
+
+  JWKS_URI: http://auth.mahd.cloud/oauth/v2/keys
+
+  OIDC_GOOGLE_CLIENT: 1056577417481-t9nkqau2dnnfpdjebeg2po5c73ngs8um.apps.googleusercontent.com
+  OIDC_GOOGLE_SECRET: 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
+
+  LIVEKIT_API_RTC: wss://rtc.mahd.live
+  LIVEKIT_API_KEY: APIEiU6D9YnT9me
+  LIVEKIT_API_SECRET: 4RNyYqHp3QM9VialdAYqbffOuIqy6e0GGdPEnb4TpfrA

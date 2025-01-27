@@ -1,0 +1,3 @@
+npx graphql-codegen
+npx prettier ./app --write
+npm run lint
