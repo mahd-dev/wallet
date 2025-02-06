@@ -13,10 +13,10 @@
 
 import { useNavigate } from "@remix-run/react";
 import {
-  IconBookmarks,
+  IconChartBar,
   IconChevronLeft,
-  IconListCheck,
   IconLogin2,
+  IconMoneybag,
   IconSmartHome,
   IconUser,
 } from "@tabler/icons-react";
@@ -52,7 +52,7 @@ export default function MainPanelContent() {
           className="overflow-hidden lg:rounded-e-full"
           media={<IconSmartHome />}
           link
-          title={"Accueil"}
+          title={"Acceuil"}
           onClick={(e) => {
             e.preventDefault();
             navigate(`/`);
@@ -62,24 +62,24 @@ export default function MainPanelContent() {
         />
         <ListItem
           className="overflow-hidden lg:rounded-e-full"
-          media={<IconListCheck />}
+          media={<IconMoneybag />}
           link
-          title={"Mes Commandes"}
+          title={" Transactions"}
           onClick={(e) => {
             e.preventDefault();
-            navigate(`/my-orders`);
+            navigate(`/transactions`);
             setMainPanel(false);
           }}
           linkProps={{ href: "/my-orders" }}
         />
         <ListItem
           className="overflow-hidden lg:rounded-e-full"
-          media={<IconBookmarks />}
+          media={<IconChartBar />}
           link
-          title={"mes favoris"}
+          title={" statistiques"}
           onClick={(e) => {
             e.preventDefault();
-            navigate(`/favorites`);
+            navigate(`/statistiques`);
             setMainPanel(false);
           }}
           linkProps={{ href: "/favorites" }}

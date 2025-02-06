@@ -1,9 +1,5 @@
 import { Link, useLocation } from "@remix-run/react";
-import {
-  IconBookmarks,
-  IconListCheck,
-  IconSmartHome,
-} from "@tabler/icons-react";
+import { IconChartBar, IconMoneybag, IconSmartHome } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { Badge } from "konsta/react";
 import { ReactNode } from "react";
@@ -73,10 +69,10 @@ const MainTabBar = (props: { disabled?: boolean }) => {
         to="/"
       />
       <TabBarItem
-        active={location.pathname.startsWith("/my-orders")}
-        icon={<IconListCheck stroke={1} size={32} />}
-        label={"commandes"}
-        to="/my-orders"
+        active={location.pathname.startsWith("/transaction")}
+        icon={<IconMoneybag stroke={1} size={32} />}
+        label={"transactions"}
+        to="/transactions"
       />
 
       <TabBarItem
@@ -90,7 +86,7 @@ const MainTabBar = (props: { disabled?: boolean }) => {
           //   style={{height: "25px !important", width: 25, overflow: "hidden"}}
           // />
           <div className="relative !size-8">
-            <IconBookmarks stroke={1} size={32} />
+            <IconChartBar stroke={1} size={32} />
             {favs?.length ? (
               <Badge className="absolute -right-2 -top-2">
                 {favs?.length || undefined}
@@ -98,8 +94,8 @@ const MainTabBar = (props: { disabled?: boolean }) => {
             ) : null}
           </div>
         }
-        label={"Favoris"}
-        to="/favorites"
+        label={"statistique"}
+        to="/statistiques"
       />
     </div>
   );

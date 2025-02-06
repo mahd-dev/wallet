@@ -24,12 +24,51 @@ model User {
   tel                String?
   picture            String?
   UserDevices        UserDevice[]
-  TeamMembership     TeamMembership[]
-  Event              Event[]
-  Availability       Availability[]
-  CustomAvailability CustomAvailability[]
-  Booking            Booking[]
+ transactions        Transaction[] 
+ budgets             Budget[]
+ reports             Report[]
 }
+
+model Category{
+  id        String   @id @unique
+  name String
+  transactions Transaction[]
+  Budgets      Budget[]
+}
+enum Typetransaction {
+  income
+  expense
+}
+model Transaction {
+transaction_id  String   @id @unique
+user_id String?
+category_id  String?
+amount Float
+date DateTime?
+description String?
+ type Typetransaction 
+ user User? @relation(fields: [user_id],references: [oidcId])
+ category Category? @relation(fields: [category_id],references: [id])
+ 
+}
+model Budget{
+ budget_id String @id @unique
+ user_id String?
+category_id String?
+amount Float?
+month DateTime?
+alert_threshold Int?
+user User? @relation(fields: [user_id],references: [oidcId])
+ category Category? @relation(fields: [category_id],references: [id])
+}
+model Report{
+  report_id String @id @unique
+  user_id String?
+  created_at String?
+  file_path String?
+  user User? @relation(fields: [user_id],references: [oidcId])
+}
+
 
 model UserDevice {
   User   User   @relation(fields: [userId], references: [oidcId])
@@ -38,84 +77,4 @@ model UserDevice {
   ua     Json?
 
   @@id([userId, token])
-}
-
-model Team {
-  id        String   @id @unique
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  members TeamMembership[]
-  events  Event[]
-}
-
-model TeamMembership {
-  id        String   @id @unique
-  userId    String
-  teamId    String
-  role      TeamRole @default(MEMBER)
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [oidcId])
-  team Team @relation(fields: [teamId], references: [id])
-}
-
-enum TeamRole {
-  OWNER
-  ADMIN
-  MEMBER
-}
-
-model Availability {
-  id        String    @id @unique
-  userId    String
-  dayOfWeek Int // 0 = Sunday, 6 = Saturday
-  startTime DateTime?
-  endTime   DateTime?
-
-  user User @relation(fields: [userId], references: [oidcId])
-}
-
-model CustomAvailability {
-  id        String   @id @unique
-  userId    String
-  startTime DateTime
-  endTime   DateTime
-  available Boolean  @default(false)
-  reason    String?
-
-  user User @relation(fields: [userId], references: [oidcId])
-}
-
-model Event {
-  id          String   @id @unique
-  title       String
-  description String?
-  duration    Int // Duration in minutes
-  location    String?
-  date        DateTime
-  userId      String?
-  teamId      String?
-
-  user     User?     @relation(fields: [userId], references: [oidcId])
-  team     Team?     @relation(fields: [teamId], references: [id])
-  bookings Booking[]
-}
-
-model Booking {
-  eventId String
-  userId  String
-  status  BookingStatus @default(PENDING)
-
-  event Event @relation(fields: [eventId], references: [id])
-  user  User  @relation(fields: [userId], references: [oidcId])
-
-  @@id([eventId, userId])
-}
-
-enum BookingStatus {
-  PENDING
-  CONFIRMED
-  CANCELED
 }

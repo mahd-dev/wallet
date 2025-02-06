@@ -1,4 +1,4 @@
-import type {  ProfileFragment } from "gql/graphql";
+import type { ProfileFragment } from "gql/graphql";
 import { atom } from "jotai";
 import {
   AvailableLanguageTag,

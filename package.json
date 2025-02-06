@@ -11,7 +11,6 @@
     "build:worker": "esbuild ./app/entry.worker.ts --outfile=./public/entry.worker.js --minify --bundle --platform=node --format=esm --define:process.env.NODE_ENV='\"production\"'",
     "build:ui": "remix vite:build",
     "dev": "run-p dev:*",
-    "dev:id": "chokidar \"app/**\" -c 'echo -e \"export const BUILD_ID = \\\"$(tar -cf - ./app | md5sum | cut -b-32)\\\";\" > ./build-id.ts'",
     "dev:worker": "esbuild ./app/entry.worker.ts --outfile=./public/entry.worker.js --bundle --platform=node --format=esm --define:process.env.NODE_ENV='\"development\"' --watch",
     "dev:serve": "remix vite:dev",
     "gql": "graphql-codegen",
@@ -140,7 +139,7 @@
     "vite-tsconfig-paths": "^5.0.1"
   },
   "graphql": {
-    "schema": "http://localhost:3000/graphql",
+    "schema": "http://localhost:3001/graphql",
     "documents": "app/**/*.{graphql,js,ts,jsx,tsx}"
   },
   "browserslist": [

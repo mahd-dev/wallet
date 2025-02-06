@@ -54,10 +54,10 @@ const isProd = process.env.NODE_ENV === "production";
 
 const postgraphileMiddleware = postgraphile(pgPool, pgSchema, {
   ...pgOptions,
-  // enableCors: true,
-  watchPg: !isProd,
-  enhanceGraphiql: !isProd,
-  allowExplain: !isProd,
+  //enableCors: true,
+  watchPg: true,
+  enhanceGraphiql: true,
+  allowExplain: true,
   pgSettings: (req) => ({
     role:
       (req as any).auth?.role || ((req as any).auth?.sub ? "reg_user" : "anon"),
@@ -76,8 +76,8 @@ const postgraphileMiddleware = postgraphile(pgPool, pgSchema, {
   websocketOperations: "all",
   enableQueryBatching: true,
   graphqlRoute: "/graphql",
-  graphiql: !isProd,
-  graphiqlRoute: isProd ? undefined : "/graphql/play",
+  graphiql: true,
+  graphiqlRoute: "/graphql/play",
 });
 
 app.use(postgraphileMiddleware);

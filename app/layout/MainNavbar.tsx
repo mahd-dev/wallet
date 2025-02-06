@@ -23,11 +23,11 @@ import {
 } from "~/store/store";
 
 const menu = [
-  { path: "/", name: "Accueil" },
+  { path: "/", name: "Acceuil" },
   // { path: "/promotions", name: "Promotions", barge: 2 },
-  { path: "/my-orders", name: "Mes Commandes" },
-  { path: "/favorites", name: "Liste de souhaits" },
-  { path: "/about", name: "à propos de nous" },
+  { path: "/transactions", name: " transactions" },
+  { path: "/statistiques", name: " statistiques" },
+  { path: "/categorie", name: "categorie" },
 ];
 
 export default function MainNavbar() {
@@ -156,7 +156,7 @@ export default function MainNavbar() {
             <Icon
               onClick={() => openCartPopover(".cartpopover-navbar-link")}
               // className="notif-btn  ios:me-5"
-              className="cartpopover-navbar-link hover:text-secondary mx-3 mr-6 mt-2 text-gray-800"
+              className="cartpopover-navbar-link mx-3 mr-6 mt-2 text-gray-800 hover:text-secondary"
               ios={<IconShoppingCart />}
               material={<IconShoppingCart />}
               badge={
@@ -168,7 +168,7 @@ export default function MainNavbar() {
             <button
               type="button"
               onClick={() => navigate("/auth")}
-              className="bg-secondary rounded-lg px-4 py-2 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300"
+              className="rounded-lg bg-secondary px-4 py-2 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300"
             >
               <IconLogin2 className="inline w-4" /> Login
             </button>
@@ -183,7 +183,7 @@ export default function MainNavbar() {
                   <li key={`menu-${indx}`}>
                     <Link
                       to={m.path}
-                      className={`hover:text-secondary text-gray-800 ${location.pathname === m.path ? "text-secondary" : ""}`}
+                      className={`text-gray-800 hover:text-secondary ${location.pathname === m.path ? "text-secondary" : ""}`}
                     >
                       {m.name}
                       {/* {m.barge ? (
@@ -207,7 +207,7 @@ export default function MainNavbar() {
       <div
         className={`fixed top-0 z-20 flex w-full max-w-full flex-nowrap items-center transition-opacity lg:hidden`}
       >
-        <div className="material:from-[#F4EEEB] material:via-[#F4EEEB]/90 ios:from-[#F5F5F8] ios:via-[#F5F5F8]/95 material:dark:from-[#17140C] material:dark:via-[#17140C]/95 ios:dark:from-[#0E0E0E] ios:dark:via-[#0E0E0E]/90 absolute inset-x-0 top-0 -z-10 h-10 w-full bg-gradient-to-b via-30% to-transparent" />
+        <div className="absolute inset-x-0 top-0 -z-10 h-10 w-full bg-gradient-to-b via-30% to-transparent material:from-[#F4EEEB] material:via-[#F4EEEB]/90 ios:from-[#F5F5F8] ios:via-[#F5F5F8]/95 material:dark:from-[#17140C] material:dark:via-[#17140C]/95 ios:dark:from-[#0E0E0E] ios:dark:via-[#0E0E0E]/90" />
 
         <button
           className={`relative ${mainPanel ? "opacity-0" : ""}`}
