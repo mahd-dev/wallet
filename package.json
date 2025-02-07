@@ -75,7 +75,7 @@
     "maxmind": "^4.3.23",
     "mime": "^4.0.4",
     "morgan": "^1.10.0",
-    "nanoid": "^5.0.7",
+    "nanoid": "^5.0.9",
     "postgraphile": "^4.13.0",
     "postgraphile-index-to-unique-constraint-plugin": "^1.0.1",
     "postgraphile-plugin-connection-filter": "^2.3.0",

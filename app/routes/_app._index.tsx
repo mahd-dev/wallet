@@ -1,10 +1,10 @@
 import { IconPlus } from "@tabler/icons-react";
 import { useHydrateAtoms } from "jotai/utils";
 import { Block, Dialog, DialogButton, Fab } from "konsta/react";
+import { nanoid } from "nanoid";
 import { useState } from "react";
 import { gql, useMutation } from "urql";
 import { mainLayoutPropsAtom } from "~/store/store";
-
 /*
 const ALL_TRANSACTIONS_QUERY = gql`
   query Transactions{
@@ -28,25 +28,27 @@ const ADD_TRANSACTION_MUTATION = gql`
     $amount: BigFloat
     $date: Datetime!
     $description: String
-    $type: Typetransaction!
     $transaction_id: String!
   ) {
     createTransaction(
       input: {
-        user_id: $user_id
-        category_id: $category_id
-        amount: $amount
-        date: $date
-        description: $description
-        type: $type
-        transaction_id: $transaction_id
+        transaction: {
+          user_id: $user_id
+          category_id: $category_id
+          amount: $amount
+          date: $date
+          description: $description
+          transaction_id: $transaction_id
+        }
       }
-    )
+    ) {
+      clientMutationId
+    }
   }
 `;
 
 const HomePage = () => {
-  useHydrateAtoms([[mainLayoutPropsAtom, { navbarTitle: "GhaliFood" }]]);
+  useHydrateAtoms([[mainLayoutPropsAtom, { navbarTitle: "My Wallet" }]]);
   const [basicOpened, setBasicOpened] = useState(false);
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
@@ -62,7 +64,7 @@ const HomePage = () => {
     >;
 
     const variables = {
-      user_id: "USER_ID_HERE",
+      user_id: nanoid(),
       category_id: transactionData.category,
       amount: parseFloat(transactionData.amount ?? "0"),
       date: new Date().toISOString(),
@@ -134,7 +136,10 @@ const HomePage = () => {
 
             {/* Category Selection */}
             <div className="mt-4">
-              <label htmlFor="fcatgr" className="mb-1 block text-lg font-semibold">
+              <label
+                htmlFor="fcatgr"
+                className="mb-1 block text-lg font-semibold"
+              >
                 Catégorie
               </label>
               <select

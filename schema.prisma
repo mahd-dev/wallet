@@ -15,60 +15,62 @@ enum UserGender {
 }
 
 model User {
-  oidcId             String               @id @unique
-  firstName          String?
-  lastName           String?
-  gender             UserGender?
-  birthDay           DateTime?
-  email              String?
-  tel                String?
-  picture            String?
-  UserDevices        UserDevice[]
- transactions        Transaction[] 
- budgets             Budget[]
- reports             Report[]
+  oidcId       String        @id @unique
+  firstName    String?
+  lastName     String?
+  gender       UserGender?
+  birthDay     DateTime?
+  email        String?
+  tel          String?
+  picture      String?
+  UserDevices  UserDevice[]
+  transactions Transaction[]
+  budgets      Budget[]
+  reports      Report[]
 }
 
-model Category{
-  id        String   @id @unique
-  name String
+model Category {
+  id           String        @id @unique
+  name         String
   transactions Transaction[]
   Budgets      Budget[]
 }
+
 enum Typetransaction {
   income
   expense
 }
+
 model Transaction {
-transaction_id  String   @id @unique
-user_id String?
-category_id  String?
-amount Float
-date DateTime?
-description String?
- type Typetransaction 
- user User? @relation(fields: [user_id],references: [oidcId])
- category Category? @relation(fields: [category_id],references: [id])
- 
-}
-model Budget{
- budget_id String @id @unique
- user_id String?
-category_id String?
-amount Float?
-month DateTime?
-alert_threshold Int?
-user User? @relation(fields: [user_id],references: [oidcId])
- category Category? @relation(fields: [category_id],references: [id])
-}
-model Report{
-  report_id String @id @unique
-  user_id String?
-  created_at String?
-  file_path String?
-  user User? @relation(fields: [user_id],references: [oidcId])
+  transaction_id String          @id @unique
+  user_id        String?
+  category_id    String?
+  amount         Float
+  date           DateTime?
+  description    String?
+  type           Typetransaction @default(expense)
+  user           User?           @relation(fields: [user_id], references: [oidcId])
+  category       Category?       @relation(fields: [category_id], references: [id])
 }
 
+model Budget {
+  budget_id       String    @id @unique
+  user_id         String?
+  category_id     String?
+  amount          Float?
+  month           DateTime?
+  alert_threshold Int?
+  user            User?     @relation(fields: [user_id], references: [oidcId])
+  category        Category? @relation(fields: [category_id], references: [id])
+}
+
+model Report {
+  report_id  String  @id @unique
+  user_id    String?
+  created_at String?
+  file_path  String?
+  user       User?   @relation(fields: [user_id], references: [oidcId])
+}
 
 model UserDevice {
   User   User   @relation(fields: [userId], references: [oidcId])
