@@ -50,8 +50,6 @@ const app = express.Router();
 app.use("/graphql", authMiddleware);
 app.use("/graphql", authErrHandler);
 
-const isProd = process.env.NODE_ENV === "production";
-
 const postgraphileMiddleware = postgraphile(pgPool, pgSchema, {
   ...pgOptions,
   //enableCors: true,
