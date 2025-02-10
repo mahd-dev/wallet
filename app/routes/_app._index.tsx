@@ -5,22 +5,7 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { gql, useMutation } from "urql";
 import { mainLayoutPropsAtom } from "~/store/store";
-/*
-const ALL_TRANSACTIONS_QUERY = gql`
-  query Transactions{
-    transactions {
-      nodes{
-        transaction_id
-        amount
-        date
-        description
-        type
-        user_id 
-        category_id
-      }
-    }
-  }
-`;*/
+
 const ADD_TRANSACTION_MUTATION = gql`
   mutation AddTransaction(
     $user_id: String!
@@ -47,6 +32,17 @@ const ADD_TRANSACTION_MUTATION = gql`
   }
 `;
 
+const categories = [
+  "Alimentation",
+  "Vie Sociale",
+  "Transport",
+  "Beauté",
+  "Santé",
+  "Éducation",
+  "Cadeau",
+  "Autres",
+];
+
 const HomePage = () => {
   useHydrateAtoms([[mainLayoutPropsAtom, { navbarTitle: "My Wallet" }]]);
   const [basicOpened, setBasicOpened] = useState(false);
@@ -65,7 +61,7 @@ const HomePage = () => {
 
     const variables = {
       user_id: nanoid(),
-      category_id: transactionData.category,
+      category_id: category, // Updated to use selected category
       amount: parseFloat(transactionData.amount ?? "0"),
       date: new Date().toISOString(),
       description: transactionData.description || "",
@@ -134,39 +130,37 @@ const HomePage = () => {
               className="w-full rounded-md border p-2 text-center text-3xl font-bold"
             />
 
-            {/* Category Selection */}
+            {/* Category Selection - Horizontal Scrollable Buttons */}
             <div className="mt-4">
-              <label
-                htmlFor="fcatgr"
-                className="mb-1 block text-lg font-semibold"
-              >
+              <label htmlFor="category" className="mb-2 block text-lg font-semibold">
                 Catégorie
               </label>
-              <select
-                name="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-md border p-2"
-              >
-                <option value="">Sélectionner une catégorie</option>
-                <option value="Alimentation">Alimentation</option>
-                <option value="Transport">Transport</option>
-                <option value="Divertissement">Divertissement</option>
-                <option value="Logement">Logement</option>
-              </select>
+              <div className="scrollbar-hide carousel carousel-center flex space-x-4 overflow-x-auto rounded-box bg-neutral p-2">
+                {categories.map((catg) => (
+                  <button
+                    key={catg}
+                    type="button"
+                    onClick={() => setCategory(catg)}
+                    className={`carousel-item rounded-lg px-4 py-2 text-white ${
+                      category === catg ? "bg-blue-500" : "bg-gray-500"
+                    }`}
+                  >
+                    {catg}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <button type="submit" className="w-full">
-              <DialogButton disabled={result.fetching}>
+            {/* Buttons - Placed Inside Flex Container */}
+            <div className="mt-4 flex justify-between">
+              <DialogButton onClick={() => setBasicOpened(false)}>
+                Annuler
+              </DialogButton>
+              <DialogButton strong disabled={result.fetching}>
                 {result.fetching ? "Ajout..." : "Ajouter"}
               </DialogButton>
-            </button>
+            </div>
           </form>
-        }
-        buttons={
-          <DialogButton onClick={() => setBasicOpened(false)}>
-            Annuler
-          </DialogButton>
         }
       />
     </div>
