@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 
 const TransactionsList = () => {
@@ -58,13 +58,13 @@ const TransactionsList = () => {
             </div>
             <div className="flex space-x-2">
               <button className="text-blue-500 hover:text-blue-700">
-                <Pencil size={18} />
+                <IconPencil size={23} />
               </button>
               <button
                 className="text-red-500 hover:text-red-700"
                 onClick={() => deleteTransaction(tx.id)}
               >
-                <Trash2 size={18} />
+                <IconTrash size={23} />
               </button>
             </div>
           </div>

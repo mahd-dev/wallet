@@ -132,7 +132,10 @@ const HomePage = () => {
 
             {/* Category Selection - Horizontal Scrollable Buttons */}
             <div className="mt-4">
-              <label htmlFor="category" className="mb-2 block text-lg font-semibold">
+              <label
+                htmlFor="category"
+                className="mb-2 block text-lg font-semibold"
+              >
                 Catégorie
               </label>
               <div className="scrollbar-hide carousel carousel-center flex space-x-4 overflow-x-auto rounded-box bg-neutral p-2">
