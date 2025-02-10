@@ -33,225 +33,6 @@ export type Scalars = {
   JSON: { input: { [key: string]: any }; output: { [key: string]: any }; }
 };
 
-/** Methods to use when ordering `Availability`. */
-export enum AvailabilitiesOrderBy {
-  DayOfWeekAsc = 'DAY_OF_WEEK_ASC',
-  DayOfWeekDesc = 'DAY_OF_WEEK_DESC',
-  EndTimeAsc = 'END_TIME_ASC',
-  EndTimeDesc = 'END_TIME_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  StartTimeAsc = 'START_TIME_ASC',
-  StartTimeDesc = 'START_TIME_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC'
-}
-
-/** A filter to be used against aggregates of `Availability` object types. */
-export type AvailabilityAggregatesFilter = {
-  /** Mean average aggregate over matching `Availability` objects. */
-  average?: InputMaybe<AvailabilityAverageAggregateFilter>;
-  /** Distinct count aggregate over matching `Availability` objects. */
-  distinctCount?: InputMaybe<AvailabilityDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `Availability` object to be included within the aggregate. */
-  filter?: InputMaybe<AvailabilityFilter>;
-  /** Maximum aggregate over matching `Availability` objects. */
-  max?: InputMaybe<AvailabilityMaxAggregateFilter>;
-  /** Minimum aggregate over matching `Availability` objects. */
-  min?: InputMaybe<AvailabilityMinAggregateFilter>;
-  /** Population standard deviation aggregate over matching `Availability` objects. */
-  stddevPopulation?: InputMaybe<AvailabilityStddevPopulationAggregateFilter>;
-  /** Sample standard deviation aggregate over matching `Availability` objects. */
-  stddevSample?: InputMaybe<AvailabilityStddevSampleAggregateFilter>;
-  /** Sum aggregate over matching `Availability` objects. */
-  sum?: InputMaybe<AvailabilitySumAggregateFilter>;
-  /** Population variance aggregate over matching `Availability` objects. */
-  variancePopulation?: InputMaybe<AvailabilityVariancePopulationAggregateFilter>;
-  /** Sample variance aggregate over matching `Availability` objects. */
-  varianceSample?: InputMaybe<AvailabilityVarianceSampleAggregateFilter>;
-};
-
-export type AvailabilityAverageAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-/**
- * A condition to be used against `Availability` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export type AvailabilityCondition = {
-  /** Checks for equality with the object’s `dayOfWeek` field. */
-  dayOfWeek?: InputMaybe<Scalars['Int']['input']>;
-  /** Checks for equality with the object’s `endTime` field. */
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `startTime` field. */
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type AvailabilityDistinctCountAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigIntFilter>;
-  endTime?: InputMaybe<BigIntFilter>;
-  id?: InputMaybe<BigIntFilter>;
-  startTime?: InputMaybe<BigIntFilter>;
-  userId?: InputMaybe<BigIntFilter>;
-};
-
-/** A filter to be used against `Availability` object types. All fields are combined with a logical ‘and.’ */
-export type AvailabilityFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<AvailabilityFilter>>;
-  /** Filter by the object’s `dayOfWeek` field. */
-  dayOfWeek?: InputMaybe<IntFilter>;
-  /** Filter by the object’s `endTime` field. */
-  endTime?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<AvailabilityFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<AvailabilityFilter>>;
-  /** Filter by the object’s `startTime` field. */
-  startTime?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `user` relation. */
-  user?: InputMaybe<UserFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: InputMaybe<StringFilter>;
-};
-
-/** Grouping methods for `Availability` for usage during aggregation. */
-export enum AvailabilityGroupBy {
-  DayOfWeek = 'DAY_OF_WEEK',
-  EndTime = 'END_TIME',
-  EndTimeTruncatedToDay = 'END_TIME_TRUNCATED_TO_DAY',
-  EndTimeTruncatedToHour = 'END_TIME_TRUNCATED_TO_HOUR',
-  StartTime = 'START_TIME',
-  StartTimeTruncatedToDay = 'START_TIME_TRUNCATED_TO_DAY',
-  StartTimeTruncatedToHour = 'START_TIME_TRUNCATED_TO_HOUR',
-  UserId = 'USER_ID'
-}
-
-export type AvailabilityHavingAverageInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingDistinctCountInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** Conditions for `Availability` aggregates. */
-export type AvailabilityHavingInput = {
-  AND?: InputMaybe<Array<AvailabilityHavingInput>>;
-  OR?: InputMaybe<Array<AvailabilityHavingInput>>;
-  average?: InputMaybe<AvailabilityHavingAverageInput>;
-  distinctCount?: InputMaybe<AvailabilityHavingDistinctCountInput>;
-  max?: InputMaybe<AvailabilityHavingMaxInput>;
-  min?: InputMaybe<AvailabilityHavingMinInput>;
-  stddevPopulation?: InputMaybe<AvailabilityHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<AvailabilityHavingStddevSampleInput>;
-  sum?: InputMaybe<AvailabilityHavingSumInput>;
-  variancePopulation?: InputMaybe<AvailabilityHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<AvailabilityHavingVarianceSampleInput>;
-};
-
-export type AvailabilityHavingMaxInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingMinInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingStddevPopulationInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingStddevSampleInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingSumInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingVariancePopulationInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingVarianceSampleInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** An input for mutations affecting `Availability` */
-export type AvailabilityInput = {
-  dayOfWeek: Scalars['Int']['input'];
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  id: Scalars['String']['input'];
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  userId: Scalars['String']['input'];
-};
-
-export type AvailabilityMaxAggregateFilter = {
-  dayOfWeek?: InputMaybe<IntFilter>;
-};
-
-export type AvailabilityMinAggregateFilter = {
-  dayOfWeek?: InputMaybe<IntFilter>;
-};
-
-/** Represents an update to a `Availability`. Fields that are set will be updated. */
-export type AvailabilityPatch = {
-  dayOfWeek?: InputMaybe<Scalars['Int']['input']>;
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type AvailabilityStddevPopulationAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-export type AvailabilityStddevSampleAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-export type AvailabilitySumAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigIntFilter>;
-};
-
-export type AvailabilityVariancePopulationAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-export type AvailabilityVarianceSampleAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
 export type BigFloatFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -304,152 +85,577 @@ export type BigIntFilter = {
   notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
-/** A filter to be used against aggregates of `Booking` object types. */
-export type BookingAggregatesFilter = {
-  /** Distinct count aggregate over matching `Booking` objects. */
-  distinctCount?: InputMaybe<BookingDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `Booking` object to be included within the aggregate. */
-  filter?: InputMaybe<BookingFilter>;
+/** A filter to be used against aggregates of `Budget` object types. */
+export type BudgetAggregatesFilter = {
+  /** Mean average aggregate over matching `Budget` objects. */
+  average?: InputMaybe<BudgetAverageAggregateFilter>;
+  /** Distinct count aggregate over matching `Budget` objects. */
+  distinctCount?: InputMaybe<BudgetDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Budget` object to be included within the aggregate. */
+  filter?: InputMaybe<BudgetFilter>;
+  /** Maximum aggregate over matching `Budget` objects. */
+  max?: InputMaybe<BudgetMaxAggregateFilter>;
+  /** Minimum aggregate over matching `Budget` objects. */
+  min?: InputMaybe<BudgetMinAggregateFilter>;
+  /** Population standard deviation aggregate over matching `Budget` objects. */
+  stddevPopulation?: InputMaybe<BudgetStddevPopulationAggregateFilter>;
+  /** Sample standard deviation aggregate over matching `Budget` objects. */
+  stddevSample?: InputMaybe<BudgetStddevSampleAggregateFilter>;
+  /** Sum aggregate over matching `Budget` objects. */
+  sum?: InputMaybe<BudgetSumAggregateFilter>;
+  /** Population variance aggregate over matching `Budget` objects. */
+  variancePopulation?: InputMaybe<BudgetVariancePopulationAggregateFilter>;
+  /** Sample variance aggregate over matching `Budget` objects. */
+  varianceSample?: InputMaybe<BudgetVarianceSampleAggregateFilter>;
 };
 
-/** A condition to be used against `Booking` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type BookingCondition = {
-  /** Checks for equality with the object’s `eventId` field. */
-  eventId?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `status` field. */
-  status?: InputMaybe<BookingStatus>;
+export type BudgetAverageAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+/** A condition to be used against `Budget` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type BudgetCondition = {
+  /** Checks for equality with the object’s `alertThreshold` field. */
+  alertThreshold?: InputMaybe<Scalars['Int']['input']>;
+  /** Checks for equality with the object’s `amount` field. */
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Checks for equality with the object’s `budgetId` field. */
+  budgetId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `categoryId` field. */
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `month` field. */
+  month?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `userId` field. */
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type BookingDistinctCountAggregateFilter = {
-  eventId?: InputMaybe<BigIntFilter>;
-  status?: InputMaybe<BigIntFilter>;
+export type BudgetDistinctCountAggregateFilter = {
+  alertThreshold?: InputMaybe<BigIntFilter>;
+  amount?: InputMaybe<BigIntFilter>;
+  budgetId?: InputMaybe<BigIntFilter>;
+  categoryId?: InputMaybe<BigIntFilter>;
+  month?: InputMaybe<BigIntFilter>;
   userId?: InputMaybe<BigIntFilter>;
 };
 
-/** A filter to be used against `Booking` object types. All fields are combined with a logical ‘and.’ */
-export type BookingFilter = {
+/** A filter to be used against `Budget` object types. All fields are combined with a logical ‘and.’ */
+export type BudgetFilter = {
+  /** Filter by the object’s `alertThreshold` field. */
+  alertThreshold?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `amount` field. */
+  amount?: InputMaybe<FloatFilter>;
   /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<BookingFilter>>;
-  /** Filter by the object’s `event` relation. */
-  event?: InputMaybe<EventFilter>;
-  /** Filter by the object’s `eventId` field. */
-  eventId?: InputMaybe<StringFilter>;
+  and?: InputMaybe<Array<BudgetFilter>>;
+  /** Filter by the object’s `budgetId` field. */
+  budgetId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `category` relation. */
+  category?: InputMaybe<CategoryFilter>;
+  /** A related `category` exists. */
+  categoryExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `categoryId` field. */
+  categoryId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `month` field. */
+  month?: InputMaybe<DatetimeFilter>;
   /** Negates the expression. */
-  not?: InputMaybe<BookingFilter>;
+  not?: InputMaybe<BudgetFilter>;
   /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<BookingFilter>>;
-  /** Filter by the object’s `status` field. */
-  status?: InputMaybe<BookingStatusFilter>;
+  or?: InputMaybe<Array<BudgetFilter>>;
   /** Filter by the object’s `user` relation. */
   user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `userId` field. */
   userId?: InputMaybe<StringFilter>;
 };
 
-/** Grouping methods for `Booking` for usage during aggregation. */
-export enum BookingGroupBy {
-  EventId = 'EVENT_ID',
-  Status = 'STATUS',
+/** Grouping methods for `Budget` for usage during aggregation. */
+export enum BudgetGroupBy {
+  AlertThreshold = 'ALERT_THRESHOLD',
+  Amount = 'AMOUNT',
+  CategoryId = 'CATEGORY_ID',
+  Month = 'MONTH',
+  MonthTruncatedToDay = 'MONTH_TRUNCATED_TO_DAY',
+  MonthTruncatedToHour = 'MONTH_TRUNCATED_TO_HOUR',
   UserId = 'USER_ID'
 }
 
-/** Conditions for `Booking` aggregates. */
-export type BookingHavingInput = {
-  AND?: InputMaybe<Array<BookingHavingInput>>;
-  OR?: InputMaybe<Array<BookingHavingInput>>;
+export type BudgetHavingAverageInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** An input for mutations affecting `Booking` */
-export type BookingInput = {
-  eventId: Scalars['String']['input'];
-  status?: InputMaybe<BookingStatus>;
-  userId: Scalars['String']['input'];
+export type BudgetHavingDistinctCountInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** Represents an update to a `Booking`. Fields that are set will be updated. */
-export type BookingPatch = {
-  eventId?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<BookingStatus>;
+/** Conditions for `Budget` aggregates. */
+export type BudgetHavingInput = {
+  AND?: InputMaybe<Array<BudgetHavingInput>>;
+  OR?: InputMaybe<Array<BudgetHavingInput>>;
+  average?: InputMaybe<BudgetHavingAverageInput>;
+  distinctCount?: InputMaybe<BudgetHavingDistinctCountInput>;
+  max?: InputMaybe<BudgetHavingMaxInput>;
+  min?: InputMaybe<BudgetHavingMinInput>;
+  stddevPopulation?: InputMaybe<BudgetHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<BudgetHavingStddevSampleInput>;
+  sum?: InputMaybe<BudgetHavingSumInput>;
+  variancePopulation?: InputMaybe<BudgetHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<BudgetHavingVarianceSampleInput>;
+};
+
+export type BudgetHavingMaxInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingMinInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingStddevPopulationInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingStddevSampleInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingSumInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingVariancePopulationInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingVarianceSampleInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `Budget` */
+export type BudgetInput = {
+  alertThreshold?: InputMaybe<Scalars['Int']['input']>;
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  budgetId: Scalars['String']['input'];
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  month?: InputMaybe<Scalars['Datetime']['input']>;
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
-export enum BookingStatus {
-  Canceled = 'CANCELED',
-  Confirmed = 'CONFIRMED',
-  Pending = 'PENDING'
-}
-
-/** A filter to be used against BookingStatus fields. All fields are combined with a logical ‘and.’ */
-export type BookingStatusFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<BookingStatus>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<BookingStatus>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<BookingStatus>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<BookingStatus>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<BookingStatus>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<BookingStatus>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<BookingStatus>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<BookingStatus>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<BookingStatus>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<BookingStatus>>;
+export type BudgetMaxAggregateFilter = {
+  alertThreshold?: InputMaybe<IntFilter>;
+  amount?: InputMaybe<FloatFilter>;
 };
 
-/** Methods to use when ordering `Booking`. */
-export enum BookingsOrderBy {
-  EventIdAsc = 'EVENT_ID_ASC',
-  EventIdDesc = 'EVENT_ID_DESC',
+export type BudgetMinAggregateFilter = {
+  alertThreshold?: InputMaybe<IntFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+/** Represents an update to a `Budget`. Fields that are set will be updated. */
+export type BudgetPatch = {
+  alertThreshold?: InputMaybe<Scalars['Int']['input']>;
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  budgetId?: InputMaybe<Scalars['String']['input']>;
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  month?: InputMaybe<Scalars['Datetime']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type BudgetStddevPopulationAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetStddevSampleAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetSumAggregateFilter = {
+  alertThreshold?: InputMaybe<BigIntFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetVariancePopulationAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetVarianceSampleAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+/** Methods to use when ordering `Budget`. */
+export enum BudgetsOrderBy {
+  AlertThresholdAsc = 'ALERT_THRESHOLD_ASC',
+  AlertThresholdDesc = 'ALERT_THRESHOLD_DESC',
+  AmountAsc = 'AMOUNT_ASC',
+  AmountDesc = 'AMOUNT_DESC',
+  BudgetIdAsc = 'BUDGET_ID_ASC',
+  BudgetIdDesc = 'BUDGET_ID_DESC',
+  CategoryIdAsc = 'CATEGORY_ID_ASC',
+  CategoryIdDesc = 'CATEGORY_ID_DESC',
+  MonthAsc = 'MONTH_ASC',
+  MonthDesc = 'MONTH_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  StatusAsc = 'STATUS_ASC',
-  StatusDesc = 'STATUS_DESC',
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC'
 }
 
-/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
-export type BooleanFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+/** Methods to use when ordering `Category`. */
+export enum CategoriesOrderBy {
+  BudgetsByCategoryIdAverageAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdAverageAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdAverageAmountAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_AMOUNT_ASC',
+  BudgetsByCategoryIdAverageAmountDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_AMOUNT_DESC',
+  BudgetsByCategoryIdAverageBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_ASC',
+  BudgetsByCategoryIdAverageBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_DESC',
+  BudgetsByCategoryIdAverageCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdAverageCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdAverageMonthAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_ASC',
+  BudgetsByCategoryIdAverageMonthDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_DESC',
+  BudgetsByCategoryIdAverageUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC',
+  BudgetsByCategoryIdAverageUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_DESC',
+  BudgetsByCategoryIdCountAsc = 'BUDGETS_BY_CATEGORY_ID_COUNT_ASC',
+  BudgetsByCategoryIdCountDesc = 'BUDGETS_BY_CATEGORY_ID_COUNT_DESC',
+  BudgetsByCategoryIdDistinctCountAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdDistinctCountAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdDistinctCountAmountAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_ASC',
+  BudgetsByCategoryIdDistinctCountAmountDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_DESC',
+  BudgetsByCategoryIdDistinctCountBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_ASC',
+  BudgetsByCategoryIdDistinctCountBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_DESC',
+  BudgetsByCategoryIdDistinctCountCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdDistinctCountCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdDistinctCountMonthAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_ASC',
+  BudgetsByCategoryIdDistinctCountMonthDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_DESC',
+  BudgetsByCategoryIdDistinctCountUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC',
+  BudgetsByCategoryIdDistinctCountUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_DESC',
+  BudgetsByCategoryIdMaxAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdMaxAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdMaxAmountAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_AMOUNT_ASC',
+  BudgetsByCategoryIdMaxAmountDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_AMOUNT_DESC',
+  BudgetsByCategoryIdMaxBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_ASC',
+  BudgetsByCategoryIdMaxBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_DESC',
+  BudgetsByCategoryIdMaxCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdMaxCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdMaxMonthAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_MONTH_ASC',
+  BudgetsByCategoryIdMaxMonthDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_MONTH_DESC',
+  BudgetsByCategoryIdMaxUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_ASC',
+  BudgetsByCategoryIdMaxUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_DESC',
+  BudgetsByCategoryIdMinAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdMinAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdMinAmountAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_AMOUNT_ASC',
+  BudgetsByCategoryIdMinAmountDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_AMOUNT_DESC',
+  BudgetsByCategoryIdMinBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_ASC',
+  BudgetsByCategoryIdMinBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_DESC',
+  BudgetsByCategoryIdMinCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdMinCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdMinMonthAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_MONTH_ASC',
+  BudgetsByCategoryIdMinMonthDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_MONTH_DESC',
+  BudgetsByCategoryIdMinUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_ASC',
+  BudgetsByCategoryIdMinUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_DESC',
+  BudgetsByCategoryIdStddevPopulationAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdStddevPopulationAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdStddevPopulationAmountAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_ASC',
+  BudgetsByCategoryIdStddevPopulationAmountDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_DESC',
+  BudgetsByCategoryIdStddevPopulationBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_ASC',
+  BudgetsByCategoryIdStddevPopulationBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_DESC',
+  BudgetsByCategoryIdStddevPopulationCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdStddevPopulationCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdStddevPopulationMonthAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_ASC',
+  BudgetsByCategoryIdStddevPopulationMonthDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_DESC',
+  BudgetsByCategoryIdStddevPopulationUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC',
+  BudgetsByCategoryIdStddevPopulationUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_DESC',
+  BudgetsByCategoryIdStddevSampleAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdStddevSampleAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdStddevSampleAmountAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_ASC',
+  BudgetsByCategoryIdStddevSampleAmountDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_DESC',
+  BudgetsByCategoryIdStddevSampleBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_ASC',
+  BudgetsByCategoryIdStddevSampleBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_DESC',
+  BudgetsByCategoryIdStddevSampleCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdStddevSampleCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdStddevSampleMonthAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_ASC',
+  BudgetsByCategoryIdStddevSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_DESC',
+  BudgetsByCategoryIdStddevSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  BudgetsByCategoryIdStddevSampleUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  BudgetsByCategoryIdSumAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdSumAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdSumAmountAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_AMOUNT_ASC',
+  BudgetsByCategoryIdSumAmountDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_AMOUNT_DESC',
+  BudgetsByCategoryIdSumBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_ASC',
+  BudgetsByCategoryIdSumBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_DESC',
+  BudgetsByCategoryIdSumCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdSumCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdSumMonthAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_MONTH_ASC',
+  BudgetsByCategoryIdSumMonthDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_MONTH_DESC',
+  BudgetsByCategoryIdSumUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_ASC',
+  BudgetsByCategoryIdSumUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_DESC',
+  BudgetsByCategoryIdVariancePopulationAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdVariancePopulationAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdVariancePopulationAmountAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_ASC',
+  BudgetsByCategoryIdVariancePopulationAmountDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_DESC',
+  BudgetsByCategoryIdVariancePopulationBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_ASC',
+  BudgetsByCategoryIdVariancePopulationBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_DESC',
+  BudgetsByCategoryIdVariancePopulationCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdVariancePopulationCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdVariancePopulationMonthAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_ASC',
+  BudgetsByCategoryIdVariancePopulationMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_DESC',
+  BudgetsByCategoryIdVariancePopulationUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  BudgetsByCategoryIdVariancePopulationUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  BudgetsByCategoryIdVarianceSampleAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdVarianceSampleAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdVarianceSampleAmountAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_ASC',
+  BudgetsByCategoryIdVarianceSampleAmountDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_DESC',
+  BudgetsByCategoryIdVarianceSampleBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_ASC',
+  BudgetsByCategoryIdVarianceSampleBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC',
+  BudgetsByCategoryIdVarianceSampleCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdVarianceSampleCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdVarianceSampleMonthAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_ASC',
+  BudgetsByCategoryIdVarianceSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC',
+  BudgetsByCategoryIdVarianceSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  BudgetsByCategoryIdVarianceSampleUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TransactionsByCategoryIdAverageAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_AMOUNT_ASC',
+  TransactionsByCategoryIdAverageAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_AMOUNT_DESC',
+  TransactionsByCategoryIdAverageCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdAverageCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdAverageDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DATE_ASC',
+  TransactionsByCategoryIdAverageDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DATE_DESC',
+  TransactionsByCategoryIdAverageDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DESCRIPTION_ASC',
+  TransactionsByCategoryIdAverageDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DESCRIPTION_DESC',
+  TransactionsByCategoryIdAverageTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdAverageTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdAverageTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TYPE_ASC',
+  TransactionsByCategoryIdAverageTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TYPE_DESC',
+  TransactionsByCategoryIdAverageUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC',
+  TransactionsByCategoryIdAverageUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_USER_ID_DESC',
+  TransactionsByCategoryIdCountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_COUNT_ASC',
+  TransactionsByCategoryIdCountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_COUNT_DESC',
+  TransactionsByCategoryIdDistinctCountAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_ASC',
+  TransactionsByCategoryIdDistinctCountAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_DESC',
+  TransactionsByCategoryIdDistinctCountCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdDistinctCountCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdDistinctCountDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DATE_ASC',
+  TransactionsByCategoryIdDistinctCountDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DATE_DESC',
+  TransactionsByCategoryIdDistinctCountDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
+  TransactionsByCategoryIdDistinctCountDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
+  TransactionsByCategoryIdDistinctCountTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdDistinctCountTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdDistinctCountTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TYPE_ASC',
+  TransactionsByCategoryIdDistinctCountTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TYPE_DESC',
+  TransactionsByCategoryIdDistinctCountUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC',
+  TransactionsByCategoryIdDistinctCountUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_DESC',
+  TransactionsByCategoryIdMaxAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_AMOUNT_ASC',
+  TransactionsByCategoryIdMaxAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_AMOUNT_DESC',
+  TransactionsByCategoryIdMaxCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdMaxCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdMaxDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_DATE_ASC',
+  TransactionsByCategoryIdMaxDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_DATE_DESC',
+  TransactionsByCategoryIdMaxDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_DESCRIPTION_ASC',
+  TransactionsByCategoryIdMaxDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_DESCRIPTION_DESC',
+  TransactionsByCategoryIdMaxTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdMaxTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdMaxTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_TYPE_ASC',
+  TransactionsByCategoryIdMaxTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_TYPE_DESC',
+  TransactionsByCategoryIdMaxUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_USER_ID_ASC',
+  TransactionsByCategoryIdMaxUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_USER_ID_DESC',
+  TransactionsByCategoryIdMinAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_AMOUNT_ASC',
+  TransactionsByCategoryIdMinAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_AMOUNT_DESC',
+  TransactionsByCategoryIdMinCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdMinCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdMinDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_DATE_ASC',
+  TransactionsByCategoryIdMinDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_DATE_DESC',
+  TransactionsByCategoryIdMinDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_DESCRIPTION_ASC',
+  TransactionsByCategoryIdMinDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_DESCRIPTION_DESC',
+  TransactionsByCategoryIdMinTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdMinTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdMinTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_TYPE_ASC',
+  TransactionsByCategoryIdMinTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_TYPE_DESC',
+  TransactionsByCategoryIdMinUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_USER_ID_ASC',
+  TransactionsByCategoryIdMinUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_USER_ID_DESC',
+  TransactionsByCategoryIdStddevPopulationAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_ASC',
+  TransactionsByCategoryIdStddevPopulationAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_DESC',
+  TransactionsByCategoryIdStddevPopulationCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdStddevPopulationCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdStddevPopulationDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DATE_ASC',
+  TransactionsByCategoryIdStddevPopulationDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DATE_DESC',
+  TransactionsByCategoryIdStddevPopulationDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DESCRIPTION_ASC',
+  TransactionsByCategoryIdStddevPopulationDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DESCRIPTION_DESC',
+  TransactionsByCategoryIdStddevPopulationTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdStddevPopulationTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdStddevPopulationTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TYPE_ASC',
+  TransactionsByCategoryIdStddevPopulationTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TYPE_DESC',
+  TransactionsByCategoryIdStddevPopulationUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC',
+  TransactionsByCategoryIdStddevPopulationUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_DESC',
+  TransactionsByCategoryIdStddevSampleAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_ASC',
+  TransactionsByCategoryIdStddevSampleAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_DESC',
+  TransactionsByCategoryIdStddevSampleCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdStddevSampleCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdStddevSampleDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DATE_ASC',
+  TransactionsByCategoryIdStddevSampleDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DATE_DESC',
+  TransactionsByCategoryIdStddevSampleDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DESCRIPTION_ASC',
+  TransactionsByCategoryIdStddevSampleDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DESCRIPTION_DESC',
+  TransactionsByCategoryIdStddevSampleTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdStddevSampleTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdStddevSampleTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TYPE_ASC',
+  TransactionsByCategoryIdStddevSampleTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TYPE_DESC',
+  TransactionsByCategoryIdStddevSampleUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  TransactionsByCategoryIdStddevSampleUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  TransactionsByCategoryIdSumAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_AMOUNT_ASC',
+  TransactionsByCategoryIdSumAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_AMOUNT_DESC',
+  TransactionsByCategoryIdSumCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdSumCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdSumDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_DATE_ASC',
+  TransactionsByCategoryIdSumDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_DATE_DESC',
+  TransactionsByCategoryIdSumDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_DESCRIPTION_ASC',
+  TransactionsByCategoryIdSumDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_DESCRIPTION_DESC',
+  TransactionsByCategoryIdSumTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdSumTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdSumTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_TYPE_ASC',
+  TransactionsByCategoryIdSumTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_TYPE_DESC',
+  TransactionsByCategoryIdSumUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_USER_ID_ASC',
+  TransactionsByCategoryIdSumUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_USER_ID_DESC',
+  TransactionsByCategoryIdVariancePopulationAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_ASC',
+  TransactionsByCategoryIdVariancePopulationAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_DESC',
+  TransactionsByCategoryIdVariancePopulationCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdVariancePopulationCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdVariancePopulationDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DATE_ASC',
+  TransactionsByCategoryIdVariancePopulationDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DATE_DESC',
+  TransactionsByCategoryIdVariancePopulationDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DESCRIPTION_ASC',
+  TransactionsByCategoryIdVariancePopulationDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DESCRIPTION_DESC',
+  TransactionsByCategoryIdVariancePopulationTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdVariancePopulationTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdVariancePopulationTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TYPE_ASC',
+  TransactionsByCategoryIdVariancePopulationTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TYPE_DESC',
+  TransactionsByCategoryIdVariancePopulationUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  TransactionsByCategoryIdVariancePopulationUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  TransactionsByCategoryIdVarianceSampleAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_ASC',
+  TransactionsByCategoryIdVarianceSampleAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_DESC',
+  TransactionsByCategoryIdVarianceSampleCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdVarianceSampleCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdVarianceSampleDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DATE_ASC',
+  TransactionsByCategoryIdVarianceSampleDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DATE_DESC',
+  TransactionsByCategoryIdVarianceSampleDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC',
+  TransactionsByCategoryIdVarianceSampleDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC',
+  TransactionsByCategoryIdVarianceSampleTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdVarianceSampleTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdVarianceSampleTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_ASC',
+  TransactionsByCategoryIdVarianceSampleTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_DESC',
+  TransactionsByCategoryIdVarianceSampleUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  TransactionsByCategoryIdVarianceSampleUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC'
+}
+
+/**
+ * A condition to be used against `Category` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type CategoryCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** All input for the create `Availability` mutation. */
-export type CreateAvailabilityInput = {
-  /** The `Availability` to be created by this mutation. */
-  availability: AvailabilityInput;
+/** A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’ */
+export type CategoryFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<CategoryFilter>>;
+  /** Filter by the object’s `budgetsByCategoryId` relation. */
+  budgetsByCategoryId?: InputMaybe<CategoryToManyBudgetFilter>;
+  /** Some related `budgetsByCategoryId` exist. */
+  budgetsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<CategoryFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<CategoryFilter>>;
+  /** Filter by the object’s `transactionsByCategoryId` relation. */
+  transactionsByCategoryId?: InputMaybe<CategoryToManyTransactionFilter>;
+  /** Some related `transactionsByCategoryId` exist. */
+  transactionsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Grouping methods for `Category` for usage during aggregation. */
+export enum CategoryGroupBy {
+  Name = 'NAME'
+}
+
+/** Conditions for `Category` aggregates. */
+export type CategoryHavingInput = {
+  AND?: InputMaybe<Array<CategoryHavingInput>>;
+  OR?: InputMaybe<Array<CategoryHavingInput>>;
+};
+
+/** An input for mutations affecting `Category` */
+export type CategoryInput = {
+  id: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+};
+
+/** Represents an update to a `Category`. Fields that are set will be updated. */
+export type CategoryPatch = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’ */
+export type CategoryToManyBudgetFilter = {
+  /** Aggregates across related `Budget` match the filter criteria. */
+  aggregates?: InputMaybe<BudgetAggregatesFilter>;
+  /** Every related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<BudgetFilter>;
+  /** No related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<BudgetFilter>;
+  /** Some related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<BudgetFilter>;
+};
+
+/** A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’ */
+export type CategoryToManyTransactionFilter = {
+  /** Aggregates across related `Transaction` match the filter criteria. */
+  aggregates?: InputMaybe<TransactionAggregatesFilter>;
+  /** Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TransactionFilter>;
+  /** No related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TransactionFilter>;
+  /** Some related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TransactionFilter>;
+};
+
+/** All input for the create `Budget` mutation. */
+export type CreateBudgetInput = {
+  /** The `Budget` to be created by this mutation. */
+  budget: BudgetInput;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -457,10 +663,10 @@ export type CreateAvailabilityInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** All input for the create `Booking` mutation. */
-export type CreateBookingInput = {
-  /** The `Booking` to be created by this mutation. */
-  booking: BookingInput;
+/** All input for the create `Category` mutation. */
+export type CreateCategoryInput = {
+  /** The `Category` to be created by this mutation. */
+  category: CategoryInput;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -468,48 +674,26 @@ export type CreateBookingInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** All input for the create `CustomAvailability` mutation. */
-export type CreateCustomAvailabilityInput = {
+/** All input for the create `Report` mutation. */
+export type CreateReportInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `CustomAvailability` to be created by this mutation. */
-  customAvailability: CustomAvailabilityInput;
+  /** The `Report` to be created by this mutation. */
+  report: ReportInput;
 };
 
-/** All input for the create `Event` mutation. */
-export type CreateEventInput = {
+/** All input for the create `Transaction` mutation. */
+export type CreateTransactionInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `Event` to be created by this mutation. */
-  event: EventInput;
-};
-
-/** All input for the create `Team` mutation. */
-export type CreateTeamInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `Team` to be created by this mutation. */
-  team: TeamInput;
-};
-
-/** All input for the create `TeamMembership` mutation. */
-export type CreateTeamMembershipInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `TeamMembership` to be created by this mutation. */
-  teamMembership: TeamMembershipInput;
+  /** The `Transaction` to be created by this mutation. */
+  transaction: TransactionInput;
 };
 
 /** All input for the create `UserDevice` mutation. */
@@ -532,178 +716,6 @@ export type CreateUserInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The `User` to be created by this mutation. */
   user: UserInput;
-};
-
-/** Methods to use when ordering `CustomAvailability`. */
-export enum CustomAvailabilitiesOrderBy {
-  AvailableAsc = 'AVAILABLE_ASC',
-  AvailableDesc = 'AVAILABLE_DESC',
-  EndTimeAsc = 'END_TIME_ASC',
-  EndTimeDesc = 'END_TIME_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  ReasonAsc = 'REASON_ASC',
-  ReasonDesc = 'REASON_DESC',
-  StartTimeAsc = 'START_TIME_ASC',
-  StartTimeDesc = 'START_TIME_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC'
-}
-
-/** A filter to be used against aggregates of `CustomAvailability` object types. */
-export type CustomAvailabilityAggregatesFilter = {
-  /** Distinct count aggregate over matching `CustomAvailability` objects. */
-  distinctCount?: InputMaybe<CustomAvailabilityDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `CustomAvailability` object to be included within the aggregate. */
-  filter?: InputMaybe<CustomAvailabilityFilter>;
-};
-
-/**
- * A condition to be used against `CustomAvailability` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export type CustomAvailabilityCondition = {
-  /** Checks for equality with the object’s `available` field. */
-  available?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Checks for equality with the object’s `endTime` field. */
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `reason` field. */
-  reason?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `startTime` field. */
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CustomAvailabilityDistinctCountAggregateFilter = {
-  available?: InputMaybe<BigIntFilter>;
-  endTime?: InputMaybe<BigIntFilter>;
-  id?: InputMaybe<BigIntFilter>;
-  reason?: InputMaybe<BigIntFilter>;
-  startTime?: InputMaybe<BigIntFilter>;
-  userId?: InputMaybe<BigIntFilter>;
-};
-
-/** A filter to be used against `CustomAvailability` object types. All fields are combined with a logical ‘and.’ */
-export type CustomAvailabilityFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<CustomAvailabilityFilter>>;
-  /** Filter by the object’s `available` field. */
-  available?: InputMaybe<BooleanFilter>;
-  /** Filter by the object’s `endTime` field. */
-  endTime?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<CustomAvailabilityFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<CustomAvailabilityFilter>>;
-  /** Filter by the object’s `reason` field. */
-  reason?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `startTime` field. */
-  startTime?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `user` relation. */
-  user?: InputMaybe<UserFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: InputMaybe<StringFilter>;
-};
-
-/** Grouping methods for `CustomAvailability` for usage during aggregation. */
-export enum CustomAvailabilityGroupBy {
-  Available = 'AVAILABLE',
-  EndTime = 'END_TIME',
-  EndTimeTruncatedToDay = 'END_TIME_TRUNCATED_TO_DAY',
-  EndTimeTruncatedToHour = 'END_TIME_TRUNCATED_TO_HOUR',
-  Reason = 'REASON',
-  StartTime = 'START_TIME',
-  StartTimeTruncatedToDay = 'START_TIME_TRUNCATED_TO_DAY',
-  StartTimeTruncatedToHour = 'START_TIME_TRUNCATED_TO_HOUR',
-  UserId = 'USER_ID'
-}
-
-export type CustomAvailabilityHavingAverageInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingDistinctCountInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** Conditions for `CustomAvailability` aggregates. */
-export type CustomAvailabilityHavingInput = {
-  AND?: InputMaybe<Array<CustomAvailabilityHavingInput>>;
-  OR?: InputMaybe<Array<CustomAvailabilityHavingInput>>;
-  average?: InputMaybe<CustomAvailabilityHavingAverageInput>;
-  distinctCount?: InputMaybe<CustomAvailabilityHavingDistinctCountInput>;
-  max?: InputMaybe<CustomAvailabilityHavingMaxInput>;
-  min?: InputMaybe<CustomAvailabilityHavingMinInput>;
-  stddevPopulation?: InputMaybe<CustomAvailabilityHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<CustomAvailabilityHavingStddevSampleInput>;
-  sum?: InputMaybe<CustomAvailabilityHavingSumInput>;
-  variancePopulation?: InputMaybe<CustomAvailabilityHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<CustomAvailabilityHavingVarianceSampleInput>;
-};
-
-export type CustomAvailabilityHavingMaxInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingMinInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingStddevPopulationInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingStddevSampleInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingSumInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingVariancePopulationInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingVarianceSampleInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** An input for mutations affecting `CustomAvailability` */
-export type CustomAvailabilityInput = {
-  available?: InputMaybe<Scalars['Boolean']['input']>;
-  endTime: Scalars['Datetime']['input'];
-  id: Scalars['String']['input'];
-  reason?: InputMaybe<Scalars['String']['input']>;
-  startTime: Scalars['Datetime']['input'];
-  userId: Scalars['String']['input'];
-};
-
-/** Represents an update to a `CustomAvailability`. Fields that are set will be updated. */
-export type CustomAvailabilityPatch = {
-  available?: InputMaybe<Scalars['Boolean']['input']>;
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  reason?: InputMaybe<Scalars['String']['input']>;
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
@@ -732,19 +744,40 @@ export type DatetimeFilter = {
   notIn?: InputMaybe<Array<Scalars['Datetime']['input']>>;
 };
 
-/** All input for the `deleteAvailabilityByNodeId` mutation. */
-export type DeleteAvailabilityByNodeIdInput = {
+/** All input for the `deleteBudgetByNodeId` mutation. */
+export type DeleteBudgetByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Availability` to be deleted. */
+  /** The globally unique `ID` which will identify a single `Budget` to be deleted. */
   nodeId: Scalars['ID']['input'];
 };
 
-/** All input for the `deleteAvailability` mutation. */
-export type DeleteAvailabilityInput = {
+/** All input for the `deleteBudget` mutation. */
+export type DeleteBudgetInput = {
+  budgetId: Scalars['String']['input'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** All input for the `deleteCategoryByNodeId` mutation. */
+export type DeleteCategoryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Category` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteCategory` mutation. */
+export type DeleteCategoryInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -753,110 +786,46 @@ export type DeleteAvailabilityInput = {
   id: Scalars['String']['input'];
 };
 
-/** All input for the `deleteBookingByNodeId` mutation. */
-export type DeleteBookingByNodeIdInput = {
+/** All input for the `deleteReportByNodeId` mutation. */
+export type DeleteReportByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Booking` to be deleted. */
+  /** The globally unique `ID` which will identify a single `Report` to be deleted. */
   nodeId: Scalars['ID']['input'];
 };
 
-/** All input for the `deleteBooking` mutation. */
-export type DeleteBookingInput = {
+/** All input for the `deleteReport` mutation. */
+export type DeleteReportInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  eventId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
+  reportId: Scalars['String']['input'];
 };
 
-/** All input for the `deleteCustomAvailabilityByNodeId` mutation. */
-export type DeleteCustomAvailabilityByNodeIdInput = {
+/** All input for the `deleteTransactionByNodeId` mutation. */
+export type DeleteTransactionByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `CustomAvailability` to be deleted. */
+  /** The globally unique `ID` which will identify a single `Transaction` to be deleted. */
   nodeId: Scalars['ID']['input'];
 };
 
-/** All input for the `deleteCustomAvailability` mutation. */
-export type DeleteCustomAvailabilityInput = {
+/** All input for the `deleteTransaction` mutation. */
+export type DeleteTransactionInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-};
-
-/** All input for the `deleteEventByNodeId` mutation. */
-export type DeleteEventByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Event` to be deleted. */
-  nodeId: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteEvent` mutation. */
-export type DeleteEventInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-};
-
-/** All input for the `deleteTeamByNodeId` mutation. */
-export type DeleteTeamByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Team` to be deleted. */
-  nodeId: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteTeam` mutation. */
-export type DeleteTeamInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-};
-
-/** All input for the `deleteTeamMembershipByNodeId` mutation. */
-export type DeleteTeamMembershipByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `TeamMembership` to be deleted. */
-  nodeId: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteTeamMembership` mutation. */
-export type DeleteTeamMembershipInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
+  transactionId: Scalars['String']['input'];
 };
 
 /** All input for the `deleteUserByNodeId` mutation. */
@@ -912,318 +881,31 @@ export type DeleteUserInput = {
   oidcId: Scalars['String']['input'];
 };
 
-/** A filter to be used against aggregates of `Event` object types. */
-export type EventAggregatesFilter = {
-  /** Mean average aggregate over matching `Event` objects. */
-  average?: InputMaybe<EventAverageAggregateFilter>;
-  /** Distinct count aggregate over matching `Event` objects. */
-  distinctCount?: InputMaybe<EventDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `Event` object to be included within the aggregate. */
-  filter?: InputMaybe<EventFilter>;
-  /** Maximum aggregate over matching `Event` objects. */
-  max?: InputMaybe<EventMaxAggregateFilter>;
-  /** Minimum aggregate over matching `Event` objects. */
-  min?: InputMaybe<EventMinAggregateFilter>;
-  /** Population standard deviation aggregate over matching `Event` objects. */
-  stddevPopulation?: InputMaybe<EventStddevPopulationAggregateFilter>;
-  /** Sample standard deviation aggregate over matching `Event` objects. */
-  stddevSample?: InputMaybe<EventStddevSampleAggregateFilter>;
-  /** Sum aggregate over matching `Event` objects. */
-  sum?: InputMaybe<EventSumAggregateFilter>;
-  /** Population variance aggregate over matching `Event` objects. */
-  variancePopulation?: InputMaybe<EventVariancePopulationAggregateFilter>;
-  /** Sample variance aggregate over matching `Event` objects. */
-  varianceSample?: InputMaybe<EventVarianceSampleAggregateFilter>;
+/** A filter to be used against Float fields. All fields are combined with a logical ‘and.’ */
+export type FloatFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Float']['input']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Float']['input']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Float']['input']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Float']['input']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Float']['input']>>;
 };
-
-export type EventAverageAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-/** A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type EventCondition = {
-  /** Checks for equality with the object’s `date` field. */
-  date?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `description` field. */
-  description?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `duration` field. */
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `location` field. */
-  location?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `teamId` field. */
-  teamId?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `title` field. */
-  title?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type EventDistinctCountAggregateFilter = {
-  date?: InputMaybe<BigIntFilter>;
-  description?: InputMaybe<BigIntFilter>;
-  duration?: InputMaybe<BigIntFilter>;
-  id?: InputMaybe<BigIntFilter>;
-  location?: InputMaybe<BigIntFilter>;
-  teamId?: InputMaybe<BigIntFilter>;
-  title?: InputMaybe<BigIntFilter>;
-  userId?: InputMaybe<BigIntFilter>;
-};
-
-/** A filter to be used against `Event` object types. All fields are combined with a logical ‘and.’ */
-export type EventFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<EventFilter>>;
-  /** Filter by the object’s `bookingsByEventId` relation. */
-  bookingsByEventId?: InputMaybe<EventToManyBookingFilter>;
-  /** Some related `bookingsByEventId` exist. */
-  bookingsByEventIdExist?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `date` field. */
-  date?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `description` field. */
-  description?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `duration` field. */
-  duration?: InputMaybe<IntFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `location` field. */
-  location?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<EventFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<EventFilter>>;
-  /** Filter by the object’s `team` relation. */
-  team?: InputMaybe<TeamFilter>;
-  /** A related `team` exists. */
-  teamExists?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `teamId` field. */
-  teamId?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `title` field. */
-  title?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `user` relation. */
-  user?: InputMaybe<UserFilter>;
-  /** A related `user` exists. */
-  userExists?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `userId` field. */
-  userId?: InputMaybe<StringFilter>;
-};
-
-/** Grouping methods for `Event` for usage during aggregation. */
-export enum EventGroupBy {
-  Date = 'DATE',
-  DateTruncatedToDay = 'DATE_TRUNCATED_TO_DAY',
-  DateTruncatedToHour = 'DATE_TRUNCATED_TO_HOUR',
-  Description = 'DESCRIPTION',
-  Duration = 'DURATION',
-  Location = 'LOCATION',
-  TeamId = 'TEAM_ID',
-  Title = 'TITLE',
-  UserId = 'USER_ID'
-}
-
-export type EventHavingAverageInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingDistinctCountInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-/** Conditions for `Event` aggregates. */
-export type EventHavingInput = {
-  AND?: InputMaybe<Array<EventHavingInput>>;
-  OR?: InputMaybe<Array<EventHavingInput>>;
-  average?: InputMaybe<EventHavingAverageInput>;
-  distinctCount?: InputMaybe<EventHavingDistinctCountInput>;
-  max?: InputMaybe<EventHavingMaxInput>;
-  min?: InputMaybe<EventHavingMinInput>;
-  stddevPopulation?: InputMaybe<EventHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<EventHavingStddevSampleInput>;
-  sum?: InputMaybe<EventHavingSumInput>;
-  variancePopulation?: InputMaybe<EventHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<EventHavingVarianceSampleInput>;
-};
-
-export type EventHavingMaxInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingMinInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingStddevPopulationInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingStddevSampleInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingSumInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingVariancePopulationInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingVarianceSampleInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-/** An input for mutations affecting `Event` */
-export type EventInput = {
-  date: Scalars['Datetime']['input'];
-  description?: InputMaybe<Scalars['String']['input']>;
-  duration: Scalars['Int']['input'];
-  id: Scalars['String']['input'];
-  location?: InputMaybe<Scalars['String']['input']>;
-  teamId?: InputMaybe<Scalars['String']['input']>;
-  title: Scalars['String']['input'];
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type EventMaxAggregateFilter = {
-  duration?: InputMaybe<IntFilter>;
-};
-
-export type EventMinAggregateFilter = {
-  duration?: InputMaybe<IntFilter>;
-};
-
-/** Represents an update to a `Event`. Fields that are set will be updated. */
-export type EventPatch = {
-  date?: InputMaybe<Scalars['Datetime']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  location?: InputMaybe<Scalars['String']['input']>;
-  teamId?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type EventStddevPopulationAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-export type EventStddevSampleAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-export type EventSumAggregateFilter = {
-  duration?: InputMaybe<BigIntFilter>;
-};
-
-/** A filter to be used against many `Booking` object types. All fields are combined with a logical ‘and.’ */
-export type EventToManyBookingFilter = {
-  /** Aggregates across related `Booking` match the filter criteria. */
-  aggregates?: InputMaybe<BookingAggregatesFilter>;
-  /** Every related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<BookingFilter>;
-  /** No related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<BookingFilter>;
-  /** Some related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<BookingFilter>;
-};
-
-export type EventVariancePopulationAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-export type EventVarianceSampleAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-/** Methods to use when ordering `Event`. */
-export enum EventsOrderBy {
-  BookingsByEventIdAverageEventIdAsc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_EVENT_ID_ASC',
-  BookingsByEventIdAverageEventIdDesc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_EVENT_ID_DESC',
-  BookingsByEventIdAverageStatusAsc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_STATUS_ASC',
-  BookingsByEventIdAverageStatusDesc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_STATUS_DESC',
-  BookingsByEventIdAverageUserIdAsc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_USER_ID_ASC',
-  BookingsByEventIdAverageUserIdDesc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_USER_ID_DESC',
-  BookingsByEventIdCountAsc = 'BOOKINGS_BY_EVENT_ID_COUNT_ASC',
-  BookingsByEventIdCountDesc = 'BOOKINGS_BY_EVENT_ID_COUNT_DESC',
-  BookingsByEventIdDistinctCountEventIdAsc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_EVENT_ID_ASC',
-  BookingsByEventIdDistinctCountEventIdDesc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_EVENT_ID_DESC',
-  BookingsByEventIdDistinctCountStatusAsc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_STATUS_ASC',
-  BookingsByEventIdDistinctCountStatusDesc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_STATUS_DESC',
-  BookingsByEventIdDistinctCountUserIdAsc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_USER_ID_ASC',
-  BookingsByEventIdDistinctCountUserIdDesc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_USER_ID_DESC',
-  BookingsByEventIdMaxEventIdAsc = 'BOOKINGS_BY_EVENT_ID_MAX_EVENT_ID_ASC',
-  BookingsByEventIdMaxEventIdDesc = 'BOOKINGS_BY_EVENT_ID_MAX_EVENT_ID_DESC',
-  BookingsByEventIdMaxStatusAsc = 'BOOKINGS_BY_EVENT_ID_MAX_STATUS_ASC',
-  BookingsByEventIdMaxStatusDesc = 'BOOKINGS_BY_EVENT_ID_MAX_STATUS_DESC',
-  BookingsByEventIdMaxUserIdAsc = 'BOOKINGS_BY_EVENT_ID_MAX_USER_ID_ASC',
-  BookingsByEventIdMaxUserIdDesc = 'BOOKINGS_BY_EVENT_ID_MAX_USER_ID_DESC',
-  BookingsByEventIdMinEventIdAsc = 'BOOKINGS_BY_EVENT_ID_MIN_EVENT_ID_ASC',
-  BookingsByEventIdMinEventIdDesc = 'BOOKINGS_BY_EVENT_ID_MIN_EVENT_ID_DESC',
-  BookingsByEventIdMinStatusAsc = 'BOOKINGS_BY_EVENT_ID_MIN_STATUS_ASC',
-  BookingsByEventIdMinStatusDesc = 'BOOKINGS_BY_EVENT_ID_MIN_STATUS_DESC',
-  BookingsByEventIdMinUserIdAsc = 'BOOKINGS_BY_EVENT_ID_MIN_USER_ID_ASC',
-  BookingsByEventIdMinUserIdDesc = 'BOOKINGS_BY_EVENT_ID_MIN_USER_ID_DESC',
-  BookingsByEventIdStddevPopulationEventIdAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_EVENT_ID_ASC',
-  BookingsByEventIdStddevPopulationEventIdDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_EVENT_ID_DESC',
-  BookingsByEventIdStddevPopulationStatusAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_STATUS_ASC',
-  BookingsByEventIdStddevPopulationStatusDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_STATUS_DESC',
-  BookingsByEventIdStddevPopulationUserIdAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_USER_ID_ASC',
-  BookingsByEventIdStddevPopulationUserIdDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_USER_ID_DESC',
-  BookingsByEventIdStddevSampleEventIdAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_EVENT_ID_ASC',
-  BookingsByEventIdStddevSampleEventIdDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_EVENT_ID_DESC',
-  BookingsByEventIdStddevSampleStatusAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_STATUS_ASC',
-  BookingsByEventIdStddevSampleStatusDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_STATUS_DESC',
-  BookingsByEventIdStddevSampleUserIdAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  BookingsByEventIdStddevSampleUserIdDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  BookingsByEventIdSumEventIdAsc = 'BOOKINGS_BY_EVENT_ID_SUM_EVENT_ID_ASC',
-  BookingsByEventIdSumEventIdDesc = 'BOOKINGS_BY_EVENT_ID_SUM_EVENT_ID_DESC',
-  BookingsByEventIdSumStatusAsc = 'BOOKINGS_BY_EVENT_ID_SUM_STATUS_ASC',
-  BookingsByEventIdSumStatusDesc = 'BOOKINGS_BY_EVENT_ID_SUM_STATUS_DESC',
-  BookingsByEventIdSumUserIdAsc = 'BOOKINGS_BY_EVENT_ID_SUM_USER_ID_ASC',
-  BookingsByEventIdSumUserIdDesc = 'BOOKINGS_BY_EVENT_ID_SUM_USER_ID_DESC',
-  BookingsByEventIdVariancePopulationEventIdAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_EVENT_ID_ASC',
-  BookingsByEventIdVariancePopulationEventIdDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_EVENT_ID_DESC',
-  BookingsByEventIdVariancePopulationStatusAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_STATUS_ASC',
-  BookingsByEventIdVariancePopulationStatusDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_STATUS_DESC',
-  BookingsByEventIdVariancePopulationUserIdAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  BookingsByEventIdVariancePopulationUserIdDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  BookingsByEventIdVarianceSampleEventIdAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_EVENT_ID_ASC',
-  BookingsByEventIdVarianceSampleEventIdDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_EVENT_ID_DESC',
-  BookingsByEventIdVarianceSampleStatusAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_STATUS_ASC',
-  BookingsByEventIdVarianceSampleStatusDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_STATUS_DESC',
-  BookingsByEventIdVarianceSampleUserIdAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  BookingsByEventIdVarianceSampleUserIdDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_USER_ID_DESC',
-  DateAsc = 'DATE_ASC',
-  DateDesc = 'DATE_DESC',
-  DescriptionAsc = 'DESCRIPTION_ASC',
-  DescriptionDesc = 'DESCRIPTION_DESC',
-  DurationAsc = 'DURATION_ASC',
-  DurationDesc = 'DURATION_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  LocationAsc = 'LOCATION_ASC',
-  LocationDesc = 'LOCATION_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  TeamIdAsc = 'TEAM_ID_ASC',
-  TeamIdDesc = 'TEAM_ID_DESC',
-  TitleAsc = 'TITLE_ASC',
-  TitleDesc = 'TITLE_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC'
-}
 
 export type HavingDatetimeFilter = {
   equalTo?: InputMaybe<Scalars['Datetime']['input']>;
@@ -1232,6 +914,15 @@ export type HavingDatetimeFilter = {
   lessThan?: InputMaybe<Scalars['Datetime']['input']>;
   lessThanOrEqualTo?: InputMaybe<Scalars['Datetime']['input']>;
   notEqualTo?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type HavingFloatFilter = {
+  equalTo?: InputMaybe<Scalars['Float']['input']>;
+  greaterThan?: InputMaybe<Scalars['Float']['input']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  lessThan?: InputMaybe<Scalars['Float']['input']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  notEqualTo?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type HavingIntFilter = {
@@ -1304,6 +995,99 @@ export type JsonFilter = {
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['JSON']['input']>>;
 };
+
+/** A filter to be used against aggregates of `Report` object types. */
+export type ReportAggregatesFilter = {
+  /** Distinct count aggregate over matching `Report` objects. */
+  distinctCount?: InputMaybe<ReportDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Report` object to be included within the aggregate. */
+  filter?: InputMaybe<ReportFilter>;
+};
+
+/** A condition to be used against `Report` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type ReportCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `filePath` field. */
+  filePath?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `reportId` field. */
+  reportId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ReportDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  filePath?: InputMaybe<BigIntFilter>;
+  reportId?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
+};
+
+/** A filter to be used against `Report` object types. All fields are combined with a logical ‘and.’ */
+export type ReportFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<ReportFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `filePath` field. */
+  filePath?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<ReportFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<ReportFilter>>;
+  /** Filter by the object’s `reportId` field. */
+  reportId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `Report` for usage during aggregation. */
+export enum ReportGroupBy {
+  CreatedAt = 'CREATED_AT',
+  FilePath = 'FILE_PATH',
+  UserId = 'USER_ID'
+}
+
+/** Conditions for `Report` aggregates. */
+export type ReportHavingInput = {
+  AND?: InputMaybe<Array<ReportHavingInput>>;
+  OR?: InputMaybe<Array<ReportHavingInput>>;
+};
+
+/** An input for mutations affecting `Report` */
+export type ReportInput = {
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  filePath?: InputMaybe<Scalars['String']['input']>;
+  reportId: Scalars['String']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Represents an update to a `Report`. Fields that are set will be updated. */
+export type ReportPatch = {
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  filePath?: InputMaybe<Scalars['String']['input']>;
+  reportId?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Methods to use when ordering `Report`. */
+export enum ReportsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  FilePathAsc = 'FILE_PATH_ASC',
+  FilePathDesc = 'FILE_PATH_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ReportIdAsc = 'REPORT_ID_ASC',
+  ReportIdDesc = 'REPORT_ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
@@ -1383,742 +1167,369 @@ export type StringFilter = {
   startsWithInsensitive?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** A condition to be used against `Team` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type TeamCondition = {
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `name` field. */
-  name?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+/** A filter to be used against aggregates of `Transaction` object types. */
+export type TransactionAggregatesFilter = {
+  /** Mean average aggregate over matching `Transaction` objects. */
+  average?: InputMaybe<TransactionAverageAggregateFilter>;
+  /** Distinct count aggregate over matching `Transaction` objects. */
+  distinctCount?: InputMaybe<TransactionDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Transaction` object to be included within the aggregate. */
+  filter?: InputMaybe<TransactionFilter>;
+  /** Maximum aggregate over matching `Transaction` objects. */
+  max?: InputMaybe<TransactionMaxAggregateFilter>;
+  /** Minimum aggregate over matching `Transaction` objects. */
+  min?: InputMaybe<TransactionMinAggregateFilter>;
+  /** Population standard deviation aggregate over matching `Transaction` objects. */
+  stddevPopulation?: InputMaybe<TransactionStddevPopulationAggregateFilter>;
+  /** Sample standard deviation aggregate over matching `Transaction` objects. */
+  stddevSample?: InputMaybe<TransactionStddevSampleAggregateFilter>;
+  /** Sum aggregate over matching `Transaction` objects. */
+  sum?: InputMaybe<TransactionSumAggregateFilter>;
+  /** Population variance aggregate over matching `Transaction` objects. */
+  variancePopulation?: InputMaybe<TransactionVariancePopulationAggregateFilter>;
+  /** Sample variance aggregate over matching `Transaction` objects. */
+  varianceSample?: InputMaybe<TransactionVarianceSampleAggregateFilter>;
 };
 
-/** A filter to be used against `Team` object types. All fields are combined with a logical ‘and.’ */
-export type TeamFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<TeamFilter>>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `eventsByTeamId` relation. */
-  eventsByTeamId?: InputMaybe<TeamToManyEventFilter>;
-  /** Some related `eventsByTeamId` exist. */
-  eventsByTeamIdExist?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `name` field. */
-  name?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<TeamFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<TeamFilter>>;
-  /** Filter by the object’s `teamMembershipsByTeamId` relation. */
-  teamMembershipsByTeamId?: InputMaybe<TeamToManyTeamMembershipFilter>;
-  /** Some related `teamMembershipsByTeamId` exist. */
-  teamMembershipsByTeamIdExist?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<DatetimeFilter>;
-};
-
-/** Grouping methods for `Team` for usage during aggregation. */
-export enum TeamGroupBy {
-  CreatedAt = 'CREATED_AT',
-  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
-  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
-  Name = 'NAME',
-  UpdatedAt = 'UPDATED_AT',
-  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
-  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
-}
-
-export type TeamHavingAverageInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingDistinctCountInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** Conditions for `Team` aggregates. */
-export type TeamHavingInput = {
-  AND?: InputMaybe<Array<TeamHavingInput>>;
-  OR?: InputMaybe<Array<TeamHavingInput>>;
-  average?: InputMaybe<TeamHavingAverageInput>;
-  distinctCount?: InputMaybe<TeamHavingDistinctCountInput>;
-  max?: InputMaybe<TeamHavingMaxInput>;
-  min?: InputMaybe<TeamHavingMinInput>;
-  stddevPopulation?: InputMaybe<TeamHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<TeamHavingStddevSampleInput>;
-  sum?: InputMaybe<TeamHavingSumInput>;
-  variancePopulation?: InputMaybe<TeamHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<TeamHavingVarianceSampleInput>;
-};
-
-export type TeamHavingMaxInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingMinInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingStddevPopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingStddevSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingSumInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingVariancePopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingVarianceSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** An input for mutations affecting `Team` */
-export type TeamInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  id: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  updatedAt: Scalars['Datetime']['input'];
-};
-
-/** A filter to be used against aggregates of `TeamMembership` object types. */
-export type TeamMembershipAggregatesFilter = {
-  /** Distinct count aggregate over matching `TeamMembership` objects. */
-  distinctCount?: InputMaybe<TeamMembershipDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `TeamMembership` object to be included within the aggregate. */
-  filter?: InputMaybe<TeamMembershipFilter>;
+export type TransactionAverageAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
 };
 
 /**
- * A condition to be used against `TeamMembership` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
+ * A condition to be used against `Transaction` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
  */
-export type TeamMembershipCondition = {
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `role` field. */
-  role?: InputMaybe<TeamRole>;
-  /** Checks for equality with the object’s `teamId` field. */
-  teamId?: InputMaybe<Scalars['String']['input']>;
+export type TransactionCondition = {
+  /** Checks for equality with the object’s `amount` field. */
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Checks for equality with the object’s `categoryId` field. */
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `date` field. */
+  date?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `transactionId` field. */
+  transactionId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Typetransaction>;
   /** Checks for equality with the object’s `userId` field. */
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type TeamMembershipDistinctCountAggregateFilter = {
-  createdAt?: InputMaybe<BigIntFilter>;
-  id?: InputMaybe<BigIntFilter>;
-  role?: InputMaybe<BigIntFilter>;
-  teamId?: InputMaybe<BigIntFilter>;
+export type TransactionDistinctCountAggregateFilter = {
+  amount?: InputMaybe<BigIntFilter>;
+  categoryId?: InputMaybe<BigIntFilter>;
+  date?: InputMaybe<BigIntFilter>;
+  description?: InputMaybe<BigIntFilter>;
+  transactionId?: InputMaybe<BigIntFilter>;
+  type?: InputMaybe<BigIntFilter>;
   userId?: InputMaybe<BigIntFilter>;
 };
 
-/** A filter to be used against `TeamMembership` object types. All fields are combined with a logical ‘and.’ */
-export type TeamMembershipFilter = {
+/** A filter to be used against `Transaction` object types. All fields are combined with a logical ‘and.’ */
+export type TransactionFilter = {
+  /** Filter by the object’s `amount` field. */
+  amount?: InputMaybe<FloatFilter>;
   /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<TeamMembershipFilter>>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
+  and?: InputMaybe<Array<TransactionFilter>>;
+  /** Filter by the object’s `category` relation. */
+  category?: InputMaybe<CategoryFilter>;
+  /** A related `category` exists. */
+  categoryExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `categoryId` field. */
+  categoryId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `date` field. */
+  date?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: InputMaybe<TeamMembershipFilter>;
+  not?: InputMaybe<TransactionFilter>;
   /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<TeamMembershipFilter>>;
-  /** Filter by the object’s `role` field. */
-  role?: InputMaybe<TeamRoleFilter>;
-  /** Filter by the object’s `team` relation. */
-  team?: InputMaybe<TeamFilter>;
-  /** Filter by the object’s `teamId` field. */
-  teamId?: InputMaybe<StringFilter>;
+  or?: InputMaybe<Array<TransactionFilter>>;
+  /** Filter by the object’s `transactionId` field. */
+  transactionId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<TypetransactionFilter>;
   /** Filter by the object’s `user` relation. */
   user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `userId` field. */
   userId?: InputMaybe<StringFilter>;
 };
 
-/** Grouping methods for `TeamMembership` for usage during aggregation. */
-export enum TeamMembershipGroupBy {
-  CreatedAt = 'CREATED_AT',
-  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
-  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
-  Role = 'ROLE',
-  TeamId = 'TEAM_ID',
+/** Grouping methods for `Transaction` for usage during aggregation. */
+export enum TransactionGroupBy {
+  Amount = 'AMOUNT',
+  CategoryId = 'CATEGORY_ID',
+  Date = 'DATE',
+  DateTruncatedToDay = 'DATE_TRUNCATED_TO_DAY',
+  DateTruncatedToHour = 'DATE_TRUNCATED_TO_HOUR',
+  Description = 'DESCRIPTION',
+  Type = 'TYPE',
   UserId = 'USER_ID'
 }
 
-export type TeamMembershipHavingAverageInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingAverageInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingDistinctCountInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingDistinctCountInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** Conditions for `TeamMembership` aggregates. */
-export type TeamMembershipHavingInput = {
-  AND?: InputMaybe<Array<TeamMembershipHavingInput>>;
-  OR?: InputMaybe<Array<TeamMembershipHavingInput>>;
-  average?: InputMaybe<TeamMembershipHavingAverageInput>;
-  distinctCount?: InputMaybe<TeamMembershipHavingDistinctCountInput>;
-  max?: InputMaybe<TeamMembershipHavingMaxInput>;
-  min?: InputMaybe<TeamMembershipHavingMinInput>;
-  stddevPopulation?: InputMaybe<TeamMembershipHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<TeamMembershipHavingStddevSampleInput>;
-  sum?: InputMaybe<TeamMembershipHavingSumInput>;
-  variancePopulation?: InputMaybe<TeamMembershipHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<TeamMembershipHavingVarianceSampleInput>;
+/** Conditions for `Transaction` aggregates. */
+export type TransactionHavingInput = {
+  AND?: InputMaybe<Array<TransactionHavingInput>>;
+  OR?: InputMaybe<Array<TransactionHavingInput>>;
+  average?: InputMaybe<TransactionHavingAverageInput>;
+  distinctCount?: InputMaybe<TransactionHavingDistinctCountInput>;
+  max?: InputMaybe<TransactionHavingMaxInput>;
+  min?: InputMaybe<TransactionHavingMinInput>;
+  stddevPopulation?: InputMaybe<TransactionHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<TransactionHavingStddevSampleInput>;
+  sum?: InputMaybe<TransactionHavingSumInput>;
+  variancePopulation?: InputMaybe<TransactionHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<TransactionHavingVarianceSampleInput>;
 };
 
-export type TeamMembershipHavingMaxInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingMaxInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingMinInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingMinInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingStddevPopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingStddevPopulationInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingStddevSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingStddevSampleInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingSumInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingSumInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingVariancePopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingVariancePopulationInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingVarianceSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingVarianceSampleInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** An input for mutations affecting `TeamMembership` */
-export type TeamMembershipInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  id: Scalars['String']['input'];
-  role?: InputMaybe<TeamRole>;
-  teamId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
-};
-
-/** Represents an update to a `TeamMembership`. Fields that are set will be updated. */
-export type TeamMembershipPatch = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<TeamRole>;
-  teamId?: InputMaybe<Scalars['String']['input']>;
+/** An input for mutations affecting `Transaction` */
+export type TransactionInput = {
+  amount: Scalars['Float']['input'];
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  date?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  transactionId: Scalars['String']['input'];
+  type?: InputMaybe<Typetransaction>;
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** Methods to use when ordering `TeamMembership`. */
-export enum TeamMembershipsOrderBy {
-  CreatedAtAsc = 'CREATED_AT_ASC',
-  CreatedAtDesc = 'CREATED_AT_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
+export type TransactionMaxAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionMinAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+/** Represents an update to a `Transaction`. Fields that are set will be updated. */
+export type TransactionPatch = {
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  date?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  transactionId?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Typetransaction>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TransactionStddevPopulationAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionStddevSampleAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionSumAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionVariancePopulationAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionVarianceSampleAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+/** Methods to use when ordering `Transaction`. */
+export enum TransactionsOrderBy {
+  AmountAsc = 'AMOUNT_ASC',
+  AmountDesc = 'AMOUNT_DESC',
+  CategoryIdAsc = 'CATEGORY_ID_ASC',
+  CategoryIdDesc = 'CATEGORY_ID_DESC',
+  DateAsc = 'DATE_ASC',
+  DateDesc = 'DATE_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  RoleAsc = 'ROLE_ASC',
-  RoleDesc = 'ROLE_DESC',
-  TeamIdAsc = 'TEAM_ID_ASC',
-  TeamIdDesc = 'TEAM_ID_DESC',
+  TransactionIdAsc = 'TRANSACTION_ID_ASC',
+  TransactionIdDesc = 'TRANSACTION_ID_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC'
 }
 
-/** Represents an update to a `Team`. Fields that are set will be updated. */
-export type TeamPatch = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
-
-export enum TeamRole {
-  Admin = 'ADMIN',
-  Member = 'MEMBER',
-  Owner = 'OWNER'
+export enum Typetransaction {
+  Expense = 'EXPENSE',
+  Income = 'INCOME'
 }
 
-/** A filter to be used against TeamRole fields. All fields are combined with a logical ‘and.’ */
-export type TeamRoleFilter = {
+/** A filter to be used against Typetransaction fields. All fields are combined with a logical ‘and.’ */
+export type TypetransactionFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<TeamRole>;
+  distinctFrom?: InputMaybe<Typetransaction>;
   /** Equal to the specified value. */
-  equalTo?: InputMaybe<TeamRole>;
+  equalTo?: InputMaybe<Typetransaction>;
   /** Greater than the specified value. */
-  greaterThan?: InputMaybe<TeamRole>;
+  greaterThan?: InputMaybe<Typetransaction>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<TeamRole>;
+  greaterThanOrEqualTo?: InputMaybe<Typetransaction>;
   /** Included in the specified list. */
-  in?: InputMaybe<Array<TeamRole>>;
+  in?: InputMaybe<Array<Typetransaction>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']['input']>;
   /** Less than the specified value. */
-  lessThan?: InputMaybe<TeamRole>;
+  lessThan?: InputMaybe<Typetransaction>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<TeamRole>;
+  lessThanOrEqualTo?: InputMaybe<Typetransaction>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<TeamRole>;
+  notDistinctFrom?: InputMaybe<Typetransaction>;
   /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<TeamRole>;
+  notEqualTo?: InputMaybe<Typetransaction>;
   /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<TeamRole>>;
+  notIn?: InputMaybe<Array<Typetransaction>>;
 };
 
-/** A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’ */
-export type TeamToManyEventFilter = {
-  /** Aggregates across related `Event` match the filter criteria. */
-  aggregates?: InputMaybe<EventAggregatesFilter>;
-  /** Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<EventFilter>;
-  /** No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<EventFilter>;
-  /** Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<EventFilter>;
-};
-
-/** A filter to be used against many `TeamMembership` object types. All fields are combined with a logical ‘and.’ */
-export type TeamToManyTeamMembershipFilter = {
-  /** Aggregates across related `TeamMembership` match the filter criteria. */
-  aggregates?: InputMaybe<TeamMembershipAggregatesFilter>;
-  /** Every related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<TeamMembershipFilter>;
-  /** No related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<TeamMembershipFilter>;
-  /** Some related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<TeamMembershipFilter>;
-};
-
-/** Methods to use when ordering `Team`. */
-export enum TeamsOrderBy {
-  CreatedAtAsc = 'CREATED_AT_ASC',
-  CreatedAtDesc = 'CREATED_AT_DESC',
-  EventsByTeamIdAverageDateAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_DATE_ASC',
-  EventsByTeamIdAverageDateDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_DATE_DESC',
-  EventsByTeamIdAverageDescriptionAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_DESCRIPTION_ASC',
-  EventsByTeamIdAverageDescriptionDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_DESCRIPTION_DESC',
-  EventsByTeamIdAverageDurationAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_DURATION_ASC',
-  EventsByTeamIdAverageDurationDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_DURATION_DESC',
-  EventsByTeamIdAverageIdAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_ID_ASC',
-  EventsByTeamIdAverageIdDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_ID_DESC',
-  EventsByTeamIdAverageLocationAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_LOCATION_ASC',
-  EventsByTeamIdAverageLocationDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_LOCATION_DESC',
-  EventsByTeamIdAverageTeamIdAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_TEAM_ID_ASC',
-  EventsByTeamIdAverageTeamIdDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_TEAM_ID_DESC',
-  EventsByTeamIdAverageTitleAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_TITLE_ASC',
-  EventsByTeamIdAverageTitleDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_TITLE_DESC',
-  EventsByTeamIdAverageUserIdAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_USER_ID_ASC',
-  EventsByTeamIdAverageUserIdDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_USER_ID_DESC',
-  EventsByTeamIdCountAsc = 'EVENTS_BY_TEAM_ID_COUNT_ASC',
-  EventsByTeamIdCountDesc = 'EVENTS_BY_TEAM_ID_COUNT_DESC',
-  EventsByTeamIdDistinctCountDateAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DATE_ASC',
-  EventsByTeamIdDistinctCountDateDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DATE_DESC',
-  EventsByTeamIdDistinctCountDescriptionAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
-  EventsByTeamIdDistinctCountDescriptionDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
-  EventsByTeamIdDistinctCountDurationAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DURATION_ASC',
-  EventsByTeamIdDistinctCountDurationDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DURATION_DESC',
-  EventsByTeamIdDistinctCountIdAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_ID_ASC',
-  EventsByTeamIdDistinctCountIdDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_ID_DESC',
-  EventsByTeamIdDistinctCountLocationAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_LOCATION_ASC',
-  EventsByTeamIdDistinctCountLocationDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_LOCATION_DESC',
-  EventsByTeamIdDistinctCountTeamIdAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_TEAM_ID_ASC',
-  EventsByTeamIdDistinctCountTeamIdDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_TEAM_ID_DESC',
-  EventsByTeamIdDistinctCountTitleAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_TITLE_ASC',
-  EventsByTeamIdDistinctCountTitleDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_TITLE_DESC',
-  EventsByTeamIdDistinctCountUserIdAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_USER_ID_ASC',
-  EventsByTeamIdDistinctCountUserIdDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_USER_ID_DESC',
-  EventsByTeamIdMaxDateAsc = 'EVENTS_BY_TEAM_ID_MAX_DATE_ASC',
-  EventsByTeamIdMaxDateDesc = 'EVENTS_BY_TEAM_ID_MAX_DATE_DESC',
-  EventsByTeamIdMaxDescriptionAsc = 'EVENTS_BY_TEAM_ID_MAX_DESCRIPTION_ASC',
-  EventsByTeamIdMaxDescriptionDesc = 'EVENTS_BY_TEAM_ID_MAX_DESCRIPTION_DESC',
-  EventsByTeamIdMaxDurationAsc = 'EVENTS_BY_TEAM_ID_MAX_DURATION_ASC',
-  EventsByTeamIdMaxDurationDesc = 'EVENTS_BY_TEAM_ID_MAX_DURATION_DESC',
-  EventsByTeamIdMaxIdAsc = 'EVENTS_BY_TEAM_ID_MAX_ID_ASC',
-  EventsByTeamIdMaxIdDesc = 'EVENTS_BY_TEAM_ID_MAX_ID_DESC',
-  EventsByTeamIdMaxLocationAsc = 'EVENTS_BY_TEAM_ID_MAX_LOCATION_ASC',
-  EventsByTeamIdMaxLocationDesc = 'EVENTS_BY_TEAM_ID_MAX_LOCATION_DESC',
-  EventsByTeamIdMaxTeamIdAsc = 'EVENTS_BY_TEAM_ID_MAX_TEAM_ID_ASC',
-  EventsByTeamIdMaxTeamIdDesc = 'EVENTS_BY_TEAM_ID_MAX_TEAM_ID_DESC',
-  EventsByTeamIdMaxTitleAsc = 'EVENTS_BY_TEAM_ID_MAX_TITLE_ASC',
-  EventsByTeamIdMaxTitleDesc = 'EVENTS_BY_TEAM_ID_MAX_TITLE_DESC',
-  EventsByTeamIdMaxUserIdAsc = 'EVENTS_BY_TEAM_ID_MAX_USER_ID_ASC',
-  EventsByTeamIdMaxUserIdDesc = 'EVENTS_BY_TEAM_ID_MAX_USER_ID_DESC',
-  EventsByTeamIdMinDateAsc = 'EVENTS_BY_TEAM_ID_MIN_DATE_ASC',
-  EventsByTeamIdMinDateDesc = 'EVENTS_BY_TEAM_ID_MIN_DATE_DESC',
-  EventsByTeamIdMinDescriptionAsc = 'EVENTS_BY_TEAM_ID_MIN_DESCRIPTION_ASC',
-  EventsByTeamIdMinDescriptionDesc = 'EVENTS_BY_TEAM_ID_MIN_DESCRIPTION_DESC',
-  EventsByTeamIdMinDurationAsc = 'EVENTS_BY_TEAM_ID_MIN_DURATION_ASC',
-  EventsByTeamIdMinDurationDesc = 'EVENTS_BY_TEAM_ID_MIN_DURATION_DESC',
-  EventsByTeamIdMinIdAsc = 'EVENTS_BY_TEAM_ID_MIN_ID_ASC',
-  EventsByTeamIdMinIdDesc = 'EVENTS_BY_TEAM_ID_MIN_ID_DESC',
-  EventsByTeamIdMinLocationAsc = 'EVENTS_BY_TEAM_ID_MIN_LOCATION_ASC',
-  EventsByTeamIdMinLocationDesc = 'EVENTS_BY_TEAM_ID_MIN_LOCATION_DESC',
-  EventsByTeamIdMinTeamIdAsc = 'EVENTS_BY_TEAM_ID_MIN_TEAM_ID_ASC',
-  EventsByTeamIdMinTeamIdDesc = 'EVENTS_BY_TEAM_ID_MIN_TEAM_ID_DESC',
-  EventsByTeamIdMinTitleAsc = 'EVENTS_BY_TEAM_ID_MIN_TITLE_ASC',
-  EventsByTeamIdMinTitleDesc = 'EVENTS_BY_TEAM_ID_MIN_TITLE_DESC',
-  EventsByTeamIdMinUserIdAsc = 'EVENTS_BY_TEAM_ID_MIN_USER_ID_ASC',
-  EventsByTeamIdMinUserIdDesc = 'EVENTS_BY_TEAM_ID_MIN_USER_ID_DESC',
-  EventsByTeamIdStddevPopulationDateAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DATE_ASC',
-  EventsByTeamIdStddevPopulationDateDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DATE_DESC',
-  EventsByTeamIdStddevPopulationDescriptionAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DESCRIPTION_ASC',
-  EventsByTeamIdStddevPopulationDescriptionDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DESCRIPTION_DESC',
-  EventsByTeamIdStddevPopulationDurationAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DURATION_ASC',
-  EventsByTeamIdStddevPopulationDurationDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DURATION_DESC',
-  EventsByTeamIdStddevPopulationIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_ID_ASC',
-  EventsByTeamIdStddevPopulationIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_ID_DESC',
-  EventsByTeamIdStddevPopulationLocationAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_LOCATION_ASC',
-  EventsByTeamIdStddevPopulationLocationDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_LOCATION_DESC',
-  EventsByTeamIdStddevPopulationTeamIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_TEAM_ID_ASC',
-  EventsByTeamIdStddevPopulationTeamIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_TEAM_ID_DESC',
-  EventsByTeamIdStddevPopulationTitleAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_TITLE_ASC',
-  EventsByTeamIdStddevPopulationTitleDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_TITLE_DESC',
-  EventsByTeamIdStddevPopulationUserIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_USER_ID_ASC',
-  EventsByTeamIdStddevPopulationUserIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_USER_ID_DESC',
-  EventsByTeamIdStddevSampleDateAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DATE_ASC',
-  EventsByTeamIdStddevSampleDateDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DATE_DESC',
-  EventsByTeamIdStddevSampleDescriptionAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DESCRIPTION_ASC',
-  EventsByTeamIdStddevSampleDescriptionDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DESCRIPTION_DESC',
-  EventsByTeamIdStddevSampleDurationAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DURATION_ASC',
-  EventsByTeamIdStddevSampleDurationDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DURATION_DESC',
-  EventsByTeamIdStddevSampleIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_ID_ASC',
-  EventsByTeamIdStddevSampleIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_ID_DESC',
-  EventsByTeamIdStddevSampleLocationAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_LOCATION_ASC',
-  EventsByTeamIdStddevSampleLocationDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_LOCATION_DESC',
-  EventsByTeamIdStddevSampleTeamIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_TEAM_ID_ASC',
-  EventsByTeamIdStddevSampleTeamIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_TEAM_ID_DESC',
-  EventsByTeamIdStddevSampleTitleAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_TITLE_ASC',
-  EventsByTeamIdStddevSampleTitleDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_TITLE_DESC',
-  EventsByTeamIdStddevSampleUserIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  EventsByTeamIdStddevSampleUserIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  EventsByTeamIdSumDateAsc = 'EVENTS_BY_TEAM_ID_SUM_DATE_ASC',
-  EventsByTeamIdSumDateDesc = 'EVENTS_BY_TEAM_ID_SUM_DATE_DESC',
-  EventsByTeamIdSumDescriptionAsc = 'EVENTS_BY_TEAM_ID_SUM_DESCRIPTION_ASC',
-  EventsByTeamIdSumDescriptionDesc = 'EVENTS_BY_TEAM_ID_SUM_DESCRIPTION_DESC',
-  EventsByTeamIdSumDurationAsc = 'EVENTS_BY_TEAM_ID_SUM_DURATION_ASC',
-  EventsByTeamIdSumDurationDesc = 'EVENTS_BY_TEAM_ID_SUM_DURATION_DESC',
-  EventsByTeamIdSumIdAsc = 'EVENTS_BY_TEAM_ID_SUM_ID_ASC',
-  EventsByTeamIdSumIdDesc = 'EVENTS_BY_TEAM_ID_SUM_ID_DESC',
-  EventsByTeamIdSumLocationAsc = 'EVENTS_BY_TEAM_ID_SUM_LOCATION_ASC',
-  EventsByTeamIdSumLocationDesc = 'EVENTS_BY_TEAM_ID_SUM_LOCATION_DESC',
-  EventsByTeamIdSumTeamIdAsc = 'EVENTS_BY_TEAM_ID_SUM_TEAM_ID_ASC',
-  EventsByTeamIdSumTeamIdDesc = 'EVENTS_BY_TEAM_ID_SUM_TEAM_ID_DESC',
-  EventsByTeamIdSumTitleAsc = 'EVENTS_BY_TEAM_ID_SUM_TITLE_ASC',
-  EventsByTeamIdSumTitleDesc = 'EVENTS_BY_TEAM_ID_SUM_TITLE_DESC',
-  EventsByTeamIdSumUserIdAsc = 'EVENTS_BY_TEAM_ID_SUM_USER_ID_ASC',
-  EventsByTeamIdSumUserIdDesc = 'EVENTS_BY_TEAM_ID_SUM_USER_ID_DESC',
-  EventsByTeamIdVariancePopulationDateAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DATE_ASC',
-  EventsByTeamIdVariancePopulationDateDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DATE_DESC',
-  EventsByTeamIdVariancePopulationDescriptionAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DESCRIPTION_ASC',
-  EventsByTeamIdVariancePopulationDescriptionDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DESCRIPTION_DESC',
-  EventsByTeamIdVariancePopulationDurationAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DURATION_ASC',
-  EventsByTeamIdVariancePopulationDurationDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DURATION_DESC',
-  EventsByTeamIdVariancePopulationIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_ID_ASC',
-  EventsByTeamIdVariancePopulationIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_ID_DESC',
-  EventsByTeamIdVariancePopulationLocationAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_LOCATION_ASC',
-  EventsByTeamIdVariancePopulationLocationDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_LOCATION_DESC',
-  EventsByTeamIdVariancePopulationTeamIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_TEAM_ID_ASC',
-  EventsByTeamIdVariancePopulationTeamIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_TEAM_ID_DESC',
-  EventsByTeamIdVariancePopulationTitleAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_TITLE_ASC',
-  EventsByTeamIdVariancePopulationTitleDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_TITLE_DESC',
-  EventsByTeamIdVariancePopulationUserIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  EventsByTeamIdVariancePopulationUserIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  EventsByTeamIdVarianceSampleDateAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DATE_ASC',
-  EventsByTeamIdVarianceSampleDateDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DATE_DESC',
-  EventsByTeamIdVarianceSampleDescriptionAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC',
-  EventsByTeamIdVarianceSampleDescriptionDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC',
-  EventsByTeamIdVarianceSampleDurationAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DURATION_ASC',
-  EventsByTeamIdVarianceSampleDurationDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DURATION_DESC',
-  EventsByTeamIdVarianceSampleIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_ID_ASC',
-  EventsByTeamIdVarianceSampleIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_ID_DESC',
-  EventsByTeamIdVarianceSampleLocationAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_LOCATION_ASC',
-  EventsByTeamIdVarianceSampleLocationDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_LOCATION_DESC',
-  EventsByTeamIdVarianceSampleTeamIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_TEAM_ID_ASC',
-  EventsByTeamIdVarianceSampleTeamIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_TEAM_ID_DESC',
-  EventsByTeamIdVarianceSampleTitleAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_TITLE_ASC',
-  EventsByTeamIdVarianceSampleTitleDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_TITLE_DESC',
-  EventsByTeamIdVarianceSampleUserIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  EventsByTeamIdVarianceSampleUserIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_USER_ID_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  NameAsc = 'NAME_ASC',
-  NameDesc = 'NAME_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  TeamMembershipsByTeamIdAverageCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdAverageCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdAverageIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_ID_ASC',
-  TeamMembershipsByTeamIdAverageIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_ID_DESC',
-  TeamMembershipsByTeamIdAverageRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_ROLE_ASC',
-  TeamMembershipsByTeamIdAverageRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_ROLE_DESC',
-  TeamMembershipsByTeamIdAverageTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdAverageTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdAverageUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_USER_ID_ASC',
-  TeamMembershipsByTeamIdAverageUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_USER_ID_DESC',
-  TeamMembershipsByTeamIdCountAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_COUNT_ASC',
-  TeamMembershipsByTeamIdCountDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_COUNT_DESC',
-  TeamMembershipsByTeamIdDistinctCountCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdDistinctCountCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdDistinctCountIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_ID_ASC',
-  TeamMembershipsByTeamIdDistinctCountIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_ID_DESC',
-  TeamMembershipsByTeamIdDistinctCountRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_ROLE_ASC',
-  TeamMembershipsByTeamIdDistinctCountRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_ROLE_DESC',
-  TeamMembershipsByTeamIdDistinctCountTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdDistinctCountTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdDistinctCountUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_USER_ID_ASC',
-  TeamMembershipsByTeamIdDistinctCountUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_USER_ID_DESC',
-  TeamMembershipsByTeamIdMaxCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdMaxCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdMaxIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_ID_ASC',
-  TeamMembershipsByTeamIdMaxIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_ID_DESC',
-  TeamMembershipsByTeamIdMaxRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_ROLE_ASC',
-  TeamMembershipsByTeamIdMaxRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_ROLE_DESC',
-  TeamMembershipsByTeamIdMaxTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdMaxTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdMaxUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_USER_ID_ASC',
-  TeamMembershipsByTeamIdMaxUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_USER_ID_DESC',
-  TeamMembershipsByTeamIdMinCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdMinCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdMinIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_ID_ASC',
-  TeamMembershipsByTeamIdMinIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_ID_DESC',
-  TeamMembershipsByTeamIdMinRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_ROLE_ASC',
-  TeamMembershipsByTeamIdMinRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_ROLE_DESC',
-  TeamMembershipsByTeamIdMinTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdMinTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdMinUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_USER_ID_ASC',
-  TeamMembershipsByTeamIdMinUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_USER_ID_DESC',
-  TeamMembershipsByTeamIdStddevPopulationCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdStddevPopulationCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdStddevPopulationIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_ID_ASC',
-  TeamMembershipsByTeamIdStddevPopulationIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_ID_DESC',
-  TeamMembershipsByTeamIdStddevPopulationRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_ROLE_ASC',
-  TeamMembershipsByTeamIdStddevPopulationRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_ROLE_DESC',
-  TeamMembershipsByTeamIdStddevPopulationTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdStddevPopulationTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdStddevPopulationUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_USER_ID_ASC',
-  TeamMembershipsByTeamIdStddevPopulationUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_USER_ID_DESC',
-  TeamMembershipsByTeamIdStddevSampleCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdStddevSampleCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdStddevSampleIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_ID_ASC',
-  TeamMembershipsByTeamIdStddevSampleIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_ID_DESC',
-  TeamMembershipsByTeamIdStddevSampleRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_ROLE_ASC',
-  TeamMembershipsByTeamIdStddevSampleRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_ROLE_DESC',
-  TeamMembershipsByTeamIdStddevSampleTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdStddevSampleTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdStddevSampleUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  TeamMembershipsByTeamIdStddevSampleUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  TeamMembershipsByTeamIdSumCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdSumCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdSumIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_ID_ASC',
-  TeamMembershipsByTeamIdSumIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_ID_DESC',
-  TeamMembershipsByTeamIdSumRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_ROLE_ASC',
-  TeamMembershipsByTeamIdSumRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_ROLE_DESC',
-  TeamMembershipsByTeamIdSumTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdSumTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdSumUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_USER_ID_ASC',
-  TeamMembershipsByTeamIdSumUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_USER_ID_DESC',
-  TeamMembershipsByTeamIdVariancePopulationCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdVariancePopulationCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdVariancePopulationIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_ID_ASC',
-  TeamMembershipsByTeamIdVariancePopulationIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_ID_DESC',
-  TeamMembershipsByTeamIdVariancePopulationRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_ROLE_ASC',
-  TeamMembershipsByTeamIdVariancePopulationRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_ROLE_DESC',
-  TeamMembershipsByTeamIdVariancePopulationTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdVariancePopulationTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdVariancePopulationUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  TeamMembershipsByTeamIdVariancePopulationUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  TeamMembershipsByTeamIdVarianceSampleCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdVarianceSampleCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdVarianceSampleIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_ID_ASC',
-  TeamMembershipsByTeamIdVarianceSampleIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_ID_DESC',
-  TeamMembershipsByTeamIdVarianceSampleRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_ROLE_ASC',
-  TeamMembershipsByTeamIdVarianceSampleRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_ROLE_DESC',
-  TeamMembershipsByTeamIdVarianceSampleTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdVarianceSampleTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdVarianceSampleUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  TeamMembershipsByTeamIdVarianceSampleUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_USER_ID_DESC',
-  UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
-}
-
-/** All input for the `updateAvailabilityByNodeId` mutation. */
-export type UpdateAvailabilityByNodeIdInput = {
+/** All input for the `updateBudgetByNodeId` mutation. */
+export type UpdateBudgetByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Availability` to be updated. */
+  /** The globally unique `ID` which will identify a single `Budget` to be updated. */
   nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Availability` being updated. */
-  patch: AvailabilityPatch;
+  /** An object where the defined keys will be set on the `Budget` being updated. */
+  patch: BudgetPatch;
 };
 
-/** All input for the `updateAvailability` mutation. */
-export type UpdateAvailabilityInput = {
+/** All input for the `updateBudget` mutation. */
+export type UpdateBudgetInput = {
+  budgetId: Scalars['String']['input'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `Budget` being updated. */
+  patch: BudgetPatch;
+};
+
+/** All input for the `updateCategoryByNodeId` mutation. */
+export type UpdateCategoryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Category` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `Category` being updated. */
+  patch: CategoryPatch;
+};
+
+/** All input for the `updateCategory` mutation. */
+export type UpdateCategoryInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `Availability` being updated. */
-  patch: AvailabilityPatch;
+  /** An object where the defined keys will be set on the `Category` being updated. */
+  patch: CategoryPatch;
 };
 
-/** All input for the `updateBookingByNodeId` mutation. */
-export type UpdateBookingByNodeIdInput = {
+/** All input for the `updateReportByNodeId` mutation. */
+export type UpdateReportByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Booking` to be updated. */
+  /** The globally unique `ID` which will identify a single `Report` to be updated. */
   nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Booking` being updated. */
-  patch: BookingPatch;
+  /** An object where the defined keys will be set on the `Report` being updated. */
+  patch: ReportPatch;
 };
 
-/** All input for the `updateBooking` mutation. */
-export type UpdateBookingInput = {
+/** All input for the `updateReport` mutation. */
+export type UpdateReportInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  eventId: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `Booking` being updated. */
-  patch: BookingPatch;
-  userId: Scalars['String']['input'];
+  /** An object where the defined keys will be set on the `Report` being updated. */
+  patch: ReportPatch;
+  reportId: Scalars['String']['input'];
 };
 
-/** All input for the `updateCustomAvailabilityByNodeId` mutation. */
-export type UpdateCustomAvailabilityByNodeIdInput = {
+/** All input for the `updateTransactionByNodeId` mutation. */
+export type UpdateTransactionByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `CustomAvailability` to be updated. */
+  /** The globally unique `ID` which will identify a single `Transaction` to be updated. */
   nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `CustomAvailability` being updated. */
-  patch: CustomAvailabilityPatch;
+  /** An object where the defined keys will be set on the `Transaction` being updated. */
+  patch: TransactionPatch;
 };
 
-/** All input for the `updateCustomAvailability` mutation. */
-export type UpdateCustomAvailabilityInput = {
+/** All input for the `updateTransaction` mutation. */
+export type UpdateTransactionInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `CustomAvailability` being updated. */
-  patch: CustomAvailabilityPatch;
-};
-
-/** All input for the `updateEventByNodeId` mutation. */
-export type UpdateEventByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Event` to be updated. */
-  nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-};
-
-/** All input for the `updateEvent` mutation. */
-export type UpdateEventInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-};
-
-/** All input for the `updateTeamByNodeId` mutation. */
-export type UpdateTeamByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Team` to be updated. */
-  nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Team` being updated. */
-  patch: TeamPatch;
-};
-
-/** All input for the `updateTeam` mutation. */
-export type UpdateTeamInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `Team` being updated. */
-  patch: TeamPatch;
-};
-
-/** All input for the `updateTeamMembershipByNodeId` mutation. */
-export type UpdateTeamMembershipByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `TeamMembership` to be updated. */
-  nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `TeamMembership` being updated. */
-  patch: TeamMembershipPatch;
-};
-
-/** All input for the `updateTeamMembership` mutation. */
-export type UpdateTeamMembershipInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `TeamMembership` being updated. */
-  patch: TeamMembershipPatch;
+  /** An object where the defined keys will be set on the `Transaction` being updated. */
+  patch: TransactionPatch;
+  transactionId: Scalars['String']['input'];
 };
 
 /** All input for the `updateUserByNodeId` mutation. */
@@ -2184,83 +1595,56 @@ export type UpdateUserInput = {
   patch: UserPatch;
 };
 
-/** All input for the upsert `Availability` mutation. */
-export type UpsertAvailabilityInput = {
-  /** The `Availability` to be upserted by this mutation. */
-  availability: AvailabilityInput;
+/** All input for the upsert `Budget` mutation. */
+export type UpsertBudgetInput = {
+  /** The `Budget` to be upserted by this mutation. */
+  budget: BudgetInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** Where conditions for the upsert `Availability` mutation. */
-export type UpsertAvailabilityWhere = {
+/** Where conditions for the upsert `Budget` mutation. */
+export type UpsertBudgetWhere = {
+  budgetId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** All input for the upsert `Category` mutation. */
+export type UpsertCategoryInput = {
+  /** The `Category` to be upserted by this mutation. */
+  category: CategoryInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Where conditions for the upsert `Category` mutation. */
+export type UpsertCategoryWhere = {
   id?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** All input for the upsert `Booking` mutation. */
-export type UpsertBookingInput = {
-  /** The `Booking` to be upserted by this mutation. */
-  booking: BookingInput;
+/** All input for the upsert `Report` mutation. */
+export type UpsertReportInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Report` to be upserted by this mutation. */
+  report: ReportInput;
 };
 
-/** Where conditions for the upsert `Booking` mutation. */
-export type UpsertBookingWhere = {
-  eventId?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
+/** Where conditions for the upsert `Report` mutation. */
+export type UpsertReportWhere = {
+  reportId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** All input for the upsert `CustomAvailability` mutation. */
-export type UpsertCustomAvailabilityInput = {
+/** All input for the upsert `Transaction` mutation. */
+export type UpsertTransactionInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `CustomAvailability` to be upserted by this mutation. */
-  customAvailability: CustomAvailabilityInput;
+  /** The `Transaction` to be upserted by this mutation. */
+  transaction: TransactionInput;
 };
 
-/** Where conditions for the upsert `CustomAvailability` mutation. */
-export type UpsertCustomAvailabilityWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** All input for the upsert `Event` mutation. */
-export type UpsertEventInput = {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `Event` to be upserted by this mutation. */
-  event: EventInput;
-};
-
-/** Where conditions for the upsert `Event` mutation. */
-export type UpsertEventWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** All input for the upsert `Team` mutation. */
-export type UpsertTeamInput = {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `Team` to be upserted by this mutation. */
-  team: TeamInput;
-};
-
-/** All input for the upsert `TeamMembership` mutation. */
-export type UpsertTeamMembershipInput = {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `TeamMembership` to be upserted by this mutation. */
-  teamMembership: TeamMembershipInput;
-};
-
-/** Where conditions for the upsert `TeamMembership` mutation. */
-export type UpsertTeamMembershipWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Where conditions for the upsert `Team` mutation. */
-export type UpsertTeamWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
+/** Where conditions for the upsert `Transaction` mutation. */
+export type UpsertTransactionWhere = {
+  transactionId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** All input for the upsert `UserDevice` mutation. */
@@ -2398,26 +1782,14 @@ export enum UserDevicesOrderBy {
 export type UserFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<UserFilter>>;
-  /** Filter by the object’s `availabilitiesByUserId` relation. */
-  availabilitiesByUserId?: InputMaybe<UserToManyAvailabilityFilter>;
-  /** Some related `availabilitiesByUserId` exist. */
-  availabilitiesByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `birthDay` field. */
   birthDay?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `bookingsByUserId` relation. */
-  bookingsByUserId?: InputMaybe<UserToManyBookingFilter>;
-  /** Some related `bookingsByUserId` exist. */
-  bookingsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `customAvailabilitiesByUserId` relation. */
-  customAvailabilitiesByUserId?: InputMaybe<UserToManyCustomAvailabilityFilter>;
-  /** Some related `customAvailabilitiesByUserId` exist. */
-  customAvailabilitiesByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `budgetsByUserId` relation. */
+  budgetsByUserId?: InputMaybe<UserToManyBudgetFilter>;
+  /** Some related `budgetsByUserId` exist. */
+  budgetsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `email` field. */
   email?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `eventsByUserId` relation. */
-  eventsByUserId?: InputMaybe<UserToManyEventFilter>;
-  /** Some related `eventsByUserId` exist. */
-  eventsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `firstName` field. */
   firstName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `gender` field. */
@@ -2432,12 +1804,16 @@ export type UserFilter = {
   or?: InputMaybe<Array<UserFilter>>;
   /** Filter by the object’s `picture` field. */
   picture?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `teamMembershipsByUserId` relation. */
-  teamMembershipsByUserId?: InputMaybe<UserToManyTeamMembershipFilter>;
-  /** Some related `teamMembershipsByUserId` exist. */
-  teamMembershipsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `reportsByUserId` relation. */
+  reportsByUserId?: InputMaybe<UserToManyReportFilter>;
+  /** Some related `reportsByUserId` exist. */
+  reportsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `tel` field. */
   tel?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `transactionsByUserId` relation. */
+  transactionsByUserId?: InputMaybe<UserToManyTransactionFilter>;
+  /** Some related `transactionsByUserId` exist. */
+  transactionsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `userDevicesByUserId` relation. */
   userDevicesByUserId?: InputMaybe<UserToManyUserDeviceFilter>;
   /** Some related `userDevicesByUserId` exist. */
@@ -2563,64 +1939,40 @@ export type UserPatch = {
   tel?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** A filter to be used against many `Availability` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyAvailabilityFilter = {
-  /** Aggregates across related `Availability` match the filter criteria. */
-  aggregates?: InputMaybe<AvailabilityAggregatesFilter>;
-  /** Every related `Availability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<AvailabilityFilter>;
-  /** No related `Availability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<AvailabilityFilter>;
-  /** Some related `Availability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<AvailabilityFilter>;
+/** A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyBudgetFilter = {
+  /** Aggregates across related `Budget` match the filter criteria. */
+  aggregates?: InputMaybe<BudgetAggregatesFilter>;
+  /** Every related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<BudgetFilter>;
+  /** No related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<BudgetFilter>;
+  /** Some related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<BudgetFilter>;
 };
 
-/** A filter to be used against many `Booking` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyBookingFilter = {
-  /** Aggregates across related `Booking` match the filter criteria. */
-  aggregates?: InputMaybe<BookingAggregatesFilter>;
-  /** Every related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<BookingFilter>;
-  /** No related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<BookingFilter>;
-  /** Some related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<BookingFilter>;
+/** A filter to be used against many `Report` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyReportFilter = {
+  /** Aggregates across related `Report` match the filter criteria. */
+  aggregates?: InputMaybe<ReportAggregatesFilter>;
+  /** Every related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<ReportFilter>;
+  /** No related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<ReportFilter>;
+  /** Some related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<ReportFilter>;
 };
 
-/** A filter to be used against many `CustomAvailability` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyCustomAvailabilityFilter = {
-  /** Aggregates across related `CustomAvailability` match the filter criteria. */
-  aggregates?: InputMaybe<CustomAvailabilityAggregatesFilter>;
-  /** Every related `CustomAvailability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<CustomAvailabilityFilter>;
-  /** No related `CustomAvailability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<CustomAvailabilityFilter>;
-  /** Some related `CustomAvailability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<CustomAvailabilityFilter>;
-};
-
-/** A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyEventFilter = {
-  /** Aggregates across related `Event` match the filter criteria. */
-  aggregates?: InputMaybe<EventAggregatesFilter>;
-  /** Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<EventFilter>;
-  /** No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<EventFilter>;
-  /** Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<EventFilter>;
-};
-
-/** A filter to be used against many `TeamMembership` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyTeamMembershipFilter = {
-  /** Aggregates across related `TeamMembership` match the filter criteria. */
-  aggregates?: InputMaybe<TeamMembershipAggregatesFilter>;
-  /** Every related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<TeamMembershipFilter>;
-  /** No related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<TeamMembershipFilter>;
-  /** Some related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<TeamMembershipFilter>;
+/** A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyTransactionFilter = {
+  /** Aggregates across related `Transaction` match the filter criteria. */
+  aggregates?: InputMaybe<TransactionAggregatesFilter>;
+  /** Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TransactionFilter>;
+  /** No related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TransactionFilter>;
+  /** Some related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TransactionFilter>;
 };
 
 /** A filter to be used against many `UserDevice` object types. All fields are combined with a logical ‘and.’ */
@@ -2637,414 +1989,120 @@ export type UserToManyUserDeviceFilter = {
 
 /** Methods to use when ordering `User`. */
 export enum UsersOrderBy {
-  AvailabilitiesByUserIdAverageDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdAverageDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdAverageEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_END_TIME_ASC',
-  AvailabilitiesByUserIdAverageEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_END_TIME_DESC',
-  AvailabilitiesByUserIdAverageIdAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_ID_ASC',
-  AvailabilitiesByUserIdAverageIdDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_ID_DESC',
-  AvailabilitiesByUserIdAverageStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_START_TIME_ASC',
-  AvailabilitiesByUserIdAverageStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_START_TIME_DESC',
-  AvailabilitiesByUserIdAverageUserIdAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  AvailabilitiesByUserIdAverageUserIdDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  AvailabilitiesByUserIdCountAsc = 'AVAILABILITIES_BY_USER_ID_COUNT_ASC',
-  AvailabilitiesByUserIdCountDesc = 'AVAILABILITIES_BY_USER_ID_COUNT_DESC',
-  AvailabilitiesByUserIdDistinctCountDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdDistinctCountDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdDistinctCountEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_END_TIME_ASC',
-  AvailabilitiesByUserIdDistinctCountEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_END_TIME_DESC',
-  AvailabilitiesByUserIdDistinctCountIdAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
-  AvailabilitiesByUserIdDistinctCountIdDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
-  AvailabilitiesByUserIdDistinctCountStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_START_TIME_ASC',
-  AvailabilitiesByUserIdDistinctCountStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_START_TIME_DESC',
-  AvailabilitiesByUserIdDistinctCountUserIdAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  AvailabilitiesByUserIdDistinctCountUserIdDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  AvailabilitiesByUserIdMaxDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_MAX_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdMaxDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_MAX_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdMaxEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_MAX_END_TIME_ASC',
-  AvailabilitiesByUserIdMaxEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_MAX_END_TIME_DESC',
-  AvailabilitiesByUserIdMaxIdAsc = 'AVAILABILITIES_BY_USER_ID_MAX_ID_ASC',
-  AvailabilitiesByUserIdMaxIdDesc = 'AVAILABILITIES_BY_USER_ID_MAX_ID_DESC',
-  AvailabilitiesByUserIdMaxStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_MAX_START_TIME_ASC',
-  AvailabilitiesByUserIdMaxStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_MAX_START_TIME_DESC',
-  AvailabilitiesByUserIdMaxUserIdAsc = 'AVAILABILITIES_BY_USER_ID_MAX_USER_ID_ASC',
-  AvailabilitiesByUserIdMaxUserIdDesc = 'AVAILABILITIES_BY_USER_ID_MAX_USER_ID_DESC',
-  AvailabilitiesByUserIdMinDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_MIN_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdMinDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_MIN_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdMinEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_MIN_END_TIME_ASC',
-  AvailabilitiesByUserIdMinEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_MIN_END_TIME_DESC',
-  AvailabilitiesByUserIdMinIdAsc = 'AVAILABILITIES_BY_USER_ID_MIN_ID_ASC',
-  AvailabilitiesByUserIdMinIdDesc = 'AVAILABILITIES_BY_USER_ID_MIN_ID_DESC',
-  AvailabilitiesByUserIdMinStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_MIN_START_TIME_ASC',
-  AvailabilitiesByUserIdMinStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_MIN_START_TIME_DESC',
-  AvailabilitiesByUserIdMinUserIdAsc = 'AVAILABILITIES_BY_USER_ID_MIN_USER_ID_ASC',
-  AvailabilitiesByUserIdMinUserIdDesc = 'AVAILABILITIES_BY_USER_ID_MIN_USER_ID_DESC',
-  AvailabilitiesByUserIdStddevPopulationDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdStddevPopulationDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdStddevPopulationEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_END_TIME_ASC',
-  AvailabilitiesByUserIdStddevPopulationEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_END_TIME_DESC',
-  AvailabilitiesByUserIdStddevPopulationIdAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
-  AvailabilitiesByUserIdStddevPopulationIdDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
-  AvailabilitiesByUserIdStddevPopulationStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_START_TIME_ASC',
-  AvailabilitiesByUserIdStddevPopulationStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_START_TIME_DESC',
-  AvailabilitiesByUserIdStddevPopulationUserIdAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  AvailabilitiesByUserIdStddevPopulationUserIdDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  AvailabilitiesByUserIdStddevSampleDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdStddevSampleDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdStddevSampleEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_END_TIME_ASC',
-  AvailabilitiesByUserIdStddevSampleEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_END_TIME_DESC',
-  AvailabilitiesByUserIdStddevSampleIdAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
-  AvailabilitiesByUserIdStddevSampleIdDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
-  AvailabilitiesByUserIdStddevSampleStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_START_TIME_ASC',
-  AvailabilitiesByUserIdStddevSampleStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_START_TIME_DESC',
-  AvailabilitiesByUserIdStddevSampleUserIdAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  AvailabilitiesByUserIdStddevSampleUserIdDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  AvailabilitiesByUserIdSumDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_SUM_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdSumDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_SUM_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdSumEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_SUM_END_TIME_ASC',
-  AvailabilitiesByUserIdSumEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_SUM_END_TIME_DESC',
-  AvailabilitiesByUserIdSumIdAsc = 'AVAILABILITIES_BY_USER_ID_SUM_ID_ASC',
-  AvailabilitiesByUserIdSumIdDesc = 'AVAILABILITIES_BY_USER_ID_SUM_ID_DESC',
-  AvailabilitiesByUserIdSumStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_SUM_START_TIME_ASC',
-  AvailabilitiesByUserIdSumStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_SUM_START_TIME_DESC',
-  AvailabilitiesByUserIdSumUserIdAsc = 'AVAILABILITIES_BY_USER_ID_SUM_USER_ID_ASC',
-  AvailabilitiesByUserIdSumUserIdDesc = 'AVAILABILITIES_BY_USER_ID_SUM_USER_ID_DESC',
-  AvailabilitiesByUserIdVariancePopulationDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdVariancePopulationDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdVariancePopulationEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_END_TIME_ASC',
-  AvailabilitiesByUserIdVariancePopulationEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_END_TIME_DESC',
-  AvailabilitiesByUserIdVariancePopulationIdAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
-  AvailabilitiesByUserIdVariancePopulationIdDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
-  AvailabilitiesByUserIdVariancePopulationStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_START_TIME_ASC',
-  AvailabilitiesByUserIdVariancePopulationStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_START_TIME_DESC',
-  AvailabilitiesByUserIdVariancePopulationUserIdAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  AvailabilitiesByUserIdVariancePopulationUserIdDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  AvailabilitiesByUserIdVarianceSampleDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdVarianceSampleDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdVarianceSampleEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_END_TIME_ASC',
-  AvailabilitiesByUserIdVarianceSampleEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_END_TIME_DESC',
-  AvailabilitiesByUserIdVarianceSampleIdAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
-  AvailabilitiesByUserIdVarianceSampleIdDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
-  AvailabilitiesByUserIdVarianceSampleStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_START_TIME_ASC',
-  AvailabilitiesByUserIdVarianceSampleStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_START_TIME_DESC',
-  AvailabilitiesByUserIdVarianceSampleUserIdAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  AvailabilitiesByUserIdVarianceSampleUserIdDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   BirthDayAsc = 'BIRTH_DAY_ASC',
   BirthDayDesc = 'BIRTH_DAY_DESC',
-  BookingsByUserIdAverageEventIdAsc = 'BOOKINGS_BY_USER_ID_AVERAGE_EVENT_ID_ASC',
-  BookingsByUserIdAverageEventIdDesc = 'BOOKINGS_BY_USER_ID_AVERAGE_EVENT_ID_DESC',
-  BookingsByUserIdAverageStatusAsc = 'BOOKINGS_BY_USER_ID_AVERAGE_STATUS_ASC',
-  BookingsByUserIdAverageStatusDesc = 'BOOKINGS_BY_USER_ID_AVERAGE_STATUS_DESC',
-  BookingsByUserIdAverageUserIdAsc = 'BOOKINGS_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  BookingsByUserIdAverageUserIdDesc = 'BOOKINGS_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  BookingsByUserIdCountAsc = 'BOOKINGS_BY_USER_ID_COUNT_ASC',
-  BookingsByUserIdCountDesc = 'BOOKINGS_BY_USER_ID_COUNT_DESC',
-  BookingsByUserIdDistinctCountEventIdAsc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_EVENT_ID_ASC',
-  BookingsByUserIdDistinctCountEventIdDesc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_EVENT_ID_DESC',
-  BookingsByUserIdDistinctCountStatusAsc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_STATUS_ASC',
-  BookingsByUserIdDistinctCountStatusDesc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_STATUS_DESC',
-  BookingsByUserIdDistinctCountUserIdAsc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  BookingsByUserIdDistinctCountUserIdDesc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  BookingsByUserIdMaxEventIdAsc = 'BOOKINGS_BY_USER_ID_MAX_EVENT_ID_ASC',
-  BookingsByUserIdMaxEventIdDesc = 'BOOKINGS_BY_USER_ID_MAX_EVENT_ID_DESC',
-  BookingsByUserIdMaxStatusAsc = 'BOOKINGS_BY_USER_ID_MAX_STATUS_ASC',
-  BookingsByUserIdMaxStatusDesc = 'BOOKINGS_BY_USER_ID_MAX_STATUS_DESC',
-  BookingsByUserIdMaxUserIdAsc = 'BOOKINGS_BY_USER_ID_MAX_USER_ID_ASC',
-  BookingsByUserIdMaxUserIdDesc = 'BOOKINGS_BY_USER_ID_MAX_USER_ID_DESC',
-  BookingsByUserIdMinEventIdAsc = 'BOOKINGS_BY_USER_ID_MIN_EVENT_ID_ASC',
-  BookingsByUserIdMinEventIdDesc = 'BOOKINGS_BY_USER_ID_MIN_EVENT_ID_DESC',
-  BookingsByUserIdMinStatusAsc = 'BOOKINGS_BY_USER_ID_MIN_STATUS_ASC',
-  BookingsByUserIdMinStatusDesc = 'BOOKINGS_BY_USER_ID_MIN_STATUS_DESC',
-  BookingsByUserIdMinUserIdAsc = 'BOOKINGS_BY_USER_ID_MIN_USER_ID_ASC',
-  BookingsByUserIdMinUserIdDesc = 'BOOKINGS_BY_USER_ID_MIN_USER_ID_DESC',
-  BookingsByUserIdStddevPopulationEventIdAsc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_EVENT_ID_ASC',
-  BookingsByUserIdStddevPopulationEventIdDesc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_EVENT_ID_DESC',
-  BookingsByUserIdStddevPopulationStatusAsc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_STATUS_ASC',
-  BookingsByUserIdStddevPopulationStatusDesc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_STATUS_DESC',
-  BookingsByUserIdStddevPopulationUserIdAsc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  BookingsByUserIdStddevPopulationUserIdDesc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  BookingsByUserIdStddevSampleEventIdAsc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_EVENT_ID_ASC',
-  BookingsByUserIdStddevSampleEventIdDesc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_EVENT_ID_DESC',
-  BookingsByUserIdStddevSampleStatusAsc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_STATUS_ASC',
-  BookingsByUserIdStddevSampleStatusDesc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_STATUS_DESC',
-  BookingsByUserIdStddevSampleUserIdAsc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  BookingsByUserIdStddevSampleUserIdDesc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  BookingsByUserIdSumEventIdAsc = 'BOOKINGS_BY_USER_ID_SUM_EVENT_ID_ASC',
-  BookingsByUserIdSumEventIdDesc = 'BOOKINGS_BY_USER_ID_SUM_EVENT_ID_DESC',
-  BookingsByUserIdSumStatusAsc = 'BOOKINGS_BY_USER_ID_SUM_STATUS_ASC',
-  BookingsByUserIdSumStatusDesc = 'BOOKINGS_BY_USER_ID_SUM_STATUS_DESC',
-  BookingsByUserIdSumUserIdAsc = 'BOOKINGS_BY_USER_ID_SUM_USER_ID_ASC',
-  BookingsByUserIdSumUserIdDesc = 'BOOKINGS_BY_USER_ID_SUM_USER_ID_DESC',
-  BookingsByUserIdVariancePopulationEventIdAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_EVENT_ID_ASC',
-  BookingsByUserIdVariancePopulationEventIdDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_EVENT_ID_DESC',
-  BookingsByUserIdVariancePopulationStatusAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_STATUS_ASC',
-  BookingsByUserIdVariancePopulationStatusDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_STATUS_DESC',
-  BookingsByUserIdVariancePopulationUserIdAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  BookingsByUserIdVariancePopulationUserIdDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  BookingsByUserIdVarianceSampleEventIdAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_EVENT_ID_ASC',
-  BookingsByUserIdVarianceSampleEventIdDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_EVENT_ID_DESC',
-  BookingsByUserIdVarianceSampleStatusAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_STATUS_ASC',
-  BookingsByUserIdVarianceSampleStatusDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_STATUS_DESC',
-  BookingsByUserIdVarianceSampleUserIdAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  BookingsByUserIdVarianceSampleUserIdDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdAverageAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdAverageAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdAverageEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdAverageEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdAverageIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_ID_ASC',
-  CustomAvailabilitiesByUserIdAverageIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_ID_DESC',
-  CustomAvailabilitiesByUserIdAverageReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_REASON_ASC',
-  CustomAvailabilitiesByUserIdAverageReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_REASON_DESC',
-  CustomAvailabilitiesByUserIdAverageStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdAverageStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdAverageUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdAverageUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdCountAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_COUNT_ASC',
-  CustomAvailabilitiesByUserIdCountDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_COUNT_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_REASON_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_REASON_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdMaxAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdMaxAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdMaxEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdMaxEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdMaxIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_ID_ASC',
-  CustomAvailabilitiesByUserIdMaxIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_ID_DESC',
-  CustomAvailabilitiesByUserIdMaxReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_REASON_ASC',
-  CustomAvailabilitiesByUserIdMaxReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_REASON_DESC',
-  CustomAvailabilitiesByUserIdMaxStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdMaxStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdMaxUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdMaxUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdMinAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdMinAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdMinEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdMinEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdMinIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_ID_ASC',
-  CustomAvailabilitiesByUserIdMinIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_ID_DESC',
-  CustomAvailabilitiesByUserIdMinReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_REASON_ASC',
-  CustomAvailabilitiesByUserIdMinReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_REASON_DESC',
-  CustomAvailabilitiesByUserIdMinStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdMinStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdMinUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdMinUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_REASON_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_REASON_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_REASON_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_REASON_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdSumAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdSumAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdSumEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdSumEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdSumIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_ID_ASC',
-  CustomAvailabilitiesByUserIdSumIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_ID_DESC',
-  CustomAvailabilitiesByUserIdSumReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_REASON_ASC',
-  CustomAvailabilitiesByUserIdSumReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_REASON_DESC',
-  CustomAvailabilitiesByUserIdSumStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdSumStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdSumUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdSumUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_REASON_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_REASON_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_REASON_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_REASON_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  BudgetsByUserIdAverageAlertThresholdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdAverageAlertThresholdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdAverageAmountAsc = 'BUDGETS_BY_USER_ID_AVERAGE_AMOUNT_ASC',
+  BudgetsByUserIdAverageAmountDesc = 'BUDGETS_BY_USER_ID_AVERAGE_AMOUNT_DESC',
+  BudgetsByUserIdAverageBudgetIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_BUDGET_ID_ASC',
+  BudgetsByUserIdAverageBudgetIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_BUDGET_ID_DESC',
+  BudgetsByUserIdAverageCategoryIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_CATEGORY_ID_ASC',
+  BudgetsByUserIdAverageCategoryIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_CATEGORY_ID_DESC',
+  BudgetsByUserIdAverageMonthAsc = 'BUDGETS_BY_USER_ID_AVERAGE_MONTH_ASC',
+  BudgetsByUserIdAverageMonthDesc = 'BUDGETS_BY_USER_ID_AVERAGE_MONTH_DESC',
+  BudgetsByUserIdAverageUserIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  BudgetsByUserIdAverageUserIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  BudgetsByUserIdCountAsc = 'BUDGETS_BY_USER_ID_COUNT_ASC',
+  BudgetsByUserIdCountDesc = 'BUDGETS_BY_USER_ID_COUNT_DESC',
+  BudgetsByUserIdDistinctCountAlertThresholdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdDistinctCountAlertThresholdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdDistinctCountAmountAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_AMOUNT_ASC',
+  BudgetsByUserIdDistinctCountAmountDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_AMOUNT_DESC',
+  BudgetsByUserIdDistinctCountBudgetIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_BUDGET_ID_ASC',
+  BudgetsByUserIdDistinctCountBudgetIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_BUDGET_ID_DESC',
+  BudgetsByUserIdDistinctCountCategoryIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
+  BudgetsByUserIdDistinctCountCategoryIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  BudgetsByUserIdDistinctCountMonthAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_MONTH_ASC',
+  BudgetsByUserIdDistinctCountMonthDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_MONTH_DESC',
+  BudgetsByUserIdDistinctCountUserIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  BudgetsByUserIdDistinctCountUserIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  BudgetsByUserIdMaxAlertThresholdAsc = 'BUDGETS_BY_USER_ID_MAX_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdMaxAlertThresholdDesc = 'BUDGETS_BY_USER_ID_MAX_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdMaxAmountAsc = 'BUDGETS_BY_USER_ID_MAX_AMOUNT_ASC',
+  BudgetsByUserIdMaxAmountDesc = 'BUDGETS_BY_USER_ID_MAX_AMOUNT_DESC',
+  BudgetsByUserIdMaxBudgetIdAsc = 'BUDGETS_BY_USER_ID_MAX_BUDGET_ID_ASC',
+  BudgetsByUserIdMaxBudgetIdDesc = 'BUDGETS_BY_USER_ID_MAX_BUDGET_ID_DESC',
+  BudgetsByUserIdMaxCategoryIdAsc = 'BUDGETS_BY_USER_ID_MAX_CATEGORY_ID_ASC',
+  BudgetsByUserIdMaxCategoryIdDesc = 'BUDGETS_BY_USER_ID_MAX_CATEGORY_ID_DESC',
+  BudgetsByUserIdMaxMonthAsc = 'BUDGETS_BY_USER_ID_MAX_MONTH_ASC',
+  BudgetsByUserIdMaxMonthDesc = 'BUDGETS_BY_USER_ID_MAX_MONTH_DESC',
+  BudgetsByUserIdMaxUserIdAsc = 'BUDGETS_BY_USER_ID_MAX_USER_ID_ASC',
+  BudgetsByUserIdMaxUserIdDesc = 'BUDGETS_BY_USER_ID_MAX_USER_ID_DESC',
+  BudgetsByUserIdMinAlertThresholdAsc = 'BUDGETS_BY_USER_ID_MIN_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdMinAlertThresholdDesc = 'BUDGETS_BY_USER_ID_MIN_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdMinAmountAsc = 'BUDGETS_BY_USER_ID_MIN_AMOUNT_ASC',
+  BudgetsByUserIdMinAmountDesc = 'BUDGETS_BY_USER_ID_MIN_AMOUNT_DESC',
+  BudgetsByUserIdMinBudgetIdAsc = 'BUDGETS_BY_USER_ID_MIN_BUDGET_ID_ASC',
+  BudgetsByUserIdMinBudgetIdDesc = 'BUDGETS_BY_USER_ID_MIN_BUDGET_ID_DESC',
+  BudgetsByUserIdMinCategoryIdAsc = 'BUDGETS_BY_USER_ID_MIN_CATEGORY_ID_ASC',
+  BudgetsByUserIdMinCategoryIdDesc = 'BUDGETS_BY_USER_ID_MIN_CATEGORY_ID_DESC',
+  BudgetsByUserIdMinMonthAsc = 'BUDGETS_BY_USER_ID_MIN_MONTH_ASC',
+  BudgetsByUserIdMinMonthDesc = 'BUDGETS_BY_USER_ID_MIN_MONTH_DESC',
+  BudgetsByUserIdMinUserIdAsc = 'BUDGETS_BY_USER_ID_MIN_USER_ID_ASC',
+  BudgetsByUserIdMinUserIdDesc = 'BUDGETS_BY_USER_ID_MIN_USER_ID_DESC',
+  BudgetsByUserIdStddevPopulationAlertThresholdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdStddevPopulationAlertThresholdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdStddevPopulationAmountAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_AMOUNT_ASC',
+  BudgetsByUserIdStddevPopulationAmountDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_AMOUNT_DESC',
+  BudgetsByUserIdStddevPopulationBudgetIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_BUDGET_ID_ASC',
+  BudgetsByUserIdStddevPopulationBudgetIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_BUDGET_ID_DESC',
+  BudgetsByUserIdStddevPopulationCategoryIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
+  BudgetsByUserIdStddevPopulationCategoryIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByUserIdStddevPopulationMonthAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_MONTH_ASC',
+  BudgetsByUserIdStddevPopulationMonthDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_MONTH_DESC',
+  BudgetsByUserIdStddevPopulationUserIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  BudgetsByUserIdStddevPopulationUserIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  BudgetsByUserIdStddevSampleAlertThresholdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdStddevSampleAlertThresholdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdStddevSampleAmountAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_AMOUNT_ASC',
+  BudgetsByUserIdStddevSampleAmountDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_AMOUNT_DESC',
+  BudgetsByUserIdStddevSampleBudgetIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_BUDGET_ID_ASC',
+  BudgetsByUserIdStddevSampleBudgetIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_BUDGET_ID_DESC',
+  BudgetsByUserIdStddevSampleCategoryIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
+  BudgetsByUserIdStddevSampleCategoryIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByUserIdStddevSampleMonthAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_MONTH_ASC',
+  BudgetsByUserIdStddevSampleMonthDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_MONTH_DESC',
+  BudgetsByUserIdStddevSampleUserIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  BudgetsByUserIdStddevSampleUserIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  BudgetsByUserIdSumAlertThresholdAsc = 'BUDGETS_BY_USER_ID_SUM_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdSumAlertThresholdDesc = 'BUDGETS_BY_USER_ID_SUM_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdSumAmountAsc = 'BUDGETS_BY_USER_ID_SUM_AMOUNT_ASC',
+  BudgetsByUserIdSumAmountDesc = 'BUDGETS_BY_USER_ID_SUM_AMOUNT_DESC',
+  BudgetsByUserIdSumBudgetIdAsc = 'BUDGETS_BY_USER_ID_SUM_BUDGET_ID_ASC',
+  BudgetsByUserIdSumBudgetIdDesc = 'BUDGETS_BY_USER_ID_SUM_BUDGET_ID_DESC',
+  BudgetsByUserIdSumCategoryIdAsc = 'BUDGETS_BY_USER_ID_SUM_CATEGORY_ID_ASC',
+  BudgetsByUserIdSumCategoryIdDesc = 'BUDGETS_BY_USER_ID_SUM_CATEGORY_ID_DESC',
+  BudgetsByUserIdSumMonthAsc = 'BUDGETS_BY_USER_ID_SUM_MONTH_ASC',
+  BudgetsByUserIdSumMonthDesc = 'BUDGETS_BY_USER_ID_SUM_MONTH_DESC',
+  BudgetsByUserIdSumUserIdAsc = 'BUDGETS_BY_USER_ID_SUM_USER_ID_ASC',
+  BudgetsByUserIdSumUserIdDesc = 'BUDGETS_BY_USER_ID_SUM_USER_ID_DESC',
+  BudgetsByUserIdVariancePopulationAlertThresholdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdVariancePopulationAlertThresholdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdVariancePopulationAmountAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_AMOUNT_ASC',
+  BudgetsByUserIdVariancePopulationAmountDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_AMOUNT_DESC',
+  BudgetsByUserIdVariancePopulationBudgetIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_BUDGET_ID_ASC',
+  BudgetsByUserIdVariancePopulationBudgetIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_BUDGET_ID_DESC',
+  BudgetsByUserIdVariancePopulationCategoryIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
+  BudgetsByUserIdVariancePopulationCategoryIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByUserIdVariancePopulationMonthAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_MONTH_ASC',
+  BudgetsByUserIdVariancePopulationMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_MONTH_DESC',
+  BudgetsByUserIdVariancePopulationUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  BudgetsByUserIdVariancePopulationUserIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  BudgetsByUserIdVarianceSampleAlertThresholdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdVarianceSampleAlertThresholdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdVarianceSampleAmountAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_AMOUNT_ASC',
+  BudgetsByUserIdVarianceSampleAmountDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_AMOUNT_DESC',
+  BudgetsByUserIdVarianceSampleBudgetIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_BUDGET_ID_ASC',
+  BudgetsByUserIdVarianceSampleBudgetIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC',
+  BudgetsByUserIdVarianceSampleCategoryIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
+  BudgetsByUserIdVarianceSampleCategoryIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByUserIdVarianceSampleMonthAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_ASC',
+  BudgetsByUserIdVarianceSampleMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_DESC',
+  BudgetsByUserIdVarianceSampleUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  BudgetsByUserIdVarianceSampleUserIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   EmailAsc = 'EMAIL_ASC',
   EmailDesc = 'EMAIL_DESC',
-  EventsByUserIdAverageDateAsc = 'EVENTS_BY_USER_ID_AVERAGE_DATE_ASC',
-  EventsByUserIdAverageDateDesc = 'EVENTS_BY_USER_ID_AVERAGE_DATE_DESC',
-  EventsByUserIdAverageDescriptionAsc = 'EVENTS_BY_USER_ID_AVERAGE_DESCRIPTION_ASC',
-  EventsByUserIdAverageDescriptionDesc = 'EVENTS_BY_USER_ID_AVERAGE_DESCRIPTION_DESC',
-  EventsByUserIdAverageDurationAsc = 'EVENTS_BY_USER_ID_AVERAGE_DURATION_ASC',
-  EventsByUserIdAverageDurationDesc = 'EVENTS_BY_USER_ID_AVERAGE_DURATION_DESC',
-  EventsByUserIdAverageIdAsc = 'EVENTS_BY_USER_ID_AVERAGE_ID_ASC',
-  EventsByUserIdAverageIdDesc = 'EVENTS_BY_USER_ID_AVERAGE_ID_DESC',
-  EventsByUserIdAverageLocationAsc = 'EVENTS_BY_USER_ID_AVERAGE_LOCATION_ASC',
-  EventsByUserIdAverageLocationDesc = 'EVENTS_BY_USER_ID_AVERAGE_LOCATION_DESC',
-  EventsByUserIdAverageTeamIdAsc = 'EVENTS_BY_USER_ID_AVERAGE_TEAM_ID_ASC',
-  EventsByUserIdAverageTeamIdDesc = 'EVENTS_BY_USER_ID_AVERAGE_TEAM_ID_DESC',
-  EventsByUserIdAverageTitleAsc = 'EVENTS_BY_USER_ID_AVERAGE_TITLE_ASC',
-  EventsByUserIdAverageTitleDesc = 'EVENTS_BY_USER_ID_AVERAGE_TITLE_DESC',
-  EventsByUserIdAverageUserIdAsc = 'EVENTS_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  EventsByUserIdAverageUserIdDesc = 'EVENTS_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  EventsByUserIdCountAsc = 'EVENTS_BY_USER_ID_COUNT_ASC',
-  EventsByUserIdCountDesc = 'EVENTS_BY_USER_ID_COUNT_DESC',
-  EventsByUserIdDistinctCountDateAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DATE_ASC',
-  EventsByUserIdDistinctCountDateDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DATE_DESC',
-  EventsByUserIdDistinctCountDescriptionAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
-  EventsByUserIdDistinctCountDescriptionDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
-  EventsByUserIdDistinctCountDurationAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DURATION_ASC',
-  EventsByUserIdDistinctCountDurationDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DURATION_DESC',
-  EventsByUserIdDistinctCountIdAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
-  EventsByUserIdDistinctCountIdDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
-  EventsByUserIdDistinctCountLocationAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_LOCATION_ASC',
-  EventsByUserIdDistinctCountLocationDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_LOCATION_DESC',
-  EventsByUserIdDistinctCountTeamIdAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_TEAM_ID_ASC',
-  EventsByUserIdDistinctCountTeamIdDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_TEAM_ID_DESC',
-  EventsByUserIdDistinctCountTitleAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_TITLE_ASC',
-  EventsByUserIdDistinctCountTitleDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_TITLE_DESC',
-  EventsByUserIdDistinctCountUserIdAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  EventsByUserIdDistinctCountUserIdDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  EventsByUserIdMaxDateAsc = 'EVENTS_BY_USER_ID_MAX_DATE_ASC',
-  EventsByUserIdMaxDateDesc = 'EVENTS_BY_USER_ID_MAX_DATE_DESC',
-  EventsByUserIdMaxDescriptionAsc = 'EVENTS_BY_USER_ID_MAX_DESCRIPTION_ASC',
-  EventsByUserIdMaxDescriptionDesc = 'EVENTS_BY_USER_ID_MAX_DESCRIPTION_DESC',
-  EventsByUserIdMaxDurationAsc = 'EVENTS_BY_USER_ID_MAX_DURATION_ASC',
-  EventsByUserIdMaxDurationDesc = 'EVENTS_BY_USER_ID_MAX_DURATION_DESC',
-  EventsByUserIdMaxIdAsc = 'EVENTS_BY_USER_ID_MAX_ID_ASC',
-  EventsByUserIdMaxIdDesc = 'EVENTS_BY_USER_ID_MAX_ID_DESC',
-  EventsByUserIdMaxLocationAsc = 'EVENTS_BY_USER_ID_MAX_LOCATION_ASC',
-  EventsByUserIdMaxLocationDesc = 'EVENTS_BY_USER_ID_MAX_LOCATION_DESC',
-  EventsByUserIdMaxTeamIdAsc = 'EVENTS_BY_USER_ID_MAX_TEAM_ID_ASC',
-  EventsByUserIdMaxTeamIdDesc = 'EVENTS_BY_USER_ID_MAX_TEAM_ID_DESC',
-  EventsByUserIdMaxTitleAsc = 'EVENTS_BY_USER_ID_MAX_TITLE_ASC',
-  EventsByUserIdMaxTitleDesc = 'EVENTS_BY_USER_ID_MAX_TITLE_DESC',
-  EventsByUserIdMaxUserIdAsc = 'EVENTS_BY_USER_ID_MAX_USER_ID_ASC',
-  EventsByUserIdMaxUserIdDesc = 'EVENTS_BY_USER_ID_MAX_USER_ID_DESC',
-  EventsByUserIdMinDateAsc = 'EVENTS_BY_USER_ID_MIN_DATE_ASC',
-  EventsByUserIdMinDateDesc = 'EVENTS_BY_USER_ID_MIN_DATE_DESC',
-  EventsByUserIdMinDescriptionAsc = 'EVENTS_BY_USER_ID_MIN_DESCRIPTION_ASC',
-  EventsByUserIdMinDescriptionDesc = 'EVENTS_BY_USER_ID_MIN_DESCRIPTION_DESC',
-  EventsByUserIdMinDurationAsc = 'EVENTS_BY_USER_ID_MIN_DURATION_ASC',
-  EventsByUserIdMinDurationDesc = 'EVENTS_BY_USER_ID_MIN_DURATION_DESC',
-  EventsByUserIdMinIdAsc = 'EVENTS_BY_USER_ID_MIN_ID_ASC',
-  EventsByUserIdMinIdDesc = 'EVENTS_BY_USER_ID_MIN_ID_DESC',
-  EventsByUserIdMinLocationAsc = 'EVENTS_BY_USER_ID_MIN_LOCATION_ASC',
-  EventsByUserIdMinLocationDesc = 'EVENTS_BY_USER_ID_MIN_LOCATION_DESC',
-  EventsByUserIdMinTeamIdAsc = 'EVENTS_BY_USER_ID_MIN_TEAM_ID_ASC',
-  EventsByUserIdMinTeamIdDesc = 'EVENTS_BY_USER_ID_MIN_TEAM_ID_DESC',
-  EventsByUserIdMinTitleAsc = 'EVENTS_BY_USER_ID_MIN_TITLE_ASC',
-  EventsByUserIdMinTitleDesc = 'EVENTS_BY_USER_ID_MIN_TITLE_DESC',
-  EventsByUserIdMinUserIdAsc = 'EVENTS_BY_USER_ID_MIN_USER_ID_ASC',
-  EventsByUserIdMinUserIdDesc = 'EVENTS_BY_USER_ID_MIN_USER_ID_DESC',
-  EventsByUserIdStddevPopulationDateAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DATE_ASC',
-  EventsByUserIdStddevPopulationDateDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DATE_DESC',
-  EventsByUserIdStddevPopulationDescriptionAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DESCRIPTION_ASC',
-  EventsByUserIdStddevPopulationDescriptionDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DESCRIPTION_DESC',
-  EventsByUserIdStddevPopulationDurationAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DURATION_ASC',
-  EventsByUserIdStddevPopulationDurationDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DURATION_DESC',
-  EventsByUserIdStddevPopulationIdAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
-  EventsByUserIdStddevPopulationIdDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
-  EventsByUserIdStddevPopulationLocationAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_LOCATION_ASC',
-  EventsByUserIdStddevPopulationLocationDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_LOCATION_DESC',
-  EventsByUserIdStddevPopulationTeamIdAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_TEAM_ID_ASC',
-  EventsByUserIdStddevPopulationTeamIdDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_TEAM_ID_DESC',
-  EventsByUserIdStddevPopulationTitleAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_TITLE_ASC',
-  EventsByUserIdStddevPopulationTitleDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_TITLE_DESC',
-  EventsByUserIdStddevPopulationUserIdAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  EventsByUserIdStddevPopulationUserIdDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  EventsByUserIdStddevSampleDateAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DATE_ASC',
-  EventsByUserIdStddevSampleDateDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DATE_DESC',
-  EventsByUserIdStddevSampleDescriptionAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DESCRIPTION_ASC',
-  EventsByUserIdStddevSampleDescriptionDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DESCRIPTION_DESC',
-  EventsByUserIdStddevSampleDurationAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DURATION_ASC',
-  EventsByUserIdStddevSampleDurationDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DURATION_DESC',
-  EventsByUserIdStddevSampleIdAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
-  EventsByUserIdStddevSampleIdDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
-  EventsByUserIdStddevSampleLocationAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_LOCATION_ASC',
-  EventsByUserIdStddevSampleLocationDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_LOCATION_DESC',
-  EventsByUserIdStddevSampleTeamIdAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_TEAM_ID_ASC',
-  EventsByUserIdStddevSampleTeamIdDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_TEAM_ID_DESC',
-  EventsByUserIdStddevSampleTitleAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_TITLE_ASC',
-  EventsByUserIdStddevSampleTitleDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_TITLE_DESC',
-  EventsByUserIdStddevSampleUserIdAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  EventsByUserIdStddevSampleUserIdDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  EventsByUserIdSumDateAsc = 'EVENTS_BY_USER_ID_SUM_DATE_ASC',
-  EventsByUserIdSumDateDesc = 'EVENTS_BY_USER_ID_SUM_DATE_DESC',
-  EventsByUserIdSumDescriptionAsc = 'EVENTS_BY_USER_ID_SUM_DESCRIPTION_ASC',
-  EventsByUserIdSumDescriptionDesc = 'EVENTS_BY_USER_ID_SUM_DESCRIPTION_DESC',
-  EventsByUserIdSumDurationAsc = 'EVENTS_BY_USER_ID_SUM_DURATION_ASC',
-  EventsByUserIdSumDurationDesc = 'EVENTS_BY_USER_ID_SUM_DURATION_DESC',
-  EventsByUserIdSumIdAsc = 'EVENTS_BY_USER_ID_SUM_ID_ASC',
-  EventsByUserIdSumIdDesc = 'EVENTS_BY_USER_ID_SUM_ID_DESC',
-  EventsByUserIdSumLocationAsc = 'EVENTS_BY_USER_ID_SUM_LOCATION_ASC',
-  EventsByUserIdSumLocationDesc = 'EVENTS_BY_USER_ID_SUM_LOCATION_DESC',
-  EventsByUserIdSumTeamIdAsc = 'EVENTS_BY_USER_ID_SUM_TEAM_ID_ASC',
-  EventsByUserIdSumTeamIdDesc = 'EVENTS_BY_USER_ID_SUM_TEAM_ID_DESC',
-  EventsByUserIdSumTitleAsc = 'EVENTS_BY_USER_ID_SUM_TITLE_ASC',
-  EventsByUserIdSumTitleDesc = 'EVENTS_BY_USER_ID_SUM_TITLE_DESC',
-  EventsByUserIdSumUserIdAsc = 'EVENTS_BY_USER_ID_SUM_USER_ID_ASC',
-  EventsByUserIdSumUserIdDesc = 'EVENTS_BY_USER_ID_SUM_USER_ID_DESC',
-  EventsByUserIdVariancePopulationDateAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DATE_ASC',
-  EventsByUserIdVariancePopulationDateDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DATE_DESC',
-  EventsByUserIdVariancePopulationDescriptionAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DESCRIPTION_ASC',
-  EventsByUserIdVariancePopulationDescriptionDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DESCRIPTION_DESC',
-  EventsByUserIdVariancePopulationDurationAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DURATION_ASC',
-  EventsByUserIdVariancePopulationDurationDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DURATION_DESC',
-  EventsByUserIdVariancePopulationIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
-  EventsByUserIdVariancePopulationIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
-  EventsByUserIdVariancePopulationLocationAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_LOCATION_ASC',
-  EventsByUserIdVariancePopulationLocationDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_LOCATION_DESC',
-  EventsByUserIdVariancePopulationTeamIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_TEAM_ID_ASC',
-  EventsByUserIdVariancePopulationTeamIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_TEAM_ID_DESC',
-  EventsByUserIdVariancePopulationTitleAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_TITLE_ASC',
-  EventsByUserIdVariancePopulationTitleDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_TITLE_DESC',
-  EventsByUserIdVariancePopulationUserIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  EventsByUserIdVariancePopulationUserIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  EventsByUserIdVarianceSampleDateAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DATE_ASC',
-  EventsByUserIdVarianceSampleDateDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DATE_DESC',
-  EventsByUserIdVarianceSampleDescriptionAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC',
-  EventsByUserIdVarianceSampleDescriptionDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC',
-  EventsByUserIdVarianceSampleDurationAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DURATION_ASC',
-  EventsByUserIdVarianceSampleDurationDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DURATION_DESC',
-  EventsByUserIdVarianceSampleIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
-  EventsByUserIdVarianceSampleIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
-  EventsByUserIdVarianceSampleLocationAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_LOCATION_ASC',
-  EventsByUserIdVarianceSampleLocationDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_LOCATION_DESC',
-  EventsByUserIdVarianceSampleTeamIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_TEAM_ID_ASC',
-  EventsByUserIdVarianceSampleTeamIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_TEAM_ID_DESC',
-  EventsByUserIdVarianceSampleTitleAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_TITLE_ASC',
-  EventsByUserIdVarianceSampleTitleDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_TITLE_DESC',
-  EventsByUserIdVarianceSampleUserIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  EventsByUserIdVarianceSampleUserIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   FirstNameAsc = 'FIRST_NAME_ASC',
   FirstNameDesc = 'FIRST_NAME_DESC',
   GenderAsc = 'GENDER_ASC',
@@ -3058,100 +2116,210 @@ export enum UsersOrderBy {
   PictureDesc = 'PICTURE_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  TeamMembershipsByUserIdAverageCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
-  TeamMembershipsByUserIdAverageCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
-  TeamMembershipsByUserIdAverageIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_ID_ASC',
-  TeamMembershipsByUserIdAverageIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_ID_DESC',
-  TeamMembershipsByUserIdAverageRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_ROLE_ASC',
-  TeamMembershipsByUserIdAverageRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_ROLE_DESC',
-  TeamMembershipsByUserIdAverageTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_TEAM_ID_ASC',
-  TeamMembershipsByUserIdAverageTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_TEAM_ID_DESC',
-  TeamMembershipsByUserIdAverageUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  TeamMembershipsByUserIdAverageUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  TeamMembershipsByUserIdCountAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_COUNT_ASC',
-  TeamMembershipsByUserIdCountDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_COUNT_DESC',
-  TeamMembershipsByUserIdDistinctCountCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
-  TeamMembershipsByUserIdDistinctCountCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
-  TeamMembershipsByUserIdDistinctCountIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
-  TeamMembershipsByUserIdDistinctCountIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
-  TeamMembershipsByUserIdDistinctCountRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_ROLE_ASC',
-  TeamMembershipsByUserIdDistinctCountRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_ROLE_DESC',
-  TeamMembershipsByUserIdDistinctCountTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_TEAM_ID_ASC',
-  TeamMembershipsByUserIdDistinctCountTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_TEAM_ID_DESC',
-  TeamMembershipsByUserIdDistinctCountUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  TeamMembershipsByUserIdDistinctCountUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  TeamMembershipsByUserIdMaxCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_CREATED_AT_ASC',
-  TeamMembershipsByUserIdMaxCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_CREATED_AT_DESC',
-  TeamMembershipsByUserIdMaxIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_ID_ASC',
-  TeamMembershipsByUserIdMaxIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_ID_DESC',
-  TeamMembershipsByUserIdMaxRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_ROLE_ASC',
-  TeamMembershipsByUserIdMaxRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_ROLE_DESC',
-  TeamMembershipsByUserIdMaxTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_TEAM_ID_ASC',
-  TeamMembershipsByUserIdMaxTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_TEAM_ID_DESC',
-  TeamMembershipsByUserIdMaxUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_USER_ID_ASC',
-  TeamMembershipsByUserIdMaxUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_USER_ID_DESC',
-  TeamMembershipsByUserIdMinCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_CREATED_AT_ASC',
-  TeamMembershipsByUserIdMinCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_CREATED_AT_DESC',
-  TeamMembershipsByUserIdMinIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_ID_ASC',
-  TeamMembershipsByUserIdMinIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_ID_DESC',
-  TeamMembershipsByUserIdMinRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_ROLE_ASC',
-  TeamMembershipsByUserIdMinRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_ROLE_DESC',
-  TeamMembershipsByUserIdMinTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_TEAM_ID_ASC',
-  TeamMembershipsByUserIdMinTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_TEAM_ID_DESC',
-  TeamMembershipsByUserIdMinUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_USER_ID_ASC',
-  TeamMembershipsByUserIdMinUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_USER_ID_DESC',
-  TeamMembershipsByUserIdStddevPopulationCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
-  TeamMembershipsByUserIdStddevPopulationCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
-  TeamMembershipsByUserIdStddevPopulationIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
-  TeamMembershipsByUserIdStddevPopulationIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
-  TeamMembershipsByUserIdStddevPopulationRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_ROLE_ASC',
-  TeamMembershipsByUserIdStddevPopulationRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_ROLE_DESC',
-  TeamMembershipsByUserIdStddevPopulationTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_TEAM_ID_ASC',
-  TeamMembershipsByUserIdStddevPopulationTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_TEAM_ID_DESC',
-  TeamMembershipsByUserIdStddevPopulationUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  TeamMembershipsByUserIdStddevPopulationUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  TeamMembershipsByUserIdStddevSampleCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
-  TeamMembershipsByUserIdStddevSampleCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
-  TeamMembershipsByUserIdStddevSampleIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
-  TeamMembershipsByUserIdStddevSampleIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
-  TeamMembershipsByUserIdStddevSampleRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_ROLE_ASC',
-  TeamMembershipsByUserIdStddevSampleRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_ROLE_DESC',
-  TeamMembershipsByUserIdStddevSampleTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_TEAM_ID_ASC',
-  TeamMembershipsByUserIdStddevSampleTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_TEAM_ID_DESC',
-  TeamMembershipsByUserIdStddevSampleUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  TeamMembershipsByUserIdStddevSampleUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  TeamMembershipsByUserIdSumCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_CREATED_AT_ASC',
-  TeamMembershipsByUserIdSumCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_CREATED_AT_DESC',
-  TeamMembershipsByUserIdSumIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_ID_ASC',
-  TeamMembershipsByUserIdSumIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_ID_DESC',
-  TeamMembershipsByUserIdSumRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_ROLE_ASC',
-  TeamMembershipsByUserIdSumRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_ROLE_DESC',
-  TeamMembershipsByUserIdSumTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_TEAM_ID_ASC',
-  TeamMembershipsByUserIdSumTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_TEAM_ID_DESC',
-  TeamMembershipsByUserIdSumUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_USER_ID_ASC',
-  TeamMembershipsByUserIdSumUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_USER_ID_DESC',
-  TeamMembershipsByUserIdVariancePopulationCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
-  TeamMembershipsByUserIdVariancePopulationCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
-  TeamMembershipsByUserIdVariancePopulationIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
-  TeamMembershipsByUserIdVariancePopulationIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
-  TeamMembershipsByUserIdVariancePopulationRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_ROLE_ASC',
-  TeamMembershipsByUserIdVariancePopulationRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_ROLE_DESC',
-  TeamMembershipsByUserIdVariancePopulationTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_TEAM_ID_ASC',
-  TeamMembershipsByUserIdVariancePopulationTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_TEAM_ID_DESC',
-  TeamMembershipsByUserIdVariancePopulationUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  TeamMembershipsByUserIdVariancePopulationUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  TeamMembershipsByUserIdVarianceSampleCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
-  TeamMembershipsByUserIdVarianceSampleCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
-  TeamMembershipsByUserIdVarianceSampleIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
-  TeamMembershipsByUserIdVarianceSampleIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
-  TeamMembershipsByUserIdVarianceSampleRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_ROLE_ASC',
-  TeamMembershipsByUserIdVarianceSampleRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_ROLE_DESC',
-  TeamMembershipsByUserIdVarianceSampleTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_TEAM_ID_ASC',
-  TeamMembershipsByUserIdVarianceSampleTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_TEAM_ID_DESC',
-  TeamMembershipsByUserIdVarianceSampleUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  TeamMembershipsByUserIdVarianceSampleUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  ReportsByUserIdAverageCreatedAtAsc = 'REPORTS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
+  ReportsByUserIdAverageCreatedAtDesc = 'REPORTS_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
+  ReportsByUserIdAverageFilePathAsc = 'REPORTS_BY_USER_ID_AVERAGE_FILE_PATH_ASC',
+  ReportsByUserIdAverageFilePathDesc = 'REPORTS_BY_USER_ID_AVERAGE_FILE_PATH_DESC',
+  ReportsByUserIdAverageReportIdAsc = 'REPORTS_BY_USER_ID_AVERAGE_REPORT_ID_ASC',
+  ReportsByUserIdAverageReportIdDesc = 'REPORTS_BY_USER_ID_AVERAGE_REPORT_ID_DESC',
+  ReportsByUserIdAverageUserIdAsc = 'REPORTS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  ReportsByUserIdAverageUserIdDesc = 'REPORTS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  ReportsByUserIdCountAsc = 'REPORTS_BY_USER_ID_COUNT_ASC',
+  ReportsByUserIdCountDesc = 'REPORTS_BY_USER_ID_COUNT_DESC',
+  ReportsByUserIdDistinctCountCreatedAtAsc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  ReportsByUserIdDistinctCountCreatedAtDesc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  ReportsByUserIdDistinctCountFilePathAsc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_FILE_PATH_ASC',
+  ReportsByUserIdDistinctCountFilePathDesc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_FILE_PATH_DESC',
+  ReportsByUserIdDistinctCountReportIdAsc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_REPORT_ID_ASC',
+  ReportsByUserIdDistinctCountReportIdDesc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_REPORT_ID_DESC',
+  ReportsByUserIdDistinctCountUserIdAsc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  ReportsByUserIdDistinctCountUserIdDesc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  ReportsByUserIdMaxCreatedAtAsc = 'REPORTS_BY_USER_ID_MAX_CREATED_AT_ASC',
+  ReportsByUserIdMaxCreatedAtDesc = 'REPORTS_BY_USER_ID_MAX_CREATED_AT_DESC',
+  ReportsByUserIdMaxFilePathAsc = 'REPORTS_BY_USER_ID_MAX_FILE_PATH_ASC',
+  ReportsByUserIdMaxFilePathDesc = 'REPORTS_BY_USER_ID_MAX_FILE_PATH_DESC',
+  ReportsByUserIdMaxReportIdAsc = 'REPORTS_BY_USER_ID_MAX_REPORT_ID_ASC',
+  ReportsByUserIdMaxReportIdDesc = 'REPORTS_BY_USER_ID_MAX_REPORT_ID_DESC',
+  ReportsByUserIdMaxUserIdAsc = 'REPORTS_BY_USER_ID_MAX_USER_ID_ASC',
+  ReportsByUserIdMaxUserIdDesc = 'REPORTS_BY_USER_ID_MAX_USER_ID_DESC',
+  ReportsByUserIdMinCreatedAtAsc = 'REPORTS_BY_USER_ID_MIN_CREATED_AT_ASC',
+  ReportsByUserIdMinCreatedAtDesc = 'REPORTS_BY_USER_ID_MIN_CREATED_AT_DESC',
+  ReportsByUserIdMinFilePathAsc = 'REPORTS_BY_USER_ID_MIN_FILE_PATH_ASC',
+  ReportsByUserIdMinFilePathDesc = 'REPORTS_BY_USER_ID_MIN_FILE_PATH_DESC',
+  ReportsByUserIdMinReportIdAsc = 'REPORTS_BY_USER_ID_MIN_REPORT_ID_ASC',
+  ReportsByUserIdMinReportIdDesc = 'REPORTS_BY_USER_ID_MIN_REPORT_ID_DESC',
+  ReportsByUserIdMinUserIdAsc = 'REPORTS_BY_USER_ID_MIN_USER_ID_ASC',
+  ReportsByUserIdMinUserIdDesc = 'REPORTS_BY_USER_ID_MIN_USER_ID_DESC',
+  ReportsByUserIdStddevPopulationCreatedAtAsc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  ReportsByUserIdStddevPopulationCreatedAtDesc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
+  ReportsByUserIdStddevPopulationFilePathAsc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_FILE_PATH_ASC',
+  ReportsByUserIdStddevPopulationFilePathDesc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_FILE_PATH_DESC',
+  ReportsByUserIdStddevPopulationReportIdAsc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_REPORT_ID_ASC',
+  ReportsByUserIdStddevPopulationReportIdDesc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_REPORT_ID_DESC',
+  ReportsByUserIdStddevPopulationUserIdAsc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  ReportsByUserIdStddevPopulationUserIdDesc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  ReportsByUserIdStddevSampleCreatedAtAsc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  ReportsByUserIdStddevSampleCreatedAtDesc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
+  ReportsByUserIdStddevSampleFilePathAsc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_FILE_PATH_ASC',
+  ReportsByUserIdStddevSampleFilePathDesc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_FILE_PATH_DESC',
+  ReportsByUserIdStddevSampleReportIdAsc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_REPORT_ID_ASC',
+  ReportsByUserIdStddevSampleReportIdDesc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_REPORT_ID_DESC',
+  ReportsByUserIdStddevSampleUserIdAsc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  ReportsByUserIdStddevSampleUserIdDesc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  ReportsByUserIdSumCreatedAtAsc = 'REPORTS_BY_USER_ID_SUM_CREATED_AT_ASC',
+  ReportsByUserIdSumCreatedAtDesc = 'REPORTS_BY_USER_ID_SUM_CREATED_AT_DESC',
+  ReportsByUserIdSumFilePathAsc = 'REPORTS_BY_USER_ID_SUM_FILE_PATH_ASC',
+  ReportsByUserIdSumFilePathDesc = 'REPORTS_BY_USER_ID_SUM_FILE_PATH_DESC',
+  ReportsByUserIdSumReportIdAsc = 'REPORTS_BY_USER_ID_SUM_REPORT_ID_ASC',
+  ReportsByUserIdSumReportIdDesc = 'REPORTS_BY_USER_ID_SUM_REPORT_ID_DESC',
+  ReportsByUserIdSumUserIdAsc = 'REPORTS_BY_USER_ID_SUM_USER_ID_ASC',
+  ReportsByUserIdSumUserIdDesc = 'REPORTS_BY_USER_ID_SUM_USER_ID_DESC',
+  ReportsByUserIdVariancePopulationCreatedAtAsc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  ReportsByUserIdVariancePopulationCreatedAtDesc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
+  ReportsByUserIdVariancePopulationFilePathAsc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_FILE_PATH_ASC',
+  ReportsByUserIdVariancePopulationFilePathDesc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_FILE_PATH_DESC',
+  ReportsByUserIdVariancePopulationReportIdAsc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_REPORT_ID_ASC',
+  ReportsByUserIdVariancePopulationReportIdDesc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_REPORT_ID_DESC',
+  ReportsByUserIdVariancePopulationUserIdAsc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  ReportsByUserIdVariancePopulationUserIdDesc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  ReportsByUserIdVarianceSampleCreatedAtAsc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  ReportsByUserIdVarianceSampleCreatedAtDesc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
+  ReportsByUserIdVarianceSampleFilePathAsc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_FILE_PATH_ASC',
+  ReportsByUserIdVarianceSampleFilePathDesc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_FILE_PATH_DESC',
+  ReportsByUserIdVarianceSampleReportIdAsc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_REPORT_ID_ASC',
+  ReportsByUserIdVarianceSampleReportIdDesc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_REPORT_ID_DESC',
+  ReportsByUserIdVarianceSampleUserIdAsc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  ReportsByUserIdVarianceSampleUserIdDesc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   TelAsc = 'TEL_ASC',
   TelDesc = 'TEL_DESC',
+  TransactionsByUserIdAverageAmountAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_AMOUNT_ASC',
+  TransactionsByUserIdAverageAmountDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_AMOUNT_DESC',
+  TransactionsByUserIdAverageCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_CATEGORY_ID_ASC',
+  TransactionsByUserIdAverageCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_CATEGORY_ID_DESC',
+  TransactionsByUserIdAverageDateAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_DATE_ASC',
+  TransactionsByUserIdAverageDateDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_DATE_DESC',
+  TransactionsByUserIdAverageDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_DESCRIPTION_ASC',
+  TransactionsByUserIdAverageDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_DESCRIPTION_DESC',
+  TransactionsByUserIdAverageTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_TRANSACTION_ID_ASC',
+  TransactionsByUserIdAverageTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_TRANSACTION_ID_DESC',
+  TransactionsByUserIdAverageTypeAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_TYPE_ASC',
+  TransactionsByUserIdAverageTypeDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_TYPE_DESC',
+  TransactionsByUserIdAverageUserIdAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  TransactionsByUserIdAverageUserIdDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  TransactionsByUserIdCountAsc = 'TRANSACTIONS_BY_USER_ID_COUNT_ASC',
+  TransactionsByUserIdCountDesc = 'TRANSACTIONS_BY_USER_ID_COUNT_DESC',
+  TransactionsByUserIdDistinctCountAmountAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_AMOUNT_ASC',
+  TransactionsByUserIdDistinctCountAmountDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_AMOUNT_DESC',
+  TransactionsByUserIdDistinctCountCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
+  TransactionsByUserIdDistinctCountCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  TransactionsByUserIdDistinctCountDateAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_DATE_ASC',
+  TransactionsByUserIdDistinctCountDateDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_DATE_DESC',
+  TransactionsByUserIdDistinctCountDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
+  TransactionsByUserIdDistinctCountDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
+  TransactionsByUserIdDistinctCountTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_TRANSACTION_ID_ASC',
+  TransactionsByUserIdDistinctCountTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_TRANSACTION_ID_DESC',
+  TransactionsByUserIdDistinctCountTypeAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_TYPE_ASC',
+  TransactionsByUserIdDistinctCountTypeDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_TYPE_DESC',
+  TransactionsByUserIdDistinctCountUserIdAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  TransactionsByUserIdDistinctCountUserIdDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  TransactionsByUserIdMaxAmountAsc = 'TRANSACTIONS_BY_USER_ID_MAX_AMOUNT_ASC',
+  TransactionsByUserIdMaxAmountDesc = 'TRANSACTIONS_BY_USER_ID_MAX_AMOUNT_DESC',
+  TransactionsByUserIdMaxCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_MAX_CATEGORY_ID_ASC',
+  TransactionsByUserIdMaxCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_MAX_CATEGORY_ID_DESC',
+  TransactionsByUserIdMaxDateAsc = 'TRANSACTIONS_BY_USER_ID_MAX_DATE_ASC',
+  TransactionsByUserIdMaxDateDesc = 'TRANSACTIONS_BY_USER_ID_MAX_DATE_DESC',
+  TransactionsByUserIdMaxDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_MAX_DESCRIPTION_ASC',
+  TransactionsByUserIdMaxDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_MAX_DESCRIPTION_DESC',
+  TransactionsByUserIdMaxTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_MAX_TRANSACTION_ID_ASC',
+  TransactionsByUserIdMaxTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_MAX_TRANSACTION_ID_DESC',
+  TransactionsByUserIdMaxTypeAsc = 'TRANSACTIONS_BY_USER_ID_MAX_TYPE_ASC',
+  TransactionsByUserIdMaxTypeDesc = 'TRANSACTIONS_BY_USER_ID_MAX_TYPE_DESC',
+  TransactionsByUserIdMaxUserIdAsc = 'TRANSACTIONS_BY_USER_ID_MAX_USER_ID_ASC',
+  TransactionsByUserIdMaxUserIdDesc = 'TRANSACTIONS_BY_USER_ID_MAX_USER_ID_DESC',
+  TransactionsByUserIdMinAmountAsc = 'TRANSACTIONS_BY_USER_ID_MIN_AMOUNT_ASC',
+  TransactionsByUserIdMinAmountDesc = 'TRANSACTIONS_BY_USER_ID_MIN_AMOUNT_DESC',
+  TransactionsByUserIdMinCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_MIN_CATEGORY_ID_ASC',
+  TransactionsByUserIdMinCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_MIN_CATEGORY_ID_DESC',
+  TransactionsByUserIdMinDateAsc = 'TRANSACTIONS_BY_USER_ID_MIN_DATE_ASC',
+  TransactionsByUserIdMinDateDesc = 'TRANSACTIONS_BY_USER_ID_MIN_DATE_DESC',
+  TransactionsByUserIdMinDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_MIN_DESCRIPTION_ASC',
+  TransactionsByUserIdMinDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_MIN_DESCRIPTION_DESC',
+  TransactionsByUserIdMinTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_MIN_TRANSACTION_ID_ASC',
+  TransactionsByUserIdMinTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_MIN_TRANSACTION_ID_DESC',
+  TransactionsByUserIdMinTypeAsc = 'TRANSACTIONS_BY_USER_ID_MIN_TYPE_ASC',
+  TransactionsByUserIdMinTypeDesc = 'TRANSACTIONS_BY_USER_ID_MIN_TYPE_DESC',
+  TransactionsByUserIdMinUserIdAsc = 'TRANSACTIONS_BY_USER_ID_MIN_USER_ID_ASC',
+  TransactionsByUserIdMinUserIdDesc = 'TRANSACTIONS_BY_USER_ID_MIN_USER_ID_DESC',
+  TransactionsByUserIdStddevPopulationAmountAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_AMOUNT_ASC',
+  TransactionsByUserIdStddevPopulationAmountDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_AMOUNT_DESC',
+  TransactionsByUserIdStddevPopulationCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
+  TransactionsByUserIdStddevPopulationCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  TransactionsByUserIdStddevPopulationDateAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_DATE_ASC',
+  TransactionsByUserIdStddevPopulationDateDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_DATE_DESC',
+  TransactionsByUserIdStddevPopulationDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_DESCRIPTION_ASC',
+  TransactionsByUserIdStddevPopulationDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_DESCRIPTION_DESC',
+  TransactionsByUserIdStddevPopulationTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_TRANSACTION_ID_ASC',
+  TransactionsByUserIdStddevPopulationTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_TRANSACTION_ID_DESC',
+  TransactionsByUserIdStddevPopulationTypeAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_TYPE_ASC',
+  TransactionsByUserIdStddevPopulationTypeDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_TYPE_DESC',
+  TransactionsByUserIdStddevPopulationUserIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  TransactionsByUserIdStddevPopulationUserIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  TransactionsByUserIdStddevSampleAmountAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_AMOUNT_ASC',
+  TransactionsByUserIdStddevSampleAmountDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_AMOUNT_DESC',
+  TransactionsByUserIdStddevSampleCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
+  TransactionsByUserIdStddevSampleCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  TransactionsByUserIdStddevSampleDateAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_DATE_ASC',
+  TransactionsByUserIdStddevSampleDateDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_DATE_DESC',
+  TransactionsByUserIdStddevSampleDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_DESCRIPTION_ASC',
+  TransactionsByUserIdStddevSampleDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_DESCRIPTION_DESC',
+  TransactionsByUserIdStddevSampleTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_TRANSACTION_ID_ASC',
+  TransactionsByUserIdStddevSampleTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_TRANSACTION_ID_DESC',
+  TransactionsByUserIdStddevSampleTypeAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_TYPE_ASC',
+  TransactionsByUserIdStddevSampleTypeDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_TYPE_DESC',
+  TransactionsByUserIdStddevSampleUserIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  TransactionsByUserIdStddevSampleUserIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  TransactionsByUserIdSumAmountAsc = 'TRANSACTIONS_BY_USER_ID_SUM_AMOUNT_ASC',
+  TransactionsByUserIdSumAmountDesc = 'TRANSACTIONS_BY_USER_ID_SUM_AMOUNT_DESC',
+  TransactionsByUserIdSumCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_SUM_CATEGORY_ID_ASC',
+  TransactionsByUserIdSumCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_SUM_CATEGORY_ID_DESC',
+  TransactionsByUserIdSumDateAsc = 'TRANSACTIONS_BY_USER_ID_SUM_DATE_ASC',
+  TransactionsByUserIdSumDateDesc = 'TRANSACTIONS_BY_USER_ID_SUM_DATE_DESC',
+  TransactionsByUserIdSumDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_SUM_DESCRIPTION_ASC',
+  TransactionsByUserIdSumDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_SUM_DESCRIPTION_DESC',
+  TransactionsByUserIdSumTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_SUM_TRANSACTION_ID_ASC',
+  TransactionsByUserIdSumTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_SUM_TRANSACTION_ID_DESC',
+  TransactionsByUserIdSumTypeAsc = 'TRANSACTIONS_BY_USER_ID_SUM_TYPE_ASC',
+  TransactionsByUserIdSumTypeDesc = 'TRANSACTIONS_BY_USER_ID_SUM_TYPE_DESC',
+  TransactionsByUserIdSumUserIdAsc = 'TRANSACTIONS_BY_USER_ID_SUM_USER_ID_ASC',
+  TransactionsByUserIdSumUserIdDesc = 'TRANSACTIONS_BY_USER_ID_SUM_USER_ID_DESC',
+  TransactionsByUserIdVariancePopulationAmountAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_AMOUNT_ASC',
+  TransactionsByUserIdVariancePopulationAmountDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_AMOUNT_DESC',
+  TransactionsByUserIdVariancePopulationCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
+  TransactionsByUserIdVariancePopulationCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  TransactionsByUserIdVariancePopulationDateAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_DATE_ASC',
+  TransactionsByUserIdVariancePopulationDateDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_DATE_DESC',
+  TransactionsByUserIdVariancePopulationDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_DESCRIPTION_ASC',
+  TransactionsByUserIdVariancePopulationDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_DESCRIPTION_DESC',
+  TransactionsByUserIdVariancePopulationTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_TRANSACTION_ID_ASC',
+  TransactionsByUserIdVariancePopulationTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_TRANSACTION_ID_DESC',
+  TransactionsByUserIdVariancePopulationTypeAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_TYPE_ASC',
+  TransactionsByUserIdVariancePopulationTypeDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_TYPE_DESC',
+  TransactionsByUserIdVariancePopulationUserIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  TransactionsByUserIdVariancePopulationUserIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  TransactionsByUserIdVarianceSampleAmountAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_AMOUNT_ASC',
+  TransactionsByUserIdVarianceSampleAmountDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_AMOUNT_DESC',
+  TransactionsByUserIdVarianceSampleCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
+  TransactionsByUserIdVarianceSampleCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  TransactionsByUserIdVarianceSampleDateAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_DATE_ASC',
+  TransactionsByUserIdVarianceSampleDateDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_DATE_DESC',
+  TransactionsByUserIdVarianceSampleDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC',
+  TransactionsByUserIdVarianceSampleDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC',
+  TransactionsByUserIdVarianceSampleTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_TRANSACTION_ID_ASC',
+  TransactionsByUserIdVarianceSampleTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_TRANSACTION_ID_DESC',
+  TransactionsByUserIdVarianceSampleTypeAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_TYPE_ASC',
+  TransactionsByUserIdVarianceSampleTypeDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_TYPE_DESC',
+  TransactionsByUserIdVarianceSampleUserIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  TransactionsByUserIdVarianceSampleUserIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   UserDevicesByUserIdAverageTokenAsc = 'USER_DEVICES_BY_USER_ID_AVERAGE_TOKEN_ASC',
   UserDevicesByUserIdAverageTokenDesc = 'USER_DEVICES_BY_USER_ID_AVERAGE_TOKEN_DESC',
   UserDevicesByUserIdAverageUaAsc = 'USER_DEVICES_BY_USER_ID_AVERAGE_UA_ASC',
@@ -3274,356 +2442,6 @@ export type Scalars = {
   JSON: { input: { [key: string]: any }; output: { [key: string]: any }; }
 };
 
-/** A connection to a list of `Availability` values. */
-export type AvailabilitiesConnection = {
-  __typename?: 'AvailabilitiesConnection';
-  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<AvailabilityAggregates>;
-  /** A list of edges which contains the `Availability` and cursor to aid in pagination. */
-  edges: Array<AvailabilitiesEdge>;
-  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<AvailabilityAggregates>>;
-  /** A list of `Availability` objects. */
-  nodes: Array<Availability>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `Availability` you could get from the connection. */
-  totalCount: Scalars['Int']['output'];
-};
-
-
-/** A connection to a list of `Availability` values. */
-export type AvailabilitiesConnectionGroupedAggregatesArgs = {
-  groupBy: Array<AvailabilityGroupBy>;
-  having?: InputMaybe<AvailabilityHavingInput>;
-};
-
-/** A `Availability` edge in the connection. */
-export type AvailabilitiesEdge = {
-  __typename?: 'AvailabilitiesEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  /** The `Availability` at the end of the edge. */
-  node: Availability;
-};
-
-/** Methods to use when ordering `Availability`. */
-export enum AvailabilitiesOrderBy {
-  DayOfWeekAsc = 'DAY_OF_WEEK_ASC',
-  DayOfWeekDesc = 'DAY_OF_WEEK_DESC',
-  EndTimeAsc = 'END_TIME_ASC',
-  EndTimeDesc = 'END_TIME_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  StartTimeAsc = 'START_TIME_ASC',
-  StartTimeDesc = 'START_TIME_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC'
-}
-
-export type Availability = Node & {
-  __typename?: 'Availability';
-  dayOfWeek: Scalars['Int']['output'];
-  endTime?: Maybe<Scalars['Datetime']['output']>;
-  id: Scalars['String']['output'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']['output'];
-  startTime?: Maybe<Scalars['Datetime']['output']>;
-  /** Reads a single `User` that is related to this `Availability`. */
-  user?: Maybe<User>;
-  userId: Scalars['String']['output'];
-};
-
-export type AvailabilityAggregates = {
-  __typename?: 'AvailabilityAggregates';
-  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  average?: Maybe<AvailabilityAverageAggregates>;
-  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  distinctCount?: Maybe<AvailabilityDistinctCountAggregates>;
-  keys?: Maybe<Array<Scalars['String']['output']>>;
-  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  max?: Maybe<AvailabilityMaxAggregates>;
-  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  min?: Maybe<AvailabilityMinAggregates>;
-  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  stddevPopulation?: Maybe<AvailabilityStddevPopulationAggregates>;
-  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  stddevSample?: Maybe<AvailabilityStddevSampleAggregates>;
-  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  sum?: Maybe<AvailabilitySumAggregates>;
-  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  variancePopulation?: Maybe<AvailabilityVariancePopulationAggregates>;
-  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  varianceSample?: Maybe<AvailabilityVarianceSampleAggregates>;
-};
-
-/** A filter to be used against aggregates of `Availability` object types. */
-export type AvailabilityAggregatesFilter = {
-  /** Mean average aggregate over matching `Availability` objects. */
-  average?: InputMaybe<AvailabilityAverageAggregateFilter>;
-  /** Distinct count aggregate over matching `Availability` objects. */
-  distinctCount?: InputMaybe<AvailabilityDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `Availability` object to be included within the aggregate. */
-  filter?: InputMaybe<AvailabilityFilter>;
-  /** Maximum aggregate over matching `Availability` objects. */
-  max?: InputMaybe<AvailabilityMaxAggregateFilter>;
-  /** Minimum aggregate over matching `Availability` objects. */
-  min?: InputMaybe<AvailabilityMinAggregateFilter>;
-  /** Population standard deviation aggregate over matching `Availability` objects. */
-  stddevPopulation?: InputMaybe<AvailabilityStddevPopulationAggregateFilter>;
-  /** Sample standard deviation aggregate over matching `Availability` objects. */
-  stddevSample?: InputMaybe<AvailabilityStddevSampleAggregateFilter>;
-  /** Sum aggregate over matching `Availability` objects. */
-  sum?: InputMaybe<AvailabilitySumAggregateFilter>;
-  /** Population variance aggregate over matching `Availability` objects. */
-  variancePopulation?: InputMaybe<AvailabilityVariancePopulationAggregateFilter>;
-  /** Sample variance aggregate over matching `Availability` objects. */
-  varianceSample?: InputMaybe<AvailabilityVarianceSampleAggregateFilter>;
-};
-
-export type AvailabilityAverageAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-export type AvailabilityAverageAggregates = {
-  __typename?: 'AvailabilityAverageAggregates';
-  /** Mean average of dayOfWeek across the matching connection */
-  dayOfWeek?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-/**
- * A condition to be used against `Availability` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export type AvailabilityCondition = {
-  /** Checks for equality with the object’s `dayOfWeek` field. */
-  dayOfWeek?: InputMaybe<Scalars['Int']['input']>;
-  /** Checks for equality with the object’s `endTime` field. */
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `startTime` field. */
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type AvailabilityDistinctCountAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigIntFilter>;
-  endTime?: InputMaybe<BigIntFilter>;
-  id?: InputMaybe<BigIntFilter>;
-  startTime?: InputMaybe<BigIntFilter>;
-  userId?: InputMaybe<BigIntFilter>;
-};
-
-export type AvailabilityDistinctCountAggregates = {
-  __typename?: 'AvailabilityDistinctCountAggregates';
-  /** Distinct count of dayOfWeek across the matching connection */
-  dayOfWeek?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of endTime across the matching connection */
-  endTime?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of id across the matching connection */
-  id?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of startTime across the matching connection */
-  startTime?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of userId across the matching connection */
-  userId?: Maybe<Scalars['BigInt']['output']>;
-};
-
-/** A filter to be used against `Availability` object types. All fields are combined with a logical ‘and.’ */
-export type AvailabilityFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<AvailabilityFilter>>;
-  /** Filter by the object’s `dayOfWeek` field. */
-  dayOfWeek?: InputMaybe<IntFilter>;
-  /** Filter by the object’s `endTime` field. */
-  endTime?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<AvailabilityFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<AvailabilityFilter>>;
-  /** Filter by the object’s `startTime` field. */
-  startTime?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `user` relation. */
-  user?: InputMaybe<UserFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: InputMaybe<StringFilter>;
-};
-
-/** Grouping methods for `Availability` for usage during aggregation. */
-export enum AvailabilityGroupBy {
-  DayOfWeek = 'DAY_OF_WEEK',
-  EndTime = 'END_TIME',
-  EndTimeTruncatedToDay = 'END_TIME_TRUNCATED_TO_DAY',
-  EndTimeTruncatedToHour = 'END_TIME_TRUNCATED_TO_HOUR',
-  StartTime = 'START_TIME',
-  StartTimeTruncatedToDay = 'START_TIME_TRUNCATED_TO_DAY',
-  StartTimeTruncatedToHour = 'START_TIME_TRUNCATED_TO_HOUR',
-  UserId = 'USER_ID'
-}
-
-export type AvailabilityHavingAverageInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingDistinctCountInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** Conditions for `Availability` aggregates. */
-export type AvailabilityHavingInput = {
-  AND?: InputMaybe<Array<AvailabilityHavingInput>>;
-  OR?: InputMaybe<Array<AvailabilityHavingInput>>;
-  average?: InputMaybe<AvailabilityHavingAverageInput>;
-  distinctCount?: InputMaybe<AvailabilityHavingDistinctCountInput>;
-  max?: InputMaybe<AvailabilityHavingMaxInput>;
-  min?: InputMaybe<AvailabilityHavingMinInput>;
-  stddevPopulation?: InputMaybe<AvailabilityHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<AvailabilityHavingStddevSampleInput>;
-  sum?: InputMaybe<AvailabilityHavingSumInput>;
-  variancePopulation?: InputMaybe<AvailabilityHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<AvailabilityHavingVarianceSampleInput>;
-};
-
-export type AvailabilityHavingMaxInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingMinInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingStddevPopulationInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingStddevSampleInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingSumInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingVariancePopulationInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type AvailabilityHavingVarianceSampleInput = {
-  dayOfWeek?: InputMaybe<HavingIntFilter>;
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** An input for mutations affecting `Availability` */
-export type AvailabilityInput = {
-  dayOfWeek: Scalars['Int']['input'];
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  id: Scalars['String']['input'];
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  userId: Scalars['String']['input'];
-};
-
-export type AvailabilityMaxAggregateFilter = {
-  dayOfWeek?: InputMaybe<IntFilter>;
-};
-
-export type AvailabilityMaxAggregates = {
-  __typename?: 'AvailabilityMaxAggregates';
-  /** Maximum of dayOfWeek across the matching connection */
-  dayOfWeek?: Maybe<Scalars['Int']['output']>;
-};
-
-export type AvailabilityMinAggregateFilter = {
-  dayOfWeek?: InputMaybe<IntFilter>;
-};
-
-export type AvailabilityMinAggregates = {
-  __typename?: 'AvailabilityMinAggregates';
-  /** Minimum of dayOfWeek across the matching connection */
-  dayOfWeek?: Maybe<Scalars['Int']['output']>;
-};
-
-/** Represents an update to a `Availability`. Fields that are set will be updated. */
-export type AvailabilityPatch = {
-  dayOfWeek?: InputMaybe<Scalars['Int']['input']>;
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type AvailabilityStddevPopulationAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-export type AvailabilityStddevPopulationAggregates = {
-  __typename?: 'AvailabilityStddevPopulationAggregates';
-  /** Population standard deviation of dayOfWeek across the matching connection */
-  dayOfWeek?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type AvailabilityStddevSampleAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-export type AvailabilityStddevSampleAggregates = {
-  __typename?: 'AvailabilityStddevSampleAggregates';
-  /** Sample standard deviation of dayOfWeek across the matching connection */
-  dayOfWeek?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type AvailabilitySumAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigIntFilter>;
-};
-
-export type AvailabilitySumAggregates = {
-  __typename?: 'AvailabilitySumAggregates';
-  /** Sum of dayOfWeek across the matching connection */
-  dayOfWeek: Scalars['BigInt']['output'];
-};
-
-export type AvailabilityVariancePopulationAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-export type AvailabilityVariancePopulationAggregates = {
-  __typename?: 'AvailabilityVariancePopulationAggregates';
-  /** Population variance of dayOfWeek across the matching connection */
-  dayOfWeek?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type AvailabilityVarianceSampleAggregateFilter = {
-  dayOfWeek?: InputMaybe<BigFloatFilter>;
-};
-
-export type AvailabilityVarianceSampleAggregates = {
-  __typename?: 'AvailabilityVarianceSampleAggregates';
-  /** Sample variance of dayOfWeek across the matching connection */
-  dayOfWeek?: Maybe<Scalars['BigFloat']['output']>;
-};
-
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
 export type BigFloatFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -3676,215 +2494,813 @@ export type BigIntFilter = {
   notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
-export type Booking = Node & {
-  __typename?: 'Booking';
-  /** Reads a single `Event` that is related to this `Booking`. */
-  event?: Maybe<Event>;
-  eventId: Scalars['String']['output'];
+export type Budget = Node & {
+  __typename?: 'Budget';
+  alertThreshold?: Maybe<Scalars['Int']['output']>;
+  amount?: Maybe<Scalars['Float']['output']>;
+  budgetId: Scalars['String']['output'];
+  /** Reads a single `Category` that is related to this `Budget`. */
+  category?: Maybe<Category>;
+  categoryId?: Maybe<Scalars['String']['output']>;
+  month?: Maybe<Scalars['Datetime']['output']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']['output'];
-  status: BookingStatus;
-  /** Reads a single `User` that is related to this `Booking`. */
+  /** Reads a single `User` that is related to this `Budget`. */
   user?: Maybe<User>;
-  userId: Scalars['String']['output'];
+  userId?: Maybe<Scalars['String']['output']>;
 };
 
-export type BookingAggregates = {
-  __typename?: 'BookingAggregates';
+export type BudgetAggregates = {
+  __typename?: 'BudgetAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<BudgetAverageAggregates>;
   /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  distinctCount?: Maybe<BookingDistinctCountAggregates>;
+  distinctCount?: Maybe<BudgetDistinctCountAggregates>;
   keys?: Maybe<Array<Scalars['String']['output']>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<BudgetMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<BudgetMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<BudgetStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<BudgetStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<BudgetSumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<BudgetVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<BudgetVarianceSampleAggregates>;
 };
 
-/** A filter to be used against aggregates of `Booking` object types. */
-export type BookingAggregatesFilter = {
-  /** Distinct count aggregate over matching `Booking` objects. */
-  distinctCount?: InputMaybe<BookingDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `Booking` object to be included within the aggregate. */
-  filter?: InputMaybe<BookingFilter>;
+/** A filter to be used against aggregates of `Budget` object types. */
+export type BudgetAggregatesFilter = {
+  /** Mean average aggregate over matching `Budget` objects. */
+  average?: InputMaybe<BudgetAverageAggregateFilter>;
+  /** Distinct count aggregate over matching `Budget` objects. */
+  distinctCount?: InputMaybe<BudgetDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Budget` object to be included within the aggregate. */
+  filter?: InputMaybe<BudgetFilter>;
+  /** Maximum aggregate over matching `Budget` objects. */
+  max?: InputMaybe<BudgetMaxAggregateFilter>;
+  /** Minimum aggregate over matching `Budget` objects. */
+  min?: InputMaybe<BudgetMinAggregateFilter>;
+  /** Population standard deviation aggregate over matching `Budget` objects. */
+  stddevPopulation?: InputMaybe<BudgetStddevPopulationAggregateFilter>;
+  /** Sample standard deviation aggregate over matching `Budget` objects. */
+  stddevSample?: InputMaybe<BudgetStddevSampleAggregateFilter>;
+  /** Sum aggregate over matching `Budget` objects. */
+  sum?: InputMaybe<BudgetSumAggregateFilter>;
+  /** Population variance aggregate over matching `Budget` objects. */
+  variancePopulation?: InputMaybe<BudgetVariancePopulationAggregateFilter>;
+  /** Sample variance aggregate over matching `Budget` objects. */
+  varianceSample?: InputMaybe<BudgetVarianceSampleAggregateFilter>;
 };
 
-/** A condition to be used against `Booking` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type BookingCondition = {
-  /** Checks for equality with the object’s `eventId` field. */
-  eventId?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `status` field. */
-  status?: InputMaybe<BookingStatus>;
+export type BudgetAverageAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetAverageAggregates = {
+  __typename?: 'BudgetAverageAggregates';
+  /** Mean average of alertThreshold across the matching connection */
+  alertThreshold?: Maybe<Scalars['BigFloat']['output']>;
+  /** Mean average of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** A condition to be used against `Budget` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type BudgetCondition = {
+  /** Checks for equality with the object’s `alertThreshold` field. */
+  alertThreshold?: InputMaybe<Scalars['Int']['input']>;
+  /** Checks for equality with the object’s `amount` field. */
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Checks for equality with the object’s `budgetId` field. */
+  budgetId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `categoryId` field. */
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `month` field. */
+  month?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `userId` field. */
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type BookingDistinctCountAggregateFilter = {
-  eventId?: InputMaybe<BigIntFilter>;
-  status?: InputMaybe<BigIntFilter>;
+export type BudgetDistinctCountAggregateFilter = {
+  alertThreshold?: InputMaybe<BigIntFilter>;
+  amount?: InputMaybe<BigIntFilter>;
+  budgetId?: InputMaybe<BigIntFilter>;
+  categoryId?: InputMaybe<BigIntFilter>;
+  month?: InputMaybe<BigIntFilter>;
   userId?: InputMaybe<BigIntFilter>;
 };
 
-export type BookingDistinctCountAggregates = {
-  __typename?: 'BookingDistinctCountAggregates';
-  /** Distinct count of eventId across the matching connection */
-  eventId?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of status across the matching connection */
-  status?: Maybe<Scalars['BigInt']['output']>;
+export type BudgetDistinctCountAggregates = {
+  __typename?: 'BudgetDistinctCountAggregates';
+  /** Distinct count of alertThreshold across the matching connection */
+  alertThreshold?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of amount across the matching connection */
+  amount?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of budgetId across the matching connection */
+  budgetId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of categoryId across the matching connection */
+  categoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of month across the matching connection */
+  month?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of userId across the matching connection */
   userId?: Maybe<Scalars['BigInt']['output']>;
 };
 
-/** A filter to be used against `Booking` object types. All fields are combined with a logical ‘and.’ */
-export type BookingFilter = {
+/** A filter to be used against `Budget` object types. All fields are combined with a logical ‘and.’ */
+export type BudgetFilter = {
+  /** Filter by the object’s `alertThreshold` field. */
+  alertThreshold?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `amount` field. */
+  amount?: InputMaybe<FloatFilter>;
   /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<BookingFilter>>;
-  /** Filter by the object’s `event` relation. */
-  event?: InputMaybe<EventFilter>;
-  /** Filter by the object’s `eventId` field. */
-  eventId?: InputMaybe<StringFilter>;
+  and?: InputMaybe<Array<BudgetFilter>>;
+  /** Filter by the object’s `budgetId` field. */
+  budgetId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `category` relation. */
+  category?: InputMaybe<CategoryFilter>;
+  /** A related `category` exists. */
+  categoryExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `categoryId` field. */
+  categoryId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `month` field. */
+  month?: InputMaybe<DatetimeFilter>;
   /** Negates the expression. */
-  not?: InputMaybe<BookingFilter>;
+  not?: InputMaybe<BudgetFilter>;
   /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<BookingFilter>>;
-  /** Filter by the object’s `status` field. */
-  status?: InputMaybe<BookingStatusFilter>;
+  or?: InputMaybe<Array<BudgetFilter>>;
   /** Filter by the object’s `user` relation. */
   user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `userId` field. */
   userId?: InputMaybe<StringFilter>;
 };
 
-/** Grouping methods for `Booking` for usage during aggregation. */
-export enum BookingGroupBy {
-  EventId = 'EVENT_ID',
-  Status = 'STATUS',
+/** Grouping methods for `Budget` for usage during aggregation. */
+export enum BudgetGroupBy {
+  AlertThreshold = 'ALERT_THRESHOLD',
+  Amount = 'AMOUNT',
+  CategoryId = 'CATEGORY_ID',
+  Month = 'MONTH',
+  MonthTruncatedToDay = 'MONTH_TRUNCATED_TO_DAY',
+  MonthTruncatedToHour = 'MONTH_TRUNCATED_TO_HOUR',
   UserId = 'USER_ID'
 }
 
-/** Conditions for `Booking` aggregates. */
-export type BookingHavingInput = {
-  AND?: InputMaybe<Array<BookingHavingInput>>;
-  OR?: InputMaybe<Array<BookingHavingInput>>;
+export type BudgetHavingAverageInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** An input for mutations affecting `Booking` */
-export type BookingInput = {
-  eventId: Scalars['String']['input'];
-  status?: InputMaybe<BookingStatus>;
-  userId: Scalars['String']['input'];
+export type BudgetHavingDistinctCountInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** Represents an update to a `Booking`. Fields that are set will be updated. */
-export type BookingPatch = {
-  eventId?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<BookingStatus>;
+/** Conditions for `Budget` aggregates. */
+export type BudgetHavingInput = {
+  AND?: InputMaybe<Array<BudgetHavingInput>>;
+  OR?: InputMaybe<Array<BudgetHavingInput>>;
+  average?: InputMaybe<BudgetHavingAverageInput>;
+  distinctCount?: InputMaybe<BudgetHavingDistinctCountInput>;
+  max?: InputMaybe<BudgetHavingMaxInput>;
+  min?: InputMaybe<BudgetHavingMinInput>;
+  stddevPopulation?: InputMaybe<BudgetHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<BudgetHavingStddevSampleInput>;
+  sum?: InputMaybe<BudgetHavingSumInput>;
+  variancePopulation?: InputMaybe<BudgetHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<BudgetHavingVarianceSampleInput>;
+};
+
+export type BudgetHavingMaxInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingMinInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingStddevPopulationInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingStddevSampleInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingSumInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingVariancePopulationInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BudgetHavingVarianceSampleInput = {
+  alertThreshold?: InputMaybe<HavingIntFilter>;
+  amount?: InputMaybe<HavingFloatFilter>;
+  month?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `Budget` */
+export type BudgetInput = {
+  alertThreshold?: InputMaybe<Scalars['Int']['input']>;
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  budgetId: Scalars['String']['input'];
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  month?: InputMaybe<Scalars['Datetime']['input']>;
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
-export enum BookingStatus {
-  Canceled = 'CANCELED',
-  Confirmed = 'CONFIRMED',
-  Pending = 'PENDING'
-}
-
-/** A filter to be used against BookingStatus fields. All fields are combined with a logical ‘and.’ */
-export type BookingStatusFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<BookingStatus>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<BookingStatus>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<BookingStatus>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<BookingStatus>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<BookingStatus>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<BookingStatus>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<BookingStatus>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<BookingStatus>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<BookingStatus>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<BookingStatus>>;
+export type BudgetMaxAggregateFilter = {
+  alertThreshold?: InputMaybe<IntFilter>;
+  amount?: InputMaybe<FloatFilter>;
 };
 
-/** A connection to a list of `Booking` values. */
-export type BookingsConnection = {
-  __typename?: 'BookingsConnection';
+export type BudgetMaxAggregates = {
+  __typename?: 'BudgetMaxAggregates';
+  /** Maximum of alertThreshold across the matching connection */
+  alertThreshold?: Maybe<Scalars['Int']['output']>;
+  /** Maximum of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type BudgetMinAggregateFilter = {
+  alertThreshold?: InputMaybe<IntFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetMinAggregates = {
+  __typename?: 'BudgetMinAggregates';
+  /** Minimum of alertThreshold across the matching connection */
+  alertThreshold?: Maybe<Scalars['Int']['output']>;
+  /** Minimum of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Represents an update to a `Budget`. Fields that are set will be updated. */
+export type BudgetPatch = {
+  alertThreshold?: InputMaybe<Scalars['Int']['input']>;
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  budgetId?: InputMaybe<Scalars['String']['input']>;
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  month?: InputMaybe<Scalars['Datetime']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type BudgetStddevPopulationAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetStddevPopulationAggregates = {
+  __typename?: 'BudgetStddevPopulationAggregates';
+  /** Population standard deviation of alertThreshold across the matching connection */
+  alertThreshold?: Maybe<Scalars['BigFloat']['output']>;
+  /** Population standard deviation of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type BudgetStddevSampleAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetStddevSampleAggregates = {
+  __typename?: 'BudgetStddevSampleAggregates';
+  /** Sample standard deviation of alertThreshold across the matching connection */
+  alertThreshold?: Maybe<Scalars['BigFloat']['output']>;
+  /** Sample standard deviation of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type BudgetSumAggregateFilter = {
+  alertThreshold?: InputMaybe<BigIntFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetSumAggregates = {
+  __typename?: 'BudgetSumAggregates';
+  /** Sum of alertThreshold across the matching connection */
+  alertThreshold: Scalars['BigInt']['output'];
+  /** Sum of amount across the matching connection */
+  amount: Scalars['Float']['output'];
+};
+
+export type BudgetVariancePopulationAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetVariancePopulationAggregates = {
+  __typename?: 'BudgetVariancePopulationAggregates';
+  /** Population variance of alertThreshold across the matching connection */
+  alertThreshold?: Maybe<Scalars['BigFloat']['output']>;
+  /** Population variance of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type BudgetVarianceSampleAggregateFilter = {
+  alertThreshold?: InputMaybe<BigFloatFilter>;
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type BudgetVarianceSampleAggregates = {
+  __typename?: 'BudgetVarianceSampleAggregates';
+  /** Sample variance of alertThreshold across the matching connection */
+  alertThreshold?: Maybe<Scalars['BigFloat']['output']>;
+  /** Sample variance of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** A connection to a list of `Budget` values. */
+export type BudgetsConnection = {
+  __typename?: 'BudgetsConnection';
   /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<BookingAggregates>;
-  /** A list of edges which contains the `Booking` and cursor to aid in pagination. */
-  edges: Array<BookingsEdge>;
+  aggregates?: Maybe<BudgetAggregates>;
+  /** A list of edges which contains the `Budget` and cursor to aid in pagination. */
+  edges: Array<BudgetsEdge>;
   /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<BookingAggregates>>;
-  /** A list of `Booking` objects. */
-  nodes: Array<Booking>;
+  groupedAggregates?: Maybe<Array<BudgetAggregates>>;
+  /** A list of `Budget` objects. */
+  nodes: Array<Budget>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
-  /** The count of *all* `Booking` you could get from the connection. */
+  /** The count of *all* `Budget` you could get from the connection. */
   totalCount: Scalars['Int']['output'];
 };
 
 
-/** A connection to a list of `Booking` values. */
-export type BookingsConnectionGroupedAggregatesArgs = {
-  groupBy: Array<BookingGroupBy>;
-  having?: InputMaybe<BookingHavingInput>;
+/** A connection to a list of `Budget` values. */
+export type BudgetsConnectionGroupedAggregatesArgs = {
+  groupBy: Array<BudgetGroupBy>;
+  having?: InputMaybe<BudgetHavingInput>;
 };
 
-/** A `Booking` edge in the connection. */
-export type BookingsEdge = {
-  __typename?: 'BookingsEdge';
+/** A `Budget` edge in the connection. */
+export type BudgetsEdge = {
+  __typename?: 'BudgetsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']['output']>;
-  /** The `Booking` at the end of the edge. */
-  node: Booking;
+  /** The `Budget` at the end of the edge. */
+  node: Budget;
 };
 
-/** Methods to use when ordering `Booking`. */
-export enum BookingsOrderBy {
-  EventIdAsc = 'EVENT_ID_ASC',
-  EventIdDesc = 'EVENT_ID_DESC',
+/** Methods to use when ordering `Budget`. */
+export enum BudgetsOrderBy {
+  AlertThresholdAsc = 'ALERT_THRESHOLD_ASC',
+  AlertThresholdDesc = 'ALERT_THRESHOLD_DESC',
+  AmountAsc = 'AMOUNT_ASC',
+  AmountDesc = 'AMOUNT_DESC',
+  BudgetIdAsc = 'BUDGET_ID_ASC',
+  BudgetIdDesc = 'BUDGET_ID_DESC',
+  CategoryIdAsc = 'CATEGORY_ID_ASC',
+  CategoryIdDesc = 'CATEGORY_ID_DESC',
+  MonthAsc = 'MONTH_ASC',
+  MonthDesc = 'MONTH_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  StatusAsc = 'STATUS_ASC',
-  StatusDesc = 'STATUS_DESC',
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC'
 }
 
-/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
-export type BooleanFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+/** A connection to a list of `Category` values. */
+export type CategoriesConnection = {
+  __typename?: 'CategoriesConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<CategoryAggregates>;
+  /** A list of edges which contains the `Category` and cursor to aid in pagination. */
+  edges: Array<CategoriesEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<CategoryAggregates>>;
+  /** A list of `Category` objects. */
+  nodes: Array<Category>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Category` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
 };
 
-/** All input for the create `Availability` mutation. */
-export type CreateAvailabilityInput = {
-  /** The `Availability` to be created by this mutation. */
-  availability: AvailabilityInput;
+
+/** A connection to a list of `Category` values. */
+export type CategoriesConnectionGroupedAggregatesArgs = {
+  groupBy: Array<CategoryGroupBy>;
+  having?: InputMaybe<CategoryHavingInput>;
+};
+
+/** A `Category` edge in the connection. */
+export type CategoriesEdge = {
+  __typename?: 'CategoriesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Category` at the end of the edge. */
+  node: Category;
+};
+
+/** Methods to use when ordering `Category`. */
+export enum CategoriesOrderBy {
+  BudgetsByCategoryIdAverageAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdAverageAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdAverageAmountAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_AMOUNT_ASC',
+  BudgetsByCategoryIdAverageAmountDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_AMOUNT_DESC',
+  BudgetsByCategoryIdAverageBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_ASC',
+  BudgetsByCategoryIdAverageBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_DESC',
+  BudgetsByCategoryIdAverageCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdAverageCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdAverageMonthAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_ASC',
+  BudgetsByCategoryIdAverageMonthDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_DESC',
+  BudgetsByCategoryIdAverageUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC',
+  BudgetsByCategoryIdAverageUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_DESC',
+  BudgetsByCategoryIdCountAsc = 'BUDGETS_BY_CATEGORY_ID_COUNT_ASC',
+  BudgetsByCategoryIdCountDesc = 'BUDGETS_BY_CATEGORY_ID_COUNT_DESC',
+  BudgetsByCategoryIdDistinctCountAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdDistinctCountAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdDistinctCountAmountAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_ASC',
+  BudgetsByCategoryIdDistinctCountAmountDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_DESC',
+  BudgetsByCategoryIdDistinctCountBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_ASC',
+  BudgetsByCategoryIdDistinctCountBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_DESC',
+  BudgetsByCategoryIdDistinctCountCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdDistinctCountCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdDistinctCountMonthAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_ASC',
+  BudgetsByCategoryIdDistinctCountMonthDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_DESC',
+  BudgetsByCategoryIdDistinctCountUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC',
+  BudgetsByCategoryIdDistinctCountUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_DESC',
+  BudgetsByCategoryIdMaxAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdMaxAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdMaxAmountAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_AMOUNT_ASC',
+  BudgetsByCategoryIdMaxAmountDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_AMOUNT_DESC',
+  BudgetsByCategoryIdMaxBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_ASC',
+  BudgetsByCategoryIdMaxBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_DESC',
+  BudgetsByCategoryIdMaxCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdMaxCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdMaxMonthAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_MONTH_ASC',
+  BudgetsByCategoryIdMaxMonthDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_MONTH_DESC',
+  BudgetsByCategoryIdMaxUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_ASC',
+  BudgetsByCategoryIdMaxUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_DESC',
+  BudgetsByCategoryIdMinAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdMinAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdMinAmountAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_AMOUNT_ASC',
+  BudgetsByCategoryIdMinAmountDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_AMOUNT_DESC',
+  BudgetsByCategoryIdMinBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_ASC',
+  BudgetsByCategoryIdMinBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_DESC',
+  BudgetsByCategoryIdMinCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdMinCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdMinMonthAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_MONTH_ASC',
+  BudgetsByCategoryIdMinMonthDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_MONTH_DESC',
+  BudgetsByCategoryIdMinUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_ASC',
+  BudgetsByCategoryIdMinUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_DESC',
+  BudgetsByCategoryIdStddevPopulationAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdStddevPopulationAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdStddevPopulationAmountAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_ASC',
+  BudgetsByCategoryIdStddevPopulationAmountDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_DESC',
+  BudgetsByCategoryIdStddevPopulationBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_ASC',
+  BudgetsByCategoryIdStddevPopulationBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_DESC',
+  BudgetsByCategoryIdStddevPopulationCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdStddevPopulationCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdStddevPopulationMonthAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_ASC',
+  BudgetsByCategoryIdStddevPopulationMonthDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_DESC',
+  BudgetsByCategoryIdStddevPopulationUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC',
+  BudgetsByCategoryIdStddevPopulationUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_DESC',
+  BudgetsByCategoryIdStddevSampleAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdStddevSampleAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdStddevSampleAmountAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_ASC',
+  BudgetsByCategoryIdStddevSampleAmountDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_DESC',
+  BudgetsByCategoryIdStddevSampleBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_ASC',
+  BudgetsByCategoryIdStddevSampleBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_DESC',
+  BudgetsByCategoryIdStddevSampleCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdStddevSampleCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdStddevSampleMonthAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_ASC',
+  BudgetsByCategoryIdStddevSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_DESC',
+  BudgetsByCategoryIdStddevSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  BudgetsByCategoryIdStddevSampleUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  BudgetsByCategoryIdSumAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdSumAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdSumAmountAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_AMOUNT_ASC',
+  BudgetsByCategoryIdSumAmountDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_AMOUNT_DESC',
+  BudgetsByCategoryIdSumBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_ASC',
+  BudgetsByCategoryIdSumBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_DESC',
+  BudgetsByCategoryIdSumCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdSumCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdSumMonthAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_MONTH_ASC',
+  BudgetsByCategoryIdSumMonthDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_MONTH_DESC',
+  BudgetsByCategoryIdSumUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_ASC',
+  BudgetsByCategoryIdSumUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_DESC',
+  BudgetsByCategoryIdVariancePopulationAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdVariancePopulationAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdVariancePopulationAmountAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_ASC',
+  BudgetsByCategoryIdVariancePopulationAmountDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_DESC',
+  BudgetsByCategoryIdVariancePopulationBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_ASC',
+  BudgetsByCategoryIdVariancePopulationBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_DESC',
+  BudgetsByCategoryIdVariancePopulationCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdVariancePopulationCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdVariancePopulationMonthAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_ASC',
+  BudgetsByCategoryIdVariancePopulationMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_DESC',
+  BudgetsByCategoryIdVariancePopulationUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  BudgetsByCategoryIdVariancePopulationUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  BudgetsByCategoryIdVarianceSampleAlertThresholdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_ASC',
+  BudgetsByCategoryIdVarianceSampleAlertThresholdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_DESC',
+  BudgetsByCategoryIdVarianceSampleAmountAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_ASC',
+  BudgetsByCategoryIdVarianceSampleAmountDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_DESC',
+  BudgetsByCategoryIdVarianceSampleBudgetIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_ASC',
+  BudgetsByCategoryIdVarianceSampleBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC',
+  BudgetsByCategoryIdVarianceSampleCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
+  BudgetsByCategoryIdVarianceSampleCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdVarianceSampleMonthAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_ASC',
+  BudgetsByCategoryIdVarianceSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC',
+  BudgetsByCategoryIdVarianceSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  BudgetsByCategoryIdVarianceSampleUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TransactionsByCategoryIdAverageAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_AMOUNT_ASC',
+  TransactionsByCategoryIdAverageAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_AMOUNT_DESC',
+  TransactionsByCategoryIdAverageCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdAverageCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdAverageDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DATE_ASC',
+  TransactionsByCategoryIdAverageDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DATE_DESC',
+  TransactionsByCategoryIdAverageDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DESCRIPTION_ASC',
+  TransactionsByCategoryIdAverageDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DESCRIPTION_DESC',
+  TransactionsByCategoryIdAverageTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdAverageTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdAverageTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TYPE_ASC',
+  TransactionsByCategoryIdAverageTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TYPE_DESC',
+  TransactionsByCategoryIdAverageUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC',
+  TransactionsByCategoryIdAverageUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_USER_ID_DESC',
+  TransactionsByCategoryIdCountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_COUNT_ASC',
+  TransactionsByCategoryIdCountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_COUNT_DESC',
+  TransactionsByCategoryIdDistinctCountAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_ASC',
+  TransactionsByCategoryIdDistinctCountAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_DESC',
+  TransactionsByCategoryIdDistinctCountCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdDistinctCountCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdDistinctCountDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DATE_ASC',
+  TransactionsByCategoryIdDistinctCountDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DATE_DESC',
+  TransactionsByCategoryIdDistinctCountDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
+  TransactionsByCategoryIdDistinctCountDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
+  TransactionsByCategoryIdDistinctCountTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdDistinctCountTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdDistinctCountTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TYPE_ASC',
+  TransactionsByCategoryIdDistinctCountTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TYPE_DESC',
+  TransactionsByCategoryIdDistinctCountUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC',
+  TransactionsByCategoryIdDistinctCountUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_DESC',
+  TransactionsByCategoryIdMaxAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_AMOUNT_ASC',
+  TransactionsByCategoryIdMaxAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_AMOUNT_DESC',
+  TransactionsByCategoryIdMaxCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdMaxCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdMaxDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_DATE_ASC',
+  TransactionsByCategoryIdMaxDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_DATE_DESC',
+  TransactionsByCategoryIdMaxDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_DESCRIPTION_ASC',
+  TransactionsByCategoryIdMaxDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_DESCRIPTION_DESC',
+  TransactionsByCategoryIdMaxTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdMaxTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdMaxTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_TYPE_ASC',
+  TransactionsByCategoryIdMaxTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_TYPE_DESC',
+  TransactionsByCategoryIdMaxUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_USER_ID_ASC',
+  TransactionsByCategoryIdMaxUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MAX_USER_ID_DESC',
+  TransactionsByCategoryIdMinAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_AMOUNT_ASC',
+  TransactionsByCategoryIdMinAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_AMOUNT_DESC',
+  TransactionsByCategoryIdMinCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdMinCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdMinDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_DATE_ASC',
+  TransactionsByCategoryIdMinDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_DATE_DESC',
+  TransactionsByCategoryIdMinDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_DESCRIPTION_ASC',
+  TransactionsByCategoryIdMinDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_DESCRIPTION_DESC',
+  TransactionsByCategoryIdMinTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdMinTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdMinTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_TYPE_ASC',
+  TransactionsByCategoryIdMinTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_TYPE_DESC',
+  TransactionsByCategoryIdMinUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_USER_ID_ASC',
+  TransactionsByCategoryIdMinUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_MIN_USER_ID_DESC',
+  TransactionsByCategoryIdStddevPopulationAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_ASC',
+  TransactionsByCategoryIdStddevPopulationAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_DESC',
+  TransactionsByCategoryIdStddevPopulationCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdStddevPopulationCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdStddevPopulationDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DATE_ASC',
+  TransactionsByCategoryIdStddevPopulationDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DATE_DESC',
+  TransactionsByCategoryIdStddevPopulationDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DESCRIPTION_ASC',
+  TransactionsByCategoryIdStddevPopulationDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DESCRIPTION_DESC',
+  TransactionsByCategoryIdStddevPopulationTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdStddevPopulationTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdStddevPopulationTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TYPE_ASC',
+  TransactionsByCategoryIdStddevPopulationTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TYPE_DESC',
+  TransactionsByCategoryIdStddevPopulationUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC',
+  TransactionsByCategoryIdStddevPopulationUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_DESC',
+  TransactionsByCategoryIdStddevSampleAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_ASC',
+  TransactionsByCategoryIdStddevSampleAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_DESC',
+  TransactionsByCategoryIdStddevSampleCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdStddevSampleCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdStddevSampleDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DATE_ASC',
+  TransactionsByCategoryIdStddevSampleDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DATE_DESC',
+  TransactionsByCategoryIdStddevSampleDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DESCRIPTION_ASC',
+  TransactionsByCategoryIdStddevSampleDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DESCRIPTION_DESC',
+  TransactionsByCategoryIdStddevSampleTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdStddevSampleTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdStddevSampleTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TYPE_ASC',
+  TransactionsByCategoryIdStddevSampleTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TYPE_DESC',
+  TransactionsByCategoryIdStddevSampleUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  TransactionsByCategoryIdStddevSampleUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  TransactionsByCategoryIdSumAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_AMOUNT_ASC',
+  TransactionsByCategoryIdSumAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_AMOUNT_DESC',
+  TransactionsByCategoryIdSumCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdSumCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdSumDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_DATE_ASC',
+  TransactionsByCategoryIdSumDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_DATE_DESC',
+  TransactionsByCategoryIdSumDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_DESCRIPTION_ASC',
+  TransactionsByCategoryIdSumDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_DESCRIPTION_DESC',
+  TransactionsByCategoryIdSumTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdSumTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdSumTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_TYPE_ASC',
+  TransactionsByCategoryIdSumTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_TYPE_DESC',
+  TransactionsByCategoryIdSumUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_USER_ID_ASC',
+  TransactionsByCategoryIdSumUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_SUM_USER_ID_DESC',
+  TransactionsByCategoryIdVariancePopulationAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_ASC',
+  TransactionsByCategoryIdVariancePopulationAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_DESC',
+  TransactionsByCategoryIdVariancePopulationCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdVariancePopulationCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdVariancePopulationDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DATE_ASC',
+  TransactionsByCategoryIdVariancePopulationDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DATE_DESC',
+  TransactionsByCategoryIdVariancePopulationDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DESCRIPTION_ASC',
+  TransactionsByCategoryIdVariancePopulationDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DESCRIPTION_DESC',
+  TransactionsByCategoryIdVariancePopulationTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdVariancePopulationTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdVariancePopulationTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TYPE_ASC',
+  TransactionsByCategoryIdVariancePopulationTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TYPE_DESC',
+  TransactionsByCategoryIdVariancePopulationUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  TransactionsByCategoryIdVariancePopulationUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  TransactionsByCategoryIdVarianceSampleAmountAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_ASC',
+  TransactionsByCategoryIdVarianceSampleAmountDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_DESC',
+  TransactionsByCategoryIdVarianceSampleCategoryIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
+  TransactionsByCategoryIdVarianceSampleCategoryIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  TransactionsByCategoryIdVarianceSampleDateAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DATE_ASC',
+  TransactionsByCategoryIdVarianceSampleDateDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DATE_DESC',
+  TransactionsByCategoryIdVarianceSampleDescriptionAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC',
+  TransactionsByCategoryIdVarianceSampleDescriptionDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC',
+  TransactionsByCategoryIdVarianceSampleTransactionIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TRANSACTION_ID_ASC',
+  TransactionsByCategoryIdVarianceSampleTransactionIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TRANSACTION_ID_DESC',
+  TransactionsByCategoryIdVarianceSampleTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_ASC',
+  TransactionsByCategoryIdVarianceSampleTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_DESC',
+  TransactionsByCategoryIdVarianceSampleUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  TransactionsByCategoryIdVarianceSampleUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC'
+}
+
+export type Category = Node & {
+  __typename?: 'Category';
+  /** Reads and enables pagination through a set of `Budget`. */
+  budgetsByCategoryId: BudgetsConnection;
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']['output'];
+  /** Reads and enables pagination through a set of `Transaction`. */
+  transactionsByCategoryId: TransactionsConnection;
+};
+
+
+export type CategoryBudgetsByCategoryIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<BudgetCondition>;
+  filter?: InputMaybe<BudgetFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
+};
+
+
+export type CategoryTransactionsByCategoryIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TransactionCondition>;
+  filter?: InputMaybe<TransactionFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TransactionsOrderBy>>;
+};
+
+export type CategoryAggregates = {
+  __typename?: 'CategoryAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<CategoryDistinctCountAggregates>;
+  keys?: Maybe<Array<Scalars['String']['output']>>;
+};
+
+/**
+ * A condition to be used against `Category` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type CategoryCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CategoryDistinctCountAggregates = {
+  __typename?: 'CategoryDistinctCountAggregates';
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of name across the matching connection */
+  name?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’ */
+export type CategoryFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<CategoryFilter>>;
+  /** Filter by the object’s `budgetsByCategoryId` relation. */
+  budgetsByCategoryId?: InputMaybe<CategoryToManyBudgetFilter>;
+  /** Some related `budgetsByCategoryId` exist. */
+  budgetsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<CategoryFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<CategoryFilter>>;
+  /** Filter by the object’s `transactionsByCategoryId` relation. */
+  transactionsByCategoryId?: InputMaybe<CategoryToManyTransactionFilter>;
+  /** Some related `transactionsByCategoryId` exist. */
+  transactionsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Grouping methods for `Category` for usage during aggregation. */
+export enum CategoryGroupBy {
+  Name = 'NAME'
+}
+
+/** Conditions for `Category` aggregates. */
+export type CategoryHavingInput = {
+  AND?: InputMaybe<Array<CategoryHavingInput>>;
+  OR?: InputMaybe<Array<CategoryHavingInput>>;
+};
+
+/** An input for mutations affecting `Category` */
+export type CategoryInput = {
+  id: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+};
+
+/** Represents an update to a `Category`. Fields that are set will be updated. */
+export type CategoryPatch = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’ */
+export type CategoryToManyBudgetFilter = {
+  /** Aggregates across related `Budget` match the filter criteria. */
+  aggregates?: InputMaybe<BudgetAggregatesFilter>;
+  /** Every related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<BudgetFilter>;
+  /** No related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<BudgetFilter>;
+  /** Some related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<BudgetFilter>;
+};
+
+/** A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’ */
+export type CategoryToManyTransactionFilter = {
+  /** Aggregates across related `Transaction` match the filter criteria. */
+  aggregates?: InputMaybe<TransactionAggregatesFilter>;
+  /** Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TransactionFilter>;
+  /** No related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TransactionFilter>;
+  /** Some related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TransactionFilter>;
+};
+
+/** All input for the create `Budget` mutation. */
+export type CreateBudgetInput = {
+  /** The `Budget` to be created by this mutation. */
+  budget: BudgetInput;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -3892,13 +3308,15 @@ export type CreateAvailabilityInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** The output of our create `Availability` mutation. */
-export type CreateAvailabilityPayload = {
-  __typename?: 'CreateAvailabilityPayload';
-  /** The `Availability` that was created by this mutation. */
-  availability?: Maybe<Availability>;
-  /** An edge for our `Availability`. May be used by Relay 1. */
-  availabilityEdge?: Maybe<AvailabilitiesEdge>;
+/** The output of our create `Budget` mutation. */
+export type CreateBudgetPayload = {
+  __typename?: 'CreateBudgetPayload';
+  /** The `Budget` that was created by this mutation. */
+  budget?: Maybe<Budget>;
+  /** An edge for our `Budget`. May be used by Relay 1. */
+  budgetEdge?: Maybe<BudgetsEdge>;
+  /** Reads a single `Category` that is related to this `Budget`. */
+  category?: Maybe<Category>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -3906,20 +3324,20 @@ export type CreateAvailabilityPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `Availability`. */
+  /** Reads a single `User` that is related to this `Budget`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our create `Availability` mutation. */
-export type CreateAvailabilityPayloadAvailabilityEdgeArgs = {
-  orderBy?: InputMaybe<Array<AvailabilitiesOrderBy>>;
+/** The output of our create `Budget` mutation. */
+export type CreateBudgetPayloadBudgetEdgeArgs = {
+  orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
 };
 
-/** All input for the create `Booking` mutation. */
-export type CreateBookingInput = {
-  /** The `Booking` to be created by this mutation. */
-  booking: BookingInput;
+/** All input for the create `Category` mutation. */
+export type CreateCategoryInput = {
+  /** The `Category` to be created by this mutation. */
+  category: CategoryInput;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -3927,172 +3345,98 @@ export type CreateBookingInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** The output of our create `Booking` mutation. */
-export type CreateBookingPayload = {
-  __typename?: 'CreateBookingPayload';
-  /** The `Booking` that was created by this mutation. */
-  booking?: Maybe<Booking>;
-  /** An edge for our `Booking`. May be used by Relay 1. */
-  bookingEdge?: Maybe<BookingsEdge>;
+/** The output of our create `Category` mutation. */
+export type CreateCategoryPayload = {
+  __typename?: 'CreateCategoryPayload';
+  /** The `Category` that was created by this mutation. */
+  category?: Maybe<Category>;
+  /** An edge for our `Category`. May be used by Relay 1. */
+  categoryEdge?: Maybe<CategoriesEdge>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Reads a single `Event` that is related to this `Booking`. */
-  event?: Maybe<Event>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `Booking`. */
+};
+
+
+/** The output of our create `Category` mutation. */
+export type CreateCategoryPayloadCategoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+/** All input for the create `Report` mutation. */
+export type CreateReportInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Report` to be created by this mutation. */
+  report: ReportInput;
+};
+
+/** The output of our create `Report` mutation. */
+export type CreateReportPayload = {
+  __typename?: 'CreateReportPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Report` that was created by this mutation. */
+  report?: Maybe<Report>;
+  /** An edge for our `Report`. May be used by Relay 1. */
+  reportEdge?: Maybe<ReportsEdge>;
+  /** Reads a single `User` that is related to this `Report`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our create `Booking` mutation. */
-export type CreateBookingPayloadBookingEdgeArgs = {
-  orderBy?: InputMaybe<Array<BookingsOrderBy>>;
+/** The output of our create `Report` mutation. */
+export type CreateReportPayloadReportEdgeArgs = {
+  orderBy?: InputMaybe<Array<ReportsOrderBy>>;
 };
 
-/** All input for the create `CustomAvailability` mutation. */
-export type CreateCustomAvailabilityInput = {
+/** All input for the create `Transaction` mutation. */
+export type CreateTransactionInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `CustomAvailability` to be created by this mutation. */
-  customAvailability: CustomAvailabilityInput;
+  /** The `Transaction` to be created by this mutation. */
+  transaction: TransactionInput;
 };
 
-/** The output of our create `CustomAvailability` mutation. */
-export type CreateCustomAvailabilityPayload = {
-  __typename?: 'CreateCustomAvailabilityPayload';
+/** The output of our create `Transaction` mutation. */
+export type CreateTransactionPayload = {
+  __typename?: 'CreateTransactionPayload';
+  /** Reads a single `Category` that is related to this `Transaction`. */
+  category?: Maybe<Category>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `CustomAvailability` that was created by this mutation. */
-  customAvailability?: Maybe<CustomAvailability>;
-  /** An edge for our `CustomAvailability`. May be used by Relay 1. */
-  customAvailabilityEdge?: Maybe<CustomAvailabilitiesEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `CustomAvailability`. */
+  /** The `Transaction` that was created by this mutation. */
+  transaction?: Maybe<Transaction>;
+  /** An edge for our `Transaction`. May be used by Relay 1. */
+  transactionEdge?: Maybe<TransactionsEdge>;
+  /** Reads a single `User` that is related to this `Transaction`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our create `CustomAvailability` mutation. */
-export type CreateCustomAvailabilityPayloadCustomAvailabilityEdgeArgs = {
-  orderBy?: InputMaybe<Array<CustomAvailabilitiesOrderBy>>;
-};
-
-/** All input for the create `Event` mutation. */
-export type CreateEventInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `Event` to be created by this mutation. */
-  event: EventInput;
-};
-
-/** The output of our create `Event` mutation. */
-export type CreateEventPayload = {
-  __typename?: 'CreateEventPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `Event` that was created by this mutation. */
-  event?: Maybe<Event>;
-  /** An edge for our `Event`. May be used by Relay 1. */
-  eventEdge?: Maybe<EventsEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Team` that is related to this `Event`. */
-  team?: Maybe<Team>;
-  /** Reads a single `User` that is related to this `Event`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our create `Event` mutation. */
-export type CreateEventPayloadEventEdgeArgs = {
-  orderBy?: InputMaybe<Array<EventsOrderBy>>;
-};
-
-/** All input for the create `Team` mutation. */
-export type CreateTeamInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `Team` to be created by this mutation. */
-  team: TeamInput;
-};
-
-/** All input for the create `TeamMembership` mutation. */
-export type CreateTeamMembershipInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `TeamMembership` to be created by this mutation. */
-  teamMembership: TeamMembershipInput;
-};
-
-/** The output of our create `TeamMembership` mutation. */
-export type CreateTeamMembershipPayload = {
-  __typename?: 'CreateTeamMembershipPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Team` that is related to this `TeamMembership`. */
-  team?: Maybe<Team>;
-  /** The `TeamMembership` that was created by this mutation. */
-  teamMembership?: Maybe<TeamMembership>;
-  /** An edge for our `TeamMembership`. May be used by Relay 1. */
-  teamMembershipEdge?: Maybe<TeamMembershipsEdge>;
-  /** Reads a single `User` that is related to this `TeamMembership`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our create `TeamMembership` mutation. */
-export type CreateTeamMembershipPayloadTeamMembershipEdgeArgs = {
-  orderBy?: InputMaybe<Array<TeamMembershipsOrderBy>>;
-};
-
-/** The output of our create `Team` mutation. */
-export type CreateTeamPayload = {
-  __typename?: 'CreateTeamPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** The `Team` that was created by this mutation. */
-  team?: Maybe<Team>;
-  /** An edge for our `Team`. May be used by Relay 1. */
-  teamEdge?: Maybe<TeamsEdge>;
-};
-
-
-/** The output of our create `Team` mutation. */
-export type CreateTeamPayloadTeamEdgeArgs = {
-  orderBy?: InputMaybe<Array<TeamsOrderBy>>;
+/** The output of our create `Transaction` mutation. */
+export type CreateTransactionPayloadTransactionEdgeArgs = {
+  orderBy?: InputMaybe<Array<TransactionsOrderBy>>;
 };
 
 /** All input for the create `UserDevice` mutation. */
@@ -4163,248 +3507,6 @@ export type CreateUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
-/** A connection to a list of `CustomAvailability` values. */
-export type CustomAvailabilitiesConnection = {
-  __typename?: 'CustomAvailabilitiesConnection';
-  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<CustomAvailabilityAggregates>;
-  /** A list of edges which contains the `CustomAvailability` and cursor to aid in pagination. */
-  edges: Array<CustomAvailabilitiesEdge>;
-  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<CustomAvailabilityAggregates>>;
-  /** A list of `CustomAvailability` objects. */
-  nodes: Array<CustomAvailability>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `CustomAvailability` you could get from the connection. */
-  totalCount: Scalars['Int']['output'];
-};
-
-
-/** A connection to a list of `CustomAvailability` values. */
-export type CustomAvailabilitiesConnectionGroupedAggregatesArgs = {
-  groupBy: Array<CustomAvailabilityGroupBy>;
-  having?: InputMaybe<CustomAvailabilityHavingInput>;
-};
-
-/** A `CustomAvailability` edge in the connection. */
-export type CustomAvailabilitiesEdge = {
-  __typename?: 'CustomAvailabilitiesEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  /** The `CustomAvailability` at the end of the edge. */
-  node: CustomAvailability;
-};
-
-/** Methods to use when ordering `CustomAvailability`. */
-export enum CustomAvailabilitiesOrderBy {
-  AvailableAsc = 'AVAILABLE_ASC',
-  AvailableDesc = 'AVAILABLE_DESC',
-  EndTimeAsc = 'END_TIME_ASC',
-  EndTimeDesc = 'END_TIME_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  ReasonAsc = 'REASON_ASC',
-  ReasonDesc = 'REASON_DESC',
-  StartTimeAsc = 'START_TIME_ASC',
-  StartTimeDesc = 'START_TIME_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC'
-}
-
-export type CustomAvailability = Node & {
-  __typename?: 'CustomAvailability';
-  available: Scalars['Boolean']['output'];
-  endTime: Scalars['Datetime']['output'];
-  id: Scalars['String']['output'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']['output'];
-  reason?: Maybe<Scalars['String']['output']>;
-  startTime: Scalars['Datetime']['output'];
-  /** Reads a single `User` that is related to this `CustomAvailability`. */
-  user?: Maybe<User>;
-  userId: Scalars['String']['output'];
-};
-
-export type CustomAvailabilityAggregates = {
-  __typename?: 'CustomAvailabilityAggregates';
-  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  distinctCount?: Maybe<CustomAvailabilityDistinctCountAggregates>;
-  keys?: Maybe<Array<Scalars['String']['output']>>;
-};
-
-/** A filter to be used against aggregates of `CustomAvailability` object types. */
-export type CustomAvailabilityAggregatesFilter = {
-  /** Distinct count aggregate over matching `CustomAvailability` objects. */
-  distinctCount?: InputMaybe<CustomAvailabilityDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `CustomAvailability` object to be included within the aggregate. */
-  filter?: InputMaybe<CustomAvailabilityFilter>;
-};
-
-/**
- * A condition to be used against `CustomAvailability` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export type CustomAvailabilityCondition = {
-  /** Checks for equality with the object’s `available` field. */
-  available?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Checks for equality with the object’s `endTime` field. */
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `reason` field. */
-  reason?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `startTime` field. */
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CustomAvailabilityDistinctCountAggregateFilter = {
-  available?: InputMaybe<BigIntFilter>;
-  endTime?: InputMaybe<BigIntFilter>;
-  id?: InputMaybe<BigIntFilter>;
-  reason?: InputMaybe<BigIntFilter>;
-  startTime?: InputMaybe<BigIntFilter>;
-  userId?: InputMaybe<BigIntFilter>;
-};
-
-export type CustomAvailabilityDistinctCountAggregates = {
-  __typename?: 'CustomAvailabilityDistinctCountAggregates';
-  /** Distinct count of available across the matching connection */
-  available?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of endTime across the matching connection */
-  endTime?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of id across the matching connection */
-  id?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of reason across the matching connection */
-  reason?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of startTime across the matching connection */
-  startTime?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of userId across the matching connection */
-  userId?: Maybe<Scalars['BigInt']['output']>;
-};
-
-/** A filter to be used against `CustomAvailability` object types. All fields are combined with a logical ‘and.’ */
-export type CustomAvailabilityFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<CustomAvailabilityFilter>>;
-  /** Filter by the object’s `available` field. */
-  available?: InputMaybe<BooleanFilter>;
-  /** Filter by the object’s `endTime` field. */
-  endTime?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<CustomAvailabilityFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<CustomAvailabilityFilter>>;
-  /** Filter by the object’s `reason` field. */
-  reason?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `startTime` field. */
-  startTime?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `user` relation. */
-  user?: InputMaybe<UserFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: InputMaybe<StringFilter>;
-};
-
-/** Grouping methods for `CustomAvailability` for usage during aggregation. */
-export enum CustomAvailabilityGroupBy {
-  Available = 'AVAILABLE',
-  EndTime = 'END_TIME',
-  EndTimeTruncatedToDay = 'END_TIME_TRUNCATED_TO_DAY',
-  EndTimeTruncatedToHour = 'END_TIME_TRUNCATED_TO_HOUR',
-  Reason = 'REASON',
-  StartTime = 'START_TIME',
-  StartTimeTruncatedToDay = 'START_TIME_TRUNCATED_TO_DAY',
-  StartTimeTruncatedToHour = 'START_TIME_TRUNCATED_TO_HOUR',
-  UserId = 'USER_ID'
-}
-
-export type CustomAvailabilityHavingAverageInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingDistinctCountInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** Conditions for `CustomAvailability` aggregates. */
-export type CustomAvailabilityHavingInput = {
-  AND?: InputMaybe<Array<CustomAvailabilityHavingInput>>;
-  OR?: InputMaybe<Array<CustomAvailabilityHavingInput>>;
-  average?: InputMaybe<CustomAvailabilityHavingAverageInput>;
-  distinctCount?: InputMaybe<CustomAvailabilityHavingDistinctCountInput>;
-  max?: InputMaybe<CustomAvailabilityHavingMaxInput>;
-  min?: InputMaybe<CustomAvailabilityHavingMinInput>;
-  stddevPopulation?: InputMaybe<CustomAvailabilityHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<CustomAvailabilityHavingStddevSampleInput>;
-  sum?: InputMaybe<CustomAvailabilityHavingSumInput>;
-  variancePopulation?: InputMaybe<CustomAvailabilityHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<CustomAvailabilityHavingVarianceSampleInput>;
-};
-
-export type CustomAvailabilityHavingMaxInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingMinInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingStddevPopulationInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingStddevSampleInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingSumInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingVariancePopulationInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type CustomAvailabilityHavingVarianceSampleInput = {
-  endTime?: InputMaybe<HavingDatetimeFilter>;
-  startTime?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** An input for mutations affecting `CustomAvailability` */
-export type CustomAvailabilityInput = {
-  available?: InputMaybe<Scalars['Boolean']['input']>;
-  endTime: Scalars['Datetime']['input'];
-  id: Scalars['String']['input'];
-  reason?: InputMaybe<Scalars['String']['input']>;
-  startTime: Scalars['Datetime']['input'];
-  userId: Scalars['String']['input'];
-};
-
-/** Represents an update to a `CustomAvailability`. Fields that are set will be updated. */
-export type CustomAvailabilityPatch = {
-  available?: InputMaybe<Scalars['Boolean']['input']>;
-  endTime?: InputMaybe<Scalars['Datetime']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  reason?: InputMaybe<Scalars['String']['input']>;
-  startTime?: InputMaybe<Scalars['Datetime']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export type DatetimeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -4431,19 +3533,67 @@ export type DatetimeFilter = {
   notIn?: InputMaybe<Array<Scalars['Datetime']['input']>>;
 };
 
-/** All input for the `deleteAvailabilityByNodeId` mutation. */
-export type DeleteAvailabilityByNodeIdInput = {
+/** All input for the `deleteBudgetByNodeId` mutation. */
+export type DeleteBudgetByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Availability` to be deleted. */
+  /** The globally unique `ID` which will identify a single `Budget` to be deleted. */
   nodeId: Scalars['ID']['input'];
 };
 
-/** All input for the `deleteAvailability` mutation. */
-export type DeleteAvailabilityInput = {
+/** All input for the `deleteBudget` mutation. */
+export type DeleteBudgetInput = {
+  budgetId: Scalars['String']['input'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The output of our delete `Budget` mutation. */
+export type DeleteBudgetPayload = {
+  __typename?: 'DeleteBudgetPayload';
+  /** The `Budget` that was deleted by this mutation. */
+  budget?: Maybe<Budget>;
+  /** An edge for our `Budget`. May be used by Relay 1. */
+  budgetEdge?: Maybe<BudgetsEdge>;
+  /** Reads a single `Category` that is related to this `Budget`. */
+  category?: Maybe<Category>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedBudgetNodeId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Budget`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our delete `Budget` mutation. */
+export type DeleteBudgetPayloadBudgetEdgeArgs = {
+  orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
+};
+
+/** All input for the `deleteCategoryByNodeId` mutation. */
+export type DeleteCategoryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Category` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteCategory` mutation. */
+export type DeleteCategoryInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -4452,264 +3602,121 @@ export type DeleteAvailabilityInput = {
   id: Scalars['String']['input'];
 };
 
-/** The output of our delete `Availability` mutation. */
-export type DeleteAvailabilityPayload = {
-  __typename?: 'DeleteAvailabilityPayload';
-  /** The `Availability` that was deleted by this mutation. */
-  availability?: Maybe<Availability>;
-  /** An edge for our `Availability`. May be used by Relay 1. */
-  availabilityEdge?: Maybe<AvailabilitiesEdge>;
+/** The output of our delete `Category` mutation. */
+export type DeleteCategoryPayload = {
+  __typename?: 'DeleteCategoryPayload';
+  /** The `Category` that was deleted by this mutation. */
+  category?: Maybe<Category>;
+  /** An edge for our `Category`. May be used by Relay 1. */
+  categoryEdge?: Maybe<CategoriesEdge>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedAvailabilityNodeId?: Maybe<Scalars['ID']['output']>;
+  deletedCategoryNodeId?: Maybe<Scalars['ID']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `Availability`. */
+};
+
+
+/** The output of our delete `Category` mutation. */
+export type DeleteCategoryPayloadCategoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+/** All input for the `deleteReportByNodeId` mutation. */
+export type DeleteReportByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Report` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteReport` mutation. */
+export type DeleteReportInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  reportId: Scalars['String']['input'];
+};
+
+/** The output of our delete `Report` mutation. */
+export type DeleteReportPayload = {
+  __typename?: 'DeleteReportPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedReportNodeId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Report` that was deleted by this mutation. */
+  report?: Maybe<Report>;
+  /** An edge for our `Report`. May be used by Relay 1. */
+  reportEdge?: Maybe<ReportsEdge>;
+  /** Reads a single `User` that is related to this `Report`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our delete `Availability` mutation. */
-export type DeleteAvailabilityPayloadAvailabilityEdgeArgs = {
-  orderBy?: InputMaybe<Array<AvailabilitiesOrderBy>>;
+/** The output of our delete `Report` mutation. */
+export type DeleteReportPayloadReportEdgeArgs = {
+  orderBy?: InputMaybe<Array<ReportsOrderBy>>;
 };
 
-/** All input for the `deleteBookingByNodeId` mutation. */
-export type DeleteBookingByNodeIdInput = {
+/** All input for the `deleteTransactionByNodeId` mutation. */
+export type DeleteTransactionByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Booking` to be deleted. */
+  /** The globally unique `ID` which will identify a single `Transaction` to be deleted. */
   nodeId: Scalars['ID']['input'];
 };
 
-/** All input for the `deleteBooking` mutation. */
-export type DeleteBookingInput = {
+/** All input for the `deleteTransaction` mutation. */
+export type DeleteTransactionInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  eventId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
+  transactionId: Scalars['String']['input'];
 };
 
-/** The output of our delete `Booking` mutation. */
-export type DeleteBookingPayload = {
-  __typename?: 'DeleteBookingPayload';
-  /** The `Booking` that was deleted by this mutation. */
-  booking?: Maybe<Booking>;
-  /** An edge for our `Booking`. May be used by Relay 1. */
-  bookingEdge?: Maybe<BookingsEdge>;
+/** The output of our delete `Transaction` mutation. */
+export type DeleteTransactionPayload = {
+  __typename?: 'DeleteTransactionPayload';
+  /** Reads a single `Category` that is related to this `Transaction`. */
+  category?: Maybe<Category>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedBookingNodeId?: Maybe<Scalars['ID']['output']>;
-  /** Reads a single `Event` that is related to this `Booking`. */
-  event?: Maybe<Event>;
+  deletedTransactionNodeId?: Maybe<Scalars['ID']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `Booking`. */
+  /** The `Transaction` that was deleted by this mutation. */
+  transaction?: Maybe<Transaction>;
+  /** An edge for our `Transaction`. May be used by Relay 1. */
+  transactionEdge?: Maybe<TransactionsEdge>;
+  /** Reads a single `User` that is related to this `Transaction`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our delete `Booking` mutation. */
-export type DeleteBookingPayloadBookingEdgeArgs = {
-  orderBy?: InputMaybe<Array<BookingsOrderBy>>;
-};
-
-/** All input for the `deleteCustomAvailabilityByNodeId` mutation. */
-export type DeleteCustomAvailabilityByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `CustomAvailability` to be deleted. */
-  nodeId: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteCustomAvailability` mutation. */
-export type DeleteCustomAvailabilityInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-};
-
-/** The output of our delete `CustomAvailability` mutation. */
-export type DeleteCustomAvailabilityPayload = {
-  __typename?: 'DeleteCustomAvailabilityPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `CustomAvailability` that was deleted by this mutation. */
-  customAvailability?: Maybe<CustomAvailability>;
-  /** An edge for our `CustomAvailability`. May be used by Relay 1. */
-  customAvailabilityEdge?: Maybe<CustomAvailabilitiesEdge>;
-  deletedCustomAvailabilityNodeId?: Maybe<Scalars['ID']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `CustomAvailability`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our delete `CustomAvailability` mutation. */
-export type DeleteCustomAvailabilityPayloadCustomAvailabilityEdgeArgs = {
-  orderBy?: InputMaybe<Array<CustomAvailabilitiesOrderBy>>;
-};
-
-/** All input for the `deleteEventByNodeId` mutation. */
-export type DeleteEventByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Event` to be deleted. */
-  nodeId: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteEvent` mutation. */
-export type DeleteEventInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-};
-
-/** The output of our delete `Event` mutation. */
-export type DeleteEventPayload = {
-  __typename?: 'DeleteEventPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedEventNodeId?: Maybe<Scalars['ID']['output']>;
-  /** The `Event` that was deleted by this mutation. */
-  event?: Maybe<Event>;
-  /** An edge for our `Event`. May be used by Relay 1. */
-  eventEdge?: Maybe<EventsEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Team` that is related to this `Event`. */
-  team?: Maybe<Team>;
-  /** Reads a single `User` that is related to this `Event`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our delete `Event` mutation. */
-export type DeleteEventPayloadEventEdgeArgs = {
-  orderBy?: InputMaybe<Array<EventsOrderBy>>;
-};
-
-/** All input for the `deleteTeamByNodeId` mutation. */
-export type DeleteTeamByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Team` to be deleted. */
-  nodeId: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteTeam` mutation. */
-export type DeleteTeamInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-};
-
-/** All input for the `deleteTeamMembershipByNodeId` mutation. */
-export type DeleteTeamMembershipByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `TeamMembership` to be deleted. */
-  nodeId: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteTeamMembership` mutation. */
-export type DeleteTeamMembershipInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-};
-
-/** The output of our delete `TeamMembership` mutation. */
-export type DeleteTeamMembershipPayload = {
-  __typename?: 'DeleteTeamMembershipPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedTeamMembershipNodeId?: Maybe<Scalars['ID']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Team` that is related to this `TeamMembership`. */
-  team?: Maybe<Team>;
-  /** The `TeamMembership` that was deleted by this mutation. */
-  teamMembership?: Maybe<TeamMembership>;
-  /** An edge for our `TeamMembership`. May be used by Relay 1. */
-  teamMembershipEdge?: Maybe<TeamMembershipsEdge>;
-  /** Reads a single `User` that is related to this `TeamMembership`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our delete `TeamMembership` mutation. */
-export type DeleteTeamMembershipPayloadTeamMembershipEdgeArgs = {
-  orderBy?: InputMaybe<Array<TeamMembershipsOrderBy>>;
-};
-
-/** The output of our delete `Team` mutation. */
-export type DeleteTeamPayload = {
-  __typename?: 'DeleteTeamPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedTeamNodeId?: Maybe<Scalars['ID']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** The `Team` that was deleted by this mutation. */
-  team?: Maybe<Team>;
-  /** An edge for our `Team`. May be used by Relay 1. */
-  teamEdge?: Maybe<TeamsEdge>;
-};
-
-
-/** The output of our delete `Team` mutation. */
-export type DeleteTeamPayloadTeamEdgeArgs = {
-  orderBy?: InputMaybe<Array<TeamsOrderBy>>;
+/** The output of our delete `Transaction` mutation. */
+export type DeleteTransactionPayloadTransactionEdgeArgs = {
+  orderBy?: InputMaybe<Array<TransactionsOrderBy>>;
 };
 
 /** All input for the `deleteUserByNodeId` mutation. */
@@ -4813,474 +3820,31 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
-export type Event = Node & {
-  __typename?: 'Event';
-  /** Reads and enables pagination through a set of `Booking`. */
-  bookingsByEventId: BookingsConnection;
-  date: Scalars['Datetime']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  duration: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  location?: Maybe<Scalars['String']['output']>;
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']['output'];
-  /** Reads a single `Team` that is related to this `Event`. */
-  team?: Maybe<Team>;
-  teamId?: Maybe<Scalars['String']['output']>;
-  title: Scalars['String']['output'];
-  /** Reads a single `User` that is related to this `Event`. */
-  user?: Maybe<User>;
-  userId?: Maybe<Scalars['String']['output']>;
+/** A filter to be used against Float fields. All fields are combined with a logical ‘and.’ */
+export type FloatFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Float']['input']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Float']['input']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Float']['input']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Float']['input']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Float']['input']>>;
 };
-
-
-export type EventBookingsByEventIdArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<BookingCondition>;
-  filter?: InputMaybe<BookingFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<BookingsOrderBy>>;
-};
-
-export type EventAggregates = {
-  __typename?: 'EventAggregates';
-  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  average?: Maybe<EventAverageAggregates>;
-  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  distinctCount?: Maybe<EventDistinctCountAggregates>;
-  keys?: Maybe<Array<Scalars['String']['output']>>;
-  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  max?: Maybe<EventMaxAggregates>;
-  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  min?: Maybe<EventMinAggregates>;
-  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  stddevPopulation?: Maybe<EventStddevPopulationAggregates>;
-  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  stddevSample?: Maybe<EventStddevSampleAggregates>;
-  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  sum?: Maybe<EventSumAggregates>;
-  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  variancePopulation?: Maybe<EventVariancePopulationAggregates>;
-  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  varianceSample?: Maybe<EventVarianceSampleAggregates>;
-};
-
-/** A filter to be used against aggregates of `Event` object types. */
-export type EventAggregatesFilter = {
-  /** Mean average aggregate over matching `Event` objects. */
-  average?: InputMaybe<EventAverageAggregateFilter>;
-  /** Distinct count aggregate over matching `Event` objects. */
-  distinctCount?: InputMaybe<EventDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `Event` object to be included within the aggregate. */
-  filter?: InputMaybe<EventFilter>;
-  /** Maximum aggregate over matching `Event` objects. */
-  max?: InputMaybe<EventMaxAggregateFilter>;
-  /** Minimum aggregate over matching `Event` objects. */
-  min?: InputMaybe<EventMinAggregateFilter>;
-  /** Population standard deviation aggregate over matching `Event` objects. */
-  stddevPopulation?: InputMaybe<EventStddevPopulationAggregateFilter>;
-  /** Sample standard deviation aggregate over matching `Event` objects. */
-  stddevSample?: InputMaybe<EventStddevSampleAggregateFilter>;
-  /** Sum aggregate over matching `Event` objects. */
-  sum?: InputMaybe<EventSumAggregateFilter>;
-  /** Population variance aggregate over matching `Event` objects. */
-  variancePopulation?: InputMaybe<EventVariancePopulationAggregateFilter>;
-  /** Sample variance aggregate over matching `Event` objects. */
-  varianceSample?: InputMaybe<EventVarianceSampleAggregateFilter>;
-};
-
-export type EventAverageAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-export type EventAverageAggregates = {
-  __typename?: 'EventAverageAggregates';
-  /** Mean average of duration across the matching connection */
-  duration?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-/** A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type EventCondition = {
-  /** Checks for equality with the object’s `date` field. */
-  date?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `description` field. */
-  description?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `duration` field. */
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `location` field. */
-  location?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `teamId` field. */
-  teamId?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `title` field. */
-  title?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type EventDistinctCountAggregateFilter = {
-  date?: InputMaybe<BigIntFilter>;
-  description?: InputMaybe<BigIntFilter>;
-  duration?: InputMaybe<BigIntFilter>;
-  id?: InputMaybe<BigIntFilter>;
-  location?: InputMaybe<BigIntFilter>;
-  teamId?: InputMaybe<BigIntFilter>;
-  title?: InputMaybe<BigIntFilter>;
-  userId?: InputMaybe<BigIntFilter>;
-};
-
-export type EventDistinctCountAggregates = {
-  __typename?: 'EventDistinctCountAggregates';
-  /** Distinct count of date across the matching connection */
-  date?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of description across the matching connection */
-  description?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of duration across the matching connection */
-  duration?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of id across the matching connection */
-  id?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of location across the matching connection */
-  location?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of teamId across the matching connection */
-  teamId?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of title across the matching connection */
-  title?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of userId across the matching connection */
-  userId?: Maybe<Scalars['BigInt']['output']>;
-};
-
-/** A filter to be used against `Event` object types. All fields are combined with a logical ‘and.’ */
-export type EventFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<EventFilter>>;
-  /** Filter by the object’s `bookingsByEventId` relation. */
-  bookingsByEventId?: InputMaybe<EventToManyBookingFilter>;
-  /** Some related `bookingsByEventId` exist. */
-  bookingsByEventIdExist?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `date` field. */
-  date?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `description` field. */
-  description?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `duration` field. */
-  duration?: InputMaybe<IntFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `location` field. */
-  location?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<EventFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<EventFilter>>;
-  /** Filter by the object’s `team` relation. */
-  team?: InputMaybe<TeamFilter>;
-  /** A related `team` exists. */
-  teamExists?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `teamId` field. */
-  teamId?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `title` field. */
-  title?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `user` relation. */
-  user?: InputMaybe<UserFilter>;
-  /** A related `user` exists. */
-  userExists?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `userId` field. */
-  userId?: InputMaybe<StringFilter>;
-};
-
-/** Grouping methods for `Event` for usage during aggregation. */
-export enum EventGroupBy {
-  Date = 'DATE',
-  DateTruncatedToDay = 'DATE_TRUNCATED_TO_DAY',
-  DateTruncatedToHour = 'DATE_TRUNCATED_TO_HOUR',
-  Description = 'DESCRIPTION',
-  Duration = 'DURATION',
-  Location = 'LOCATION',
-  TeamId = 'TEAM_ID',
-  Title = 'TITLE',
-  UserId = 'USER_ID'
-}
-
-export type EventHavingAverageInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingDistinctCountInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-/** Conditions for `Event` aggregates. */
-export type EventHavingInput = {
-  AND?: InputMaybe<Array<EventHavingInput>>;
-  OR?: InputMaybe<Array<EventHavingInput>>;
-  average?: InputMaybe<EventHavingAverageInput>;
-  distinctCount?: InputMaybe<EventHavingDistinctCountInput>;
-  max?: InputMaybe<EventHavingMaxInput>;
-  min?: InputMaybe<EventHavingMinInput>;
-  stddevPopulation?: InputMaybe<EventHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<EventHavingStddevSampleInput>;
-  sum?: InputMaybe<EventHavingSumInput>;
-  variancePopulation?: InputMaybe<EventHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<EventHavingVarianceSampleInput>;
-};
-
-export type EventHavingMaxInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingMinInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingStddevPopulationInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingStddevSampleInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingSumInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingVariancePopulationInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-export type EventHavingVarianceSampleInput = {
-  date?: InputMaybe<HavingDatetimeFilter>;
-  duration?: InputMaybe<HavingIntFilter>;
-};
-
-/** An input for mutations affecting `Event` */
-export type EventInput = {
-  date: Scalars['Datetime']['input'];
-  description?: InputMaybe<Scalars['String']['input']>;
-  duration: Scalars['Int']['input'];
-  id: Scalars['String']['input'];
-  location?: InputMaybe<Scalars['String']['input']>;
-  teamId?: InputMaybe<Scalars['String']['input']>;
-  title: Scalars['String']['input'];
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type EventMaxAggregateFilter = {
-  duration?: InputMaybe<IntFilter>;
-};
-
-export type EventMaxAggregates = {
-  __typename?: 'EventMaxAggregates';
-  /** Maximum of duration across the matching connection */
-  duration?: Maybe<Scalars['Int']['output']>;
-};
-
-export type EventMinAggregateFilter = {
-  duration?: InputMaybe<IntFilter>;
-};
-
-export type EventMinAggregates = {
-  __typename?: 'EventMinAggregates';
-  /** Minimum of duration across the matching connection */
-  duration?: Maybe<Scalars['Int']['output']>;
-};
-
-/** Represents an update to a `Event`. Fields that are set will be updated. */
-export type EventPatch = {
-  date?: InputMaybe<Scalars['Datetime']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  location?: InputMaybe<Scalars['String']['input']>;
-  teamId?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type EventStddevPopulationAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-export type EventStddevPopulationAggregates = {
-  __typename?: 'EventStddevPopulationAggregates';
-  /** Population standard deviation of duration across the matching connection */
-  duration?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type EventStddevSampleAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-export type EventStddevSampleAggregates = {
-  __typename?: 'EventStddevSampleAggregates';
-  /** Sample standard deviation of duration across the matching connection */
-  duration?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type EventSumAggregateFilter = {
-  duration?: InputMaybe<BigIntFilter>;
-};
-
-export type EventSumAggregates = {
-  __typename?: 'EventSumAggregates';
-  /** Sum of duration across the matching connection */
-  duration: Scalars['BigInt']['output'];
-};
-
-/** A filter to be used against many `Booking` object types. All fields are combined with a logical ‘and.’ */
-export type EventToManyBookingFilter = {
-  /** Aggregates across related `Booking` match the filter criteria. */
-  aggregates?: InputMaybe<BookingAggregatesFilter>;
-  /** Every related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<BookingFilter>;
-  /** No related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<BookingFilter>;
-  /** Some related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<BookingFilter>;
-};
-
-export type EventVariancePopulationAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-export type EventVariancePopulationAggregates = {
-  __typename?: 'EventVariancePopulationAggregates';
-  /** Population variance of duration across the matching connection */
-  duration?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type EventVarianceSampleAggregateFilter = {
-  duration?: InputMaybe<BigFloatFilter>;
-};
-
-export type EventVarianceSampleAggregates = {
-  __typename?: 'EventVarianceSampleAggregates';
-  /** Sample variance of duration across the matching connection */
-  duration?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-/** A connection to a list of `Event` values. */
-export type EventsConnection = {
-  __typename?: 'EventsConnection';
-  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<EventAggregates>;
-  /** A list of edges which contains the `Event` and cursor to aid in pagination. */
-  edges: Array<EventsEdge>;
-  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<EventAggregates>>;
-  /** A list of `Event` objects. */
-  nodes: Array<Event>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `Event` you could get from the connection. */
-  totalCount: Scalars['Int']['output'];
-};
-
-
-/** A connection to a list of `Event` values. */
-export type EventsConnectionGroupedAggregatesArgs = {
-  groupBy: Array<EventGroupBy>;
-  having?: InputMaybe<EventHavingInput>;
-};
-
-/** A `Event` edge in the connection. */
-export type EventsEdge = {
-  __typename?: 'EventsEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  /** The `Event` at the end of the edge. */
-  node: Event;
-};
-
-/** Methods to use when ordering `Event`. */
-export enum EventsOrderBy {
-  BookingsByEventIdAverageEventIdAsc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_EVENT_ID_ASC',
-  BookingsByEventIdAverageEventIdDesc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_EVENT_ID_DESC',
-  BookingsByEventIdAverageStatusAsc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_STATUS_ASC',
-  BookingsByEventIdAverageStatusDesc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_STATUS_DESC',
-  BookingsByEventIdAverageUserIdAsc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_USER_ID_ASC',
-  BookingsByEventIdAverageUserIdDesc = 'BOOKINGS_BY_EVENT_ID_AVERAGE_USER_ID_DESC',
-  BookingsByEventIdCountAsc = 'BOOKINGS_BY_EVENT_ID_COUNT_ASC',
-  BookingsByEventIdCountDesc = 'BOOKINGS_BY_EVENT_ID_COUNT_DESC',
-  BookingsByEventIdDistinctCountEventIdAsc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_EVENT_ID_ASC',
-  BookingsByEventIdDistinctCountEventIdDesc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_EVENT_ID_DESC',
-  BookingsByEventIdDistinctCountStatusAsc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_STATUS_ASC',
-  BookingsByEventIdDistinctCountStatusDesc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_STATUS_DESC',
-  BookingsByEventIdDistinctCountUserIdAsc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_USER_ID_ASC',
-  BookingsByEventIdDistinctCountUserIdDesc = 'BOOKINGS_BY_EVENT_ID_DISTINCT_COUNT_USER_ID_DESC',
-  BookingsByEventIdMaxEventIdAsc = 'BOOKINGS_BY_EVENT_ID_MAX_EVENT_ID_ASC',
-  BookingsByEventIdMaxEventIdDesc = 'BOOKINGS_BY_EVENT_ID_MAX_EVENT_ID_DESC',
-  BookingsByEventIdMaxStatusAsc = 'BOOKINGS_BY_EVENT_ID_MAX_STATUS_ASC',
-  BookingsByEventIdMaxStatusDesc = 'BOOKINGS_BY_EVENT_ID_MAX_STATUS_DESC',
-  BookingsByEventIdMaxUserIdAsc = 'BOOKINGS_BY_EVENT_ID_MAX_USER_ID_ASC',
-  BookingsByEventIdMaxUserIdDesc = 'BOOKINGS_BY_EVENT_ID_MAX_USER_ID_DESC',
-  BookingsByEventIdMinEventIdAsc = 'BOOKINGS_BY_EVENT_ID_MIN_EVENT_ID_ASC',
-  BookingsByEventIdMinEventIdDesc = 'BOOKINGS_BY_EVENT_ID_MIN_EVENT_ID_DESC',
-  BookingsByEventIdMinStatusAsc = 'BOOKINGS_BY_EVENT_ID_MIN_STATUS_ASC',
-  BookingsByEventIdMinStatusDesc = 'BOOKINGS_BY_EVENT_ID_MIN_STATUS_DESC',
-  BookingsByEventIdMinUserIdAsc = 'BOOKINGS_BY_EVENT_ID_MIN_USER_ID_ASC',
-  BookingsByEventIdMinUserIdDesc = 'BOOKINGS_BY_EVENT_ID_MIN_USER_ID_DESC',
-  BookingsByEventIdStddevPopulationEventIdAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_EVENT_ID_ASC',
-  BookingsByEventIdStddevPopulationEventIdDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_EVENT_ID_DESC',
-  BookingsByEventIdStddevPopulationStatusAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_STATUS_ASC',
-  BookingsByEventIdStddevPopulationStatusDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_STATUS_DESC',
-  BookingsByEventIdStddevPopulationUserIdAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_USER_ID_ASC',
-  BookingsByEventIdStddevPopulationUserIdDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_POPULATION_USER_ID_DESC',
-  BookingsByEventIdStddevSampleEventIdAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_EVENT_ID_ASC',
-  BookingsByEventIdStddevSampleEventIdDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_EVENT_ID_DESC',
-  BookingsByEventIdStddevSampleStatusAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_STATUS_ASC',
-  BookingsByEventIdStddevSampleStatusDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_STATUS_DESC',
-  BookingsByEventIdStddevSampleUserIdAsc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  BookingsByEventIdStddevSampleUserIdDesc = 'BOOKINGS_BY_EVENT_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  BookingsByEventIdSumEventIdAsc = 'BOOKINGS_BY_EVENT_ID_SUM_EVENT_ID_ASC',
-  BookingsByEventIdSumEventIdDesc = 'BOOKINGS_BY_EVENT_ID_SUM_EVENT_ID_DESC',
-  BookingsByEventIdSumStatusAsc = 'BOOKINGS_BY_EVENT_ID_SUM_STATUS_ASC',
-  BookingsByEventIdSumStatusDesc = 'BOOKINGS_BY_EVENT_ID_SUM_STATUS_DESC',
-  BookingsByEventIdSumUserIdAsc = 'BOOKINGS_BY_EVENT_ID_SUM_USER_ID_ASC',
-  BookingsByEventIdSumUserIdDesc = 'BOOKINGS_BY_EVENT_ID_SUM_USER_ID_DESC',
-  BookingsByEventIdVariancePopulationEventIdAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_EVENT_ID_ASC',
-  BookingsByEventIdVariancePopulationEventIdDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_EVENT_ID_DESC',
-  BookingsByEventIdVariancePopulationStatusAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_STATUS_ASC',
-  BookingsByEventIdVariancePopulationStatusDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_STATUS_DESC',
-  BookingsByEventIdVariancePopulationUserIdAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  BookingsByEventIdVariancePopulationUserIdDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  BookingsByEventIdVarianceSampleEventIdAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_EVENT_ID_ASC',
-  BookingsByEventIdVarianceSampleEventIdDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_EVENT_ID_DESC',
-  BookingsByEventIdVarianceSampleStatusAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_STATUS_ASC',
-  BookingsByEventIdVarianceSampleStatusDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_STATUS_DESC',
-  BookingsByEventIdVarianceSampleUserIdAsc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  BookingsByEventIdVarianceSampleUserIdDesc = 'BOOKINGS_BY_EVENT_ID_VARIANCE_SAMPLE_USER_ID_DESC',
-  DateAsc = 'DATE_ASC',
-  DateDesc = 'DATE_DESC',
-  DescriptionAsc = 'DESCRIPTION_ASC',
-  DescriptionDesc = 'DESCRIPTION_DESC',
-  DurationAsc = 'DURATION_ASC',
-  DurationDesc = 'DURATION_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  LocationAsc = 'LOCATION_ASC',
-  LocationDesc = 'LOCATION_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  TeamIdAsc = 'TEAM_ID_ASC',
-  TeamIdDesc = 'TEAM_ID_DESC',
-  TitleAsc = 'TITLE_ASC',
-  TitleDesc = 'TITLE_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC'
-}
 
 export type HavingDatetimeFilter = {
   equalTo?: InputMaybe<Scalars['Datetime']['input']>;
@@ -5289,6 +3853,15 @@ export type HavingDatetimeFilter = {
   lessThan?: InputMaybe<Scalars['Datetime']['input']>;
   lessThanOrEqualTo?: InputMaybe<Scalars['Datetime']['input']>;
   notEqualTo?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type HavingFloatFilter = {
+  equalTo?: InputMaybe<Scalars['Float']['input']>;
+  greaterThan?: InputMaybe<Scalars['Float']['input']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  lessThan?: InputMaybe<Scalars['Float']['input']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  notEqualTo?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type HavingIntFilter = {
@@ -5365,46 +3938,34 @@ export type JsonFilter = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Creates a single `Availability`. */
-  createAvailability?: Maybe<CreateAvailabilityPayload>;
-  /** Creates a single `Booking`. */
-  createBooking?: Maybe<CreateBookingPayload>;
-  /** Creates a single `CustomAvailability`. */
-  createCustomAvailability?: Maybe<CreateCustomAvailabilityPayload>;
-  /** Creates a single `Event`. */
-  createEvent?: Maybe<CreateEventPayload>;
-  /** Creates a single `Team`. */
-  createTeam?: Maybe<CreateTeamPayload>;
-  /** Creates a single `TeamMembership`. */
-  createTeamMembership?: Maybe<CreateTeamMembershipPayload>;
+  /** Creates a single `Budget`. */
+  createBudget?: Maybe<CreateBudgetPayload>;
+  /** Creates a single `Category`. */
+  createCategory?: Maybe<CreateCategoryPayload>;
+  /** Creates a single `Report`. */
+  createReport?: Maybe<CreateReportPayload>;
+  /** Creates a single `Transaction`. */
+  createTransaction?: Maybe<CreateTransactionPayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
   /** Creates a single `UserDevice`. */
   createUserDevice?: Maybe<CreateUserDevicePayload>;
-  /** Deletes a single `Availability` using a unique key. */
-  deleteAvailability?: Maybe<DeleteAvailabilityPayload>;
-  /** Deletes a single `Availability` using its globally unique id. */
-  deleteAvailabilityByNodeId?: Maybe<DeleteAvailabilityPayload>;
-  /** Deletes a single `Booking` using a unique key. */
-  deleteBooking?: Maybe<DeleteBookingPayload>;
-  /** Deletes a single `Booking` using its globally unique id. */
-  deleteBookingByNodeId?: Maybe<DeleteBookingPayload>;
-  /** Deletes a single `CustomAvailability` using a unique key. */
-  deleteCustomAvailability?: Maybe<DeleteCustomAvailabilityPayload>;
-  /** Deletes a single `CustomAvailability` using its globally unique id. */
-  deleteCustomAvailabilityByNodeId?: Maybe<DeleteCustomAvailabilityPayload>;
-  /** Deletes a single `Event` using a unique key. */
-  deleteEvent?: Maybe<DeleteEventPayload>;
-  /** Deletes a single `Event` using its globally unique id. */
-  deleteEventByNodeId?: Maybe<DeleteEventPayload>;
-  /** Deletes a single `Team` using a unique key. */
-  deleteTeam?: Maybe<DeleteTeamPayload>;
-  /** Deletes a single `Team` using its globally unique id. */
-  deleteTeamByNodeId?: Maybe<DeleteTeamPayload>;
-  /** Deletes a single `TeamMembership` using a unique key. */
-  deleteTeamMembership?: Maybe<DeleteTeamMembershipPayload>;
-  /** Deletes a single `TeamMembership` using its globally unique id. */
-  deleteTeamMembershipByNodeId?: Maybe<DeleteTeamMembershipPayload>;
+  /** Deletes a single `Budget` using a unique key. */
+  deleteBudget?: Maybe<DeleteBudgetPayload>;
+  /** Deletes a single `Budget` using its globally unique id. */
+  deleteBudgetByNodeId?: Maybe<DeleteBudgetPayload>;
+  /** Deletes a single `Category` using a unique key. */
+  deleteCategory?: Maybe<DeleteCategoryPayload>;
+  /** Deletes a single `Category` using its globally unique id. */
+  deleteCategoryByNodeId?: Maybe<DeleteCategoryPayload>;
+  /** Deletes a single `Report` using a unique key. */
+  deleteReport?: Maybe<DeleteReportPayload>;
+  /** Deletes a single `Report` using its globally unique id. */
+  deleteReportByNodeId?: Maybe<DeleteReportPayload>;
+  /** Deletes a single `Transaction` using a unique key. */
+  deleteTransaction?: Maybe<DeleteTransactionPayload>;
+  /** Deletes a single `Transaction` using its globally unique id. */
+  deleteTransactionByNodeId?: Maybe<DeleteTransactionPayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
   /** Deletes a single `User` using its globally unique id. */
@@ -5415,30 +3976,22 @@ export type Mutation = {
   deleteUserDeviceByNodeId?: Maybe<DeleteUserDevicePayload>;
   /** Deletes a single `UserDevice` using a unique key. */
   deleteUserDeviceByToken?: Maybe<DeleteUserDevicePayload>;
-  /** Updates a single `Availability` using a unique key and a patch. */
-  updateAvailability?: Maybe<UpdateAvailabilityPayload>;
-  /** Updates a single `Availability` using its globally unique id and a patch. */
-  updateAvailabilityByNodeId?: Maybe<UpdateAvailabilityPayload>;
-  /** Updates a single `Booking` using a unique key and a patch. */
-  updateBooking?: Maybe<UpdateBookingPayload>;
-  /** Updates a single `Booking` using its globally unique id and a patch. */
-  updateBookingByNodeId?: Maybe<UpdateBookingPayload>;
-  /** Updates a single `CustomAvailability` using a unique key and a patch. */
-  updateCustomAvailability?: Maybe<UpdateCustomAvailabilityPayload>;
-  /** Updates a single `CustomAvailability` using its globally unique id and a patch. */
-  updateCustomAvailabilityByNodeId?: Maybe<UpdateCustomAvailabilityPayload>;
-  /** Updates a single `Event` using a unique key and a patch. */
-  updateEvent?: Maybe<UpdateEventPayload>;
-  /** Updates a single `Event` using its globally unique id and a patch. */
-  updateEventByNodeId?: Maybe<UpdateEventPayload>;
-  /** Updates a single `Team` using a unique key and a patch. */
-  updateTeam?: Maybe<UpdateTeamPayload>;
-  /** Updates a single `Team` using its globally unique id and a patch. */
-  updateTeamByNodeId?: Maybe<UpdateTeamPayload>;
-  /** Updates a single `TeamMembership` using a unique key and a patch. */
-  updateTeamMembership?: Maybe<UpdateTeamMembershipPayload>;
-  /** Updates a single `TeamMembership` using its globally unique id and a patch. */
-  updateTeamMembershipByNodeId?: Maybe<UpdateTeamMembershipPayload>;
+  /** Updates a single `Budget` using a unique key and a patch. */
+  updateBudget?: Maybe<UpdateBudgetPayload>;
+  /** Updates a single `Budget` using its globally unique id and a patch. */
+  updateBudgetByNodeId?: Maybe<UpdateBudgetPayload>;
+  /** Updates a single `Category` using a unique key and a patch. */
+  updateCategory?: Maybe<UpdateCategoryPayload>;
+  /** Updates a single `Category` using its globally unique id and a patch. */
+  updateCategoryByNodeId?: Maybe<UpdateCategoryPayload>;
+  /** Updates a single `Report` using a unique key and a patch. */
+  updateReport?: Maybe<UpdateReportPayload>;
+  /** Updates a single `Report` using its globally unique id and a patch. */
+  updateReportByNodeId?: Maybe<UpdateReportPayload>;
+  /** Updates a single `Transaction` using a unique key and a patch. */
+  updateTransaction?: Maybe<UpdateTransactionPayload>;
+  /** Updates a single `Transaction` using its globally unique id and a patch. */
+  updateTransactionByNodeId?: Maybe<UpdateTransactionPayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
@@ -5449,18 +4002,14 @@ export type Mutation = {
   updateUserDeviceByNodeId?: Maybe<UpdateUserDevicePayload>;
   /** Updates a single `UserDevice` using a unique key and a patch. */
   updateUserDeviceByToken?: Maybe<UpdateUserDevicePayload>;
-  /** Upserts a single `Availability`. */
-  upsertAvailability?: Maybe<UpsertAvailabilityPayload>;
-  /** Upserts a single `Booking`. */
-  upsertBooking?: Maybe<UpsertBookingPayload>;
-  /** Upserts a single `CustomAvailability`. */
-  upsertCustomAvailability?: Maybe<UpsertCustomAvailabilityPayload>;
-  /** Upserts a single `Event`. */
-  upsertEvent?: Maybe<UpsertEventPayload>;
-  /** Upserts a single `Team`. */
-  upsertTeam?: Maybe<UpsertTeamPayload>;
-  /** Upserts a single `TeamMembership`. */
-  upsertTeamMembership?: Maybe<UpsertTeamMembershipPayload>;
+  /** Upserts a single `Budget`. */
+  upsertBudget?: Maybe<UpsertBudgetPayload>;
+  /** Upserts a single `Category`. */
+  upsertCategory?: Maybe<UpsertCategoryPayload>;
+  /** Upserts a single `Report`. */
+  upsertReport?: Maybe<UpsertReportPayload>;
+  /** Upserts a single `Transaction`. */
+  upsertTransaction?: Maybe<UpsertTransactionPayload>;
   /** Upserts a single `User`. */
   upsertUser?: Maybe<UpsertUserPayload>;
   /** Upserts a single `UserDevice`. */
@@ -5469,38 +4018,26 @@ export type Mutation = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateAvailabilityArgs = {
-  input: CreateAvailabilityInput;
+export type MutationCreateBudgetArgs = {
+  input: CreateBudgetInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateBookingArgs = {
-  input: CreateBookingInput;
+export type MutationCreateCategoryArgs = {
+  input: CreateCategoryInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateCustomAvailabilityArgs = {
-  input: CreateCustomAvailabilityInput;
+export type MutationCreateReportArgs = {
+  input: CreateReportInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateEventArgs = {
-  input: CreateEventInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateTeamArgs = {
-  input: CreateTeamInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateTeamMembershipArgs = {
-  input: CreateTeamMembershipInput;
+export type MutationCreateTransactionArgs = {
+  input: CreateTransactionInput;
 };
 
 
@@ -5517,74 +4054,50 @@ export type MutationCreateUserDeviceArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteAvailabilityArgs = {
-  input: DeleteAvailabilityInput;
+export type MutationDeleteBudgetArgs = {
+  input: DeleteBudgetInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteAvailabilityByNodeIdArgs = {
-  input: DeleteAvailabilityByNodeIdInput;
+export type MutationDeleteBudgetByNodeIdArgs = {
+  input: DeleteBudgetByNodeIdInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteBookingArgs = {
-  input: DeleteBookingInput;
+export type MutationDeleteCategoryArgs = {
+  input: DeleteCategoryInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteBookingByNodeIdArgs = {
-  input: DeleteBookingByNodeIdInput;
+export type MutationDeleteCategoryByNodeIdArgs = {
+  input: DeleteCategoryByNodeIdInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteCustomAvailabilityArgs = {
-  input: DeleteCustomAvailabilityInput;
+export type MutationDeleteReportArgs = {
+  input: DeleteReportInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteCustomAvailabilityByNodeIdArgs = {
-  input: DeleteCustomAvailabilityByNodeIdInput;
+export type MutationDeleteReportByNodeIdArgs = {
+  input: DeleteReportByNodeIdInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventArgs = {
-  input: DeleteEventInput;
+export type MutationDeleteTransactionArgs = {
+  input: DeleteTransactionInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventByNodeIdArgs = {
-  input: DeleteEventByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTeamArgs = {
-  input: DeleteTeamInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTeamByNodeIdArgs = {
-  input: DeleteTeamByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTeamMembershipArgs = {
-  input: DeleteTeamMembershipInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTeamMembershipByNodeIdArgs = {
-  input: DeleteTeamMembershipByNodeIdInput;
+export type MutationDeleteTransactionByNodeIdArgs = {
+  input: DeleteTransactionByNodeIdInput;
 };
 
 
@@ -5619,74 +4132,50 @@ export type MutationDeleteUserDeviceByTokenArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateAvailabilityArgs = {
-  input: UpdateAvailabilityInput;
+export type MutationUpdateBudgetArgs = {
+  input: UpdateBudgetInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateAvailabilityByNodeIdArgs = {
-  input: UpdateAvailabilityByNodeIdInput;
+export type MutationUpdateBudgetByNodeIdArgs = {
+  input: UpdateBudgetByNodeIdInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateBookingArgs = {
-  input: UpdateBookingInput;
+export type MutationUpdateCategoryArgs = {
+  input: UpdateCategoryInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateBookingByNodeIdArgs = {
-  input: UpdateBookingByNodeIdInput;
+export type MutationUpdateCategoryByNodeIdArgs = {
+  input: UpdateCategoryByNodeIdInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateCustomAvailabilityArgs = {
-  input: UpdateCustomAvailabilityInput;
+export type MutationUpdateReportArgs = {
+  input: UpdateReportInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateCustomAvailabilityByNodeIdArgs = {
-  input: UpdateCustomAvailabilityByNodeIdInput;
+export type MutationUpdateReportByNodeIdArgs = {
+  input: UpdateReportByNodeIdInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventArgs = {
-  input: UpdateEventInput;
+export type MutationUpdateTransactionArgs = {
+  input: UpdateTransactionInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventByNodeIdArgs = {
-  input: UpdateEventByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTeamArgs = {
-  input: UpdateTeamInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTeamByNodeIdArgs = {
-  input: UpdateTeamByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTeamMembershipArgs = {
-  input: UpdateTeamMembershipInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTeamMembershipByNodeIdArgs = {
-  input: UpdateTeamMembershipByNodeIdInput;
+export type MutationUpdateTransactionByNodeIdArgs = {
+  input: UpdateTransactionByNodeIdInput;
 };
 
 
@@ -5721,44 +4210,30 @@ export type MutationUpdateUserDeviceByTokenArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpsertAvailabilityArgs = {
-  input: UpsertAvailabilityInput;
-  where?: InputMaybe<UpsertAvailabilityWhere>;
+export type MutationUpsertBudgetArgs = {
+  input: UpsertBudgetInput;
+  where?: InputMaybe<UpsertBudgetWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpsertBookingArgs = {
-  input: UpsertBookingInput;
-  where?: InputMaybe<UpsertBookingWhere>;
+export type MutationUpsertCategoryArgs = {
+  input: UpsertCategoryInput;
+  where?: InputMaybe<UpsertCategoryWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpsertCustomAvailabilityArgs = {
-  input: UpsertCustomAvailabilityInput;
-  where?: InputMaybe<UpsertCustomAvailabilityWhere>;
+export type MutationUpsertReportArgs = {
+  input: UpsertReportInput;
+  where?: InputMaybe<UpsertReportWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpsertEventArgs = {
-  input: UpsertEventInput;
-  where?: InputMaybe<UpsertEventWhere>;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpsertTeamArgs = {
-  input: UpsertTeamInput;
-  where?: InputMaybe<UpsertTeamWhere>;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpsertTeamMembershipArgs = {
-  input: UpsertTeamMembershipInput;
-  where?: InputMaybe<UpsertTeamMembershipWhere>;
+export type MutationUpsertTransactionArgs = {
+  input: UpsertTransactionInput;
+  where?: InputMaybe<UpsertTransactionWhere>;
 };
 
 
@@ -5797,26 +4272,16 @@ export type PageInfo = {
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
   __typename?: 'Query';
-  /** Reads and enables pagination through a set of `Availability`. */
-  availabilities?: Maybe<AvailabilitiesConnection>;
-  availability?: Maybe<Availability>;
-  /** Reads a single `Availability` using its globally unique `ID`. */
-  availabilityByNodeId?: Maybe<Availability>;
-  booking?: Maybe<Booking>;
-  /** Reads a single `Booking` using its globally unique `ID`. */
-  bookingByNodeId?: Maybe<Booking>;
-  /** Reads and enables pagination through a set of `Booking`. */
-  bookings?: Maybe<BookingsConnection>;
-  /** Reads and enables pagination through a set of `CustomAvailability`. */
-  customAvailabilities?: Maybe<CustomAvailabilitiesConnection>;
-  customAvailability?: Maybe<CustomAvailability>;
-  /** Reads a single `CustomAvailability` using its globally unique `ID`. */
-  customAvailabilityByNodeId?: Maybe<CustomAvailability>;
-  event?: Maybe<Event>;
-  /** Reads a single `Event` using its globally unique `ID`. */
-  eventByNodeId?: Maybe<Event>;
-  /** Reads and enables pagination through a set of `Event`. */
-  events?: Maybe<EventsConnection>;
+  budget?: Maybe<Budget>;
+  /** Reads a single `Budget` using its globally unique `ID`. */
+  budgetByNodeId?: Maybe<Budget>;
+  /** Reads and enables pagination through a set of `Budget`. */
+  budgets?: Maybe<BudgetsConnection>;
+  /** Reads and enables pagination through a set of `Category`. */
+  categories?: Maybe<CategoriesConnection>;
+  category?: Maybe<Category>;
+  /** Reads a single `Category` using its globally unique `ID`. */
+  categoryByNodeId?: Maybe<Category>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
@@ -5826,16 +4291,16 @@ export type Query = Node & {
    * which can only query top level fields if they are in a particular form.
    */
   query: Query;
-  team?: Maybe<Team>;
-  /** Reads a single `Team` using its globally unique `ID`. */
-  teamByNodeId?: Maybe<Team>;
-  teamMembership?: Maybe<TeamMembership>;
-  /** Reads a single `TeamMembership` using its globally unique `ID`. */
-  teamMembershipByNodeId?: Maybe<TeamMembership>;
-  /** Reads and enables pagination through a set of `TeamMembership`. */
-  teamMemberships?: Maybe<TeamMembershipsConnection>;
-  /** Reads and enables pagination through a set of `Team`. */
-  teams?: Maybe<TeamsConnection>;
+  report?: Maybe<Report>;
+  /** Reads a single `Report` using its globally unique `ID`. */
+  reportByNodeId?: Maybe<Report>;
+  /** Reads and enables pagination through a set of `Report`. */
+  reports?: Maybe<ReportsConnection>;
+  transaction?: Maybe<Transaction>;
+  /** Reads a single `Transaction` using its globally unique `ID`. */
+  transactionByNodeId?: Maybe<Transaction>;
+  /** Reads and enables pagination through a set of `Transaction`. */
+  transactions?: Maybe<TransactionsConnection>;
   user?: Maybe<User>;
   /** Reads a single `User` using its globally unique `ID`. */
   userByNodeId?: Maybe<User>;
@@ -5851,103 +4316,52 @@ export type Query = Node & {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryAvailabilitiesArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<AvailabilityCondition>;
-  filter?: InputMaybe<AvailabilityFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AvailabilitiesOrderBy>>;
+export type QueryBudgetArgs = {
+  budgetId: Scalars['String']['input'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryAvailabilityArgs = {
+export type QueryBudgetByNodeIdArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryBudgetsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<BudgetCondition>;
+  filter?: InputMaybe<BudgetFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCategoriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<CategoryCondition>;
+  filter?: InputMaybe<CategoryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCategoryArgs = {
   id: Scalars['String']['input'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryAvailabilityByNodeIdArgs = {
+export type QueryCategoryByNodeIdArgs = {
   nodeId: Scalars['ID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryBookingArgs = {
-  eventId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryBookingByNodeIdArgs = {
-  nodeId: Scalars['ID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryBookingsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<BookingCondition>;
-  filter?: InputMaybe<BookingFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<BookingsOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryCustomAvailabilitiesArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<CustomAvailabilityCondition>;
-  filter?: InputMaybe<CustomAvailabilityFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CustomAvailabilitiesOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryCustomAvailabilityArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryCustomAvailabilityByNodeIdArgs = {
-  nodeId: Scalars['ID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryEventArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryEventByNodeIdArgs = {
-  nodeId: Scalars['ID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryEventsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<EventCondition>;
-  filter?: InputMaybe<EventFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventsOrderBy>>;
 };
 
 
@@ -5958,52 +4372,52 @@ export type QueryNodeArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTeamArgs = {
-  id: Scalars['String']['input'];
+export type QueryReportArgs = {
+  reportId: Scalars['String']['input'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTeamByNodeIdArgs = {
+export type QueryReportByNodeIdArgs = {
   nodeId: Scalars['ID']['input'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTeamMembershipArgs = {
-  id: Scalars['String']['input'];
+export type QueryReportsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<ReportCondition>;
+  filter?: InputMaybe<ReportFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ReportsOrderBy>>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTeamMembershipByNodeIdArgs = {
+export type QueryTransactionArgs = {
+  transactionId: Scalars['String']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTransactionByNodeIdArgs = {
   nodeId: Scalars['ID']['input'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTeamMembershipsArgs = {
+export type QueryTransactionsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<TeamMembershipCondition>;
-  filter?: InputMaybe<TeamMembershipFilter>;
+  condition?: InputMaybe<TransactionCondition>;
+  filter?: InputMaybe<TransactionFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMembershipsOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryTeamsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<TeamCondition>;
-  filter?: InputMaybe<TeamFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamsOrderBy>>;
+  orderBy?: InputMaybe<Array<TransactionsOrderBy>>;
 };
 
 
@@ -6062,6 +4476,163 @@ export type QueryUsersArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
+
+export type Report = Node & {
+  __typename?: 'Report';
+  createdAt?: Maybe<Scalars['String']['output']>;
+  filePath?: Maybe<Scalars['String']['output']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']['output'];
+  reportId: Scalars['String']['output'];
+  /** Reads a single `User` that is related to this `Report`. */
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type ReportAggregates = {
+  __typename?: 'ReportAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<ReportDistinctCountAggregates>;
+  keys?: Maybe<Array<Scalars['String']['output']>>;
+};
+
+/** A filter to be used against aggregates of `Report` object types. */
+export type ReportAggregatesFilter = {
+  /** Distinct count aggregate over matching `Report` objects. */
+  distinctCount?: InputMaybe<ReportDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Report` object to be included within the aggregate. */
+  filter?: InputMaybe<ReportFilter>;
+};
+
+/** A condition to be used against `Report` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type ReportCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `filePath` field. */
+  filePath?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `reportId` field. */
+  reportId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ReportDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  filePath?: InputMaybe<BigIntFilter>;
+  reportId?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
+};
+
+export type ReportDistinctCountAggregates = {
+  __typename?: 'ReportDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of filePath across the matching connection */
+  filePath?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of reportId across the matching connection */
+  reportId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of userId across the matching connection */
+  userId?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A filter to be used against `Report` object types. All fields are combined with a logical ‘and.’ */
+export type ReportFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<ReportFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `filePath` field. */
+  filePath?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<ReportFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<ReportFilter>>;
+  /** Filter by the object’s `reportId` field. */
+  reportId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `Report` for usage during aggregation. */
+export enum ReportGroupBy {
+  CreatedAt = 'CREATED_AT',
+  FilePath = 'FILE_PATH',
+  UserId = 'USER_ID'
+}
+
+/** Conditions for `Report` aggregates. */
+export type ReportHavingInput = {
+  AND?: InputMaybe<Array<ReportHavingInput>>;
+  OR?: InputMaybe<Array<ReportHavingInput>>;
+};
+
+/** An input for mutations affecting `Report` */
+export type ReportInput = {
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  filePath?: InputMaybe<Scalars['String']['input']>;
+  reportId: Scalars['String']['input'];
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Represents an update to a `Report`. Fields that are set will be updated. */
+export type ReportPatch = {
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  filePath?: InputMaybe<Scalars['String']['input']>;
+  reportId?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A connection to a list of `Report` values. */
+export type ReportsConnection = {
+  __typename?: 'ReportsConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<ReportAggregates>;
+  /** A list of edges which contains the `Report` and cursor to aid in pagination. */
+  edges: Array<ReportsEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<ReportAggregates>>;
+  /** A list of `Report` objects. */
+  nodes: Array<Report>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Report` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `Report` values. */
+export type ReportsConnectionGroupedAggregatesArgs = {
+  groupBy: Array<ReportGroupBy>;
+  having?: InputMaybe<ReportHavingInput>;
+};
+
+/** A `Report` edge in the connection. */
+export type ReportsEdge = {
+  __typename?: 'ReportsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Report` at the end of the edge. */
+  node: Report;
+};
+
+/** Methods to use when ordering `Report`. */
+export enum ReportsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  FilePathAsc = 'FILE_PATH_ASC',
+  FilePathDesc = 'FILE_PATH_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ReportIdAsc = 'REPORT_ID_ASC',
+  ReportIdDesc = 'REPORT_ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
@@ -6165,30 +4736,18 @@ export type StringFilter = {
  */
 export type Subscription = {
   __typename?: 'Subscription';
-  /** Reads and enables pagination through a set of `Availability`. (live) */
-  availabilities?: Maybe<AvailabilitiesConnection>;
   /**  (live) */
-  availability?: Maybe<Availability>;
-  /** Reads a single `Availability` using its globally unique `ID`. (live) */
-  availabilityByNodeId?: Maybe<Availability>;
+  budget?: Maybe<Budget>;
+  /** Reads a single `Budget` using its globally unique `ID`. (live) */
+  budgetByNodeId?: Maybe<Budget>;
+  /** Reads and enables pagination through a set of `Budget`. (live) */
+  budgets?: Maybe<BudgetsConnection>;
+  /** Reads and enables pagination through a set of `Category`. (live) */
+  categories?: Maybe<CategoriesConnection>;
   /**  (live) */
-  booking?: Maybe<Booking>;
-  /** Reads a single `Booking` using its globally unique `ID`. (live) */
-  bookingByNodeId?: Maybe<Booking>;
-  /** Reads and enables pagination through a set of `Booking`. (live) */
-  bookings?: Maybe<BookingsConnection>;
-  /** Reads and enables pagination through a set of `CustomAvailability`. (live) */
-  customAvailabilities?: Maybe<CustomAvailabilitiesConnection>;
-  /**  (live) */
-  customAvailability?: Maybe<CustomAvailability>;
-  /** Reads a single `CustomAvailability` using its globally unique `ID`. (live) */
-  customAvailabilityByNodeId?: Maybe<CustomAvailability>;
-  /**  (live) */
-  event?: Maybe<Event>;
-  /** Reads a single `Event` using its globally unique `ID`. (live) */
-  eventByNodeId?: Maybe<Event>;
-  /** Reads and enables pagination through a set of `Event`. (live) */
-  events?: Maybe<EventsConnection>;
+  category?: Maybe<Category>;
+  /** Reads a single `Category` using its globally unique `ID`. (live) */
+  categoryByNodeId?: Maybe<Category>;
   /** Fetches an object given its globally unique `ID`. (live) */
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. (live) */
@@ -6199,17 +4758,17 @@ export type Subscription = {
    */
   query: Query;
   /**  (live) */
-  team?: Maybe<Team>;
-  /** Reads a single `Team` using its globally unique `ID`. (live) */
-  teamByNodeId?: Maybe<Team>;
+  report?: Maybe<Report>;
+  /** Reads a single `Report` using its globally unique `ID`. (live) */
+  reportByNodeId?: Maybe<Report>;
+  /** Reads and enables pagination through a set of `Report`. (live) */
+  reports?: Maybe<ReportsConnection>;
   /**  (live) */
-  teamMembership?: Maybe<TeamMembership>;
-  /** Reads a single `TeamMembership` using its globally unique `ID`. (live) */
-  teamMembershipByNodeId?: Maybe<TeamMembership>;
-  /** Reads and enables pagination through a set of `TeamMembership`. (live) */
-  teamMemberships?: Maybe<TeamMembershipsConnection>;
-  /** Reads and enables pagination through a set of `Team`. (live) */
-  teams?: Maybe<TeamsConnection>;
+  transaction?: Maybe<Transaction>;
+  /** Reads a single `Transaction` using its globally unique `ID`. (live) */
+  transactionByNodeId?: Maybe<Transaction>;
+  /** Reads and enables pagination through a set of `Transaction`. (live) */
+  transactions?: Maybe<TransactionsConnection>;
   /**  (live) */
   user?: Maybe<User>;
   /** Reads a single `User` using its globally unique `ID`. (live) */
@@ -6249,15 +4808,8 @@ export type Subscription = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
-export type SubscriptionAvailabilitiesArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<AvailabilityCondition>;
-  filter?: InputMaybe<AvailabilityFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AvailabilitiesOrderBy>>;
+export type SubscriptionBudgetArgs = {
+  budgetId: Scalars['String']['input'];
 };
 
 
@@ -6283,7 +4835,102 @@ export type SubscriptionAvailabilitiesArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
-export type SubscriptionAvailabilityArgs = {
+export type SubscriptionBudgetByNodeIdArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionBudgetsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<BudgetCondition>;
+  filter?: InputMaybe<BudgetFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionCategoriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<CategoryCondition>;
+  filter?: InputMaybe<CategoryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionCategoryArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -6310,273 +4957,8 @@ export type SubscriptionAvailabilityArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
-export type SubscriptionAvailabilityByNodeIdArgs = {
+export type SubscriptionCategoryByNodeIdArgs = {
   nodeId: Scalars['ID']['input'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionBookingArgs = {
-  eventId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionBookingByNodeIdArgs = {
-  nodeId: Scalars['ID']['input'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionBookingsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<BookingCondition>;
-  filter?: InputMaybe<BookingFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<BookingsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionCustomAvailabilitiesArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<CustomAvailabilityCondition>;
-  filter?: InputMaybe<CustomAvailabilityFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CustomAvailabilitiesOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionCustomAvailabilityArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionCustomAvailabilityByNodeIdArgs = {
-  nodeId: Scalars['ID']['input'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionEventArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionEventByNodeIdArgs = {
-  nodeId: Scalars['ID']['input'];
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionEventsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<EventCondition>;
-  filter?: InputMaybe<EventFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventsOrderBy>>;
 };
 
 
@@ -6629,8 +5011,8 @@ export type SubscriptionNodeArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
-export type SubscriptionTeamArgs = {
-  id: Scalars['String']['input'];
+export type SubscriptionReportArgs = {
+  reportId: Scalars['String']['input'];
 };
 
 
@@ -6656,7 +5038,7 @@ export type SubscriptionTeamArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
-export type SubscriptionTeamByNodeIdArgs = {
+export type SubscriptionReportByNodeIdArgs = {
   nodeId: Scalars['ID']['input'];
 };
 
@@ -6683,8 +5065,15 @@ export type SubscriptionTeamByNodeIdArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
-export type SubscriptionTeamMembershipArgs = {
-  id: Scalars['String']['input'];
+export type SubscriptionReportsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<ReportCondition>;
+  filter?: InputMaybe<ReportFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ReportsOrderBy>>;
 };
 
 
@@ -6710,7 +5099,34 @@ export type SubscriptionTeamMembershipArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
-export type SubscriptionTeamMembershipByNodeIdArgs = {
+export type SubscriptionTransactionArgs = {
+  transactionId: Scalars['String']['input'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionTransactionByNodeIdArgs = {
   nodeId: Scalars['ID']['input'];
 };
 
@@ -6737,49 +5153,15 @@ export type SubscriptionTeamMembershipByNodeIdArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
-export type SubscriptionTeamMembershipsArgs = {
+export type SubscriptionTransactionsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<TeamMembershipCondition>;
-  filter?: InputMaybe<TeamMembershipFilter>;
+  condition?: InputMaybe<TransactionCondition>;
+  filter?: InputMaybe<TransactionFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMembershipsOrderBy>>;
-};
-
-
-/**
- * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
- *
- * #### Live Queries
- *
- * Live query fields are differentiated by containing `(live)` at the end of their
- * description, they are added for each field in the `Query` type. When you
- * subscribe to a live query field, the selection set will be evaluated and sent to
- * the client, and then most things\* that would cause the output of the selection
- * set to change will trigger the selection set to be re-evaluated and the results
- * to be re-sent to the client.
- *
- * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
- *
- * Live queries can be very expensive, so try and keep them small and focussed.
- *
- * #### Events
- *
- * Event fields will run their selection set when, and only when, the specified
- * server-side event occurs. This makes them a lot more efficient than Live
- * Queries, but it is still recommended that you keep payloads fairly small.
- */
-export type SubscriptionTeamsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<TeamCondition>;
-  filter?: InputMaybe<TeamFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamsOrderBy>>;
+  orderBy?: InputMaybe<Array<TransactionsOrderBy>>;
 };
 
 
@@ -6986,784 +5368,493 @@ export type SubscriptionUsersArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
-export type Team = Node & {
-  __typename?: 'Team';
-  createdAt: Scalars['Datetime']['output'];
-  /** Reads and enables pagination through a set of `Event`. */
-  eventsByTeamId: EventsConnection;
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
+export type Transaction = Node & {
+  __typename?: 'Transaction';
+  amount: Scalars['Float']['output'];
+  /** Reads a single `Category` that is related to this `Transaction`. */
+  category?: Maybe<Category>;
+  categoryId?: Maybe<Scalars['String']['output']>;
+  date?: Maybe<Scalars['Datetime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']['output'];
-  /** Reads and enables pagination through a set of `TeamMembership`. */
-  teamMembershipsByTeamId: TeamMembershipsConnection;
-  updatedAt: Scalars['Datetime']['output'];
-};
-
-
-export type TeamEventsByTeamIdArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<EventCondition>;
-  filter?: InputMaybe<EventFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventsOrderBy>>;
-};
-
-
-export type TeamTeamMembershipsByTeamIdArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<TeamMembershipCondition>;
-  filter?: InputMaybe<TeamMembershipFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMembershipsOrderBy>>;
-};
-
-export type TeamAggregates = {
-  __typename?: 'TeamAggregates';
-  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  distinctCount?: Maybe<TeamDistinctCountAggregates>;
-  keys?: Maybe<Array<Scalars['String']['output']>>;
-};
-
-/** A condition to be used against `Team` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type TeamCondition = {
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `name` field. */
-  name?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
-
-export type TeamDistinctCountAggregates = {
-  __typename?: 'TeamDistinctCountAggregates';
-  /** Distinct count of createdAt across the matching connection */
-  createdAt?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of id across the matching connection */
-  id?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of name across the matching connection */
-  name?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of updatedAt across the matching connection */
-  updatedAt?: Maybe<Scalars['BigInt']['output']>;
-};
-
-/** A filter to be used against `Team` object types. All fields are combined with a logical ‘and.’ */
-export type TeamFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<TeamFilter>>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `eventsByTeamId` relation. */
-  eventsByTeamId?: InputMaybe<TeamToManyEventFilter>;
-  /** Some related `eventsByTeamId` exist. */
-  eventsByTeamIdExist?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `name` field. */
-  name?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<TeamFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<TeamFilter>>;
-  /** Filter by the object’s `teamMembershipsByTeamId` relation. */
-  teamMembershipsByTeamId?: InputMaybe<TeamToManyTeamMembershipFilter>;
-  /** Some related `teamMembershipsByTeamId` exist. */
-  teamMembershipsByTeamIdExist?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<DatetimeFilter>;
-};
-
-/** Grouping methods for `Team` for usage during aggregation. */
-export enum TeamGroupBy {
-  CreatedAt = 'CREATED_AT',
-  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
-  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
-  Name = 'NAME',
-  UpdatedAt = 'UPDATED_AT',
-  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
-  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
-}
-
-export type TeamHavingAverageInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingDistinctCountInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** Conditions for `Team` aggregates. */
-export type TeamHavingInput = {
-  AND?: InputMaybe<Array<TeamHavingInput>>;
-  OR?: InputMaybe<Array<TeamHavingInput>>;
-  average?: InputMaybe<TeamHavingAverageInput>;
-  distinctCount?: InputMaybe<TeamHavingDistinctCountInput>;
-  max?: InputMaybe<TeamHavingMaxInput>;
-  min?: InputMaybe<TeamHavingMinInput>;
-  stddevPopulation?: InputMaybe<TeamHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<TeamHavingStddevSampleInput>;
-  sum?: InputMaybe<TeamHavingSumInput>;
-  variancePopulation?: InputMaybe<TeamHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<TeamHavingVarianceSampleInput>;
-};
-
-export type TeamHavingMaxInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingMinInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingStddevPopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingStddevSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingSumInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingVariancePopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type TeamHavingVarianceSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** An input for mutations affecting `Team` */
-export type TeamInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  id: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  updatedAt: Scalars['Datetime']['input'];
-};
-
-export type TeamMembership = Node & {
-  __typename?: 'TeamMembership';
-  createdAt: Scalars['Datetime']['output'];
-  id: Scalars['String']['output'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']['output'];
-  role: TeamRole;
-  /** Reads a single `Team` that is related to this `TeamMembership`. */
-  team?: Maybe<Team>;
-  teamId: Scalars['String']['output'];
-  /** Reads a single `User` that is related to this `TeamMembership`. */
+  transactionId: Scalars['String']['output'];
+  type: Typetransaction;
+  /** Reads a single `User` that is related to this `Transaction`. */
   user?: Maybe<User>;
-  userId: Scalars['String']['output'];
+  userId?: Maybe<Scalars['String']['output']>;
 };
 
-export type TeamMembershipAggregates = {
-  __typename?: 'TeamMembershipAggregates';
+export type TransactionAggregates = {
+  __typename?: 'TransactionAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<TransactionAverageAggregates>;
   /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  distinctCount?: Maybe<TeamMembershipDistinctCountAggregates>;
+  distinctCount?: Maybe<TransactionDistinctCountAggregates>;
   keys?: Maybe<Array<Scalars['String']['output']>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<TransactionMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<TransactionMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<TransactionStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<TransactionStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<TransactionSumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<TransactionVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<TransactionVarianceSampleAggregates>;
 };
 
-/** A filter to be used against aggregates of `TeamMembership` object types. */
-export type TeamMembershipAggregatesFilter = {
-  /** Distinct count aggregate over matching `TeamMembership` objects. */
-  distinctCount?: InputMaybe<TeamMembershipDistinctCountAggregateFilter>;
-  /** A filter that must pass for the relevant `TeamMembership` object to be included within the aggregate. */
-  filter?: InputMaybe<TeamMembershipFilter>;
+/** A filter to be used against aggregates of `Transaction` object types. */
+export type TransactionAggregatesFilter = {
+  /** Mean average aggregate over matching `Transaction` objects. */
+  average?: InputMaybe<TransactionAverageAggregateFilter>;
+  /** Distinct count aggregate over matching `Transaction` objects. */
+  distinctCount?: InputMaybe<TransactionDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Transaction` object to be included within the aggregate. */
+  filter?: InputMaybe<TransactionFilter>;
+  /** Maximum aggregate over matching `Transaction` objects. */
+  max?: InputMaybe<TransactionMaxAggregateFilter>;
+  /** Minimum aggregate over matching `Transaction` objects. */
+  min?: InputMaybe<TransactionMinAggregateFilter>;
+  /** Population standard deviation aggregate over matching `Transaction` objects. */
+  stddevPopulation?: InputMaybe<TransactionStddevPopulationAggregateFilter>;
+  /** Sample standard deviation aggregate over matching `Transaction` objects. */
+  stddevSample?: InputMaybe<TransactionStddevSampleAggregateFilter>;
+  /** Sum aggregate over matching `Transaction` objects. */
+  sum?: InputMaybe<TransactionSumAggregateFilter>;
+  /** Population variance aggregate over matching `Transaction` objects. */
+  variancePopulation?: InputMaybe<TransactionVariancePopulationAggregateFilter>;
+  /** Sample variance aggregate over matching `Transaction` objects. */
+  varianceSample?: InputMaybe<TransactionVarianceSampleAggregateFilter>;
+};
+
+export type TransactionAverageAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionAverageAggregates = {
+  __typename?: 'TransactionAverageAggregates';
+  /** Mean average of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /**
- * A condition to be used against `TeamMembership` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
+ * A condition to be used against `Transaction` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
  */
-export type TeamMembershipCondition = {
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `role` field. */
-  role?: InputMaybe<TeamRole>;
-  /** Checks for equality with the object’s `teamId` field. */
-  teamId?: InputMaybe<Scalars['String']['input']>;
+export type TransactionCondition = {
+  /** Checks for equality with the object’s `amount` field. */
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Checks for equality with the object’s `categoryId` field. */
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `date` field. */
+  date?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `transactionId` field. */
+  transactionId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Typetransaction>;
   /** Checks for equality with the object’s `userId` field. */
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type TeamMembershipDistinctCountAggregateFilter = {
-  createdAt?: InputMaybe<BigIntFilter>;
-  id?: InputMaybe<BigIntFilter>;
-  role?: InputMaybe<BigIntFilter>;
-  teamId?: InputMaybe<BigIntFilter>;
+export type TransactionDistinctCountAggregateFilter = {
+  amount?: InputMaybe<BigIntFilter>;
+  categoryId?: InputMaybe<BigIntFilter>;
+  date?: InputMaybe<BigIntFilter>;
+  description?: InputMaybe<BigIntFilter>;
+  transactionId?: InputMaybe<BigIntFilter>;
+  type?: InputMaybe<BigIntFilter>;
   userId?: InputMaybe<BigIntFilter>;
 };
 
-export type TeamMembershipDistinctCountAggregates = {
-  __typename?: 'TeamMembershipDistinctCountAggregates';
-  /** Distinct count of createdAt across the matching connection */
-  createdAt?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of id across the matching connection */
-  id?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of role across the matching connection */
-  role?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of teamId across the matching connection */
-  teamId?: Maybe<Scalars['BigInt']['output']>;
+export type TransactionDistinctCountAggregates = {
+  __typename?: 'TransactionDistinctCountAggregates';
+  /** Distinct count of amount across the matching connection */
+  amount?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of categoryId across the matching connection */
+  categoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of date across the matching connection */
+  date?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of description across the matching connection */
+  description?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of transactionId across the matching connection */
+  transactionId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of type across the matching connection */
+  type?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of userId across the matching connection */
   userId?: Maybe<Scalars['BigInt']['output']>;
 };
 
-/** A filter to be used against `TeamMembership` object types. All fields are combined with a logical ‘and.’ */
-export type TeamMembershipFilter = {
+/** A filter to be used against `Transaction` object types. All fields are combined with a logical ‘and.’ */
+export type TransactionFilter = {
+  /** Filter by the object’s `amount` field. */
+  amount?: InputMaybe<FloatFilter>;
   /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<TeamMembershipFilter>>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<StringFilter>;
+  and?: InputMaybe<Array<TransactionFilter>>;
+  /** Filter by the object’s `category` relation. */
+  category?: InputMaybe<CategoryFilter>;
+  /** A related `category` exists. */
+  categoryExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `categoryId` field. */
+  categoryId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `date` field. */
+  date?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: InputMaybe<TeamMembershipFilter>;
+  not?: InputMaybe<TransactionFilter>;
   /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<TeamMembershipFilter>>;
-  /** Filter by the object’s `role` field. */
-  role?: InputMaybe<TeamRoleFilter>;
-  /** Filter by the object’s `team` relation. */
-  team?: InputMaybe<TeamFilter>;
-  /** Filter by the object’s `teamId` field. */
-  teamId?: InputMaybe<StringFilter>;
+  or?: InputMaybe<Array<TransactionFilter>>;
+  /** Filter by the object’s `transactionId` field. */
+  transactionId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<TypetransactionFilter>;
   /** Filter by the object’s `user` relation. */
   user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `userId` field. */
   userId?: InputMaybe<StringFilter>;
 };
 
-/** Grouping methods for `TeamMembership` for usage during aggregation. */
-export enum TeamMembershipGroupBy {
-  CreatedAt = 'CREATED_AT',
-  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
-  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
-  Role = 'ROLE',
-  TeamId = 'TEAM_ID',
+/** Grouping methods for `Transaction` for usage during aggregation. */
+export enum TransactionGroupBy {
+  Amount = 'AMOUNT',
+  CategoryId = 'CATEGORY_ID',
+  Date = 'DATE',
+  DateTruncatedToDay = 'DATE_TRUNCATED_TO_DAY',
+  DateTruncatedToHour = 'DATE_TRUNCATED_TO_HOUR',
+  Description = 'DESCRIPTION',
+  Type = 'TYPE',
   UserId = 'USER_ID'
 }
 
-export type TeamMembershipHavingAverageInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingAverageInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingDistinctCountInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingDistinctCountInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** Conditions for `TeamMembership` aggregates. */
-export type TeamMembershipHavingInput = {
-  AND?: InputMaybe<Array<TeamMembershipHavingInput>>;
-  OR?: InputMaybe<Array<TeamMembershipHavingInput>>;
-  average?: InputMaybe<TeamMembershipHavingAverageInput>;
-  distinctCount?: InputMaybe<TeamMembershipHavingDistinctCountInput>;
-  max?: InputMaybe<TeamMembershipHavingMaxInput>;
-  min?: InputMaybe<TeamMembershipHavingMinInput>;
-  stddevPopulation?: InputMaybe<TeamMembershipHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<TeamMembershipHavingStddevSampleInput>;
-  sum?: InputMaybe<TeamMembershipHavingSumInput>;
-  variancePopulation?: InputMaybe<TeamMembershipHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<TeamMembershipHavingVarianceSampleInput>;
+/** Conditions for `Transaction` aggregates. */
+export type TransactionHavingInput = {
+  AND?: InputMaybe<Array<TransactionHavingInput>>;
+  OR?: InputMaybe<Array<TransactionHavingInput>>;
+  average?: InputMaybe<TransactionHavingAverageInput>;
+  distinctCount?: InputMaybe<TransactionHavingDistinctCountInput>;
+  max?: InputMaybe<TransactionHavingMaxInput>;
+  min?: InputMaybe<TransactionHavingMinInput>;
+  stddevPopulation?: InputMaybe<TransactionHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<TransactionHavingStddevSampleInput>;
+  sum?: InputMaybe<TransactionHavingSumInput>;
+  variancePopulation?: InputMaybe<TransactionHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<TransactionHavingVarianceSampleInput>;
 };
 
-export type TeamMembershipHavingMaxInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingMaxInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingMinInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingMinInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingStddevPopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingStddevPopulationInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingStddevSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingStddevSampleInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingSumInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingSumInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingVariancePopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingVariancePopulationInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-export type TeamMembershipHavingVarianceSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
+export type TransactionHavingVarianceSampleInput = {
+  amount?: InputMaybe<HavingFloatFilter>;
+  date?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** An input for mutations affecting `TeamMembership` */
-export type TeamMembershipInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  id: Scalars['String']['input'];
-  role?: InputMaybe<TeamRole>;
-  teamId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
-};
-
-/** Represents an update to a `TeamMembership`. Fields that are set will be updated. */
-export type TeamMembershipPatch = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<TeamRole>;
-  teamId?: InputMaybe<Scalars['String']['input']>;
+/** An input for mutations affecting `Transaction` */
+export type TransactionInput = {
+  amount: Scalars['Float']['input'];
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  date?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  transactionId: Scalars['String']['input'];
+  type?: InputMaybe<Typetransaction>;
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** A connection to a list of `TeamMembership` values. */
-export type TeamMembershipsConnection = {
-  __typename?: 'TeamMembershipsConnection';
+export type TransactionMaxAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionMaxAggregates = {
+  __typename?: 'TransactionMaxAggregates';
+  /** Maximum of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionMinAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionMinAggregates = {
+  __typename?: 'TransactionMinAggregates';
+  /** Minimum of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Represents an update to a `Transaction`. Fields that are set will be updated. */
+export type TransactionPatch = {
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+  date?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  transactionId?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Typetransaction>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TransactionStddevPopulationAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionStddevPopulationAggregates = {
+  __typename?: 'TransactionStddevPopulationAggregates';
+  /** Population standard deviation of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionStddevSampleAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionStddevSampleAggregates = {
+  __typename?: 'TransactionStddevSampleAggregates';
+  /** Sample standard deviation of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionSumAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionSumAggregates = {
+  __typename?: 'TransactionSumAggregates';
+  /** Sum of amount across the matching connection */
+  amount: Scalars['Float']['output'];
+};
+
+export type TransactionVariancePopulationAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionVariancePopulationAggregates = {
+  __typename?: 'TransactionVariancePopulationAggregates';
+  /** Population variance of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type TransactionVarianceSampleAggregateFilter = {
+  amount?: InputMaybe<FloatFilter>;
+};
+
+export type TransactionVarianceSampleAggregates = {
+  __typename?: 'TransactionVarianceSampleAggregates';
+  /** Sample variance of amount across the matching connection */
+  amount?: Maybe<Scalars['Float']['output']>;
+};
+
+/** A connection to a list of `Transaction` values. */
+export type TransactionsConnection = {
+  __typename?: 'TransactionsConnection';
   /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<TeamMembershipAggregates>;
-  /** A list of edges which contains the `TeamMembership` and cursor to aid in pagination. */
-  edges: Array<TeamMembershipsEdge>;
+  aggregates?: Maybe<TransactionAggregates>;
+  /** A list of edges which contains the `Transaction` and cursor to aid in pagination. */
+  edges: Array<TransactionsEdge>;
   /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<TeamMembershipAggregates>>;
-  /** A list of `TeamMembership` objects. */
-  nodes: Array<TeamMembership>;
+  groupedAggregates?: Maybe<Array<TransactionAggregates>>;
+  /** A list of `Transaction` objects. */
+  nodes: Array<Transaction>;
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
-  /** The count of *all* `TeamMembership` you could get from the connection. */
+  /** The count of *all* `Transaction` you could get from the connection. */
   totalCount: Scalars['Int']['output'];
 };
 
 
-/** A connection to a list of `TeamMembership` values. */
-export type TeamMembershipsConnectionGroupedAggregatesArgs = {
-  groupBy: Array<TeamMembershipGroupBy>;
-  having?: InputMaybe<TeamMembershipHavingInput>;
+/** A connection to a list of `Transaction` values. */
+export type TransactionsConnectionGroupedAggregatesArgs = {
+  groupBy: Array<TransactionGroupBy>;
+  having?: InputMaybe<TransactionHavingInput>;
 };
 
-/** A `TeamMembership` edge in the connection. */
-export type TeamMembershipsEdge = {
-  __typename?: 'TeamMembershipsEdge';
+/** A `Transaction` edge in the connection. */
+export type TransactionsEdge = {
+  __typename?: 'TransactionsEdge';
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']['output']>;
-  /** The `TeamMembership` at the end of the edge. */
-  node: TeamMembership;
+  /** The `Transaction` at the end of the edge. */
+  node: Transaction;
 };
 
-/** Methods to use when ordering `TeamMembership`. */
-export enum TeamMembershipsOrderBy {
-  CreatedAtAsc = 'CREATED_AT_ASC',
-  CreatedAtDesc = 'CREATED_AT_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
+/** Methods to use when ordering `Transaction`. */
+export enum TransactionsOrderBy {
+  AmountAsc = 'AMOUNT_ASC',
+  AmountDesc = 'AMOUNT_DESC',
+  CategoryIdAsc = 'CATEGORY_ID_ASC',
+  CategoryIdDesc = 'CATEGORY_ID_DESC',
+  DateAsc = 'DATE_ASC',
+  DateDesc = 'DATE_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  RoleAsc = 'ROLE_ASC',
-  RoleDesc = 'ROLE_DESC',
-  TeamIdAsc = 'TEAM_ID_ASC',
-  TeamIdDesc = 'TEAM_ID_DESC',
+  TransactionIdAsc = 'TRANSACTION_ID_ASC',
+  TransactionIdDesc = 'TRANSACTION_ID_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC'
 }
 
-/** Represents an update to a `Team`. Fields that are set will be updated. */
-export type TeamPatch = {
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
-
-export enum TeamRole {
-  Admin = 'ADMIN',
-  Member = 'MEMBER',
-  Owner = 'OWNER'
+export enum Typetransaction {
+  Expense = 'EXPENSE',
+  Income = 'INCOME'
 }
 
-/** A filter to be used against TeamRole fields. All fields are combined with a logical ‘and.’ */
-export type TeamRoleFilter = {
+/** A filter to be used against Typetransaction fields. All fields are combined with a logical ‘and.’ */
+export type TypetransactionFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<TeamRole>;
+  distinctFrom?: InputMaybe<Typetransaction>;
   /** Equal to the specified value. */
-  equalTo?: InputMaybe<TeamRole>;
+  equalTo?: InputMaybe<Typetransaction>;
   /** Greater than the specified value. */
-  greaterThan?: InputMaybe<TeamRole>;
+  greaterThan?: InputMaybe<Typetransaction>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<TeamRole>;
+  greaterThanOrEqualTo?: InputMaybe<Typetransaction>;
   /** Included in the specified list. */
-  in?: InputMaybe<Array<TeamRole>>;
+  in?: InputMaybe<Array<Typetransaction>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']['input']>;
   /** Less than the specified value. */
-  lessThan?: InputMaybe<TeamRole>;
+  lessThan?: InputMaybe<Typetransaction>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<TeamRole>;
+  lessThanOrEqualTo?: InputMaybe<Typetransaction>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<TeamRole>;
+  notDistinctFrom?: InputMaybe<Typetransaction>;
   /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<TeamRole>;
+  notEqualTo?: InputMaybe<Typetransaction>;
   /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<TeamRole>>;
+  notIn?: InputMaybe<Array<Typetransaction>>;
 };
 
-/** A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’ */
-export type TeamToManyEventFilter = {
-  /** Aggregates across related `Event` match the filter criteria. */
-  aggregates?: InputMaybe<EventAggregatesFilter>;
-  /** Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<EventFilter>;
-  /** No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<EventFilter>;
-  /** Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<EventFilter>;
-};
-
-/** A filter to be used against many `TeamMembership` object types. All fields are combined with a logical ‘and.’ */
-export type TeamToManyTeamMembershipFilter = {
-  /** Aggregates across related `TeamMembership` match the filter criteria. */
-  aggregates?: InputMaybe<TeamMembershipAggregatesFilter>;
-  /** Every related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<TeamMembershipFilter>;
-  /** No related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<TeamMembershipFilter>;
-  /** Some related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<TeamMembershipFilter>;
-};
-
-/** A connection to a list of `Team` values. */
-export type TeamsConnection = {
-  __typename?: 'TeamsConnection';
-  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<TeamAggregates>;
-  /** A list of edges which contains the `Team` and cursor to aid in pagination. */
-  edges: Array<TeamsEdge>;
-  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<TeamAggregates>>;
-  /** A list of `Team` objects. */
-  nodes: Array<Team>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `Team` you could get from the connection. */
-  totalCount: Scalars['Int']['output'];
-};
-
-
-/** A connection to a list of `Team` values. */
-export type TeamsConnectionGroupedAggregatesArgs = {
-  groupBy: Array<TeamGroupBy>;
-  having?: InputMaybe<TeamHavingInput>;
-};
-
-/** A `Team` edge in the connection. */
-export type TeamsEdge = {
-  __typename?: 'TeamsEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  /** The `Team` at the end of the edge. */
-  node: Team;
-};
-
-/** Methods to use when ordering `Team`. */
-export enum TeamsOrderBy {
-  CreatedAtAsc = 'CREATED_AT_ASC',
-  CreatedAtDesc = 'CREATED_AT_DESC',
-  EventsByTeamIdAverageDateAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_DATE_ASC',
-  EventsByTeamIdAverageDateDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_DATE_DESC',
-  EventsByTeamIdAverageDescriptionAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_DESCRIPTION_ASC',
-  EventsByTeamIdAverageDescriptionDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_DESCRIPTION_DESC',
-  EventsByTeamIdAverageDurationAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_DURATION_ASC',
-  EventsByTeamIdAverageDurationDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_DURATION_DESC',
-  EventsByTeamIdAverageIdAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_ID_ASC',
-  EventsByTeamIdAverageIdDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_ID_DESC',
-  EventsByTeamIdAverageLocationAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_LOCATION_ASC',
-  EventsByTeamIdAverageLocationDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_LOCATION_DESC',
-  EventsByTeamIdAverageTeamIdAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_TEAM_ID_ASC',
-  EventsByTeamIdAverageTeamIdDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_TEAM_ID_DESC',
-  EventsByTeamIdAverageTitleAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_TITLE_ASC',
-  EventsByTeamIdAverageTitleDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_TITLE_DESC',
-  EventsByTeamIdAverageUserIdAsc = 'EVENTS_BY_TEAM_ID_AVERAGE_USER_ID_ASC',
-  EventsByTeamIdAverageUserIdDesc = 'EVENTS_BY_TEAM_ID_AVERAGE_USER_ID_DESC',
-  EventsByTeamIdCountAsc = 'EVENTS_BY_TEAM_ID_COUNT_ASC',
-  EventsByTeamIdCountDesc = 'EVENTS_BY_TEAM_ID_COUNT_DESC',
-  EventsByTeamIdDistinctCountDateAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DATE_ASC',
-  EventsByTeamIdDistinctCountDateDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DATE_DESC',
-  EventsByTeamIdDistinctCountDescriptionAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
-  EventsByTeamIdDistinctCountDescriptionDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
-  EventsByTeamIdDistinctCountDurationAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DURATION_ASC',
-  EventsByTeamIdDistinctCountDurationDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_DURATION_DESC',
-  EventsByTeamIdDistinctCountIdAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_ID_ASC',
-  EventsByTeamIdDistinctCountIdDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_ID_DESC',
-  EventsByTeamIdDistinctCountLocationAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_LOCATION_ASC',
-  EventsByTeamIdDistinctCountLocationDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_LOCATION_DESC',
-  EventsByTeamIdDistinctCountTeamIdAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_TEAM_ID_ASC',
-  EventsByTeamIdDistinctCountTeamIdDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_TEAM_ID_DESC',
-  EventsByTeamIdDistinctCountTitleAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_TITLE_ASC',
-  EventsByTeamIdDistinctCountTitleDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_TITLE_DESC',
-  EventsByTeamIdDistinctCountUserIdAsc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_USER_ID_ASC',
-  EventsByTeamIdDistinctCountUserIdDesc = 'EVENTS_BY_TEAM_ID_DISTINCT_COUNT_USER_ID_DESC',
-  EventsByTeamIdMaxDateAsc = 'EVENTS_BY_TEAM_ID_MAX_DATE_ASC',
-  EventsByTeamIdMaxDateDesc = 'EVENTS_BY_TEAM_ID_MAX_DATE_DESC',
-  EventsByTeamIdMaxDescriptionAsc = 'EVENTS_BY_TEAM_ID_MAX_DESCRIPTION_ASC',
-  EventsByTeamIdMaxDescriptionDesc = 'EVENTS_BY_TEAM_ID_MAX_DESCRIPTION_DESC',
-  EventsByTeamIdMaxDurationAsc = 'EVENTS_BY_TEAM_ID_MAX_DURATION_ASC',
-  EventsByTeamIdMaxDurationDesc = 'EVENTS_BY_TEAM_ID_MAX_DURATION_DESC',
-  EventsByTeamIdMaxIdAsc = 'EVENTS_BY_TEAM_ID_MAX_ID_ASC',
-  EventsByTeamIdMaxIdDesc = 'EVENTS_BY_TEAM_ID_MAX_ID_DESC',
-  EventsByTeamIdMaxLocationAsc = 'EVENTS_BY_TEAM_ID_MAX_LOCATION_ASC',
-  EventsByTeamIdMaxLocationDesc = 'EVENTS_BY_TEAM_ID_MAX_LOCATION_DESC',
-  EventsByTeamIdMaxTeamIdAsc = 'EVENTS_BY_TEAM_ID_MAX_TEAM_ID_ASC',
-  EventsByTeamIdMaxTeamIdDesc = 'EVENTS_BY_TEAM_ID_MAX_TEAM_ID_DESC',
-  EventsByTeamIdMaxTitleAsc = 'EVENTS_BY_TEAM_ID_MAX_TITLE_ASC',
-  EventsByTeamIdMaxTitleDesc = 'EVENTS_BY_TEAM_ID_MAX_TITLE_DESC',
-  EventsByTeamIdMaxUserIdAsc = 'EVENTS_BY_TEAM_ID_MAX_USER_ID_ASC',
-  EventsByTeamIdMaxUserIdDesc = 'EVENTS_BY_TEAM_ID_MAX_USER_ID_DESC',
-  EventsByTeamIdMinDateAsc = 'EVENTS_BY_TEAM_ID_MIN_DATE_ASC',
-  EventsByTeamIdMinDateDesc = 'EVENTS_BY_TEAM_ID_MIN_DATE_DESC',
-  EventsByTeamIdMinDescriptionAsc = 'EVENTS_BY_TEAM_ID_MIN_DESCRIPTION_ASC',
-  EventsByTeamIdMinDescriptionDesc = 'EVENTS_BY_TEAM_ID_MIN_DESCRIPTION_DESC',
-  EventsByTeamIdMinDurationAsc = 'EVENTS_BY_TEAM_ID_MIN_DURATION_ASC',
-  EventsByTeamIdMinDurationDesc = 'EVENTS_BY_TEAM_ID_MIN_DURATION_DESC',
-  EventsByTeamIdMinIdAsc = 'EVENTS_BY_TEAM_ID_MIN_ID_ASC',
-  EventsByTeamIdMinIdDesc = 'EVENTS_BY_TEAM_ID_MIN_ID_DESC',
-  EventsByTeamIdMinLocationAsc = 'EVENTS_BY_TEAM_ID_MIN_LOCATION_ASC',
-  EventsByTeamIdMinLocationDesc = 'EVENTS_BY_TEAM_ID_MIN_LOCATION_DESC',
-  EventsByTeamIdMinTeamIdAsc = 'EVENTS_BY_TEAM_ID_MIN_TEAM_ID_ASC',
-  EventsByTeamIdMinTeamIdDesc = 'EVENTS_BY_TEAM_ID_MIN_TEAM_ID_DESC',
-  EventsByTeamIdMinTitleAsc = 'EVENTS_BY_TEAM_ID_MIN_TITLE_ASC',
-  EventsByTeamIdMinTitleDesc = 'EVENTS_BY_TEAM_ID_MIN_TITLE_DESC',
-  EventsByTeamIdMinUserIdAsc = 'EVENTS_BY_TEAM_ID_MIN_USER_ID_ASC',
-  EventsByTeamIdMinUserIdDesc = 'EVENTS_BY_TEAM_ID_MIN_USER_ID_DESC',
-  EventsByTeamIdStddevPopulationDateAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DATE_ASC',
-  EventsByTeamIdStddevPopulationDateDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DATE_DESC',
-  EventsByTeamIdStddevPopulationDescriptionAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DESCRIPTION_ASC',
-  EventsByTeamIdStddevPopulationDescriptionDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DESCRIPTION_DESC',
-  EventsByTeamIdStddevPopulationDurationAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DURATION_ASC',
-  EventsByTeamIdStddevPopulationDurationDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_DURATION_DESC',
-  EventsByTeamIdStddevPopulationIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_ID_ASC',
-  EventsByTeamIdStddevPopulationIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_ID_DESC',
-  EventsByTeamIdStddevPopulationLocationAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_LOCATION_ASC',
-  EventsByTeamIdStddevPopulationLocationDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_LOCATION_DESC',
-  EventsByTeamIdStddevPopulationTeamIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_TEAM_ID_ASC',
-  EventsByTeamIdStddevPopulationTeamIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_TEAM_ID_DESC',
-  EventsByTeamIdStddevPopulationTitleAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_TITLE_ASC',
-  EventsByTeamIdStddevPopulationTitleDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_TITLE_DESC',
-  EventsByTeamIdStddevPopulationUserIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_USER_ID_ASC',
-  EventsByTeamIdStddevPopulationUserIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_POPULATION_USER_ID_DESC',
-  EventsByTeamIdStddevSampleDateAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DATE_ASC',
-  EventsByTeamIdStddevSampleDateDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DATE_DESC',
-  EventsByTeamIdStddevSampleDescriptionAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DESCRIPTION_ASC',
-  EventsByTeamIdStddevSampleDescriptionDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DESCRIPTION_DESC',
-  EventsByTeamIdStddevSampleDurationAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DURATION_ASC',
-  EventsByTeamIdStddevSampleDurationDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_DURATION_DESC',
-  EventsByTeamIdStddevSampleIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_ID_ASC',
-  EventsByTeamIdStddevSampleIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_ID_DESC',
-  EventsByTeamIdStddevSampleLocationAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_LOCATION_ASC',
-  EventsByTeamIdStddevSampleLocationDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_LOCATION_DESC',
-  EventsByTeamIdStddevSampleTeamIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_TEAM_ID_ASC',
-  EventsByTeamIdStddevSampleTeamIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_TEAM_ID_DESC',
-  EventsByTeamIdStddevSampleTitleAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_TITLE_ASC',
-  EventsByTeamIdStddevSampleTitleDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_TITLE_DESC',
-  EventsByTeamIdStddevSampleUserIdAsc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  EventsByTeamIdStddevSampleUserIdDesc = 'EVENTS_BY_TEAM_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  EventsByTeamIdSumDateAsc = 'EVENTS_BY_TEAM_ID_SUM_DATE_ASC',
-  EventsByTeamIdSumDateDesc = 'EVENTS_BY_TEAM_ID_SUM_DATE_DESC',
-  EventsByTeamIdSumDescriptionAsc = 'EVENTS_BY_TEAM_ID_SUM_DESCRIPTION_ASC',
-  EventsByTeamIdSumDescriptionDesc = 'EVENTS_BY_TEAM_ID_SUM_DESCRIPTION_DESC',
-  EventsByTeamIdSumDurationAsc = 'EVENTS_BY_TEAM_ID_SUM_DURATION_ASC',
-  EventsByTeamIdSumDurationDesc = 'EVENTS_BY_TEAM_ID_SUM_DURATION_DESC',
-  EventsByTeamIdSumIdAsc = 'EVENTS_BY_TEAM_ID_SUM_ID_ASC',
-  EventsByTeamIdSumIdDesc = 'EVENTS_BY_TEAM_ID_SUM_ID_DESC',
-  EventsByTeamIdSumLocationAsc = 'EVENTS_BY_TEAM_ID_SUM_LOCATION_ASC',
-  EventsByTeamIdSumLocationDesc = 'EVENTS_BY_TEAM_ID_SUM_LOCATION_DESC',
-  EventsByTeamIdSumTeamIdAsc = 'EVENTS_BY_TEAM_ID_SUM_TEAM_ID_ASC',
-  EventsByTeamIdSumTeamIdDesc = 'EVENTS_BY_TEAM_ID_SUM_TEAM_ID_DESC',
-  EventsByTeamIdSumTitleAsc = 'EVENTS_BY_TEAM_ID_SUM_TITLE_ASC',
-  EventsByTeamIdSumTitleDesc = 'EVENTS_BY_TEAM_ID_SUM_TITLE_DESC',
-  EventsByTeamIdSumUserIdAsc = 'EVENTS_BY_TEAM_ID_SUM_USER_ID_ASC',
-  EventsByTeamIdSumUserIdDesc = 'EVENTS_BY_TEAM_ID_SUM_USER_ID_DESC',
-  EventsByTeamIdVariancePopulationDateAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DATE_ASC',
-  EventsByTeamIdVariancePopulationDateDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DATE_DESC',
-  EventsByTeamIdVariancePopulationDescriptionAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DESCRIPTION_ASC',
-  EventsByTeamIdVariancePopulationDescriptionDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DESCRIPTION_DESC',
-  EventsByTeamIdVariancePopulationDurationAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DURATION_ASC',
-  EventsByTeamIdVariancePopulationDurationDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_DURATION_DESC',
-  EventsByTeamIdVariancePopulationIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_ID_ASC',
-  EventsByTeamIdVariancePopulationIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_ID_DESC',
-  EventsByTeamIdVariancePopulationLocationAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_LOCATION_ASC',
-  EventsByTeamIdVariancePopulationLocationDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_LOCATION_DESC',
-  EventsByTeamIdVariancePopulationTeamIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_TEAM_ID_ASC',
-  EventsByTeamIdVariancePopulationTeamIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_TEAM_ID_DESC',
-  EventsByTeamIdVariancePopulationTitleAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_TITLE_ASC',
-  EventsByTeamIdVariancePopulationTitleDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_TITLE_DESC',
-  EventsByTeamIdVariancePopulationUserIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  EventsByTeamIdVariancePopulationUserIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  EventsByTeamIdVarianceSampleDateAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DATE_ASC',
-  EventsByTeamIdVarianceSampleDateDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DATE_DESC',
-  EventsByTeamIdVarianceSampleDescriptionAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC',
-  EventsByTeamIdVarianceSampleDescriptionDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC',
-  EventsByTeamIdVarianceSampleDurationAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DURATION_ASC',
-  EventsByTeamIdVarianceSampleDurationDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_DURATION_DESC',
-  EventsByTeamIdVarianceSampleIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_ID_ASC',
-  EventsByTeamIdVarianceSampleIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_ID_DESC',
-  EventsByTeamIdVarianceSampleLocationAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_LOCATION_ASC',
-  EventsByTeamIdVarianceSampleLocationDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_LOCATION_DESC',
-  EventsByTeamIdVarianceSampleTeamIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_TEAM_ID_ASC',
-  EventsByTeamIdVarianceSampleTeamIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_TEAM_ID_DESC',
-  EventsByTeamIdVarianceSampleTitleAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_TITLE_ASC',
-  EventsByTeamIdVarianceSampleTitleDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_TITLE_DESC',
-  EventsByTeamIdVarianceSampleUserIdAsc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  EventsByTeamIdVarianceSampleUserIdDesc = 'EVENTS_BY_TEAM_ID_VARIANCE_SAMPLE_USER_ID_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  NameAsc = 'NAME_ASC',
-  NameDesc = 'NAME_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  TeamMembershipsByTeamIdAverageCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdAverageCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdAverageIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_ID_ASC',
-  TeamMembershipsByTeamIdAverageIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_ID_DESC',
-  TeamMembershipsByTeamIdAverageRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_ROLE_ASC',
-  TeamMembershipsByTeamIdAverageRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_ROLE_DESC',
-  TeamMembershipsByTeamIdAverageTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdAverageTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdAverageUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_USER_ID_ASC',
-  TeamMembershipsByTeamIdAverageUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_AVERAGE_USER_ID_DESC',
-  TeamMembershipsByTeamIdCountAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_COUNT_ASC',
-  TeamMembershipsByTeamIdCountDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_COUNT_DESC',
-  TeamMembershipsByTeamIdDistinctCountCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdDistinctCountCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdDistinctCountIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_ID_ASC',
-  TeamMembershipsByTeamIdDistinctCountIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_ID_DESC',
-  TeamMembershipsByTeamIdDistinctCountRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_ROLE_ASC',
-  TeamMembershipsByTeamIdDistinctCountRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_ROLE_DESC',
-  TeamMembershipsByTeamIdDistinctCountTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdDistinctCountTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdDistinctCountUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_USER_ID_ASC',
-  TeamMembershipsByTeamIdDistinctCountUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_DISTINCT_COUNT_USER_ID_DESC',
-  TeamMembershipsByTeamIdMaxCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdMaxCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdMaxIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_ID_ASC',
-  TeamMembershipsByTeamIdMaxIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_ID_DESC',
-  TeamMembershipsByTeamIdMaxRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_ROLE_ASC',
-  TeamMembershipsByTeamIdMaxRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_ROLE_DESC',
-  TeamMembershipsByTeamIdMaxTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdMaxTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdMaxUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_USER_ID_ASC',
-  TeamMembershipsByTeamIdMaxUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MAX_USER_ID_DESC',
-  TeamMembershipsByTeamIdMinCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdMinCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdMinIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_ID_ASC',
-  TeamMembershipsByTeamIdMinIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_ID_DESC',
-  TeamMembershipsByTeamIdMinRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_ROLE_ASC',
-  TeamMembershipsByTeamIdMinRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_ROLE_DESC',
-  TeamMembershipsByTeamIdMinTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdMinTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdMinUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_USER_ID_ASC',
-  TeamMembershipsByTeamIdMinUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_MIN_USER_ID_DESC',
-  TeamMembershipsByTeamIdStddevPopulationCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdStddevPopulationCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdStddevPopulationIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_ID_ASC',
-  TeamMembershipsByTeamIdStddevPopulationIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_ID_DESC',
-  TeamMembershipsByTeamIdStddevPopulationRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_ROLE_ASC',
-  TeamMembershipsByTeamIdStddevPopulationRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_ROLE_DESC',
-  TeamMembershipsByTeamIdStddevPopulationTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdStddevPopulationTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdStddevPopulationUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_USER_ID_ASC',
-  TeamMembershipsByTeamIdStddevPopulationUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_POPULATION_USER_ID_DESC',
-  TeamMembershipsByTeamIdStddevSampleCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdStddevSampleCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdStddevSampleIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_ID_ASC',
-  TeamMembershipsByTeamIdStddevSampleIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_ID_DESC',
-  TeamMembershipsByTeamIdStddevSampleRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_ROLE_ASC',
-  TeamMembershipsByTeamIdStddevSampleRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_ROLE_DESC',
-  TeamMembershipsByTeamIdStddevSampleTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdStddevSampleTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdStddevSampleUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  TeamMembershipsByTeamIdStddevSampleUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  TeamMembershipsByTeamIdSumCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdSumCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdSumIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_ID_ASC',
-  TeamMembershipsByTeamIdSumIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_ID_DESC',
-  TeamMembershipsByTeamIdSumRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_ROLE_ASC',
-  TeamMembershipsByTeamIdSumRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_ROLE_DESC',
-  TeamMembershipsByTeamIdSumTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdSumTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdSumUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_USER_ID_ASC',
-  TeamMembershipsByTeamIdSumUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_SUM_USER_ID_DESC',
-  TeamMembershipsByTeamIdVariancePopulationCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdVariancePopulationCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdVariancePopulationIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_ID_ASC',
-  TeamMembershipsByTeamIdVariancePopulationIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_ID_DESC',
-  TeamMembershipsByTeamIdVariancePopulationRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_ROLE_ASC',
-  TeamMembershipsByTeamIdVariancePopulationRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_ROLE_DESC',
-  TeamMembershipsByTeamIdVariancePopulationTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdVariancePopulationTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdVariancePopulationUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  TeamMembershipsByTeamIdVariancePopulationUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  TeamMembershipsByTeamIdVarianceSampleCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
-  TeamMembershipsByTeamIdVarianceSampleCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
-  TeamMembershipsByTeamIdVarianceSampleIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_ID_ASC',
-  TeamMembershipsByTeamIdVarianceSampleIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_ID_DESC',
-  TeamMembershipsByTeamIdVarianceSampleRoleAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_ROLE_ASC',
-  TeamMembershipsByTeamIdVarianceSampleRoleDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_ROLE_DESC',
-  TeamMembershipsByTeamIdVarianceSampleTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_TEAM_ID_ASC',
-  TeamMembershipsByTeamIdVarianceSampleTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_TEAM_ID_DESC',
-  TeamMembershipsByTeamIdVarianceSampleUserIdAsc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  TeamMembershipsByTeamIdVarianceSampleUserIdDesc = 'TEAM_MEMBERSHIPS_BY_TEAM_ID_VARIANCE_SAMPLE_USER_ID_DESC',
-  UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
-}
-
-/** All input for the `updateAvailabilityByNodeId` mutation. */
-export type UpdateAvailabilityByNodeIdInput = {
+/** All input for the `updateBudgetByNodeId` mutation. */
+export type UpdateBudgetByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Availability` to be updated. */
+  /** The globally unique `ID` which will identify a single `Budget` to be updated. */
   nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Availability` being updated. */
-  patch: AvailabilityPatch;
+  /** An object where the defined keys will be set on the `Budget` being updated. */
+  patch: BudgetPatch;
 };
 
-/** All input for the `updateAvailability` mutation. */
-export type UpdateAvailabilityInput = {
+/** All input for the `updateBudget` mutation. */
+export type UpdateBudgetInput = {
+  budgetId: Scalars['String']['input'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `Budget` being updated. */
+  patch: BudgetPatch;
+};
+
+/** The output of our update `Budget` mutation. */
+export type UpdateBudgetPayload = {
+  __typename?: 'UpdateBudgetPayload';
+  /** The `Budget` that was updated by this mutation. */
+  budget?: Maybe<Budget>;
+  /** An edge for our `Budget`. May be used by Relay 1. */
+  budgetEdge?: Maybe<BudgetsEdge>;
+  /** Reads a single `Category` that is related to this `Budget`. */
+  category?: Maybe<Category>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Budget`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our update `Budget` mutation. */
+export type UpdateBudgetPayloadBudgetEdgeArgs = {
+  orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
+};
+
+/** All input for the `updateCategoryByNodeId` mutation. */
+export type UpdateCategoryByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Category` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `Category` being updated. */
+  patch: CategoryPatch;
+};
+
+/** All input for the `updateCategory` mutation. */
+export type UpdateCategoryInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `Availability` being updated. */
-  patch: AvailabilityPatch;
+  /** An object where the defined keys will be set on the `Category` being updated. */
+  patch: CategoryPatch;
 };
 
-/** The output of our update `Availability` mutation. */
-export type UpdateAvailabilityPayload = {
-  __typename?: 'UpdateAvailabilityPayload';
-  /** The `Availability` that was updated by this mutation. */
-  availability?: Maybe<Availability>;
-  /** An edge for our `Availability`. May be used by Relay 1. */
-  availabilityEdge?: Maybe<AvailabilitiesEdge>;
+/** The output of our update `Category` mutation. */
+export type UpdateCategoryPayload = {
+  __typename?: 'UpdateCategoryPayload';
+  /** The `Category` that was updated by this mutation. */
+  category?: Maybe<Category>;
+  /** An edge for our `Category`. May be used by Relay 1. */
+  categoryEdge?: Maybe<CategoriesEdge>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -7771,264 +5862,112 @@ export type UpdateAvailabilityPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `Availability`. */
+};
+
+
+/** The output of our update `Category` mutation. */
+export type UpdateCategoryPayloadCategoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+/** All input for the `updateReportByNodeId` mutation. */
+export type UpdateReportByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Report` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `Report` being updated. */
+  patch: ReportPatch;
+};
+
+/** All input for the `updateReport` mutation. */
+export type UpdateReportInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `Report` being updated. */
+  patch: ReportPatch;
+  reportId: Scalars['String']['input'];
+};
+
+/** The output of our update `Report` mutation. */
+export type UpdateReportPayload = {
+  __typename?: 'UpdateReportPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Report` that was updated by this mutation. */
+  report?: Maybe<Report>;
+  /** An edge for our `Report`. May be used by Relay 1. */
+  reportEdge?: Maybe<ReportsEdge>;
+  /** Reads a single `User` that is related to this `Report`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our update `Availability` mutation. */
-export type UpdateAvailabilityPayloadAvailabilityEdgeArgs = {
-  orderBy?: InputMaybe<Array<AvailabilitiesOrderBy>>;
+/** The output of our update `Report` mutation. */
+export type UpdateReportPayloadReportEdgeArgs = {
+  orderBy?: InputMaybe<Array<ReportsOrderBy>>;
 };
 
-/** All input for the `updateBookingByNodeId` mutation. */
-export type UpdateBookingByNodeIdInput = {
+/** All input for the `updateTransactionByNodeId` mutation. */
+export type UpdateTransactionByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Booking` to be updated. */
+  /** The globally unique `ID` which will identify a single `Transaction` to be updated. */
   nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Booking` being updated. */
-  patch: BookingPatch;
+  /** An object where the defined keys will be set on the `Transaction` being updated. */
+  patch: TransactionPatch;
 };
 
-/** All input for the `updateBooking` mutation. */
-export type UpdateBookingInput = {
+/** All input for the `updateTransaction` mutation. */
+export type UpdateTransactionInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  eventId: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `Booking` being updated. */
-  patch: BookingPatch;
-  userId: Scalars['String']['input'];
+  /** An object where the defined keys will be set on the `Transaction` being updated. */
+  patch: TransactionPatch;
+  transactionId: Scalars['String']['input'];
 };
 
-/** The output of our update `Booking` mutation. */
-export type UpdateBookingPayload = {
-  __typename?: 'UpdateBookingPayload';
-  /** The `Booking` that was updated by this mutation. */
-  booking?: Maybe<Booking>;
-  /** An edge for our `Booking`. May be used by Relay 1. */
-  bookingEdge?: Maybe<BookingsEdge>;
+/** The output of our update `Transaction` mutation. */
+export type UpdateTransactionPayload = {
+  __typename?: 'UpdateTransactionPayload';
+  /** Reads a single `Category` that is related to this `Transaction`. */
+  category?: Maybe<Category>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Reads a single `Event` that is related to this `Booking`. */
-  event?: Maybe<Event>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `Booking`. */
+  /** The `Transaction` that was updated by this mutation. */
+  transaction?: Maybe<Transaction>;
+  /** An edge for our `Transaction`. May be used by Relay 1. */
+  transactionEdge?: Maybe<TransactionsEdge>;
+  /** Reads a single `User` that is related to this `Transaction`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our update `Booking` mutation. */
-export type UpdateBookingPayloadBookingEdgeArgs = {
-  orderBy?: InputMaybe<Array<BookingsOrderBy>>;
-};
-
-/** All input for the `updateCustomAvailabilityByNodeId` mutation. */
-export type UpdateCustomAvailabilityByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `CustomAvailability` to be updated. */
-  nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `CustomAvailability` being updated. */
-  patch: CustomAvailabilityPatch;
-};
-
-/** All input for the `updateCustomAvailability` mutation. */
-export type UpdateCustomAvailabilityInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `CustomAvailability` being updated. */
-  patch: CustomAvailabilityPatch;
-};
-
-/** The output of our update `CustomAvailability` mutation. */
-export type UpdateCustomAvailabilityPayload = {
-  __typename?: 'UpdateCustomAvailabilityPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `CustomAvailability` that was updated by this mutation. */
-  customAvailability?: Maybe<CustomAvailability>;
-  /** An edge for our `CustomAvailability`. May be used by Relay 1. */
-  customAvailabilityEdge?: Maybe<CustomAvailabilitiesEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `CustomAvailability`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our update `CustomAvailability` mutation. */
-export type UpdateCustomAvailabilityPayloadCustomAvailabilityEdgeArgs = {
-  orderBy?: InputMaybe<Array<CustomAvailabilitiesOrderBy>>;
-};
-
-/** All input for the `updateEventByNodeId` mutation. */
-export type UpdateEventByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Event` to be updated. */
-  nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-};
-
-/** All input for the `updateEvent` mutation. */
-export type UpdateEventInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-};
-
-/** The output of our update `Event` mutation. */
-export type UpdateEventPayload = {
-  __typename?: 'UpdateEventPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `Event` that was updated by this mutation. */
-  event?: Maybe<Event>;
-  /** An edge for our `Event`. May be used by Relay 1. */
-  eventEdge?: Maybe<EventsEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Team` that is related to this `Event`. */
-  team?: Maybe<Team>;
-  /** Reads a single `User` that is related to this `Event`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our update `Event` mutation. */
-export type UpdateEventPayloadEventEdgeArgs = {
-  orderBy?: InputMaybe<Array<EventsOrderBy>>;
-};
-
-/** All input for the `updateTeamByNodeId` mutation. */
-export type UpdateTeamByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Team` to be updated. */
-  nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Team` being updated. */
-  patch: TeamPatch;
-};
-
-/** All input for the `updateTeam` mutation. */
-export type UpdateTeamInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `Team` being updated. */
-  patch: TeamPatch;
-};
-
-/** All input for the `updateTeamMembershipByNodeId` mutation. */
-export type UpdateTeamMembershipByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `TeamMembership` to be updated. */
-  nodeId: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `TeamMembership` being updated. */
-  patch: TeamMembershipPatch;
-};
-
-/** All input for the `updateTeamMembership` mutation. */
-export type UpdateTeamMembershipInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  /** An object where the defined keys will be set on the `TeamMembership` being updated. */
-  patch: TeamMembershipPatch;
-};
-
-/** The output of our update `TeamMembership` mutation. */
-export type UpdateTeamMembershipPayload = {
-  __typename?: 'UpdateTeamMembershipPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Team` that is related to this `TeamMembership`. */
-  team?: Maybe<Team>;
-  /** The `TeamMembership` that was updated by this mutation. */
-  teamMembership?: Maybe<TeamMembership>;
-  /** An edge for our `TeamMembership`. May be used by Relay 1. */
-  teamMembershipEdge?: Maybe<TeamMembershipsEdge>;
-  /** Reads a single `User` that is related to this `TeamMembership`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our update `TeamMembership` mutation. */
-export type UpdateTeamMembershipPayloadTeamMembershipEdgeArgs = {
-  orderBy?: InputMaybe<Array<TeamMembershipsOrderBy>>;
-};
-
-/** The output of our update `Team` mutation. */
-export type UpdateTeamPayload = {
-  __typename?: 'UpdateTeamPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** The `Team` that was updated by this mutation. */
-  team?: Maybe<Team>;
-  /** An edge for our `Team`. May be used by Relay 1. */
-  teamEdge?: Maybe<TeamsEdge>;
-};
-
-
-/** The output of our update `Team` mutation. */
-export type UpdateTeamPayloadTeamEdgeArgs = {
-  orderBy?: InputMaybe<Array<TeamsOrderBy>>;
+/** The output of our update `Transaction` mutation. */
+export type UpdateTransactionPayloadTransactionEdgeArgs = {
+  orderBy?: InputMaybe<Array<TransactionsOrderBy>>;
 };
 
 /** All input for the `updateUserByNodeId` mutation. */
@@ -8140,213 +6079,142 @@ export type UpdateUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
-/** All input for the upsert `Availability` mutation. */
-export type UpsertAvailabilityInput = {
-  /** The `Availability` to be upserted by this mutation. */
-  availability: AvailabilityInput;
+/** All input for the upsert `Budget` mutation. */
+export type UpsertBudgetInput = {
+  /** The `Budget` to be upserted by this mutation. */
+  budget: BudgetInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** The output of our upsert `Availability` mutation. */
-export type UpsertAvailabilityPayload = {
-  __typename?: 'UpsertAvailabilityPayload';
-  /** The `Availability` that was upserted by this mutation. */
-  availability?: Maybe<Availability>;
-  /** An edge for our `Availability`. May be used by Relay 1. */
-  availabilityEdge?: Maybe<AvailabilitiesEdge>;
+/** The output of our upsert `Budget` mutation. */
+export type UpsertBudgetPayload = {
+  __typename?: 'UpsertBudgetPayload';
+  /** The `Budget` that was upserted by this mutation. */
+  budget?: Maybe<Budget>;
+  /** An edge for our `Budget`. May be used by Relay 1. */
+  budgetEdge?: Maybe<BudgetsEdge>;
+  /** Reads a single `Category` that is related to this `Budget`. */
+  category?: Maybe<Category>;
   /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `Availability`. */
+  /** Reads a single `User` that is related to this `Budget`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our upsert `Availability` mutation. */
-export type UpsertAvailabilityPayloadAvailabilityEdgeArgs = {
-  orderBy?: InputMaybe<Array<AvailabilitiesOrderBy>>;
+/** The output of our upsert `Budget` mutation. */
+export type UpsertBudgetPayloadBudgetEdgeArgs = {
+  orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
 };
 
-/** Where conditions for the upsert `Availability` mutation. */
-export type UpsertAvailabilityWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
+/** Where conditions for the upsert `Budget` mutation. */
+export type UpsertBudgetWhere = {
+  budgetId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** All input for the upsert `Booking` mutation. */
-export type UpsertBookingInput = {
-  /** The `Booking` to be upserted by this mutation. */
-  booking: BookingInput;
+/** All input for the upsert `Category` mutation. */
+export type UpsertCategoryInput = {
+  /** The `Category` to be upserted by this mutation. */
+  category: CategoryInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** The output of our upsert `Booking` mutation. */
-export type UpsertBookingPayload = {
-  __typename?: 'UpsertBookingPayload';
-  /** The `Booking` that was upserted by this mutation. */
-  booking?: Maybe<Booking>;
-  /** An edge for our `Booking`. May be used by Relay 1. */
-  bookingEdge?: Maybe<BookingsEdge>;
+/** The output of our upsert `Category` mutation. */
+export type UpsertCategoryPayload = {
+  __typename?: 'UpsertCategoryPayload';
+  /** The `Category` that was upserted by this mutation. */
+  category?: Maybe<Category>;
+  /** An edge for our `Category`. May be used by Relay 1. */
+  categoryEdge?: Maybe<CategoriesEdge>;
   /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Reads a single `Event` that is related to this `Booking`. */
-  event?: Maybe<Event>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `Booking`. */
+};
+
+
+/** The output of our upsert `Category` mutation. */
+export type UpsertCategoryPayloadCategoryEdgeArgs = {
+  orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+/** Where conditions for the upsert `Category` mutation. */
+export type UpsertCategoryWhere = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** All input for the upsert `Report` mutation. */
+export type UpsertReportInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Report` to be upserted by this mutation. */
+  report: ReportInput;
+};
+
+/** The output of our upsert `Report` mutation. */
+export type UpsertReportPayload = {
+  __typename?: 'UpsertReportPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Report` that was upserted by this mutation. */
+  report?: Maybe<Report>;
+  /** An edge for our `Report`. May be used by Relay 1. */
+  reportEdge?: Maybe<ReportsEdge>;
+  /** Reads a single `User` that is related to this `Report`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our upsert `Booking` mutation. */
-export type UpsertBookingPayloadBookingEdgeArgs = {
-  orderBy?: InputMaybe<Array<BookingsOrderBy>>;
+/** The output of our upsert `Report` mutation. */
+export type UpsertReportPayloadReportEdgeArgs = {
+  orderBy?: InputMaybe<Array<ReportsOrderBy>>;
 };
 
-/** Where conditions for the upsert `Booking` mutation. */
-export type UpsertBookingWhere = {
-  eventId?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['String']['input']>;
+/** Where conditions for the upsert `Report` mutation. */
+export type UpsertReportWhere = {
+  reportId?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** All input for the upsert `CustomAvailability` mutation. */
-export type UpsertCustomAvailabilityInput = {
+/** All input for the upsert `Transaction` mutation. */
+export type UpsertTransactionInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `CustomAvailability` to be upserted by this mutation. */
-  customAvailability: CustomAvailabilityInput;
+  /** The `Transaction` to be upserted by this mutation. */
+  transaction: TransactionInput;
 };
 
-/** The output of our upsert `CustomAvailability` mutation. */
-export type UpsertCustomAvailabilityPayload = {
-  __typename?: 'UpsertCustomAvailabilityPayload';
+/** The output of our upsert `Transaction` mutation. */
+export type UpsertTransactionPayload = {
+  __typename?: 'UpsertTransactionPayload';
+  /** Reads a single `Category` that is related to this `Transaction`. */
+  category?: Maybe<Category>;
   /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `CustomAvailability` that was upserted by this mutation. */
-  customAvailability?: Maybe<CustomAvailability>;
-  /** An edge for our `CustomAvailability`. May be used by Relay 1. */
-  customAvailabilityEdge?: Maybe<CustomAvailabilitiesEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `CustomAvailability`. */
+  /** The `Transaction` that was upserted by this mutation. */
+  transaction?: Maybe<Transaction>;
+  /** An edge for our `Transaction`. May be used by Relay 1. */
+  transactionEdge?: Maybe<TransactionsEdge>;
+  /** Reads a single `User` that is related to this `Transaction`. */
   user?: Maybe<User>;
 };
 
 
-/** The output of our upsert `CustomAvailability` mutation. */
-export type UpsertCustomAvailabilityPayloadCustomAvailabilityEdgeArgs = {
-  orderBy?: InputMaybe<Array<CustomAvailabilitiesOrderBy>>;
+/** The output of our upsert `Transaction` mutation. */
+export type UpsertTransactionPayloadTransactionEdgeArgs = {
+  orderBy?: InputMaybe<Array<TransactionsOrderBy>>;
 };
 
-/** Where conditions for the upsert `CustomAvailability` mutation. */
-export type UpsertCustomAvailabilityWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** All input for the upsert `Event` mutation. */
-export type UpsertEventInput = {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `Event` to be upserted by this mutation. */
-  event: EventInput;
-};
-
-/** The output of our upsert `Event` mutation. */
-export type UpsertEventPayload = {
-  __typename?: 'UpsertEventPayload';
-  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `Event` that was upserted by this mutation. */
-  event?: Maybe<Event>;
-  /** An edge for our `Event`. May be used by Relay 1. */
-  eventEdge?: Maybe<EventsEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Team` that is related to this `Event`. */
-  team?: Maybe<Team>;
-  /** Reads a single `User` that is related to this `Event`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our upsert `Event` mutation. */
-export type UpsertEventPayloadEventEdgeArgs = {
-  orderBy?: InputMaybe<Array<EventsOrderBy>>;
-};
-
-/** Where conditions for the upsert `Event` mutation. */
-export type UpsertEventWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** All input for the upsert `Team` mutation. */
-export type UpsertTeamInput = {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `Team` to be upserted by this mutation. */
-  team: TeamInput;
-};
-
-/** All input for the upsert `TeamMembership` mutation. */
-export type UpsertTeamMembershipInput = {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `TeamMembership` to be upserted by this mutation. */
-  teamMembership: TeamMembershipInput;
-};
-
-/** The output of our upsert `TeamMembership` mutation. */
-export type UpsertTeamMembershipPayload = {
-  __typename?: 'UpsertTeamMembershipPayload';
-  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Team` that is related to this `TeamMembership`. */
-  team?: Maybe<Team>;
-  /** The `TeamMembership` that was upserted by this mutation. */
-  teamMembership?: Maybe<TeamMembership>;
-  /** An edge for our `TeamMembership`. May be used by Relay 1. */
-  teamMembershipEdge?: Maybe<TeamMembershipsEdge>;
-  /** Reads a single `User` that is related to this `TeamMembership`. */
-  user?: Maybe<User>;
-};
-
-
-/** The output of our upsert `TeamMembership` mutation. */
-export type UpsertTeamMembershipPayloadTeamMembershipEdgeArgs = {
-  orderBy?: InputMaybe<Array<TeamMembershipsOrderBy>>;
-};
-
-/** Where conditions for the upsert `TeamMembership` mutation. */
-export type UpsertTeamMembershipWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** The output of our upsert `Team` mutation. */
-export type UpsertTeamPayload = {
-  __typename?: 'UpsertTeamPayload';
-  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** The `Team` that was upserted by this mutation. */
-  team?: Maybe<Team>;
-  /** An edge for our `Team`. May be used by Relay 1. */
-  teamEdge?: Maybe<TeamsEdge>;
-};
-
-
-/** The output of our upsert `Team` mutation. */
-export type UpsertTeamPayloadTeamEdgeArgs = {
-  orderBy?: InputMaybe<Array<TeamsOrderBy>>;
-};
-
-/** Where conditions for the upsert `Team` mutation. */
-export type UpsertTeamWhere = {
-  id?: InputMaybe<Scalars['String']['input']>;
+/** Where conditions for the upsert `Transaction` mutation. */
+export type UpsertTransactionWhere = {
+  transactionId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** All input for the upsert `UserDevice` mutation. */
@@ -8418,16 +6286,10 @@ export type UpsertUserWhere = {
 
 export type User = Node & {
   __typename?: 'User';
-  /** Reads and enables pagination through a set of `Availability`. */
-  availabilitiesByUserId: AvailabilitiesConnection;
   birthDay?: Maybe<Scalars['Datetime']['output']>;
-  /** Reads and enables pagination through a set of `Booking`. */
-  bookingsByUserId: BookingsConnection;
-  /** Reads and enables pagination through a set of `CustomAvailability`. */
-  customAvailabilitiesByUserId: CustomAvailabilitiesConnection;
+  /** Reads and enables pagination through a set of `Budget`. */
+  budgetsByUserId: BudgetsConnection;
   email?: Maybe<Scalars['String']['output']>;
-  /** Reads and enables pagination through a set of `Event`. */
-  eventsByUserId: EventsConnection;
   firstName?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<UserGender>;
   lastName?: Maybe<Scalars['String']['output']>;
@@ -8435,71 +6297,49 @@ export type User = Node & {
   nodeId: Scalars['ID']['output'];
   oidcId: Scalars['String']['output'];
   picture?: Maybe<Scalars['String']['output']>;
-  /** Reads and enables pagination through a set of `TeamMembership`. */
-  teamMembershipsByUserId: TeamMembershipsConnection;
+  /** Reads and enables pagination through a set of `Report`. */
+  reportsByUserId: ReportsConnection;
   tel?: Maybe<Scalars['String']['output']>;
+  /** Reads and enables pagination through a set of `Transaction`. */
+  transactionsByUserId: TransactionsConnection;
   /** Reads and enables pagination through a set of `UserDevice`. */
   userDevicesByUserId: UserDevicesConnection;
 };
 
 
-export type UserAvailabilitiesByUserIdArgs = {
+export type UserBudgetsByUserIdArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<AvailabilityCondition>;
-  filter?: InputMaybe<AvailabilityFilter>;
+  condition?: InputMaybe<BudgetCondition>;
+  filter?: InputMaybe<BudgetFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AvailabilitiesOrderBy>>;
+  orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
 };
 
 
-export type UserBookingsByUserIdArgs = {
+export type UserReportsByUserIdArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<BookingCondition>;
-  filter?: InputMaybe<BookingFilter>;
+  condition?: InputMaybe<ReportCondition>;
+  filter?: InputMaybe<ReportFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<BookingsOrderBy>>;
+  orderBy?: InputMaybe<Array<ReportsOrderBy>>;
 };
 
 
-export type UserCustomAvailabilitiesByUserIdArgs = {
+export type UserTransactionsByUserIdArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<CustomAvailabilityCondition>;
-  filter?: InputMaybe<CustomAvailabilityFilter>;
+  condition?: InputMaybe<TransactionCondition>;
+  filter?: InputMaybe<TransactionFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CustomAvailabilitiesOrderBy>>;
-};
-
-
-export type UserEventsByUserIdArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<EventCondition>;
-  filter?: InputMaybe<EventFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EventsOrderBy>>;
-};
-
-
-export type UserTeamMembershipsByUserIdArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<TeamMembershipCondition>;
-  filter?: InputMaybe<TeamMembershipFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMembershipsOrderBy>>;
+  orderBy?: InputMaybe<Array<TransactionsOrderBy>>;
 };
 
 
@@ -8710,26 +6550,14 @@ export type UserDistinctCountAggregates = {
 export type UserFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<UserFilter>>;
-  /** Filter by the object’s `availabilitiesByUserId` relation. */
-  availabilitiesByUserId?: InputMaybe<UserToManyAvailabilityFilter>;
-  /** Some related `availabilitiesByUserId` exist. */
-  availabilitiesByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `birthDay` field. */
   birthDay?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `bookingsByUserId` relation. */
-  bookingsByUserId?: InputMaybe<UserToManyBookingFilter>;
-  /** Some related `bookingsByUserId` exist. */
-  bookingsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Filter by the object’s `customAvailabilitiesByUserId` relation. */
-  customAvailabilitiesByUserId?: InputMaybe<UserToManyCustomAvailabilityFilter>;
-  /** Some related `customAvailabilitiesByUserId` exist. */
-  customAvailabilitiesByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `budgetsByUserId` relation. */
+  budgetsByUserId?: InputMaybe<UserToManyBudgetFilter>;
+  /** Some related `budgetsByUserId` exist. */
+  budgetsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `email` field. */
   email?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `eventsByUserId` relation. */
-  eventsByUserId?: InputMaybe<UserToManyEventFilter>;
-  /** Some related `eventsByUserId` exist. */
-  eventsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `firstName` field. */
   firstName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `gender` field. */
@@ -8744,12 +6572,16 @@ export type UserFilter = {
   or?: InputMaybe<Array<UserFilter>>;
   /** Filter by the object’s `picture` field. */
   picture?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `teamMembershipsByUserId` relation. */
-  teamMembershipsByUserId?: InputMaybe<UserToManyTeamMembershipFilter>;
-  /** Some related `teamMembershipsByUserId` exist. */
-  teamMembershipsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `reportsByUserId` relation. */
+  reportsByUserId?: InputMaybe<UserToManyReportFilter>;
+  /** Some related `reportsByUserId` exist. */
+  reportsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `tel` field. */
   tel?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `transactionsByUserId` relation. */
+  transactionsByUserId?: InputMaybe<UserToManyTransactionFilter>;
+  /** Some related `transactionsByUserId` exist. */
+  transactionsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `userDevicesByUserId` relation. */
   userDevicesByUserId?: InputMaybe<UserToManyUserDeviceFilter>;
   /** Some related `userDevicesByUserId` exist. */
@@ -8875,64 +6707,40 @@ export type UserPatch = {
   tel?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** A filter to be used against many `Availability` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyAvailabilityFilter = {
-  /** Aggregates across related `Availability` match the filter criteria. */
-  aggregates?: InputMaybe<AvailabilityAggregatesFilter>;
-  /** Every related `Availability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<AvailabilityFilter>;
-  /** No related `Availability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<AvailabilityFilter>;
-  /** Some related `Availability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<AvailabilityFilter>;
+/** A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyBudgetFilter = {
+  /** Aggregates across related `Budget` match the filter criteria. */
+  aggregates?: InputMaybe<BudgetAggregatesFilter>;
+  /** Every related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<BudgetFilter>;
+  /** No related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<BudgetFilter>;
+  /** Some related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<BudgetFilter>;
 };
 
-/** A filter to be used against many `Booking` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyBookingFilter = {
-  /** Aggregates across related `Booking` match the filter criteria. */
-  aggregates?: InputMaybe<BookingAggregatesFilter>;
-  /** Every related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<BookingFilter>;
-  /** No related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<BookingFilter>;
-  /** Some related `Booking` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<BookingFilter>;
+/** A filter to be used against many `Report` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyReportFilter = {
+  /** Aggregates across related `Report` match the filter criteria. */
+  aggregates?: InputMaybe<ReportAggregatesFilter>;
+  /** Every related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<ReportFilter>;
+  /** No related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<ReportFilter>;
+  /** Some related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<ReportFilter>;
 };
 
-/** A filter to be used against many `CustomAvailability` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyCustomAvailabilityFilter = {
-  /** Aggregates across related `CustomAvailability` match the filter criteria. */
-  aggregates?: InputMaybe<CustomAvailabilityAggregatesFilter>;
-  /** Every related `CustomAvailability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<CustomAvailabilityFilter>;
-  /** No related `CustomAvailability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<CustomAvailabilityFilter>;
-  /** Some related `CustomAvailability` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<CustomAvailabilityFilter>;
-};
-
-/** A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyEventFilter = {
-  /** Aggregates across related `Event` match the filter criteria. */
-  aggregates?: InputMaybe<EventAggregatesFilter>;
-  /** Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<EventFilter>;
-  /** No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<EventFilter>;
-  /** Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<EventFilter>;
-};
-
-/** A filter to be used against many `TeamMembership` object types. All fields are combined with a logical ‘and.’ */
-export type UserToManyTeamMembershipFilter = {
-  /** Aggregates across related `TeamMembership` match the filter criteria. */
-  aggregates?: InputMaybe<TeamMembershipAggregatesFilter>;
-  /** Every related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  every?: InputMaybe<TeamMembershipFilter>;
-  /** No related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  none?: InputMaybe<TeamMembershipFilter>;
-  /** Some related `TeamMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
-  some?: InputMaybe<TeamMembershipFilter>;
+/** A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyTransactionFilter = {
+  /** Aggregates across related `Transaction` match the filter criteria. */
+  aggregates?: InputMaybe<TransactionAggregatesFilter>;
+  /** Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TransactionFilter>;
+  /** No related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TransactionFilter>;
+  /** Some related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TransactionFilter>;
 };
 
 /** A filter to be used against many `UserDevice` object types. All fields are combined with a logical ‘and.’ */
@@ -8982,414 +6790,120 @@ export type UsersEdge = {
 
 /** Methods to use when ordering `User`. */
 export enum UsersOrderBy {
-  AvailabilitiesByUserIdAverageDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdAverageDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdAverageEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_END_TIME_ASC',
-  AvailabilitiesByUserIdAverageEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_END_TIME_DESC',
-  AvailabilitiesByUserIdAverageIdAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_ID_ASC',
-  AvailabilitiesByUserIdAverageIdDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_ID_DESC',
-  AvailabilitiesByUserIdAverageStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_START_TIME_ASC',
-  AvailabilitiesByUserIdAverageStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_START_TIME_DESC',
-  AvailabilitiesByUserIdAverageUserIdAsc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  AvailabilitiesByUserIdAverageUserIdDesc = 'AVAILABILITIES_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  AvailabilitiesByUserIdCountAsc = 'AVAILABILITIES_BY_USER_ID_COUNT_ASC',
-  AvailabilitiesByUserIdCountDesc = 'AVAILABILITIES_BY_USER_ID_COUNT_DESC',
-  AvailabilitiesByUserIdDistinctCountDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdDistinctCountDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdDistinctCountEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_END_TIME_ASC',
-  AvailabilitiesByUserIdDistinctCountEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_END_TIME_DESC',
-  AvailabilitiesByUserIdDistinctCountIdAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
-  AvailabilitiesByUserIdDistinctCountIdDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
-  AvailabilitiesByUserIdDistinctCountStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_START_TIME_ASC',
-  AvailabilitiesByUserIdDistinctCountStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_START_TIME_DESC',
-  AvailabilitiesByUserIdDistinctCountUserIdAsc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  AvailabilitiesByUserIdDistinctCountUserIdDesc = 'AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  AvailabilitiesByUserIdMaxDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_MAX_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdMaxDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_MAX_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdMaxEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_MAX_END_TIME_ASC',
-  AvailabilitiesByUserIdMaxEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_MAX_END_TIME_DESC',
-  AvailabilitiesByUserIdMaxIdAsc = 'AVAILABILITIES_BY_USER_ID_MAX_ID_ASC',
-  AvailabilitiesByUserIdMaxIdDesc = 'AVAILABILITIES_BY_USER_ID_MAX_ID_DESC',
-  AvailabilitiesByUserIdMaxStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_MAX_START_TIME_ASC',
-  AvailabilitiesByUserIdMaxStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_MAX_START_TIME_DESC',
-  AvailabilitiesByUserIdMaxUserIdAsc = 'AVAILABILITIES_BY_USER_ID_MAX_USER_ID_ASC',
-  AvailabilitiesByUserIdMaxUserIdDesc = 'AVAILABILITIES_BY_USER_ID_MAX_USER_ID_DESC',
-  AvailabilitiesByUserIdMinDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_MIN_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdMinDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_MIN_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdMinEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_MIN_END_TIME_ASC',
-  AvailabilitiesByUserIdMinEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_MIN_END_TIME_DESC',
-  AvailabilitiesByUserIdMinIdAsc = 'AVAILABILITIES_BY_USER_ID_MIN_ID_ASC',
-  AvailabilitiesByUserIdMinIdDesc = 'AVAILABILITIES_BY_USER_ID_MIN_ID_DESC',
-  AvailabilitiesByUserIdMinStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_MIN_START_TIME_ASC',
-  AvailabilitiesByUserIdMinStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_MIN_START_TIME_DESC',
-  AvailabilitiesByUserIdMinUserIdAsc = 'AVAILABILITIES_BY_USER_ID_MIN_USER_ID_ASC',
-  AvailabilitiesByUserIdMinUserIdDesc = 'AVAILABILITIES_BY_USER_ID_MIN_USER_ID_DESC',
-  AvailabilitiesByUserIdStddevPopulationDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdStddevPopulationDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdStddevPopulationEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_END_TIME_ASC',
-  AvailabilitiesByUserIdStddevPopulationEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_END_TIME_DESC',
-  AvailabilitiesByUserIdStddevPopulationIdAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
-  AvailabilitiesByUserIdStddevPopulationIdDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
-  AvailabilitiesByUserIdStddevPopulationStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_START_TIME_ASC',
-  AvailabilitiesByUserIdStddevPopulationStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_START_TIME_DESC',
-  AvailabilitiesByUserIdStddevPopulationUserIdAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  AvailabilitiesByUserIdStddevPopulationUserIdDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  AvailabilitiesByUserIdStddevSampleDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdStddevSampleDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdStddevSampleEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_END_TIME_ASC',
-  AvailabilitiesByUserIdStddevSampleEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_END_TIME_DESC',
-  AvailabilitiesByUserIdStddevSampleIdAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
-  AvailabilitiesByUserIdStddevSampleIdDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
-  AvailabilitiesByUserIdStddevSampleStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_START_TIME_ASC',
-  AvailabilitiesByUserIdStddevSampleStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_START_TIME_DESC',
-  AvailabilitiesByUserIdStddevSampleUserIdAsc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  AvailabilitiesByUserIdStddevSampleUserIdDesc = 'AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  AvailabilitiesByUserIdSumDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_SUM_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdSumDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_SUM_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdSumEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_SUM_END_TIME_ASC',
-  AvailabilitiesByUserIdSumEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_SUM_END_TIME_DESC',
-  AvailabilitiesByUserIdSumIdAsc = 'AVAILABILITIES_BY_USER_ID_SUM_ID_ASC',
-  AvailabilitiesByUserIdSumIdDesc = 'AVAILABILITIES_BY_USER_ID_SUM_ID_DESC',
-  AvailabilitiesByUserIdSumStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_SUM_START_TIME_ASC',
-  AvailabilitiesByUserIdSumStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_SUM_START_TIME_DESC',
-  AvailabilitiesByUserIdSumUserIdAsc = 'AVAILABILITIES_BY_USER_ID_SUM_USER_ID_ASC',
-  AvailabilitiesByUserIdSumUserIdDesc = 'AVAILABILITIES_BY_USER_ID_SUM_USER_ID_DESC',
-  AvailabilitiesByUserIdVariancePopulationDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdVariancePopulationDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdVariancePopulationEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_END_TIME_ASC',
-  AvailabilitiesByUserIdVariancePopulationEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_END_TIME_DESC',
-  AvailabilitiesByUserIdVariancePopulationIdAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
-  AvailabilitiesByUserIdVariancePopulationIdDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
-  AvailabilitiesByUserIdVariancePopulationStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_START_TIME_ASC',
-  AvailabilitiesByUserIdVariancePopulationStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_START_TIME_DESC',
-  AvailabilitiesByUserIdVariancePopulationUserIdAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  AvailabilitiesByUserIdVariancePopulationUserIdDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  AvailabilitiesByUserIdVarianceSampleDayOfWeekAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_DAY_OF_WEEK_ASC',
-  AvailabilitiesByUserIdVarianceSampleDayOfWeekDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_DAY_OF_WEEK_DESC',
-  AvailabilitiesByUserIdVarianceSampleEndTimeAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_END_TIME_ASC',
-  AvailabilitiesByUserIdVarianceSampleEndTimeDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_END_TIME_DESC',
-  AvailabilitiesByUserIdVarianceSampleIdAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
-  AvailabilitiesByUserIdVarianceSampleIdDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
-  AvailabilitiesByUserIdVarianceSampleStartTimeAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_START_TIME_ASC',
-  AvailabilitiesByUserIdVarianceSampleStartTimeDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_START_TIME_DESC',
-  AvailabilitiesByUserIdVarianceSampleUserIdAsc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  AvailabilitiesByUserIdVarianceSampleUserIdDesc = 'AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   BirthDayAsc = 'BIRTH_DAY_ASC',
   BirthDayDesc = 'BIRTH_DAY_DESC',
-  BookingsByUserIdAverageEventIdAsc = 'BOOKINGS_BY_USER_ID_AVERAGE_EVENT_ID_ASC',
-  BookingsByUserIdAverageEventIdDesc = 'BOOKINGS_BY_USER_ID_AVERAGE_EVENT_ID_DESC',
-  BookingsByUserIdAverageStatusAsc = 'BOOKINGS_BY_USER_ID_AVERAGE_STATUS_ASC',
-  BookingsByUserIdAverageStatusDesc = 'BOOKINGS_BY_USER_ID_AVERAGE_STATUS_DESC',
-  BookingsByUserIdAverageUserIdAsc = 'BOOKINGS_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  BookingsByUserIdAverageUserIdDesc = 'BOOKINGS_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  BookingsByUserIdCountAsc = 'BOOKINGS_BY_USER_ID_COUNT_ASC',
-  BookingsByUserIdCountDesc = 'BOOKINGS_BY_USER_ID_COUNT_DESC',
-  BookingsByUserIdDistinctCountEventIdAsc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_EVENT_ID_ASC',
-  BookingsByUserIdDistinctCountEventIdDesc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_EVENT_ID_DESC',
-  BookingsByUserIdDistinctCountStatusAsc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_STATUS_ASC',
-  BookingsByUserIdDistinctCountStatusDesc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_STATUS_DESC',
-  BookingsByUserIdDistinctCountUserIdAsc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  BookingsByUserIdDistinctCountUserIdDesc = 'BOOKINGS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  BookingsByUserIdMaxEventIdAsc = 'BOOKINGS_BY_USER_ID_MAX_EVENT_ID_ASC',
-  BookingsByUserIdMaxEventIdDesc = 'BOOKINGS_BY_USER_ID_MAX_EVENT_ID_DESC',
-  BookingsByUserIdMaxStatusAsc = 'BOOKINGS_BY_USER_ID_MAX_STATUS_ASC',
-  BookingsByUserIdMaxStatusDesc = 'BOOKINGS_BY_USER_ID_MAX_STATUS_DESC',
-  BookingsByUserIdMaxUserIdAsc = 'BOOKINGS_BY_USER_ID_MAX_USER_ID_ASC',
-  BookingsByUserIdMaxUserIdDesc = 'BOOKINGS_BY_USER_ID_MAX_USER_ID_DESC',
-  BookingsByUserIdMinEventIdAsc = 'BOOKINGS_BY_USER_ID_MIN_EVENT_ID_ASC',
-  BookingsByUserIdMinEventIdDesc = 'BOOKINGS_BY_USER_ID_MIN_EVENT_ID_DESC',
-  BookingsByUserIdMinStatusAsc = 'BOOKINGS_BY_USER_ID_MIN_STATUS_ASC',
-  BookingsByUserIdMinStatusDesc = 'BOOKINGS_BY_USER_ID_MIN_STATUS_DESC',
-  BookingsByUserIdMinUserIdAsc = 'BOOKINGS_BY_USER_ID_MIN_USER_ID_ASC',
-  BookingsByUserIdMinUserIdDesc = 'BOOKINGS_BY_USER_ID_MIN_USER_ID_DESC',
-  BookingsByUserIdStddevPopulationEventIdAsc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_EVENT_ID_ASC',
-  BookingsByUserIdStddevPopulationEventIdDesc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_EVENT_ID_DESC',
-  BookingsByUserIdStddevPopulationStatusAsc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_STATUS_ASC',
-  BookingsByUserIdStddevPopulationStatusDesc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_STATUS_DESC',
-  BookingsByUserIdStddevPopulationUserIdAsc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  BookingsByUserIdStddevPopulationUserIdDesc = 'BOOKINGS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  BookingsByUserIdStddevSampleEventIdAsc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_EVENT_ID_ASC',
-  BookingsByUserIdStddevSampleEventIdDesc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_EVENT_ID_DESC',
-  BookingsByUserIdStddevSampleStatusAsc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_STATUS_ASC',
-  BookingsByUserIdStddevSampleStatusDesc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_STATUS_DESC',
-  BookingsByUserIdStddevSampleUserIdAsc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  BookingsByUserIdStddevSampleUserIdDesc = 'BOOKINGS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  BookingsByUserIdSumEventIdAsc = 'BOOKINGS_BY_USER_ID_SUM_EVENT_ID_ASC',
-  BookingsByUserIdSumEventIdDesc = 'BOOKINGS_BY_USER_ID_SUM_EVENT_ID_DESC',
-  BookingsByUserIdSumStatusAsc = 'BOOKINGS_BY_USER_ID_SUM_STATUS_ASC',
-  BookingsByUserIdSumStatusDesc = 'BOOKINGS_BY_USER_ID_SUM_STATUS_DESC',
-  BookingsByUserIdSumUserIdAsc = 'BOOKINGS_BY_USER_ID_SUM_USER_ID_ASC',
-  BookingsByUserIdSumUserIdDesc = 'BOOKINGS_BY_USER_ID_SUM_USER_ID_DESC',
-  BookingsByUserIdVariancePopulationEventIdAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_EVENT_ID_ASC',
-  BookingsByUserIdVariancePopulationEventIdDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_EVENT_ID_DESC',
-  BookingsByUserIdVariancePopulationStatusAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_STATUS_ASC',
-  BookingsByUserIdVariancePopulationStatusDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_STATUS_DESC',
-  BookingsByUserIdVariancePopulationUserIdAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  BookingsByUserIdVariancePopulationUserIdDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  BookingsByUserIdVarianceSampleEventIdAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_EVENT_ID_ASC',
-  BookingsByUserIdVarianceSampleEventIdDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_EVENT_ID_DESC',
-  BookingsByUserIdVarianceSampleStatusAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_STATUS_ASC',
-  BookingsByUserIdVarianceSampleStatusDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_STATUS_DESC',
-  BookingsByUserIdVarianceSampleUserIdAsc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  BookingsByUserIdVarianceSampleUserIdDesc = 'BOOKINGS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdAverageAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdAverageAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdAverageEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdAverageEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdAverageIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_ID_ASC',
-  CustomAvailabilitiesByUserIdAverageIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_ID_DESC',
-  CustomAvailabilitiesByUserIdAverageReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_REASON_ASC',
-  CustomAvailabilitiesByUserIdAverageReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_REASON_DESC',
-  CustomAvailabilitiesByUserIdAverageStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdAverageStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdAverageUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdAverageUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdCountAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_COUNT_ASC',
-  CustomAvailabilitiesByUserIdCountDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_COUNT_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_REASON_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_REASON_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdDistinctCountUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdDistinctCountUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdMaxAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdMaxAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdMaxEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdMaxEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdMaxIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_ID_ASC',
-  CustomAvailabilitiesByUserIdMaxIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_ID_DESC',
-  CustomAvailabilitiesByUserIdMaxReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_REASON_ASC',
-  CustomAvailabilitiesByUserIdMaxReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_REASON_DESC',
-  CustomAvailabilitiesByUserIdMaxStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdMaxStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdMaxUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdMaxUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MAX_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdMinAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdMinAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdMinEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdMinEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdMinIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_ID_ASC',
-  CustomAvailabilitiesByUserIdMinIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_ID_DESC',
-  CustomAvailabilitiesByUserIdMinReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_REASON_ASC',
-  CustomAvailabilitiesByUserIdMinReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_REASON_DESC',
-  CustomAvailabilitiesByUserIdMinStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdMinStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdMinUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdMinUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_MIN_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_REASON_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_REASON_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdStddevPopulationUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdStddevPopulationUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_REASON_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_REASON_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdStddevSampleUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdStddevSampleUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdSumAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdSumAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdSumEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdSumEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdSumIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_ID_ASC',
-  CustomAvailabilitiesByUserIdSumIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_ID_DESC',
-  CustomAvailabilitiesByUserIdSumReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_REASON_ASC',
-  CustomAvailabilitiesByUserIdSumReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_REASON_DESC',
-  CustomAvailabilitiesByUserIdSumStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdSumStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdSumUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdSumUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_SUM_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_REASON_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_REASON_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdVariancePopulationUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdVariancePopulationUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleAvailableAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_AVAILABLE_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleAvailableDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_AVAILABLE_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleEndTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_END_TIME_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleEndTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_END_TIME_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleReasonAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_REASON_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleReasonDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_REASON_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleStartTimeAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_START_TIME_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleStartTimeDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_START_TIME_DESC',
-  CustomAvailabilitiesByUserIdVarianceSampleUserIdAsc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  CustomAvailabilitiesByUserIdVarianceSampleUserIdDesc = 'CUSTOM_AVAILABILITIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  BudgetsByUserIdAverageAlertThresholdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdAverageAlertThresholdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdAverageAmountAsc = 'BUDGETS_BY_USER_ID_AVERAGE_AMOUNT_ASC',
+  BudgetsByUserIdAverageAmountDesc = 'BUDGETS_BY_USER_ID_AVERAGE_AMOUNT_DESC',
+  BudgetsByUserIdAverageBudgetIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_BUDGET_ID_ASC',
+  BudgetsByUserIdAverageBudgetIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_BUDGET_ID_DESC',
+  BudgetsByUserIdAverageCategoryIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_CATEGORY_ID_ASC',
+  BudgetsByUserIdAverageCategoryIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_CATEGORY_ID_DESC',
+  BudgetsByUserIdAverageMonthAsc = 'BUDGETS_BY_USER_ID_AVERAGE_MONTH_ASC',
+  BudgetsByUserIdAverageMonthDesc = 'BUDGETS_BY_USER_ID_AVERAGE_MONTH_DESC',
+  BudgetsByUserIdAverageUserIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  BudgetsByUserIdAverageUserIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  BudgetsByUserIdCountAsc = 'BUDGETS_BY_USER_ID_COUNT_ASC',
+  BudgetsByUserIdCountDesc = 'BUDGETS_BY_USER_ID_COUNT_DESC',
+  BudgetsByUserIdDistinctCountAlertThresholdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdDistinctCountAlertThresholdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdDistinctCountAmountAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_AMOUNT_ASC',
+  BudgetsByUserIdDistinctCountAmountDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_AMOUNT_DESC',
+  BudgetsByUserIdDistinctCountBudgetIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_BUDGET_ID_ASC',
+  BudgetsByUserIdDistinctCountBudgetIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_BUDGET_ID_DESC',
+  BudgetsByUserIdDistinctCountCategoryIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
+  BudgetsByUserIdDistinctCountCategoryIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  BudgetsByUserIdDistinctCountMonthAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_MONTH_ASC',
+  BudgetsByUserIdDistinctCountMonthDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_MONTH_DESC',
+  BudgetsByUserIdDistinctCountUserIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  BudgetsByUserIdDistinctCountUserIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  BudgetsByUserIdMaxAlertThresholdAsc = 'BUDGETS_BY_USER_ID_MAX_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdMaxAlertThresholdDesc = 'BUDGETS_BY_USER_ID_MAX_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdMaxAmountAsc = 'BUDGETS_BY_USER_ID_MAX_AMOUNT_ASC',
+  BudgetsByUserIdMaxAmountDesc = 'BUDGETS_BY_USER_ID_MAX_AMOUNT_DESC',
+  BudgetsByUserIdMaxBudgetIdAsc = 'BUDGETS_BY_USER_ID_MAX_BUDGET_ID_ASC',
+  BudgetsByUserIdMaxBudgetIdDesc = 'BUDGETS_BY_USER_ID_MAX_BUDGET_ID_DESC',
+  BudgetsByUserIdMaxCategoryIdAsc = 'BUDGETS_BY_USER_ID_MAX_CATEGORY_ID_ASC',
+  BudgetsByUserIdMaxCategoryIdDesc = 'BUDGETS_BY_USER_ID_MAX_CATEGORY_ID_DESC',
+  BudgetsByUserIdMaxMonthAsc = 'BUDGETS_BY_USER_ID_MAX_MONTH_ASC',
+  BudgetsByUserIdMaxMonthDesc = 'BUDGETS_BY_USER_ID_MAX_MONTH_DESC',
+  BudgetsByUserIdMaxUserIdAsc = 'BUDGETS_BY_USER_ID_MAX_USER_ID_ASC',
+  BudgetsByUserIdMaxUserIdDesc = 'BUDGETS_BY_USER_ID_MAX_USER_ID_DESC',
+  BudgetsByUserIdMinAlertThresholdAsc = 'BUDGETS_BY_USER_ID_MIN_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdMinAlertThresholdDesc = 'BUDGETS_BY_USER_ID_MIN_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdMinAmountAsc = 'BUDGETS_BY_USER_ID_MIN_AMOUNT_ASC',
+  BudgetsByUserIdMinAmountDesc = 'BUDGETS_BY_USER_ID_MIN_AMOUNT_DESC',
+  BudgetsByUserIdMinBudgetIdAsc = 'BUDGETS_BY_USER_ID_MIN_BUDGET_ID_ASC',
+  BudgetsByUserIdMinBudgetIdDesc = 'BUDGETS_BY_USER_ID_MIN_BUDGET_ID_DESC',
+  BudgetsByUserIdMinCategoryIdAsc = 'BUDGETS_BY_USER_ID_MIN_CATEGORY_ID_ASC',
+  BudgetsByUserIdMinCategoryIdDesc = 'BUDGETS_BY_USER_ID_MIN_CATEGORY_ID_DESC',
+  BudgetsByUserIdMinMonthAsc = 'BUDGETS_BY_USER_ID_MIN_MONTH_ASC',
+  BudgetsByUserIdMinMonthDesc = 'BUDGETS_BY_USER_ID_MIN_MONTH_DESC',
+  BudgetsByUserIdMinUserIdAsc = 'BUDGETS_BY_USER_ID_MIN_USER_ID_ASC',
+  BudgetsByUserIdMinUserIdDesc = 'BUDGETS_BY_USER_ID_MIN_USER_ID_DESC',
+  BudgetsByUserIdStddevPopulationAlertThresholdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdStddevPopulationAlertThresholdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdStddevPopulationAmountAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_AMOUNT_ASC',
+  BudgetsByUserIdStddevPopulationAmountDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_AMOUNT_DESC',
+  BudgetsByUserIdStddevPopulationBudgetIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_BUDGET_ID_ASC',
+  BudgetsByUserIdStddevPopulationBudgetIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_BUDGET_ID_DESC',
+  BudgetsByUserIdStddevPopulationCategoryIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
+  BudgetsByUserIdStddevPopulationCategoryIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByUserIdStddevPopulationMonthAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_MONTH_ASC',
+  BudgetsByUserIdStddevPopulationMonthDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_MONTH_DESC',
+  BudgetsByUserIdStddevPopulationUserIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  BudgetsByUserIdStddevPopulationUserIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  BudgetsByUserIdStddevSampleAlertThresholdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdStddevSampleAlertThresholdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdStddevSampleAmountAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_AMOUNT_ASC',
+  BudgetsByUserIdStddevSampleAmountDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_AMOUNT_DESC',
+  BudgetsByUserIdStddevSampleBudgetIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_BUDGET_ID_ASC',
+  BudgetsByUserIdStddevSampleBudgetIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_BUDGET_ID_DESC',
+  BudgetsByUserIdStddevSampleCategoryIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
+  BudgetsByUserIdStddevSampleCategoryIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByUserIdStddevSampleMonthAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_MONTH_ASC',
+  BudgetsByUserIdStddevSampleMonthDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_MONTH_DESC',
+  BudgetsByUserIdStddevSampleUserIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  BudgetsByUserIdStddevSampleUserIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  BudgetsByUserIdSumAlertThresholdAsc = 'BUDGETS_BY_USER_ID_SUM_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdSumAlertThresholdDesc = 'BUDGETS_BY_USER_ID_SUM_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdSumAmountAsc = 'BUDGETS_BY_USER_ID_SUM_AMOUNT_ASC',
+  BudgetsByUserIdSumAmountDesc = 'BUDGETS_BY_USER_ID_SUM_AMOUNT_DESC',
+  BudgetsByUserIdSumBudgetIdAsc = 'BUDGETS_BY_USER_ID_SUM_BUDGET_ID_ASC',
+  BudgetsByUserIdSumBudgetIdDesc = 'BUDGETS_BY_USER_ID_SUM_BUDGET_ID_DESC',
+  BudgetsByUserIdSumCategoryIdAsc = 'BUDGETS_BY_USER_ID_SUM_CATEGORY_ID_ASC',
+  BudgetsByUserIdSumCategoryIdDesc = 'BUDGETS_BY_USER_ID_SUM_CATEGORY_ID_DESC',
+  BudgetsByUserIdSumMonthAsc = 'BUDGETS_BY_USER_ID_SUM_MONTH_ASC',
+  BudgetsByUserIdSumMonthDesc = 'BUDGETS_BY_USER_ID_SUM_MONTH_DESC',
+  BudgetsByUserIdSumUserIdAsc = 'BUDGETS_BY_USER_ID_SUM_USER_ID_ASC',
+  BudgetsByUserIdSumUserIdDesc = 'BUDGETS_BY_USER_ID_SUM_USER_ID_DESC',
+  BudgetsByUserIdVariancePopulationAlertThresholdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdVariancePopulationAlertThresholdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdVariancePopulationAmountAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_AMOUNT_ASC',
+  BudgetsByUserIdVariancePopulationAmountDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_AMOUNT_DESC',
+  BudgetsByUserIdVariancePopulationBudgetIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_BUDGET_ID_ASC',
+  BudgetsByUserIdVariancePopulationBudgetIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_BUDGET_ID_DESC',
+  BudgetsByUserIdVariancePopulationCategoryIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
+  BudgetsByUserIdVariancePopulationCategoryIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByUserIdVariancePopulationMonthAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_MONTH_ASC',
+  BudgetsByUserIdVariancePopulationMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_MONTH_DESC',
+  BudgetsByUserIdVariancePopulationUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  BudgetsByUserIdVariancePopulationUserIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  BudgetsByUserIdVarianceSampleAlertThresholdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_ASC',
+  BudgetsByUserIdVarianceSampleAlertThresholdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_DESC',
+  BudgetsByUserIdVarianceSampleAmountAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_AMOUNT_ASC',
+  BudgetsByUserIdVarianceSampleAmountDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_AMOUNT_DESC',
+  BudgetsByUserIdVarianceSampleBudgetIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_BUDGET_ID_ASC',
+  BudgetsByUserIdVarianceSampleBudgetIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC',
+  BudgetsByUserIdVarianceSampleCategoryIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
+  BudgetsByUserIdVarianceSampleCategoryIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByUserIdVarianceSampleMonthAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_ASC',
+  BudgetsByUserIdVarianceSampleMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_DESC',
+  BudgetsByUserIdVarianceSampleUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  BudgetsByUserIdVarianceSampleUserIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   EmailAsc = 'EMAIL_ASC',
   EmailDesc = 'EMAIL_DESC',
-  EventsByUserIdAverageDateAsc = 'EVENTS_BY_USER_ID_AVERAGE_DATE_ASC',
-  EventsByUserIdAverageDateDesc = 'EVENTS_BY_USER_ID_AVERAGE_DATE_DESC',
-  EventsByUserIdAverageDescriptionAsc = 'EVENTS_BY_USER_ID_AVERAGE_DESCRIPTION_ASC',
-  EventsByUserIdAverageDescriptionDesc = 'EVENTS_BY_USER_ID_AVERAGE_DESCRIPTION_DESC',
-  EventsByUserIdAverageDurationAsc = 'EVENTS_BY_USER_ID_AVERAGE_DURATION_ASC',
-  EventsByUserIdAverageDurationDesc = 'EVENTS_BY_USER_ID_AVERAGE_DURATION_DESC',
-  EventsByUserIdAverageIdAsc = 'EVENTS_BY_USER_ID_AVERAGE_ID_ASC',
-  EventsByUserIdAverageIdDesc = 'EVENTS_BY_USER_ID_AVERAGE_ID_DESC',
-  EventsByUserIdAverageLocationAsc = 'EVENTS_BY_USER_ID_AVERAGE_LOCATION_ASC',
-  EventsByUserIdAverageLocationDesc = 'EVENTS_BY_USER_ID_AVERAGE_LOCATION_DESC',
-  EventsByUserIdAverageTeamIdAsc = 'EVENTS_BY_USER_ID_AVERAGE_TEAM_ID_ASC',
-  EventsByUserIdAverageTeamIdDesc = 'EVENTS_BY_USER_ID_AVERAGE_TEAM_ID_DESC',
-  EventsByUserIdAverageTitleAsc = 'EVENTS_BY_USER_ID_AVERAGE_TITLE_ASC',
-  EventsByUserIdAverageTitleDesc = 'EVENTS_BY_USER_ID_AVERAGE_TITLE_DESC',
-  EventsByUserIdAverageUserIdAsc = 'EVENTS_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  EventsByUserIdAverageUserIdDesc = 'EVENTS_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  EventsByUserIdCountAsc = 'EVENTS_BY_USER_ID_COUNT_ASC',
-  EventsByUserIdCountDesc = 'EVENTS_BY_USER_ID_COUNT_DESC',
-  EventsByUserIdDistinctCountDateAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DATE_ASC',
-  EventsByUserIdDistinctCountDateDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DATE_DESC',
-  EventsByUserIdDistinctCountDescriptionAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
-  EventsByUserIdDistinctCountDescriptionDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
-  EventsByUserIdDistinctCountDurationAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DURATION_ASC',
-  EventsByUserIdDistinctCountDurationDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_DURATION_DESC',
-  EventsByUserIdDistinctCountIdAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
-  EventsByUserIdDistinctCountIdDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
-  EventsByUserIdDistinctCountLocationAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_LOCATION_ASC',
-  EventsByUserIdDistinctCountLocationDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_LOCATION_DESC',
-  EventsByUserIdDistinctCountTeamIdAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_TEAM_ID_ASC',
-  EventsByUserIdDistinctCountTeamIdDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_TEAM_ID_DESC',
-  EventsByUserIdDistinctCountTitleAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_TITLE_ASC',
-  EventsByUserIdDistinctCountTitleDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_TITLE_DESC',
-  EventsByUserIdDistinctCountUserIdAsc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  EventsByUserIdDistinctCountUserIdDesc = 'EVENTS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  EventsByUserIdMaxDateAsc = 'EVENTS_BY_USER_ID_MAX_DATE_ASC',
-  EventsByUserIdMaxDateDesc = 'EVENTS_BY_USER_ID_MAX_DATE_DESC',
-  EventsByUserIdMaxDescriptionAsc = 'EVENTS_BY_USER_ID_MAX_DESCRIPTION_ASC',
-  EventsByUserIdMaxDescriptionDesc = 'EVENTS_BY_USER_ID_MAX_DESCRIPTION_DESC',
-  EventsByUserIdMaxDurationAsc = 'EVENTS_BY_USER_ID_MAX_DURATION_ASC',
-  EventsByUserIdMaxDurationDesc = 'EVENTS_BY_USER_ID_MAX_DURATION_DESC',
-  EventsByUserIdMaxIdAsc = 'EVENTS_BY_USER_ID_MAX_ID_ASC',
-  EventsByUserIdMaxIdDesc = 'EVENTS_BY_USER_ID_MAX_ID_DESC',
-  EventsByUserIdMaxLocationAsc = 'EVENTS_BY_USER_ID_MAX_LOCATION_ASC',
-  EventsByUserIdMaxLocationDesc = 'EVENTS_BY_USER_ID_MAX_LOCATION_DESC',
-  EventsByUserIdMaxTeamIdAsc = 'EVENTS_BY_USER_ID_MAX_TEAM_ID_ASC',
-  EventsByUserIdMaxTeamIdDesc = 'EVENTS_BY_USER_ID_MAX_TEAM_ID_DESC',
-  EventsByUserIdMaxTitleAsc = 'EVENTS_BY_USER_ID_MAX_TITLE_ASC',
-  EventsByUserIdMaxTitleDesc = 'EVENTS_BY_USER_ID_MAX_TITLE_DESC',
-  EventsByUserIdMaxUserIdAsc = 'EVENTS_BY_USER_ID_MAX_USER_ID_ASC',
-  EventsByUserIdMaxUserIdDesc = 'EVENTS_BY_USER_ID_MAX_USER_ID_DESC',
-  EventsByUserIdMinDateAsc = 'EVENTS_BY_USER_ID_MIN_DATE_ASC',
-  EventsByUserIdMinDateDesc = 'EVENTS_BY_USER_ID_MIN_DATE_DESC',
-  EventsByUserIdMinDescriptionAsc = 'EVENTS_BY_USER_ID_MIN_DESCRIPTION_ASC',
-  EventsByUserIdMinDescriptionDesc = 'EVENTS_BY_USER_ID_MIN_DESCRIPTION_DESC',
-  EventsByUserIdMinDurationAsc = 'EVENTS_BY_USER_ID_MIN_DURATION_ASC',
-  EventsByUserIdMinDurationDesc = 'EVENTS_BY_USER_ID_MIN_DURATION_DESC',
-  EventsByUserIdMinIdAsc = 'EVENTS_BY_USER_ID_MIN_ID_ASC',
-  EventsByUserIdMinIdDesc = 'EVENTS_BY_USER_ID_MIN_ID_DESC',
-  EventsByUserIdMinLocationAsc = 'EVENTS_BY_USER_ID_MIN_LOCATION_ASC',
-  EventsByUserIdMinLocationDesc = 'EVENTS_BY_USER_ID_MIN_LOCATION_DESC',
-  EventsByUserIdMinTeamIdAsc = 'EVENTS_BY_USER_ID_MIN_TEAM_ID_ASC',
-  EventsByUserIdMinTeamIdDesc = 'EVENTS_BY_USER_ID_MIN_TEAM_ID_DESC',
-  EventsByUserIdMinTitleAsc = 'EVENTS_BY_USER_ID_MIN_TITLE_ASC',
-  EventsByUserIdMinTitleDesc = 'EVENTS_BY_USER_ID_MIN_TITLE_DESC',
-  EventsByUserIdMinUserIdAsc = 'EVENTS_BY_USER_ID_MIN_USER_ID_ASC',
-  EventsByUserIdMinUserIdDesc = 'EVENTS_BY_USER_ID_MIN_USER_ID_DESC',
-  EventsByUserIdStddevPopulationDateAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DATE_ASC',
-  EventsByUserIdStddevPopulationDateDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DATE_DESC',
-  EventsByUserIdStddevPopulationDescriptionAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DESCRIPTION_ASC',
-  EventsByUserIdStddevPopulationDescriptionDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DESCRIPTION_DESC',
-  EventsByUserIdStddevPopulationDurationAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DURATION_ASC',
-  EventsByUserIdStddevPopulationDurationDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_DURATION_DESC',
-  EventsByUserIdStddevPopulationIdAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
-  EventsByUserIdStddevPopulationIdDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
-  EventsByUserIdStddevPopulationLocationAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_LOCATION_ASC',
-  EventsByUserIdStddevPopulationLocationDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_LOCATION_DESC',
-  EventsByUserIdStddevPopulationTeamIdAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_TEAM_ID_ASC',
-  EventsByUserIdStddevPopulationTeamIdDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_TEAM_ID_DESC',
-  EventsByUserIdStddevPopulationTitleAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_TITLE_ASC',
-  EventsByUserIdStddevPopulationTitleDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_TITLE_DESC',
-  EventsByUserIdStddevPopulationUserIdAsc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  EventsByUserIdStddevPopulationUserIdDesc = 'EVENTS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  EventsByUserIdStddevSampleDateAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DATE_ASC',
-  EventsByUserIdStddevSampleDateDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DATE_DESC',
-  EventsByUserIdStddevSampleDescriptionAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DESCRIPTION_ASC',
-  EventsByUserIdStddevSampleDescriptionDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DESCRIPTION_DESC',
-  EventsByUserIdStddevSampleDurationAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DURATION_ASC',
-  EventsByUserIdStddevSampleDurationDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_DURATION_DESC',
-  EventsByUserIdStddevSampleIdAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
-  EventsByUserIdStddevSampleIdDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
-  EventsByUserIdStddevSampleLocationAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_LOCATION_ASC',
-  EventsByUserIdStddevSampleLocationDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_LOCATION_DESC',
-  EventsByUserIdStddevSampleTeamIdAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_TEAM_ID_ASC',
-  EventsByUserIdStddevSampleTeamIdDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_TEAM_ID_DESC',
-  EventsByUserIdStddevSampleTitleAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_TITLE_ASC',
-  EventsByUserIdStddevSampleTitleDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_TITLE_DESC',
-  EventsByUserIdStddevSampleUserIdAsc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  EventsByUserIdStddevSampleUserIdDesc = 'EVENTS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  EventsByUserIdSumDateAsc = 'EVENTS_BY_USER_ID_SUM_DATE_ASC',
-  EventsByUserIdSumDateDesc = 'EVENTS_BY_USER_ID_SUM_DATE_DESC',
-  EventsByUserIdSumDescriptionAsc = 'EVENTS_BY_USER_ID_SUM_DESCRIPTION_ASC',
-  EventsByUserIdSumDescriptionDesc = 'EVENTS_BY_USER_ID_SUM_DESCRIPTION_DESC',
-  EventsByUserIdSumDurationAsc = 'EVENTS_BY_USER_ID_SUM_DURATION_ASC',
-  EventsByUserIdSumDurationDesc = 'EVENTS_BY_USER_ID_SUM_DURATION_DESC',
-  EventsByUserIdSumIdAsc = 'EVENTS_BY_USER_ID_SUM_ID_ASC',
-  EventsByUserIdSumIdDesc = 'EVENTS_BY_USER_ID_SUM_ID_DESC',
-  EventsByUserIdSumLocationAsc = 'EVENTS_BY_USER_ID_SUM_LOCATION_ASC',
-  EventsByUserIdSumLocationDesc = 'EVENTS_BY_USER_ID_SUM_LOCATION_DESC',
-  EventsByUserIdSumTeamIdAsc = 'EVENTS_BY_USER_ID_SUM_TEAM_ID_ASC',
-  EventsByUserIdSumTeamIdDesc = 'EVENTS_BY_USER_ID_SUM_TEAM_ID_DESC',
-  EventsByUserIdSumTitleAsc = 'EVENTS_BY_USER_ID_SUM_TITLE_ASC',
-  EventsByUserIdSumTitleDesc = 'EVENTS_BY_USER_ID_SUM_TITLE_DESC',
-  EventsByUserIdSumUserIdAsc = 'EVENTS_BY_USER_ID_SUM_USER_ID_ASC',
-  EventsByUserIdSumUserIdDesc = 'EVENTS_BY_USER_ID_SUM_USER_ID_DESC',
-  EventsByUserIdVariancePopulationDateAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DATE_ASC',
-  EventsByUserIdVariancePopulationDateDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DATE_DESC',
-  EventsByUserIdVariancePopulationDescriptionAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DESCRIPTION_ASC',
-  EventsByUserIdVariancePopulationDescriptionDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DESCRIPTION_DESC',
-  EventsByUserIdVariancePopulationDurationAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DURATION_ASC',
-  EventsByUserIdVariancePopulationDurationDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_DURATION_DESC',
-  EventsByUserIdVariancePopulationIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
-  EventsByUserIdVariancePopulationIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
-  EventsByUserIdVariancePopulationLocationAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_LOCATION_ASC',
-  EventsByUserIdVariancePopulationLocationDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_LOCATION_DESC',
-  EventsByUserIdVariancePopulationTeamIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_TEAM_ID_ASC',
-  EventsByUserIdVariancePopulationTeamIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_TEAM_ID_DESC',
-  EventsByUserIdVariancePopulationTitleAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_TITLE_ASC',
-  EventsByUserIdVariancePopulationTitleDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_TITLE_DESC',
-  EventsByUserIdVariancePopulationUserIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  EventsByUserIdVariancePopulationUserIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  EventsByUserIdVarianceSampleDateAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DATE_ASC',
-  EventsByUserIdVarianceSampleDateDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DATE_DESC',
-  EventsByUserIdVarianceSampleDescriptionAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC',
-  EventsByUserIdVarianceSampleDescriptionDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC',
-  EventsByUserIdVarianceSampleDurationAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DURATION_ASC',
-  EventsByUserIdVarianceSampleDurationDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_DURATION_DESC',
-  EventsByUserIdVarianceSampleIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
-  EventsByUserIdVarianceSampleIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
-  EventsByUserIdVarianceSampleLocationAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_LOCATION_ASC',
-  EventsByUserIdVarianceSampleLocationDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_LOCATION_DESC',
-  EventsByUserIdVarianceSampleTeamIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_TEAM_ID_ASC',
-  EventsByUserIdVarianceSampleTeamIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_TEAM_ID_DESC',
-  EventsByUserIdVarianceSampleTitleAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_TITLE_ASC',
-  EventsByUserIdVarianceSampleTitleDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_TITLE_DESC',
-  EventsByUserIdVarianceSampleUserIdAsc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  EventsByUserIdVarianceSampleUserIdDesc = 'EVENTS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   FirstNameAsc = 'FIRST_NAME_ASC',
   FirstNameDesc = 'FIRST_NAME_DESC',
   GenderAsc = 'GENDER_ASC',
@@ -9403,100 +6917,210 @@ export enum UsersOrderBy {
   PictureDesc = 'PICTURE_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  TeamMembershipsByUserIdAverageCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
-  TeamMembershipsByUserIdAverageCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
-  TeamMembershipsByUserIdAverageIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_ID_ASC',
-  TeamMembershipsByUserIdAverageIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_ID_DESC',
-  TeamMembershipsByUserIdAverageRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_ROLE_ASC',
-  TeamMembershipsByUserIdAverageRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_ROLE_DESC',
-  TeamMembershipsByUserIdAverageTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_TEAM_ID_ASC',
-  TeamMembershipsByUserIdAverageTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_TEAM_ID_DESC',
-  TeamMembershipsByUserIdAverageUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_USER_ID_ASC',
-  TeamMembershipsByUserIdAverageUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_AVERAGE_USER_ID_DESC',
-  TeamMembershipsByUserIdCountAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_COUNT_ASC',
-  TeamMembershipsByUserIdCountDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_COUNT_DESC',
-  TeamMembershipsByUserIdDistinctCountCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
-  TeamMembershipsByUserIdDistinctCountCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
-  TeamMembershipsByUserIdDistinctCountIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
-  TeamMembershipsByUserIdDistinctCountIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
-  TeamMembershipsByUserIdDistinctCountRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_ROLE_ASC',
-  TeamMembershipsByUserIdDistinctCountRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_ROLE_DESC',
-  TeamMembershipsByUserIdDistinctCountTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_TEAM_ID_ASC',
-  TeamMembershipsByUserIdDistinctCountTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_TEAM_ID_DESC',
-  TeamMembershipsByUserIdDistinctCountUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
-  TeamMembershipsByUserIdDistinctCountUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
-  TeamMembershipsByUserIdMaxCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_CREATED_AT_ASC',
-  TeamMembershipsByUserIdMaxCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_CREATED_AT_DESC',
-  TeamMembershipsByUserIdMaxIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_ID_ASC',
-  TeamMembershipsByUserIdMaxIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_ID_DESC',
-  TeamMembershipsByUserIdMaxRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_ROLE_ASC',
-  TeamMembershipsByUserIdMaxRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_ROLE_DESC',
-  TeamMembershipsByUserIdMaxTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_TEAM_ID_ASC',
-  TeamMembershipsByUserIdMaxTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_TEAM_ID_DESC',
-  TeamMembershipsByUserIdMaxUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_USER_ID_ASC',
-  TeamMembershipsByUserIdMaxUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MAX_USER_ID_DESC',
-  TeamMembershipsByUserIdMinCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_CREATED_AT_ASC',
-  TeamMembershipsByUserIdMinCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_CREATED_AT_DESC',
-  TeamMembershipsByUserIdMinIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_ID_ASC',
-  TeamMembershipsByUserIdMinIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_ID_DESC',
-  TeamMembershipsByUserIdMinRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_ROLE_ASC',
-  TeamMembershipsByUserIdMinRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_ROLE_DESC',
-  TeamMembershipsByUserIdMinTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_TEAM_ID_ASC',
-  TeamMembershipsByUserIdMinTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_TEAM_ID_DESC',
-  TeamMembershipsByUserIdMinUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_USER_ID_ASC',
-  TeamMembershipsByUserIdMinUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_MIN_USER_ID_DESC',
-  TeamMembershipsByUserIdStddevPopulationCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
-  TeamMembershipsByUserIdStddevPopulationCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
-  TeamMembershipsByUserIdStddevPopulationIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
-  TeamMembershipsByUserIdStddevPopulationIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
-  TeamMembershipsByUserIdStddevPopulationRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_ROLE_ASC',
-  TeamMembershipsByUserIdStddevPopulationRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_ROLE_DESC',
-  TeamMembershipsByUserIdStddevPopulationTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_TEAM_ID_ASC',
-  TeamMembershipsByUserIdStddevPopulationTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_TEAM_ID_DESC',
-  TeamMembershipsByUserIdStddevPopulationUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
-  TeamMembershipsByUserIdStddevPopulationUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
-  TeamMembershipsByUserIdStddevSampleCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
-  TeamMembershipsByUserIdStddevSampleCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
-  TeamMembershipsByUserIdStddevSampleIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
-  TeamMembershipsByUserIdStddevSampleIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
-  TeamMembershipsByUserIdStddevSampleRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_ROLE_ASC',
-  TeamMembershipsByUserIdStddevSampleRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_ROLE_DESC',
-  TeamMembershipsByUserIdStddevSampleTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_TEAM_ID_ASC',
-  TeamMembershipsByUserIdStddevSampleTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_TEAM_ID_DESC',
-  TeamMembershipsByUserIdStddevSampleUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
-  TeamMembershipsByUserIdStddevSampleUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
-  TeamMembershipsByUserIdSumCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_CREATED_AT_ASC',
-  TeamMembershipsByUserIdSumCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_CREATED_AT_DESC',
-  TeamMembershipsByUserIdSumIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_ID_ASC',
-  TeamMembershipsByUserIdSumIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_ID_DESC',
-  TeamMembershipsByUserIdSumRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_ROLE_ASC',
-  TeamMembershipsByUserIdSumRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_ROLE_DESC',
-  TeamMembershipsByUserIdSumTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_TEAM_ID_ASC',
-  TeamMembershipsByUserIdSumTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_TEAM_ID_DESC',
-  TeamMembershipsByUserIdSumUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_USER_ID_ASC',
-  TeamMembershipsByUserIdSumUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_SUM_USER_ID_DESC',
-  TeamMembershipsByUserIdVariancePopulationCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
-  TeamMembershipsByUserIdVariancePopulationCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
-  TeamMembershipsByUserIdVariancePopulationIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
-  TeamMembershipsByUserIdVariancePopulationIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
-  TeamMembershipsByUserIdVariancePopulationRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_ROLE_ASC',
-  TeamMembershipsByUserIdVariancePopulationRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_ROLE_DESC',
-  TeamMembershipsByUserIdVariancePopulationTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_TEAM_ID_ASC',
-  TeamMembershipsByUserIdVariancePopulationTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_TEAM_ID_DESC',
-  TeamMembershipsByUserIdVariancePopulationUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
-  TeamMembershipsByUserIdVariancePopulationUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
-  TeamMembershipsByUserIdVarianceSampleCreatedAtAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
-  TeamMembershipsByUserIdVarianceSampleCreatedAtDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
-  TeamMembershipsByUserIdVarianceSampleIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
-  TeamMembershipsByUserIdVarianceSampleIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
-  TeamMembershipsByUserIdVarianceSampleRoleAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_ROLE_ASC',
-  TeamMembershipsByUserIdVarianceSampleRoleDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_ROLE_DESC',
-  TeamMembershipsByUserIdVarianceSampleTeamIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_TEAM_ID_ASC',
-  TeamMembershipsByUserIdVarianceSampleTeamIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_TEAM_ID_DESC',
-  TeamMembershipsByUserIdVarianceSampleUserIdAsc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  TeamMembershipsByUserIdVarianceSampleUserIdDesc = 'TEAM_MEMBERSHIPS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  ReportsByUserIdAverageCreatedAtAsc = 'REPORTS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
+  ReportsByUserIdAverageCreatedAtDesc = 'REPORTS_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
+  ReportsByUserIdAverageFilePathAsc = 'REPORTS_BY_USER_ID_AVERAGE_FILE_PATH_ASC',
+  ReportsByUserIdAverageFilePathDesc = 'REPORTS_BY_USER_ID_AVERAGE_FILE_PATH_DESC',
+  ReportsByUserIdAverageReportIdAsc = 'REPORTS_BY_USER_ID_AVERAGE_REPORT_ID_ASC',
+  ReportsByUserIdAverageReportIdDesc = 'REPORTS_BY_USER_ID_AVERAGE_REPORT_ID_DESC',
+  ReportsByUserIdAverageUserIdAsc = 'REPORTS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  ReportsByUserIdAverageUserIdDesc = 'REPORTS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  ReportsByUserIdCountAsc = 'REPORTS_BY_USER_ID_COUNT_ASC',
+  ReportsByUserIdCountDesc = 'REPORTS_BY_USER_ID_COUNT_DESC',
+  ReportsByUserIdDistinctCountCreatedAtAsc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  ReportsByUserIdDistinctCountCreatedAtDesc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  ReportsByUserIdDistinctCountFilePathAsc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_FILE_PATH_ASC',
+  ReportsByUserIdDistinctCountFilePathDesc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_FILE_PATH_DESC',
+  ReportsByUserIdDistinctCountReportIdAsc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_REPORT_ID_ASC',
+  ReportsByUserIdDistinctCountReportIdDesc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_REPORT_ID_DESC',
+  ReportsByUserIdDistinctCountUserIdAsc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  ReportsByUserIdDistinctCountUserIdDesc = 'REPORTS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  ReportsByUserIdMaxCreatedAtAsc = 'REPORTS_BY_USER_ID_MAX_CREATED_AT_ASC',
+  ReportsByUserIdMaxCreatedAtDesc = 'REPORTS_BY_USER_ID_MAX_CREATED_AT_DESC',
+  ReportsByUserIdMaxFilePathAsc = 'REPORTS_BY_USER_ID_MAX_FILE_PATH_ASC',
+  ReportsByUserIdMaxFilePathDesc = 'REPORTS_BY_USER_ID_MAX_FILE_PATH_DESC',
+  ReportsByUserIdMaxReportIdAsc = 'REPORTS_BY_USER_ID_MAX_REPORT_ID_ASC',
+  ReportsByUserIdMaxReportIdDesc = 'REPORTS_BY_USER_ID_MAX_REPORT_ID_DESC',
+  ReportsByUserIdMaxUserIdAsc = 'REPORTS_BY_USER_ID_MAX_USER_ID_ASC',
+  ReportsByUserIdMaxUserIdDesc = 'REPORTS_BY_USER_ID_MAX_USER_ID_DESC',
+  ReportsByUserIdMinCreatedAtAsc = 'REPORTS_BY_USER_ID_MIN_CREATED_AT_ASC',
+  ReportsByUserIdMinCreatedAtDesc = 'REPORTS_BY_USER_ID_MIN_CREATED_AT_DESC',
+  ReportsByUserIdMinFilePathAsc = 'REPORTS_BY_USER_ID_MIN_FILE_PATH_ASC',
+  ReportsByUserIdMinFilePathDesc = 'REPORTS_BY_USER_ID_MIN_FILE_PATH_DESC',
+  ReportsByUserIdMinReportIdAsc = 'REPORTS_BY_USER_ID_MIN_REPORT_ID_ASC',
+  ReportsByUserIdMinReportIdDesc = 'REPORTS_BY_USER_ID_MIN_REPORT_ID_DESC',
+  ReportsByUserIdMinUserIdAsc = 'REPORTS_BY_USER_ID_MIN_USER_ID_ASC',
+  ReportsByUserIdMinUserIdDesc = 'REPORTS_BY_USER_ID_MIN_USER_ID_DESC',
+  ReportsByUserIdStddevPopulationCreatedAtAsc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  ReportsByUserIdStddevPopulationCreatedAtDesc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
+  ReportsByUserIdStddevPopulationFilePathAsc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_FILE_PATH_ASC',
+  ReportsByUserIdStddevPopulationFilePathDesc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_FILE_PATH_DESC',
+  ReportsByUserIdStddevPopulationReportIdAsc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_REPORT_ID_ASC',
+  ReportsByUserIdStddevPopulationReportIdDesc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_REPORT_ID_DESC',
+  ReportsByUserIdStddevPopulationUserIdAsc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  ReportsByUserIdStddevPopulationUserIdDesc = 'REPORTS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  ReportsByUserIdStddevSampleCreatedAtAsc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  ReportsByUserIdStddevSampleCreatedAtDesc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
+  ReportsByUserIdStddevSampleFilePathAsc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_FILE_PATH_ASC',
+  ReportsByUserIdStddevSampleFilePathDesc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_FILE_PATH_DESC',
+  ReportsByUserIdStddevSampleReportIdAsc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_REPORT_ID_ASC',
+  ReportsByUserIdStddevSampleReportIdDesc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_REPORT_ID_DESC',
+  ReportsByUserIdStddevSampleUserIdAsc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  ReportsByUserIdStddevSampleUserIdDesc = 'REPORTS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  ReportsByUserIdSumCreatedAtAsc = 'REPORTS_BY_USER_ID_SUM_CREATED_AT_ASC',
+  ReportsByUserIdSumCreatedAtDesc = 'REPORTS_BY_USER_ID_SUM_CREATED_AT_DESC',
+  ReportsByUserIdSumFilePathAsc = 'REPORTS_BY_USER_ID_SUM_FILE_PATH_ASC',
+  ReportsByUserIdSumFilePathDesc = 'REPORTS_BY_USER_ID_SUM_FILE_PATH_DESC',
+  ReportsByUserIdSumReportIdAsc = 'REPORTS_BY_USER_ID_SUM_REPORT_ID_ASC',
+  ReportsByUserIdSumReportIdDesc = 'REPORTS_BY_USER_ID_SUM_REPORT_ID_DESC',
+  ReportsByUserIdSumUserIdAsc = 'REPORTS_BY_USER_ID_SUM_USER_ID_ASC',
+  ReportsByUserIdSumUserIdDesc = 'REPORTS_BY_USER_ID_SUM_USER_ID_DESC',
+  ReportsByUserIdVariancePopulationCreatedAtAsc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  ReportsByUserIdVariancePopulationCreatedAtDesc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
+  ReportsByUserIdVariancePopulationFilePathAsc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_FILE_PATH_ASC',
+  ReportsByUserIdVariancePopulationFilePathDesc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_FILE_PATH_DESC',
+  ReportsByUserIdVariancePopulationReportIdAsc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_REPORT_ID_ASC',
+  ReportsByUserIdVariancePopulationReportIdDesc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_REPORT_ID_DESC',
+  ReportsByUserIdVariancePopulationUserIdAsc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  ReportsByUserIdVariancePopulationUserIdDesc = 'REPORTS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  ReportsByUserIdVarianceSampleCreatedAtAsc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  ReportsByUserIdVarianceSampleCreatedAtDesc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
+  ReportsByUserIdVarianceSampleFilePathAsc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_FILE_PATH_ASC',
+  ReportsByUserIdVarianceSampleFilePathDesc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_FILE_PATH_DESC',
+  ReportsByUserIdVarianceSampleReportIdAsc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_REPORT_ID_ASC',
+  ReportsByUserIdVarianceSampleReportIdDesc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_REPORT_ID_DESC',
+  ReportsByUserIdVarianceSampleUserIdAsc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  ReportsByUserIdVarianceSampleUserIdDesc = 'REPORTS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   TelAsc = 'TEL_ASC',
   TelDesc = 'TEL_DESC',
+  TransactionsByUserIdAverageAmountAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_AMOUNT_ASC',
+  TransactionsByUserIdAverageAmountDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_AMOUNT_DESC',
+  TransactionsByUserIdAverageCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_CATEGORY_ID_ASC',
+  TransactionsByUserIdAverageCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_CATEGORY_ID_DESC',
+  TransactionsByUserIdAverageDateAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_DATE_ASC',
+  TransactionsByUserIdAverageDateDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_DATE_DESC',
+  TransactionsByUserIdAverageDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_DESCRIPTION_ASC',
+  TransactionsByUserIdAverageDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_DESCRIPTION_DESC',
+  TransactionsByUserIdAverageTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_TRANSACTION_ID_ASC',
+  TransactionsByUserIdAverageTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_TRANSACTION_ID_DESC',
+  TransactionsByUserIdAverageTypeAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_TYPE_ASC',
+  TransactionsByUserIdAverageTypeDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_TYPE_DESC',
+  TransactionsByUserIdAverageUserIdAsc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  TransactionsByUserIdAverageUserIdDesc = 'TRANSACTIONS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  TransactionsByUserIdCountAsc = 'TRANSACTIONS_BY_USER_ID_COUNT_ASC',
+  TransactionsByUserIdCountDesc = 'TRANSACTIONS_BY_USER_ID_COUNT_DESC',
+  TransactionsByUserIdDistinctCountAmountAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_AMOUNT_ASC',
+  TransactionsByUserIdDistinctCountAmountDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_AMOUNT_DESC',
+  TransactionsByUserIdDistinctCountCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
+  TransactionsByUserIdDistinctCountCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  TransactionsByUserIdDistinctCountDateAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_DATE_ASC',
+  TransactionsByUserIdDistinctCountDateDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_DATE_DESC',
+  TransactionsByUserIdDistinctCountDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
+  TransactionsByUserIdDistinctCountDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
+  TransactionsByUserIdDistinctCountTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_TRANSACTION_ID_ASC',
+  TransactionsByUserIdDistinctCountTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_TRANSACTION_ID_DESC',
+  TransactionsByUserIdDistinctCountTypeAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_TYPE_ASC',
+  TransactionsByUserIdDistinctCountTypeDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_TYPE_DESC',
+  TransactionsByUserIdDistinctCountUserIdAsc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  TransactionsByUserIdDistinctCountUserIdDesc = 'TRANSACTIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  TransactionsByUserIdMaxAmountAsc = 'TRANSACTIONS_BY_USER_ID_MAX_AMOUNT_ASC',
+  TransactionsByUserIdMaxAmountDesc = 'TRANSACTIONS_BY_USER_ID_MAX_AMOUNT_DESC',
+  TransactionsByUserIdMaxCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_MAX_CATEGORY_ID_ASC',
+  TransactionsByUserIdMaxCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_MAX_CATEGORY_ID_DESC',
+  TransactionsByUserIdMaxDateAsc = 'TRANSACTIONS_BY_USER_ID_MAX_DATE_ASC',
+  TransactionsByUserIdMaxDateDesc = 'TRANSACTIONS_BY_USER_ID_MAX_DATE_DESC',
+  TransactionsByUserIdMaxDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_MAX_DESCRIPTION_ASC',
+  TransactionsByUserIdMaxDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_MAX_DESCRIPTION_DESC',
+  TransactionsByUserIdMaxTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_MAX_TRANSACTION_ID_ASC',
+  TransactionsByUserIdMaxTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_MAX_TRANSACTION_ID_DESC',
+  TransactionsByUserIdMaxTypeAsc = 'TRANSACTIONS_BY_USER_ID_MAX_TYPE_ASC',
+  TransactionsByUserIdMaxTypeDesc = 'TRANSACTIONS_BY_USER_ID_MAX_TYPE_DESC',
+  TransactionsByUserIdMaxUserIdAsc = 'TRANSACTIONS_BY_USER_ID_MAX_USER_ID_ASC',
+  TransactionsByUserIdMaxUserIdDesc = 'TRANSACTIONS_BY_USER_ID_MAX_USER_ID_DESC',
+  TransactionsByUserIdMinAmountAsc = 'TRANSACTIONS_BY_USER_ID_MIN_AMOUNT_ASC',
+  TransactionsByUserIdMinAmountDesc = 'TRANSACTIONS_BY_USER_ID_MIN_AMOUNT_DESC',
+  TransactionsByUserIdMinCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_MIN_CATEGORY_ID_ASC',
+  TransactionsByUserIdMinCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_MIN_CATEGORY_ID_DESC',
+  TransactionsByUserIdMinDateAsc = 'TRANSACTIONS_BY_USER_ID_MIN_DATE_ASC',
+  TransactionsByUserIdMinDateDesc = 'TRANSACTIONS_BY_USER_ID_MIN_DATE_DESC',
+  TransactionsByUserIdMinDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_MIN_DESCRIPTION_ASC',
+  TransactionsByUserIdMinDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_MIN_DESCRIPTION_DESC',
+  TransactionsByUserIdMinTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_MIN_TRANSACTION_ID_ASC',
+  TransactionsByUserIdMinTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_MIN_TRANSACTION_ID_DESC',
+  TransactionsByUserIdMinTypeAsc = 'TRANSACTIONS_BY_USER_ID_MIN_TYPE_ASC',
+  TransactionsByUserIdMinTypeDesc = 'TRANSACTIONS_BY_USER_ID_MIN_TYPE_DESC',
+  TransactionsByUserIdMinUserIdAsc = 'TRANSACTIONS_BY_USER_ID_MIN_USER_ID_ASC',
+  TransactionsByUserIdMinUserIdDesc = 'TRANSACTIONS_BY_USER_ID_MIN_USER_ID_DESC',
+  TransactionsByUserIdStddevPopulationAmountAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_AMOUNT_ASC',
+  TransactionsByUserIdStddevPopulationAmountDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_AMOUNT_DESC',
+  TransactionsByUserIdStddevPopulationCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
+  TransactionsByUserIdStddevPopulationCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  TransactionsByUserIdStddevPopulationDateAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_DATE_ASC',
+  TransactionsByUserIdStddevPopulationDateDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_DATE_DESC',
+  TransactionsByUserIdStddevPopulationDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_DESCRIPTION_ASC',
+  TransactionsByUserIdStddevPopulationDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_DESCRIPTION_DESC',
+  TransactionsByUserIdStddevPopulationTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_TRANSACTION_ID_ASC',
+  TransactionsByUserIdStddevPopulationTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_TRANSACTION_ID_DESC',
+  TransactionsByUserIdStddevPopulationTypeAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_TYPE_ASC',
+  TransactionsByUserIdStddevPopulationTypeDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_TYPE_DESC',
+  TransactionsByUserIdStddevPopulationUserIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  TransactionsByUserIdStddevPopulationUserIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  TransactionsByUserIdStddevSampleAmountAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_AMOUNT_ASC',
+  TransactionsByUserIdStddevSampleAmountDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_AMOUNT_DESC',
+  TransactionsByUserIdStddevSampleCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
+  TransactionsByUserIdStddevSampleCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  TransactionsByUserIdStddevSampleDateAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_DATE_ASC',
+  TransactionsByUserIdStddevSampleDateDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_DATE_DESC',
+  TransactionsByUserIdStddevSampleDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_DESCRIPTION_ASC',
+  TransactionsByUserIdStddevSampleDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_DESCRIPTION_DESC',
+  TransactionsByUserIdStddevSampleTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_TRANSACTION_ID_ASC',
+  TransactionsByUserIdStddevSampleTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_TRANSACTION_ID_DESC',
+  TransactionsByUserIdStddevSampleTypeAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_TYPE_ASC',
+  TransactionsByUserIdStddevSampleTypeDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_TYPE_DESC',
+  TransactionsByUserIdStddevSampleUserIdAsc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  TransactionsByUserIdStddevSampleUserIdDesc = 'TRANSACTIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  TransactionsByUserIdSumAmountAsc = 'TRANSACTIONS_BY_USER_ID_SUM_AMOUNT_ASC',
+  TransactionsByUserIdSumAmountDesc = 'TRANSACTIONS_BY_USER_ID_SUM_AMOUNT_DESC',
+  TransactionsByUserIdSumCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_SUM_CATEGORY_ID_ASC',
+  TransactionsByUserIdSumCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_SUM_CATEGORY_ID_DESC',
+  TransactionsByUserIdSumDateAsc = 'TRANSACTIONS_BY_USER_ID_SUM_DATE_ASC',
+  TransactionsByUserIdSumDateDesc = 'TRANSACTIONS_BY_USER_ID_SUM_DATE_DESC',
+  TransactionsByUserIdSumDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_SUM_DESCRIPTION_ASC',
+  TransactionsByUserIdSumDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_SUM_DESCRIPTION_DESC',
+  TransactionsByUserIdSumTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_SUM_TRANSACTION_ID_ASC',
+  TransactionsByUserIdSumTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_SUM_TRANSACTION_ID_DESC',
+  TransactionsByUserIdSumTypeAsc = 'TRANSACTIONS_BY_USER_ID_SUM_TYPE_ASC',
+  TransactionsByUserIdSumTypeDesc = 'TRANSACTIONS_BY_USER_ID_SUM_TYPE_DESC',
+  TransactionsByUserIdSumUserIdAsc = 'TRANSACTIONS_BY_USER_ID_SUM_USER_ID_ASC',
+  TransactionsByUserIdSumUserIdDesc = 'TRANSACTIONS_BY_USER_ID_SUM_USER_ID_DESC',
+  TransactionsByUserIdVariancePopulationAmountAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_AMOUNT_ASC',
+  TransactionsByUserIdVariancePopulationAmountDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_AMOUNT_DESC',
+  TransactionsByUserIdVariancePopulationCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
+  TransactionsByUserIdVariancePopulationCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  TransactionsByUserIdVariancePopulationDateAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_DATE_ASC',
+  TransactionsByUserIdVariancePopulationDateDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_DATE_DESC',
+  TransactionsByUserIdVariancePopulationDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_DESCRIPTION_ASC',
+  TransactionsByUserIdVariancePopulationDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_DESCRIPTION_DESC',
+  TransactionsByUserIdVariancePopulationTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_TRANSACTION_ID_ASC',
+  TransactionsByUserIdVariancePopulationTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_TRANSACTION_ID_DESC',
+  TransactionsByUserIdVariancePopulationTypeAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_TYPE_ASC',
+  TransactionsByUserIdVariancePopulationTypeDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_TYPE_DESC',
+  TransactionsByUserIdVariancePopulationUserIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  TransactionsByUserIdVariancePopulationUserIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  TransactionsByUserIdVarianceSampleAmountAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_AMOUNT_ASC',
+  TransactionsByUserIdVarianceSampleAmountDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_AMOUNT_DESC',
+  TransactionsByUserIdVarianceSampleCategoryIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
+  TransactionsByUserIdVarianceSampleCategoryIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  TransactionsByUserIdVarianceSampleDateAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_DATE_ASC',
+  TransactionsByUserIdVarianceSampleDateDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_DATE_DESC',
+  TransactionsByUserIdVarianceSampleDescriptionAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC',
+  TransactionsByUserIdVarianceSampleDescriptionDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC',
+  TransactionsByUserIdVarianceSampleTransactionIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_TRANSACTION_ID_ASC',
+  TransactionsByUserIdVarianceSampleTransactionIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_TRANSACTION_ID_DESC',
+  TransactionsByUserIdVarianceSampleTypeAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_TYPE_ASC',
+  TransactionsByUserIdVarianceSampleTypeDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_TYPE_DESC',
+  TransactionsByUserIdVarianceSampleUserIdAsc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  TransactionsByUserIdVarianceSampleUserIdDesc = 'TRANSACTIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   UserDevicesByUserIdAverageTokenAsc = 'USER_DEVICES_BY_USER_ID_AVERAGE_TOKEN_ASC',
   UserDevicesByUserIdAverageTokenDesc = 'USER_DEVICES_BY_USER_ID_AVERAGE_TOKEN_DESC',
   UserDevicesByUserIdAverageUaAsc = 'USER_DEVICES_BY_USER_ID_AVERAGE_UA_ASC',

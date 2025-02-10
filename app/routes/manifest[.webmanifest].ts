@@ -4,11 +4,10 @@ import { json } from "@remix-run/node";
 export const loader = () => {
   return json(
     {
-      id: "live.mahd",
-      short_name: "Live",
-      name: "Mahd Live",
-      description:
-        "Discover our all-in-one PWA for seamless video meetings and live event broadcasting. Enjoy high-quality audio/video, screen sharing, and interactive tools across devices. Perfect for team collaborations or large-scale presentations. Experience the future of virtual gatherings – no installation required.",
+      id: "wallet.mahd",
+      short_name: "wallet",
+      name: "Mahd wallet",
+      description: "Discover wallet",
       scope: "/",
       start_url: "/",
       display: "standalone",

@@ -74,7 +74,7 @@ export const ParticipantName = (props: {
         }`}
       >
         <span
-          className={`bg-softyellow-300 pointer-events-none absolute -inset-1 size-7 animate-ping rounded-full transition-opacity ${
+          className={`pointer-events-none absolute -inset-1 size-7 animate-ping rounded-full bg-softyellow-300 transition-opacity ${
             props.HandRaised ? "opacity-75" : "opacity-0"
           }`}
         />

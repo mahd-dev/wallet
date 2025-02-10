@@ -87,7 +87,7 @@ const HomePage = () => {
       <Block className="!my-0 mx-auto max-w-7xl pt-5"></Block>
       <Fab
         onClick={() => setBasicOpened(true)}
-        className="fixed z-20 right-4-safe bottom-4-safe"
+        className="right-4-safe bottom-4-safe fixed z-20"
         icon={<IconPlus />}
       />
       <Dialog
@@ -138,7 +138,7 @@ const HomePage = () => {
               >
                 Catégorie
               </label>
-              <div className="scrollbar-hide carousel carousel-center flex space-x-4 overflow-x-auto rounded-box bg-neutral p-2">
+              <div className="scrollbar-hide carousel carousel-center rounded-box bg-neutral flex space-x-4 overflow-x-auto p-2">
                 {categories.map((catg) => (
                   <button
                     key={catg}

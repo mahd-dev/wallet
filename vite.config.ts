@@ -21,10 +21,10 @@ export default defineConfig({
       outdir: "./lang/gen",
     }),
   ],
-  server: {
-    host: true,
-    port: 3000,
-  },
+  // server: {
+  //   host: true,
+  //   port: 3000,
+  // },
   ssr: {
     noExternal: ["remix-i18next"],
   },

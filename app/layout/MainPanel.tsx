@@ -16,7 +16,7 @@ const MainPanel = ({ className }: MainPanelProps) => {
       side={"left"}
       opened={mainPanel}
       onBackdropClick={() => setMainPanel(false)}
-      className="flex flex-col bg-white/70 backdrop-blur-md dark:bg-black/70 lg:hidden"
+      className="flex flex-col bg-white/70 backdrop-blur-md lg:hidden dark:bg-black/70"
     >
       <MainPanelContent />
     </Panel>
