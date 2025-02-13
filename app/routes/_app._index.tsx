@@ -113,7 +113,7 @@ const HomePage = () => {
                     value="depense"
                     checked={type === "depense"}
                     onChange={() => setType("depense")}
-                    className="h-4 w-4 border-2 border-gray-300 text-blue-500"
+                    className="size-4 border-2 border-gray-300 text-blue-500"
                   />
                   <span className="text-gray-700">Dépense</span>
                 </label>
@@ -124,7 +124,7 @@ const HomePage = () => {
                     value="revenu"
                     checked={type === "revenu"}
                     onChange={() => setType("revenu")}
-                    className="h-4 w-4 border-2 border-gray-300 text-blue-500"
+                    className="size-4 border-2 border-gray-300 text-blue-500"
                   />
                   <span className="text-gray-700">Revenu</span>
                 </label>
@@ -181,7 +181,7 @@ const HomePage = () => {
                 >
                   {result.fetching ? (
                     <div className="flex items-center justify-center gap-2">
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                       Ajout...
                     </div>
                   ) : (

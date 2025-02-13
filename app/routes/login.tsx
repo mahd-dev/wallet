@@ -1,8 +1,6 @@
 import { Link, useActionData, useNavigate } from "@remix-run/react";
-import { useAtom } from "jotai";
 import { Block } from "konsta/react";
 import { useState } from "react";
-import { userIdAtom } from "~/store/store";
 /*
 export const action: ActionFunction = async ({ request }) => {
 
