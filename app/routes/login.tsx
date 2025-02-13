@@ -1,24 +1,8 @@
 import { Link, useActionData, useNavigate } from "@remix-run/react";
 import { useAtom } from "jotai";
 import { Block } from "konsta/react";
-import { useEffect, useState } from "react";
-import { gql, useQuery } from "urql";
+import { useState } from "react";
 import { userIdAtom } from "~/store/store";
-
-// Check for a specific user
-const LOGIN_USER = gql`
-  query LOGIN_USER($email: String!, $password: String!) {
-    users(
-      filter: { email: { equalTo: $email }, password: { equalTo: $password } }
-    ) {
-      nodes {
-        password
-        email
-      }
-    }
-  }
-`;
-
 /*
 export const action: ActionFunction = async ({ request }) => {
 
@@ -66,31 +50,57 @@ return {
 };
 */
 export default function LoginPage() {
-  const [, setCurrentUserId] = useAtom(userIdAtom);
+  // const [, setCurrentUserId] = useAtom(userIdAtom);
 
   const actionData = useActionData<{ errors?: Record<string, string> }>();
-  const [passwordVisible
+  const [
+    passwordVisible,
     // , setPasswordVisible
   ] = useState(false);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [, setError] = useState("");
+  // const [{ data }, submitLogin] = useQuery({
+  //   query: LOGIN_USER,
+  //   variables: {
+  //     email: email,
+  //     password: password,
+  //   },
+  // });
 
-  const [{ data }, submitLogin] = useQuery({
-    query: LOGIN_USER,
-    variables: {
-      email: email,
-      password: password,
-    },
-  });
+  // useEffect(() => {
+  //   if (data?.users?.nodes?.length) {
+  //     setCurrentUserId(data?.users?.nodes[0]?.oidcId);
+  //     navigate("/");
+  //   }
+  // }, [data?.users?.nodes?.length]);
 
-  useEffect(() => {
-    if (data?.users?.nodes?.length) {
-      setCurrentUserId(data?.users?.nodes[0]?.oidcId);
-      navigate("/");
+  const submitLogin = async (email: string, password: string) => {
+    try {
+      const data = new FormData();
+      data.append("email", email);
+      data.append("password", password);
+      const response = await fetch("/api/login", {
+        method: "POST",
+        body: data,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Login failed: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      if (result) {
+        navigate("/");
+      }
+      return result;
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
     }
-  }, [data?.users?.nodes?.length]);
+  };
 
   return (
     <Block className="!my-0 mx-auto max-w-7xl pt-5">
@@ -101,9 +111,10 @@ export default function LoginPage() {
             onSubmit={async (e) => {
               e.preventDefault();
               try {
-                submitLogin();
+                await submitLogin(email, password);
               } catch (error) {
-                console.error("Unexpected error:", error);
+                setError("Login failed. Please try again.");
+                console.error("Login error:", error);
               }
             }}
             method="post"

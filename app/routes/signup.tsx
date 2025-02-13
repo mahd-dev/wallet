@@ -78,10 +78,13 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function SignupPage() {
   const [
+    ,
     // result
-    , mutate] = useMutation(signup);
+    mutate,
+  ] = useMutation(signup);
   const actionData = useActionData<{ errors?: Record<string, string> }>();
-  const [passwordVisible
+  const [
+    passwordVisible,
     // , setPasswordVisible
   ] = useState(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -182,7 +185,10 @@ export default function SignupPage() {
               )}
             </div>
             <div>
-              <label htmlFor="Fconfirmpassword" className="block text-sm font-medium">
+              <label
+                htmlFor="Fconfirmpassword"
+                className="block text-sm font-medium"
+              >
                 Confirm Password
               </label>
               <input
