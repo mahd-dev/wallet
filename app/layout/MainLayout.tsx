@@ -61,7 +61,7 @@ const MainLayout: React.FC<React.HTMLProps<HTMLDivElement>> = ({
       <div
         className={`h-screen transform-gpu overflow-hidden transition-all duration-300 ${!navProgress ? "opacity-100" : "opacity-[0.001]"} ${mainPanel ? `pointer-events-none translate-y-[-5%] scale-90 overflow-hidden opacity-20 ltr:translate-x-[5%] rtl:translate-x-[-5%]` : ``}`}
       >
-        <div className="size-full overflow-y-auto overflow-x-hidden pt-16-safe pb-safe ps-safe pe-safe">
+        <div className="pt-16-safe pb-safe ps-safe pe-safe size-full overflow-y-auto overflow-x-hidden">
           {children}
         </div>
       </div>

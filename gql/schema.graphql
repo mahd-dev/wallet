@@ -348,6 +348,7 @@ type User implements Node {
   email: String
   tel: String
   picture: String
+  password: String
 
   """Reads and enables pagination through a set of `UserDevice`."""
   userDevicesByUserId(
@@ -878,6 +879,9 @@ input UserFilter {
 
   """Filter by the object’s `picture` field."""
   picture: StringFilter
+
+  """Filter by the object’s `password` field."""
+  password: StringFilter
 
   """Filter by the object’s `userDevicesByUserId` relation."""
   userDevicesByUserId: UserToManyUserDeviceFilter
@@ -2908,6 +2912,9 @@ type UserDistinctCountAggregates {
 
   """Distinct count of picture across the matching connection"""
   picture: BigInt
+
+  """Distinct count of password across the matching connection"""
+  password: BigInt
 }
 
 """Grouping methods for `User` for usage during aggregation."""
@@ -2921,6 +2928,7 @@ enum UserGroupBy {
   EMAIL
   TEL
   PICTURE
+  PASSWORD
 }
 
 """Conditions for `User` aggregates."""
@@ -2993,6 +3001,8 @@ enum UsersOrderBy {
   TEL_DESC
   PICTURE_ASC
   PICTURE_DESC
+  PASSWORD_ASC
+  PASSWORD_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   USER_DEVICES_BY_USER_ID_COUNT_ASC
@@ -3392,6 +3402,9 @@ input UserCondition {
 
   """Checks for equality with the object’s `picture` field."""
   picture: String
+
+  """Checks for equality with the object’s `password` field."""
+  password: String
 }
 
 """
@@ -3954,6 +3967,7 @@ input UserInput {
   email: String
   tel: String
   picture: String
+  password: String
 }
 
 """The output of our create `UserDevice` mutation."""
@@ -4339,6 +4353,7 @@ input UserPatch {
   email: String
   tel: String
   picture: String
+  password: String
 }
 
 """All input for the `updateUser` mutation."""

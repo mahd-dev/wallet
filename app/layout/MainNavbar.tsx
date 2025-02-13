@@ -156,7 +156,7 @@ export default function MainNavbar() {
             <Icon
               onClick={() => openCartPopover(".cartpopover-navbar-link")}
               // className="notif-btn  ios:me-5"
-              className="cartpopover-navbar-link mx-3 mr-6 mt-2 text-gray-800 hover:text-secondary"
+              className="cartpopover-navbar-link hover:text-secondary mx-3 mr-6 mt-2 text-gray-800"
               ios={<IconShoppingCart />}
               material={<IconShoppingCart />}
               badge={
@@ -167,8 +167,8 @@ export default function MainNavbar() {
             />
             <button
               type="button"
-              onClick={() => navigate("/auth")}
-              className="rounded-lg bg-secondary px-4 py-2 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300"
+              onClick={() => navigate("/login")}
+              className="rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300"
             >
               <IconLogin2 className="inline w-4" /> Login
             </button>
@@ -183,7 +183,7 @@ export default function MainNavbar() {
                   <li key={`menu-${indx}`}>
                     <Link
                       to={m.path}
-                      className={`text-gray-800 hover:text-secondary ${location.pathname === m.path ? "text-secondary" : ""}`}
+                      className={`hover:text-secondary text-gray-800 ${location.pathname === m.path ? "text-secondary" : ""}`}
                     >
                       {m.name}
                       {/* {m.barge ? (
@@ -207,7 +207,7 @@ export default function MainNavbar() {
       <div
         className={`fixed top-0 z-20 flex w-full max-w-full flex-nowrap items-center transition-opacity lg:hidden`}
       >
-        <div className="absolute inset-x-0 top-0 -z-10 h-10 w-full bg-gradient-to-b via-30% to-transparent material:from-[#F4EEEB] material:via-[#F4EEEB]/90 ios:from-[#F5F5F8] ios:via-[#F5F5F8]/95 material:dark:from-[#17140C] material:dark:via-[#17140C]/95 ios:dark:from-[#0E0E0E] ios:dark:via-[#0E0E0E]/90" />
+        <div className="material:from-[#F4EEEB] material:via-[#F4EEEB]/90 ios:from-[#F5F5F8] ios:via-[#F5F5F8]/95 material:dark:from-[#17140C] material:dark:via-[#17140C]/95 ios:dark:from-[#0E0E0E] ios:dark:via-[#0E0E0E]/90 absolute inset-x-0 top-0 -z-10 h-10 w-full bg-gradient-to-b via-30% to-transparent" />
 
         <button
           className={`relative ${mainPanel ? "opacity-0" : ""}`}

@@ -1,40 +1,34 @@
 import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { useState } from "react";
+import { gql, useQuery } from "urql";
 
 const TransactionsList = () => {
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      date: "2025-02-06",
-      amount: 50,
-      category: "Alimentation",
-      type: "expense",
-    },
-    {
-      id: 2,
-      date: "2025-02-05",
-      amount: 200,
-      category: "Salaire",
-      type: "income",
-    },
-    {
-      id: 3,
-      date: "2025-02-04",
-      amount: 30,
-      category: "Transport",
-      type: "expense",
-    },
-  ]);
+  const GET_TRANSACTIONS = gql`
+    query GET_TRANSACTIONS {
+      transactions {
+        nodes {
+          transactionId
+          type
+          userId
+          categoryId
+          date
+        }
+      }
+    }
+  `;
 
-  const deleteTransaction = (id: number) => {
+  const [{ data }] = useQuery({
+    query: GET_TRANSACTIONS,
+  });
+
+  /* const deleteTransaction = (id: number) => {
     setTransactions(transactions.filter((tx) => tx.id !== id));
   };
+  */
 
   return (
-    <div className="mx-auto max-w-lg p-4">
-      <h2 className="mb-4 text-2xl font-bold">Transactions</h2>
+    <div className="mx-auto mt-16 max-w-lg p-4">
       <div className="space-y-4">
-        {transactions.map((tx) => (
+        {data?.transactions?.nodes?.map((tx: any) => (
           <div
             key={tx.id}
             className="flex items-center justify-between rounded-lg border-l-4 bg-white p-4 shadow-md transition hover:shadow-lg"
@@ -62,7 +56,7 @@ const TransactionsList = () => {
               </button>
               <button
                 className="text-red-500 hover:text-red-700"
-                onClick={() => deleteTransaction(tx.id)}
+                // onClick={() => deleteTransaction(tx.id)}
               >
                 <IconTrash size={23} />
               </button>

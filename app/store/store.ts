@@ -6,7 +6,7 @@ import {
   setLanguageTag,
 } from "lang/gen/runtime";
 import type { User } from "~/types";
-import { atomWithBroadcast, atomWithStoredBroadcast } from "./broadcast";
+import { atomWithStoredBroadcast } from "./broadcast";
 
 // const defLang =
 //   typeof window !== "undefined" &&
@@ -52,8 +52,15 @@ export const dirAtom = atom((get) =>
 );
 
 export const authAtom = atom<User | null>(null);
-export const currUserAtom = atomWithBroadcast<string | null>("currUser", null);
-
+export const currUserAtom = atomWithStoredBroadcast<string | null>(
+  "currUser",
+  null,
+);
+console.log("curruser");
+export const userIdAtom = atomWithStoredBroadcast<string | undefined>(
+  "userId",
+  undefined,
+);
 export const profileAtom = atom<ProfileFragment | null>(null);
 
 export const mainPanelAtom = atom(false);

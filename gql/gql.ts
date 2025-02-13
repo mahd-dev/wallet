@@ -18,6 +18,10 @@ const documents = {
     "\n  fragment Profile on User {\n    firstName\n    lastName\n    gender\n    email\n    tel\n    picture\n    birthDay\n  }\n": types.ProfileFragmentDoc,
     "\n      query GetProfile($oidcId: String!) {\n        user(oidcId: $oidcId) { ...Profile }\n        \n      }\n    ": types.GetProfileDocument,
     "\n      subscription ProfileSub($oidcId: String!) {\n        user(oidcId: $oidcId) { ...Profile }\n        \n      }\n    ": types.ProfileSubDocument,
+    "\n  mutation AddTransaction(\n    $user_id: String!\n    $category_id: String!\n    $amount: Float!\n    $date: Datetime!\n    $description: String\n    $transaction_id: String!\n  ) {\n    createTransaction(\n      input: {\n        transaction: {\n          userId: $user_id\n          categoryId: $category_id\n          amount: $amount\n          date: $date\n          description: $description\n          transactionId: $transaction_id\n        }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n": types.AddTransactionDocument,
+    "\n    query GET_TRANSACTIONS {\n      transactions {\n        nodes {\n          transactionId\n          type\n          userId\n          categoryId\n          date\n        }\n      }\n    }\n  ": types.Get_TransactionsDocument,
+    "\n  query LOGIN_USER($email: String!, $password: String!) {\n    users(\n      filter: { email: { equalTo: $email }, password: { equalTo: $password } }\n    ) {\n      nodes {\n        password\n        email\n      }\n    }\n  }\n": types.Login_UserDocument,
+    "\n  mutation signup(\n    $id: String!\n    $email: String!\n    $firstName: String!\n    $lastName: String!\n    $password: String!\n  ) {\n    createUser(\n      input: {\n        user: {\n          oidcId: $id\n          email: $email\n          firstName: $firstName\n          lastName: $lastName\n          password: $password\n        }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n": types.SignupDocument,
 };
 
 /**
@@ -50,6 +54,22 @@ export function gql(source: "\n      query GetProfile($oidcId: String!) {\n     
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n      subscription ProfileSub($oidcId: String!) {\n        user(oidcId: $oidcId) { ...Profile }\n        \n      }\n    "): (typeof documents)["\n      subscription ProfileSub($oidcId: String!) {\n        user(oidcId: $oidcId) { ...Profile }\n        \n      }\n    "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation AddTransaction(\n    $user_id: String!\n    $category_id: String!\n    $amount: Float!\n    $date: Datetime!\n    $description: String\n    $transaction_id: String!\n  ) {\n    createTransaction(\n      input: {\n        transaction: {\n          userId: $user_id\n          categoryId: $category_id\n          amount: $amount\n          date: $date\n          description: $description\n          transactionId: $transaction_id\n        }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n"): (typeof documents)["\n  mutation AddTransaction(\n    $user_id: String!\n    $category_id: String!\n    $amount: Float!\n    $date: Datetime!\n    $description: String\n    $transaction_id: String!\n  ) {\n    createTransaction(\n      input: {\n        transaction: {\n          userId: $user_id\n          categoryId: $category_id\n          amount: $amount\n          date: $date\n          description: $description\n          transactionId: $transaction_id\n        }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    query GET_TRANSACTIONS {\n      transactions {\n        nodes {\n          transactionId\n          type\n          userId\n          categoryId\n          date\n        }\n      }\n    }\n  "): (typeof documents)["\n    query GET_TRANSACTIONS {\n      transactions {\n        nodes {\n          transactionId\n          type\n          userId\n          categoryId\n          date\n        }\n      }\n    }\n  "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query LOGIN_USER($email: String!, $password: String!) {\n    users(\n      filter: { email: { equalTo: $email }, password: { equalTo: $password } }\n    ) {\n      nodes {\n        password\n        email\n      }\n    }\n  }\n"): (typeof documents)["\n  query LOGIN_USER($email: String!, $password: String!) {\n    users(\n      filter: { email: { equalTo: $email }, password: { equalTo: $password } }\n    ) {\n      nodes {\n        password\n        email\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation signup(\n    $id: String!\n    $email: String!\n    $firstName: String!\n    $lastName: String!\n    $password: String!\n  ) {\n    createUser(\n      input: {\n        user: {\n          oidcId: $id\n          email: $email\n          firstName: $firstName\n          lastName: $lastName\n          password: $password\n        }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n"): (typeof documents)["\n  mutation signup(\n    $id: String!\n    $email: String!\n    $firstName: String!\n    $lastName: String!\n    $password: String!\n  ) {\n    createUser(\n      input: {\n        user: {\n          oidcId: $id\n          email: $email\n          firstName: $firstName\n          lastName: $lastName\n          password: $password\n        }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
