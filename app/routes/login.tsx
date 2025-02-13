@@ -69,7 +69,8 @@ export default function LoginPage() {
   const [, setCurrentUserId] = useAtom(userIdAtom);
 
   const actionData = useActionData<{ errors?: Record<string, string> }>();
-  const [passwordVisible
+  const [
+    passwordVisible,
     // , setPasswordVisible
   ] = useState(false);
   const navigate = useNavigate();

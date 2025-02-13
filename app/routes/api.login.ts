@@ -13,10 +13,10 @@ import { gqlSsrClient } from "~/utils/gql_ssr_client";
 //     }
 //   }`)
 export const action: ActionFunction = async ({ request }) => {
-    console.log(request);
-    
-    const client = gqlSsrClient();
-    console.log(client);
-    
-    // const resp =  client.query(LOGIN);
-}
+  console.log(request);
+
+  const client = gqlSsrClient();
+  console.log(client);
+
+  // const resp =  client.query(LOGIN);
+};
