@@ -350,40 +350,6 @@ type User implements Node {
   picture: String
   password: String
 
-  """Reads and enables pagination through a set of `UserDevice`."""
-  userDevicesByUserId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `UserDevice`."""
-    orderBy: [UserDevicesOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: UserDeviceCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: UserDeviceFilter
-  ): UserDevicesConnection!
-
   """Reads and enables pagination through a set of `Transaction`."""
   transactionsByUserId(
     """Only read the first `n` values of the set."""
@@ -485,6 +451,40 @@ type User implements Node {
     """
     filter: ReportFilter
   ): ReportsConnection!
+
+  """Reads and enables pagination through a set of `UserDevice`."""
+  userDevicesByUserId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UserDevice`."""
+    orderBy: [UserDevicesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserDeviceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UserDeviceFilter
+  ): UserDevicesConnection!
 }
 
 enum UserGender {
@@ -492,175 +492,237 @@ enum UserGender {
   FEMALE
 }
 
-"""A connection to a list of `UserDevice` values."""
-type UserDevicesConnection {
-  """A list of `UserDevice` objects."""
-  nodes: [UserDevice!]!
+"""A connection to a list of `Transaction` values."""
+type TransactionsConnection {
+  """A list of `Transaction` objects."""
+  nodes: [Transaction!]!
 
   """
-  A list of edges which contains the `UserDevice` and cursor to aid in pagination.
+  A list of edges which contains the `Transaction` and cursor to aid in pagination.
   """
-  edges: [UserDevicesEdge!]!
+  edges: [TransactionsEdge!]!
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  """The count of *all* `UserDevice` you could get from the connection."""
+  """The count of *all* `Transaction` you could get from the connection."""
   totalCount: Int!
 
   """
   Aggregates across the matching connection (ignoring before/after/first/last/offset)
   """
-  aggregates: UserDeviceAggregates
+  aggregates: TransactionAggregates
 
   """
   Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
   """
   groupedAggregates(
-    """The method to use when grouping `UserDevice` for these aggregates."""
-    groupBy: [UserDeviceGroupBy!]!
+    """The method to use when grouping `Transaction` for these aggregates."""
+    groupBy: [TransactionGroupBy!]!
 
     """Conditions on the grouped aggregates."""
-    having: UserDeviceHavingInput
-  ): [UserDeviceAggregates!]
+    having: TransactionHavingInput
+  ): [TransactionAggregates!]
 }
 
-type UserDevice implements Node {
+type Transaction implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   nodeId: ID!
-  userId: String!
-  token: String!
-  ua: JSON
+  transactionId: String!
+  userId: String
+  categoryId: String
+  amount: Float!
+  date: Datetime
+  description: String
+  type: Typetransaction!
 
-  """Reads a single `User` that is related to this `UserDevice`."""
+  """Reads a single `User` that is related to this `Transaction`."""
   user: User
+
+  """Reads a single `Category` that is related to this `Transaction`."""
+  category: Category
 }
 
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
+enum Typetransaction {
+  INCOME
+  EXPENSE
+}
 
-"""A `UserDevice` edge in the connection."""
-type UserDevicesEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
+type Category implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  name: String!
 
-  """The `UserDevice` at the end of the edge."""
-  node: UserDevice!
+  """Reads and enables pagination through a set of `Transaction`."""
+  transactionsByCategoryId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Transaction`."""
+    orderBy: [TransactionsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TransactionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TransactionFilter
+  ): TransactionsConnection!
+
+  """Reads and enables pagination through a set of `Budget`."""
+  budgetsByCategoryId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Budget`."""
+    orderBy: [BudgetsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BudgetCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: BudgetFilter
+  ): BudgetsConnection!
 }
 
 """A location in a connection that can be used for resuming pagination."""
 scalar Cursor
 
-"""Information about pagination in a connection."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: Cursor
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: Cursor
-}
-
-type UserDeviceAggregates {
-  keys: [String!]
-
-  """
-  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
-  """
-  distinctCount: UserDeviceDistinctCountAggregates
-}
-
-type UserDeviceDistinctCountAggregates {
-  """Distinct count of userId across the matching connection"""
-  userId: BigInt
-
-  """Distinct count of token across the matching connection"""
-  token: BigInt
-
-  """Distinct count of ua across the matching connection"""
-  ua: BigInt
-}
-
-"""
-A signed eight-byte integer. The upper big integer values are greater than the
-max value for a JavaScript number. Therefore all big integers will be output as
-strings and not numbers.
-"""
-scalar BigInt
-
-"""Grouping methods for `UserDevice` for usage during aggregation."""
-enum UserDeviceGroupBy {
-  USER_ID
-  UA
-}
-
-"""Conditions for `UserDevice` aggregates."""
-input UserDeviceHavingInput {
-  AND: [UserDeviceHavingInput!]
-  OR: [UserDeviceHavingInput!]
-}
-
-"""Methods to use when ordering `UserDevice`."""
-enum UserDevicesOrderBy {
+"""Methods to use when ordering `Transaction`."""
+enum TransactionsOrderBy {
   NATURAL
+  TRANSACTION_ID_ASC
+  TRANSACTION_ID_DESC
   USER_ID_ASC
   USER_ID_DESC
-  TOKEN_ASC
-  TOKEN_DESC
-  UA_ASC
-  UA_DESC
+  CATEGORY_ID_ASC
+  CATEGORY_ID_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  DATE_ASC
+  DATE_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  TYPE_ASC
+  TYPE_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
 }
 
 """
-A condition to be used against `UserDevice` object types. All fields are tested
+A condition to be used against `Transaction` object types. All fields are tested
 for equality and combined with a logical ‘and.’
 """
-input UserDeviceCondition {
+input TransactionCondition {
+  """Checks for equality with the object’s `transactionId` field."""
+  transactionId: String
+
   """Checks for equality with the object’s `userId` field."""
   userId: String
 
-  """Checks for equality with the object’s `token` field."""
-  token: String
+  """Checks for equality with the object’s `categoryId` field."""
+  categoryId: String
 
-  """Checks for equality with the object’s `ua` field."""
-  ua: JSON
+  """Checks for equality with the object’s `amount` field."""
+  amount: Float
+
+  """Checks for equality with the object’s `date` field."""
+  date: Datetime
+
+  """Checks for equality with the object’s `description` field."""
+  description: String
+
+  """Checks for equality with the object’s `type` field."""
+  type: Typetransaction
 }
 
 """
-A filter to be used against `UserDevice` object types. All fields are combined with a logical ‘and.’
+A filter to be used against `Transaction` object types. All fields are combined with a logical ‘and.’
 """
-input UserDeviceFilter {
+input TransactionFilter {
+  """Filter by the object’s `transactionId` field."""
+  transactionId: StringFilter
+
   """Filter by the object’s `userId` field."""
   userId: StringFilter
 
-  """Filter by the object’s `token` field."""
-  token: StringFilter
+  """Filter by the object’s `categoryId` field."""
+  categoryId: StringFilter
 
-  """Filter by the object’s `ua` field."""
-  ua: JSONFilter
+  """Filter by the object’s `amount` field."""
+  amount: FloatFilter
+
+  """Filter by the object’s `date` field."""
+  date: DatetimeFilter
+
+  """Filter by the object’s `description` field."""
+  description: StringFilter
+
+  """Filter by the object’s `type` field."""
+  type: TypetransactionFilter
 
   """Filter by the object’s `user` relation."""
   user: UserFilter
 
+  """A related `user` exists."""
+  userExists: Boolean
+
+  """Filter by the object’s `category` relation."""
+  category: CategoryFilter
+
+  """A related `category` exists."""
+  categoryExists: Boolean
+
   """Checks for all expressions in this list."""
-  and: [UserDeviceFilter!]
+  and: [TransactionFilter!]
 
   """Checks for any expressions in this list."""
-  or: [UserDeviceFilter!]
+  or: [TransactionFilter!]
 
   """Negates the expression."""
-  not: UserDeviceFilter
+  not: TransactionFilter
 }
 
 """
@@ -796,60 +858,129 @@ input StringFilter {
 }
 
 """
-A filter to be used against JSON fields. All fields are combined with a logical ‘and.’
+A filter to be used against Float fields. All fields are combined with a logical ‘and.’
 """
-input JSONFilter {
+input FloatFilter {
   """
   Is null (if `true` is specified) or is not null (if `false` is specified).
   """
   isNull: Boolean
 
   """Equal to the specified value."""
-  equalTo: JSON
+  equalTo: Float
 
   """Not equal to the specified value."""
-  notEqualTo: JSON
+  notEqualTo: Float
 
   """
   Not equal to the specified value, treating null like an ordinary value.
   """
-  distinctFrom: JSON
+  distinctFrom: Float
 
   """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: JSON
+  notDistinctFrom: Float
 
   """Included in the specified list."""
-  in: [JSON!]
+  in: [Float!]
 
   """Not included in the specified list."""
-  notIn: [JSON!]
+  notIn: [Float!]
 
   """Less than the specified value."""
-  lessThan: JSON
+  lessThan: Float
 
   """Less than or equal to the specified value."""
-  lessThanOrEqualTo: JSON
+  lessThanOrEqualTo: Float
 
   """Greater than the specified value."""
-  greaterThan: JSON
+  greaterThan: Float
 
   """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: JSON
+  greaterThanOrEqualTo: Float
+}
 
-  """Contains the specified JSON."""
-  contains: JSON
+"""
+A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
+"""
+input DatetimeFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
 
-  """Contains the specified key."""
-  containsKey: String
+  """Equal to the specified value."""
+  equalTo: Datetime
 
-  """Contains all of the specified keys."""
-  containsAllKeys: [String!]
+  """Not equal to the specified value."""
+  notEqualTo: Datetime
 
-  """Contains any of the specified keys."""
-  containsAnyKeys: [String!]
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Datetime
 
-  """Contained by the specified JSON."""
-  containedBy: JSON
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Datetime
+
+  """Included in the specified list."""
+  in: [Datetime!]
+
+  """Not included in the specified list."""
+  notIn: [Datetime!]
+
+  """Less than the specified value."""
+  lessThan: Datetime
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Datetime
+
+  """Greater than the specified value."""
+  greaterThan: Datetime
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Datetime
+}
+
+"""
+A filter to be used against Typetransaction fields. All fields are combined with a logical ‘and.’
+"""
+input TypetransactionFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Typetransaction
+
+  """Not equal to the specified value."""
+  notEqualTo: Typetransaction
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Typetransaction
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Typetransaction
+
+  """Included in the specified list."""
+  in: [Typetransaction!]
+
+  """Not included in the specified list."""
+  notIn: [Typetransaction!]
+
+  """Less than the specified value."""
+  lessThan: Typetransaction
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Typetransaction
+
+  """Greater than the specified value."""
+  greaterThan: Typetransaction
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Typetransaction
 }
 
 """
@@ -883,12 +1014,6 @@ input UserFilter {
   """Filter by the object’s `password` field."""
   password: StringFilter
 
-  """Filter by the object’s `userDevicesByUserId` relation."""
-  userDevicesByUserId: UserToManyUserDeviceFilter
-
-  """Some related `userDevicesByUserId` exist."""
-  userDevicesByUserIdExist: Boolean
-
   """Filter by the object’s `transactionsByUserId` relation."""
   transactionsByUserId: UserToManyTransactionFilter
 
@@ -906,6 +1031,12 @@ input UserFilter {
 
   """Some related `reportsByUserId` exist."""
   reportsByUserIdExist: Boolean
+
+  """Filter by the object’s `userDevicesByUserId` relation."""
+  userDevicesByUserId: UserToManyUserDeviceFilter
+
+  """Some related `userDevicesByUserId` exist."""
+  userDevicesByUserIdExist: Boolean
 
   """Checks for all expressions in this list."""
   and: [UserFilter!]
@@ -960,324 +1091,9 @@ input UserGenderFilter {
 }
 
 """
-A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
-"""
-input DatetimeFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Datetime
-
-  """Not equal to the specified value."""
-  notEqualTo: Datetime
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Datetime
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Datetime
-
-  """Included in the specified list."""
-  in: [Datetime!]
-
-  """Not included in the specified list."""
-  notIn: [Datetime!]
-
-  """Less than the specified value."""
-  lessThan: Datetime
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Datetime
-
-  """Greater than the specified value."""
-  greaterThan: Datetime
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Datetime
-}
-
-"""
-A filter to be used against many `UserDevice` object types. All fields are combined with a logical ‘and.’
-"""
-input UserToManyUserDeviceFilter {
-  """
-  Every related `UserDevice` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: UserDeviceFilter
-
-  """
-  Some related `UserDevice` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: UserDeviceFilter
-
-  """
-  No related `UserDevice` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: UserDeviceFilter
-
-  """Aggregates across related `UserDevice` match the filter criteria."""
-  aggregates: UserDeviceAggregatesFilter
-}
-
-"""A filter to be used against aggregates of `UserDevice` object types."""
-input UserDeviceAggregatesFilter {
-  """
-  A filter that must pass for the relevant `UserDevice` object to be included within the aggregate.
-  """
-  filter: UserDeviceFilter
-
-  """Distinct count aggregate over matching `UserDevice` objects."""
-  distinctCount: UserDeviceDistinctCountAggregateFilter
-}
-
-input UserDeviceDistinctCountAggregateFilter {
-  userId: BigIntFilter
-  token: BigIntFilter
-  ua: BigIntFilter
-}
-
-"""
-A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’
-"""
-input BigIntFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: BigInt
-
-  """Not equal to the specified value."""
-  notEqualTo: BigInt
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: BigInt
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: BigInt
-
-  """Included in the specified list."""
-  in: [BigInt!]
-
-  """Not included in the specified list."""
-  notIn: [BigInt!]
-
-  """Less than the specified value."""
-  lessThan: BigInt
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: BigInt
-
-  """Greater than the specified value."""
-  greaterThan: BigInt
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: BigInt
-}
-
-"""
 A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’
 """
 input UserToManyTransactionFilter {
-  """
-  Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: TransactionFilter
-
-  """
-  Some related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: TransactionFilter
-
-  """
-  No related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: TransactionFilter
-
-  """Aggregates across related `Transaction` match the filter criteria."""
-  aggregates: TransactionAggregatesFilter
-}
-
-"""
-A filter to be used against `Transaction` object types. All fields are combined with a logical ‘and.’
-"""
-input TransactionFilter {
-  """Filter by the object’s `transactionId` field."""
-  transactionId: StringFilter
-
-  """Filter by the object’s `userId` field."""
-  userId: StringFilter
-
-  """Filter by the object’s `categoryId` field."""
-  categoryId: StringFilter
-
-  """Filter by the object’s `amount` field."""
-  amount: FloatFilter
-
-  """Filter by the object’s `date` field."""
-  date: DatetimeFilter
-
-  """Filter by the object’s `description` field."""
-  description: StringFilter
-
-  """Filter by the object’s `type` field."""
-  type: TypetransactionFilter
-
-  """Filter by the object’s `user` relation."""
-  user: UserFilter
-
-  """A related `user` exists."""
-  userExists: Boolean
-
-  """Filter by the object’s `category` relation."""
-  category: CategoryFilter
-
-  """A related `category` exists."""
-  categoryExists: Boolean
-
-  """Checks for all expressions in this list."""
-  and: [TransactionFilter!]
-
-  """Checks for any expressions in this list."""
-  or: [TransactionFilter!]
-
-  """Negates the expression."""
-  not: TransactionFilter
-}
-
-"""
-A filter to be used against Float fields. All fields are combined with a logical ‘and.’
-"""
-input FloatFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Float
-
-  """Not equal to the specified value."""
-  notEqualTo: Float
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Float
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Float
-
-  """Included in the specified list."""
-  in: [Float!]
-
-  """Not included in the specified list."""
-  notIn: [Float!]
-
-  """Less than the specified value."""
-  lessThan: Float
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Float
-
-  """Greater than the specified value."""
-  greaterThan: Float
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Float
-}
-
-"""
-A filter to be used against Typetransaction fields. All fields are combined with a logical ‘and.’
-"""
-input TypetransactionFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Typetransaction
-
-  """Not equal to the specified value."""
-  notEqualTo: Typetransaction
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Typetransaction
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Typetransaction
-
-  """Included in the specified list."""
-  in: [Typetransaction!]
-
-  """Not included in the specified list."""
-  notIn: [Typetransaction!]
-
-  """Less than the specified value."""
-  lessThan: Typetransaction
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Typetransaction
-
-  """Greater than the specified value."""
-  greaterThan: Typetransaction
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Typetransaction
-}
-
-enum Typetransaction {
-  INCOME
-  EXPENSE
-}
-
-"""
-A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’
-"""
-input CategoryFilter {
-  """Filter by the object’s `id` field."""
-  id: StringFilter
-
-  """Filter by the object’s `name` field."""
-  name: StringFilter
-
-  """Filter by the object’s `transactionsByCategoryId` relation."""
-  transactionsByCategoryId: CategoryToManyTransactionFilter
-
-  """Some related `transactionsByCategoryId` exist."""
-  transactionsByCategoryIdExist: Boolean
-
-  """Filter by the object’s `budgetsByCategoryId` relation."""
-  budgetsByCategoryId: CategoryToManyBudgetFilter
-
-  """Some related `budgetsByCategoryId` exist."""
-  budgetsByCategoryIdExist: Boolean
-
-  """Checks for all expressions in this list."""
-  and: [CategoryFilter!]
-
-  """Checks for any expressions in this list."""
-  or: [CategoryFilter!]
-
-  """Negates the expression."""
-  not: CategoryFilter
-}
-
-"""
-A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’
-"""
-input CategoryToManyTransactionFilter {
   """
   Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
@@ -1350,6 +1166,55 @@ input TransactionDistinctCountAggregateFilter {
   type: BigIntFilter
 }
 
+"""
+A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’
+"""
+input BigIntFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: BigInt
+
+  """Not equal to the specified value."""
+  notEqualTo: BigInt
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigInt
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: BigInt
+
+  """Included in the specified list."""
+  in: [BigInt!]
+
+  """Not included in the specified list."""
+  notIn: [BigInt!]
+
+  """Less than the specified value."""
+  lessThan: BigInt
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: BigInt
+
+  """Greater than the specified value."""
+  greaterThan: BigInt
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: BigInt
+}
+
+"""
+A signed eight-byte integer. The upper big integer values are greater than the
+max value for a JavaScript number. Therefore all big integers will be output as
+strings and not numbers.
+"""
+scalar BigInt
+
 input TransactionMinAggregateFilter {
   amount: FloatFilter
 }
@@ -1381,7 +1246,7 @@ input TransactionVariancePopulationAggregateFilter {
 """
 A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’
 """
-input CategoryToManyBudgetFilter {
+input UserToManyBudgetFilter {
   """
   Every related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
@@ -1485,6 +1350,84 @@ input IntFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: Int
+}
+
+"""
+A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’
+"""
+input CategoryFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Filter by the object’s `transactionsByCategoryId` relation."""
+  transactionsByCategoryId: CategoryToManyTransactionFilter
+
+  """Some related `transactionsByCategoryId` exist."""
+  transactionsByCategoryIdExist: Boolean
+
+  """Filter by the object’s `budgetsByCategoryId` relation."""
+  budgetsByCategoryId: CategoryToManyBudgetFilter
+
+  """Some related `budgetsByCategoryId` exist."""
+  budgetsByCategoryIdExist: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [CategoryFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [CategoryFilter!]
+
+  """Negates the expression."""
+  not: CategoryFilter
+}
+
+"""
+A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’
+"""
+input CategoryToManyTransactionFilter {
+  """
+  Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TransactionFilter
+
+  """
+  Some related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TransactionFilter
+
+  """
+  No related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TransactionFilter
+
+  """Aggregates across related `Transaction` match the filter criteria."""
+  aggregates: TransactionAggregatesFilter
+}
+
+"""
+A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’
+"""
+input CategoryToManyBudgetFilter {
+  """
+  Every related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: BudgetFilter
+
+  """
+  Some related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: BudgetFilter
+
+  """
+  No related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: BudgetFilter
+
+  """Aggregates across related `Budget` match the filter criteria."""
+  aggregates: BudgetAggregatesFilter
 }
 
 """A filter to be used against aggregates of `Budget` object types."""
@@ -1621,29 +1564,6 @@ input BudgetVariancePopulationAggregateFilter {
 }
 
 """
-A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’
-"""
-input UserToManyBudgetFilter {
-  """
-  Every related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: BudgetFilter
-
-  """
-  Some related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: BudgetFilter
-
-  """
-  No related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: BudgetFilter
-
-  """Aggregates across related `Budget` match the filter criteria."""
-  aggregates: BudgetAggregatesFilter
-}
-
-"""
 A filter to be used against many `Report` object types. All fields are combined with a logical ‘and.’
 """
 input UserToManyReportFilter {
@@ -1716,182 +1636,132 @@ input ReportDistinctCountAggregateFilter {
   filePath: BigIntFilter
 }
 
-"""A connection to a list of `Transaction` values."""
-type TransactionsConnection {
-  """A list of `Transaction` objects."""
-  nodes: [Transaction!]!
+"""
+A filter to be used against many `UserDevice` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyUserDeviceFilter {
+  """
+  Every related `UserDevice` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UserDeviceFilter
 
   """
-  A list of edges which contains the `Transaction` and cursor to aid in pagination.
+  Some related `UserDevice` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
-  edges: [TransactionsEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Transaction` you could get from the connection."""
-  totalCount: Int!
+  some: UserDeviceFilter
 
   """
-  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  No related `UserDevice` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
-  aggregates: TransactionAggregates
+  none: UserDeviceFilter
 
-  """
-  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
-  """
-  groupedAggregates(
-    """The method to use when grouping `Transaction` for these aggregates."""
-    groupBy: [TransactionGroupBy!]!
-
-    """Conditions on the grouped aggregates."""
-    having: TransactionHavingInput
-  ): [TransactionAggregates!]
-}
-
-type Transaction implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  transactionId: String!
-  userId: String
-  categoryId: String
-  amount: Float!
-  date: Datetime
-  description: String
-  type: Typetransaction!
-
-  """Reads a single `User` that is related to this `Transaction`."""
-  user: User
-
-  """Reads a single `Category` that is related to this `Transaction`."""
-  category: Category
-}
-
-type Category implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: String!
-  name: String!
-
-  """Reads and enables pagination through a set of `Transaction`."""
-  transactionsByCategoryId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Transaction`."""
-    orderBy: [TransactionsOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: TransactionCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: TransactionFilter
-  ): TransactionsConnection!
-
-  """Reads and enables pagination through a set of `Budget`."""
-  budgetsByCategoryId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Budget`."""
-    orderBy: [BudgetsOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: BudgetCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: BudgetFilter
-  ): BudgetsConnection!
-}
-
-"""Methods to use when ordering `Transaction`."""
-enum TransactionsOrderBy {
-  NATURAL
-  TRANSACTION_ID_ASC
-  TRANSACTION_ID_DESC
-  USER_ID_ASC
-  USER_ID_DESC
-  CATEGORY_ID_ASC
-  CATEGORY_ID_DESC
-  AMOUNT_ASC
-  AMOUNT_DESC
-  DATE_ASC
-  DATE_DESC
-  DESCRIPTION_ASC
-  DESCRIPTION_DESC
-  TYPE_ASC
-  TYPE_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
+  """Aggregates across related `UserDevice` match the filter criteria."""
+  aggregates: UserDeviceAggregatesFilter
 }
 
 """
-A condition to be used against `Transaction` object types. All fields are tested
-for equality and combined with a logical ‘and.’
+A filter to be used against `UserDevice` object types. All fields are combined with a logical ‘and.’
 """
-input TransactionCondition {
-  """Checks for equality with the object’s `transactionId` field."""
-  transactionId: String
+input UserDeviceFilter {
+  """Filter by the object’s `userId` field."""
+  userId: StringFilter
 
-  """Checks for equality with the object’s `userId` field."""
-  userId: String
+  """Filter by the object’s `token` field."""
+  token: StringFilter
 
-  """Checks for equality with the object’s `categoryId` field."""
-  categoryId: String
+  """Filter by the object’s `ua` field."""
+  ua: JSONFilter
 
-  """Checks for equality with the object’s `amount` field."""
-  amount: Float
+  """Filter by the object’s `user` relation."""
+  user: UserFilter
 
-  """Checks for equality with the object’s `date` field."""
-  date: Datetime
+  """Checks for all expressions in this list."""
+  and: [UserDeviceFilter!]
 
-  """Checks for equality with the object’s `description` field."""
-  description: String
+  """Checks for any expressions in this list."""
+  or: [UserDeviceFilter!]
 
-  """Checks for equality with the object’s `type` field."""
-  type: Typetransaction
+  """Negates the expression."""
+  not: UserDeviceFilter
+}
+
+"""
+A filter to be used against JSON fields. All fields are combined with a logical ‘and.’
+"""
+input JSONFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: JSON
+
+  """Not equal to the specified value."""
+  notEqualTo: JSON
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: JSON
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: JSON
+
+  """Included in the specified list."""
+  in: [JSON!]
+
+  """Not included in the specified list."""
+  notIn: [JSON!]
+
+  """Less than the specified value."""
+  lessThan: JSON
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: JSON
+
+  """Greater than the specified value."""
+  greaterThan: JSON
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: JSON
+
+  """Contains the specified JSON."""
+  contains: JSON
+
+  """Contains the specified key."""
+  containsKey: String
+
+  """Contains all of the specified keys."""
+  containsAllKeys: [String!]
+
+  """Contains any of the specified keys."""
+  containsAnyKeys: [String!]
+
+  """Contained by the specified JSON."""
+  containedBy: JSON
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""A filter to be used against aggregates of `UserDevice` object types."""
+input UserDeviceAggregatesFilter {
+  """
+  A filter that must pass for the relevant `UserDevice` object to be included within the aggregate.
+  """
+  filter: UserDeviceFilter
+
+  """Distinct count aggregate over matching `UserDevice` objects."""
+  distinctCount: UserDeviceDistinctCountAggregateFilter
+}
+
+input UserDeviceDistinctCountAggregateFilter {
+  userId: BigIntFilter
+  token: BigIntFilter
+  ua: BigIntFilter
 }
 
 """Methods to use when ordering `Budget`."""
@@ -1943,6 +1813,21 @@ type TransactionsEdge {
 
   """The `Transaction` at the end of the edge."""
   node: Transaction!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
 }
 
 type TransactionAggregates {
@@ -2269,6 +2154,121 @@ input ReportCondition {
 
   """Checks for equality with the object’s `filePath` field."""
   filePath: String
+}
+
+"""A connection to a list of `UserDevice` values."""
+type UserDevicesConnection {
+  """A list of `UserDevice` objects."""
+  nodes: [UserDevice!]!
+
+  """
+  A list of edges which contains the `UserDevice` and cursor to aid in pagination.
+  """
+  edges: [UserDevicesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `UserDevice` you could get from the connection."""
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: UserDeviceAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates(
+    """The method to use when grouping `UserDevice` for these aggregates."""
+    groupBy: [UserDeviceGroupBy!]!
+
+    """Conditions on the grouped aggregates."""
+    having: UserDeviceHavingInput
+  ): [UserDeviceAggregates!]
+}
+
+type UserDevice implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  userId: String!
+  token: String!
+  ua: JSON
+
+  """Reads a single `User` that is related to this `UserDevice`."""
+  user: User
+}
+
+"""A `UserDevice` edge in the connection."""
+type UserDevicesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UserDevice` at the end of the edge."""
+  node: UserDevice!
+}
+
+type UserDeviceAggregates {
+  keys: [String!]
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: UserDeviceDistinctCountAggregates
+}
+
+type UserDeviceDistinctCountAggregates {
+  """Distinct count of userId across the matching connection"""
+  userId: BigInt
+
+  """Distinct count of token across the matching connection"""
+  token: BigInt
+
+  """Distinct count of ua across the matching connection"""
+  ua: BigInt
+}
+
+"""Grouping methods for `UserDevice` for usage during aggregation."""
+enum UserDeviceGroupBy {
+  USER_ID
+  UA
+}
+
+"""Conditions for `UserDevice` aggregates."""
+input UserDeviceHavingInput {
+  AND: [UserDeviceHavingInput!]
+  OR: [UserDeviceHavingInput!]
+}
+
+"""Methods to use when ordering `UserDevice`."""
+enum UserDevicesOrderBy {
+  NATURAL
+  USER_ID_ASC
+  USER_ID_DESC
+  TOKEN_ASC
+  TOKEN_DESC
+  UA_ASC
+  UA_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `UserDevice` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input UserDeviceCondition {
+  """Checks for equality with the object’s `userId` field."""
+  userId: String
+
+  """Checks for equality with the object’s `token` field."""
+  token: String
+
+  """Checks for equality with the object’s `ua` field."""
+  ua: JSON
 }
 
 """A `Budget` edge in the connection."""
@@ -3005,62 +3005,6 @@ enum UsersOrderBy {
   PASSWORD_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
-  USER_DEVICES_BY_USER_ID_COUNT_ASC
-  USER_DEVICES_BY_USER_ID_COUNT_DESC
-  USER_DEVICES_BY_USER_ID_SUM_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_SUM_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_SUM_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_SUM_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_SUM_UA_ASC
-  USER_DEVICES_BY_USER_ID_SUM_UA_DESC
-  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_UA_ASC
-  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_UA_DESC
-  USER_DEVICES_BY_USER_ID_MIN_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_MIN_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_MIN_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_MIN_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_MIN_UA_ASC
-  USER_DEVICES_BY_USER_ID_MIN_UA_DESC
-  USER_DEVICES_BY_USER_ID_MAX_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_MAX_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_MAX_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_MAX_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_MAX_UA_ASC
-  USER_DEVICES_BY_USER_ID_MAX_UA_DESC
-  USER_DEVICES_BY_USER_ID_AVERAGE_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_AVERAGE_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_AVERAGE_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_AVERAGE_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_AVERAGE_UA_ASC
-  USER_DEVICES_BY_USER_ID_AVERAGE_UA_DESC
-  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_UA_ASC
-  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_UA_DESC
-  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_UA_ASC
-  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_UA_DESC
-  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_UA_ASC
-  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_UA_DESC
-  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC
-  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC
-  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_TOKEN_ASC
-  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_TOKEN_DESC
-  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_UA_ASC
-  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_UA_DESC
   TRANSACTIONS_BY_USER_ID_COUNT_ASC
   TRANSACTIONS_BY_USER_ID_COUNT_DESC
   TRANSACTIONS_BY_USER_ID_SUM_TRANSACTION_ID_ASC
@@ -3373,6 +3317,62 @@ enum UsersOrderBy {
   REPORTS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC
   REPORTS_BY_USER_ID_VARIANCE_POPULATION_FILE_PATH_ASC
   REPORTS_BY_USER_ID_VARIANCE_POPULATION_FILE_PATH_DESC
+  USER_DEVICES_BY_USER_ID_COUNT_ASC
+  USER_DEVICES_BY_USER_ID_COUNT_DESC
+  USER_DEVICES_BY_USER_ID_SUM_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_SUM_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_SUM_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_SUM_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_SUM_UA_ASC
+  USER_DEVICES_BY_USER_ID_SUM_UA_DESC
+  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_UA_ASC
+  USER_DEVICES_BY_USER_ID_DISTINCT_COUNT_UA_DESC
+  USER_DEVICES_BY_USER_ID_MIN_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_MIN_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_MIN_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_MIN_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_MIN_UA_ASC
+  USER_DEVICES_BY_USER_ID_MIN_UA_DESC
+  USER_DEVICES_BY_USER_ID_MAX_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_MAX_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_MAX_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_MAX_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_MAX_UA_ASC
+  USER_DEVICES_BY_USER_ID_MAX_UA_DESC
+  USER_DEVICES_BY_USER_ID_AVERAGE_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_AVERAGE_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_AVERAGE_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_AVERAGE_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_AVERAGE_UA_ASC
+  USER_DEVICES_BY_USER_ID_AVERAGE_UA_DESC
+  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_UA_ASC
+  USER_DEVICES_BY_USER_ID_STDDEV_SAMPLE_UA_DESC
+  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_UA_ASC
+  USER_DEVICES_BY_USER_ID_STDDEV_POPULATION_UA_DESC
+  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_UA_ASC
+  USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_UA_DESC
+  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC
+  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC
+  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_TOKEN_ASC
+  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_TOKEN_DESC
+  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_UA_ASC
+  USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_UA_DESC
 }
 
 """
