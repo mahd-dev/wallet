@@ -10,6 +10,7 @@ const LOGIN = gql(`  query LOGIN_USER($email: String!, $password: String!) {
       nodes {
         password
         email
+        oidcId
       }
     }
   }`);

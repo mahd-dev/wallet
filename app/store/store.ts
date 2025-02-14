@@ -61,6 +61,7 @@ export const userIdAtom = atomWithStoredBroadcast<string | undefined>(
   "userId",
   undefined,
 );
+export const userAtom = atom<User | null>(null);
 export const profileAtom = atom<ProfileFragment | null>(null);
 
 export const mainPanelAtom = atom(false);

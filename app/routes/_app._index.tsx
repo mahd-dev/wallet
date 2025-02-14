@@ -5,7 +5,7 @@ import { Block, Dialog, Fab } from "konsta/react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { gql, useMutation } from "urql";
-import { mainLayoutPropsAtom, userIdAtom } from "~/store/store";
+import { mainLayoutPropsAtom, userAtom } from "~/store/store";
 
 const ADD_TRANSACTION_MUTATION = gql`
   mutation AddTransaction(
@@ -51,7 +51,7 @@ const HomePage = () => {
   const [category, setCategory] = useState("");
   const [type, setType] = useState("depense");
   const [result, mutate] = useMutation(ADD_TRANSACTION_MUTATION);
-  const [currentUserId] = useAtom(userIdAtom);
+  const [user] = useAtom(userAtom);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,7 +62,7 @@ const HomePage = () => {
     >;
 
     const variables = {
-      user_id: currentUserId || "",
+      user_id: user?.oidcId,
       category_id: category, // Updated to use selected category
       amount: parseFloat(transactionData.amount ?? "0"),
       date: new Date().toISOString(),

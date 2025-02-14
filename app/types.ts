@@ -10,6 +10,10 @@ declare global {
 }
 
 export interface User {
+  oidcId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
   provider: "oidc" | "google" | "facebook";
   sub: string;
   role: string;

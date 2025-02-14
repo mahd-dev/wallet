@@ -1,6 +1,8 @@
 import { Link, useActionData, useNavigate } from "@remix-run/react";
+import { useAtom } from "jotai";
 import { Block } from "konsta/react";
 import { useState } from "react";
+import { userAtom } from "~/store/store";
 /*
 export const action: ActionFunction = async ({ request }) => {
 
@@ -56,7 +58,7 @@ export default function LoginPage() {
     // , setPasswordVisible
   ] = useState(false);
   const navigate = useNavigate();
-
+  const [user, setUser] = useAtom(userAtom);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [, setError] = useState("");
@@ -74,6 +76,7 @@ export default function LoginPage() {
   //     navigate("/");
   //   }
   // }, [data?.users?.nodes?.length]);
+  console.log("user", user);
 
   const submitLogin = async (email: string, password: string) => {
     try {
@@ -91,6 +94,7 @@ export default function LoginPage() {
 
       const result = await response.json();
       if (result) {
+        setUser(result.user);
         navigate("/");
       }
       return result;
