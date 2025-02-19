@@ -20,6 +20,7 @@ import {
   cartAtom,
   mainLayoutPropsAtom,
   mainPanelAtom,
+  userAtom,
 } from "~/store/store";
 
 const menu = [
@@ -35,7 +36,7 @@ export default function MainNavbar() {
   const [mainPanel, setMainPanel] = useAtom(mainPanelAtom);
   const [propsAtm] = useAtom(mainLayoutPropsAtom);
   const location = useLocation();
-
+  const [user] = useAtom(userAtom);
   const [cart] = useAtom(cartAtom);
   const cartPopoverRef = useRef(null);
   const [cartPopover, setCartPopoverOpened] = useState<boolean>(false);
@@ -153,7 +154,7 @@ export default function MainNavbar() {
             <img src="/logo.svg" className="absolute h-12" alt="GCI" />
           </a>
           <div className="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-            <Icon
+            {/* <Icon
               onClick={() => openCartPopover(".cartpopover-navbar-link")}
               // className="notif-btn  ios:me-5"
               className="cartpopover-navbar-link hover:text-secondary mx-3 mr-6 mt-2 text-gray-800"
@@ -164,14 +165,26 @@ export default function MainNavbar() {
                   <span style={{ marginTop: 4 }}>{cart.length || 0}</span>
                 ) : null
               }
-            />
-            <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300"
-            >
-              <IconLogin2 className="inline w-4" /> Login
-            </button>
+            /> */}
+            {user ? (
+              <button
+                type="button"
+                // onClick={() => navigate("/auth")}
+                className="= text-secondary-content rounded-lg px-4 py-2 text-center text-sm font-medium"
+              >
+                <Link to="/profile">
+                  <Icon ios={<IconUser />} material={<IconUser />} />
+                </Link>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300"
+              >
+                <IconLogin2 className="inline w-4" /> Login
+              </button>
+            )}
           </div>
           <div
             className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"

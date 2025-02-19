@@ -41,7 +41,12 @@ export default async function handleRequest(
       ?.replaceAll("; ", ";")
       .split(";")
       .map((cookie) => cookie.split("=")) ?? [],
-  ) as { lang?: AvailableLanguageTag };
+    // ) as { lang?: AvailableLanguageTag };
+  ) as {
+    lang?: AvailableLanguageTag;
+    locale?: string;
+    scope?: `${string}:${string}`;
+  };
 
   const lang =
     cookie.lang ||
@@ -64,10 +69,16 @@ export default async function handleRequest(
     const ssr = ssrExchange();
 
     const gqlClient = new Client({
-      url: `http://localhost:${process.env.PORT || "3000"}/graphql`,
+      // url: `http://localhost:${process.env.PORT || "3000"}/graphql`,
+      url: process.env.SERVER_URL_SSR || process.env.SERVER_URL!,
       exchanges: [cacheExchange, ssr, fetchExchange],
       fetchSubscriptions: true,
-      fetchOptions: { headers: { Authorization } },
+      fetchOptions: {
+        headers: {
+          Authorization,
+          scope: `${process.env.ORG_ID}:${process.env.ETB_ID}`,
+        },
+      },
       requestPolicy: "network-only",
       suspense: true, // await the server to return results ( without this, the extracted data using "ssr.extractData()" will always be empty )
     });
@@ -93,6 +104,8 @@ export default async function handleRequest(
             __html: `window.__GQL_STATE__=${JSON.stringify({
               ...ssrGqlData,
               idToken: user?.id_token,
+              serverUrl: process.env.SERVER_URL,
+              scope: `${process.env.ORG_ID}:${process.env.ETB_ID}`,
             }).replace(/</g, "\\u003c")}`, // The replace call escapes the < character to prevent cross-site scripting attacks that are possible via the presence of </script> in a string literal
           }}
         />

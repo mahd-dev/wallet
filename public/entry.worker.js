@@ -562,6 +562,142 @@ const routes = {
 };
 const entry = { module: entryWorker };
 /**
+ * @remix-run/router v1.22.0
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+var Action$1;
+(function(Action2) {
+  Action2["Pop"] = "POP";
+  Action2["Push"] = "PUSH";
+  Action2["Replace"] = "REPLACE";
+})(Action$1 || (Action$1 = {}));
+function warning$1(cond, message) {
+  if (!cond) {
+    if (typeof console !== "undefined") console.warn(message);
+    try {
+      throw new Error(message);
+    } catch (e) {
+    }
+  }
+}
+var ResultType$1;
+(function(ResultType2) {
+  ResultType2["data"] = "data";
+  ResultType2["deferred"] = "deferred";
+  ResultType2["redirect"] = "redirect";
+  ResultType2["error"] = "error";
+})(ResultType$1 || (ResultType$1 = {}));
+function matchPath$1(pattern, pathname) {
+  if (typeof pattern === "string") {
+    pattern = {
+      path: pattern,
+      caseSensitive: false,
+      end: true
+    };
+  }
+  let [matcher, compiledParams] = compilePath$1(pattern.path, pattern.caseSensitive, pattern.end);
+  let match = pathname.match(matcher);
+  if (!match) return null;
+  let matchedPathname = match[0];
+  let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
+  let captureGroups = match.slice(1);
+  let params = compiledParams.reduce((memo, _ref, index) => {
+    let {
+      paramName,
+      isOptional
+    } = _ref;
+    if (paramName === "*") {
+      let splatValue = captureGroups[index] || "";
+      pathnameBase = matchedPathname.slice(0, matchedPathname.length - splatValue.length).replace(/(.)\/+$/, "$1");
+    }
+    const value = captureGroups[index];
+    if (isOptional && !value) {
+      memo[paramName] = void 0;
+    } else {
+      memo[paramName] = (value || "").replace(/%2F/g, "/");
+    }
+    return memo;
+  }, {});
+  return {
+    params,
+    pathname: matchedPathname,
+    pathnameBase,
+    pattern
+  };
+}
+function compilePath$1(path, caseSensitive, end) {
+  if (caseSensitive === void 0) {
+    caseSensitive = false;
+  }
+  if (end === void 0) {
+    end = true;
+  }
+  warning$1(path === "*" || !path.endsWith("*") || path.endsWith("/*"), 'Route path "' + path + '" will be treated as if it were ' + ('"' + path.replace(/\*$/, "/*") + '" because the `*` character must ') + "always follow a `/` in the pattern. To get rid of this warning, " + ('please change the route path to "' + path.replace(/\*$/, "/*") + '".'));
+  let params = [];
+  let regexpSource = "^" + path.replace(/\/*\*?$/, "").replace(/^\/*/, "/").replace(/[\\.*+^${}|()[\]]/g, "\\$&").replace(/\/:([\w-]+)(\?)?/g, (_, paramName, isOptional) => {
+    params.push({
+      paramName,
+      isOptional: isOptional != null
+    });
+    return isOptional ? "/?([^\\/]+)?" : "/([^\\/]+)";
+  });
+  if (path.endsWith("*")) {
+    params.push({
+      paramName: "*"
+    });
+    regexpSource += path === "*" || path === "/*" ? "(.*)$" : "(?:\\/(.+)|\\/*)$";
+  } else if (end) {
+    regexpSource += "\\/*$";
+  } else if (path !== "" && path !== "/") {
+    regexpSource += "(?:(?=\\/|$))";
+  } else ;
+  let matcher = new RegExp(regexpSource, caseSensitive ? void 0 : "i");
+  return [matcher, params];
+}
+function isRouteErrorResponse$1(error) {
+  return error != null && typeof error.status === "number" && typeof error.statusText === "string" && typeof error.internal === "boolean" && "data" in error;
+}
+const validMutationMethodsArr$1 = ["post", "put", "patch", "delete"];
+new Set(validMutationMethodsArr$1);
+const validRequestMethodsArr$1 = ["get", ...validMutationMethodsArr$1];
+new Set(validRequestMethodsArr$1);
+var mode$2 = {};
+/**
+ * @remix-run/server-runtime v2.13.1
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+Object.defineProperty(mode$2, "__esModule", { value: true });
+let ServerMode = /* @__PURE__ */ function(ServerMode2) {
+  ServerMode2["Development"] = "development";
+  ServerMode2["Production"] = "production";
+  ServerMode2["Test"] = "test";
+  return ServerMode2;
+}({});
+function isServerMode(value) {
+  return value === ServerMode.Development || value === ServerMode.Production || value === ServerMode.Test;
+}
+var ServerMode_1 = mode$2.ServerMode = ServerMode;
+var isServerMode_1 = mode$2.isServerMode = isServerMode;
+const mode$1 = /* @__PURE__ */ _mergeNamespaces({
+  __proto__: null,
+  ServerMode: ServerMode_1,
+  default: mode$2,
+  isServerMode: isServerMode_1
+}, [mode$2]);
+var responses = {};
+/**
  * @remix-run/router v1.20.0
  *
  * Copyright (c) Remix Software Inc.
@@ -4676,36 +4812,6 @@ const router$2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProp
   resolveTo,
   stripBasename
 }, Symbol.toStringTag, { value: "Module" }));
-var mode$2 = {};
-/**
- * @remix-run/server-runtime v2.13.1
- *
- * Copyright (c) Remix Software Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.md file in the root directory of this source tree.
- *
- * @license MIT
- */
-Object.defineProperty(mode$2, "__esModule", { value: true });
-let ServerMode = /* @__PURE__ */ function(ServerMode2) {
-  ServerMode2["Development"] = "development";
-  ServerMode2["Production"] = "production";
-  ServerMode2["Test"] = "test";
-  return ServerMode2;
-}({});
-function isServerMode(value) {
-  return value === ServerMode.Development || value === ServerMode.Production || value === ServerMode.Test;
-}
-var ServerMode_1 = mode$2.ServerMode = ServerMode;
-var isServerMode_1 = mode$2.isServerMode = isServerMode;
-const mode$1 = /* @__PURE__ */ _mergeNamespaces({
-  __proto__: null,
-  ServerMode: ServerMode_1,
-  default: mode$2,
-  isServerMode: isServerMode_1
-}, [mode$2]);
-var responses = {};
 const require$$0 = /* @__PURE__ */ getAugmentedNamespace(router$2);
 var errors$2 = {};
 const require$$1$1 = /* @__PURE__ */ getAugmentedNamespace(mode$1);
@@ -4895,7 +5001,7 @@ function clone(_object) {
 }
 function getURLParameters(request, path = "") {
   const url = new URL(request.url);
-  const match = matchPath(path, url.pathname);
+  const match = matchPath$1(path, url.pathname);
   return {
     ...Object.fromEntries(new URL(request.url).searchParams.entries()),
     ...match == null ? void 0 : match.params
@@ -5029,7 +5135,7 @@ function _errorHandler({ error, handler: handleError }) {
     error.headers.set("X-Remix-Catch", "yes");
     return error;
   }
-  if (isRouteErrorResponse(error)) {
+  if (isRouteErrorResponse$1(error)) {
     error.error && handleError(error.error);
     return errorResponseToJson(error);
   }
