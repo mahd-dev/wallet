@@ -23,7 +23,8 @@ const ADD_CATEGORY = gql`
 
 const CategoriesPage = () => {
   const [categoryName, setCategoryName] = useState("");
-  const [  ,
+  const [
+    ,
     //addCategoryResult
     addCategory,
   ] = useMutation(ADD_CATEGORY);

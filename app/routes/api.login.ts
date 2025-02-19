@@ -11,6 +11,9 @@ const LOGIN = gql(`  query LOGIN_USER($email: String!, $password: String!) {
         password
         email
         oidcId
+        firstName
+        lastName
+        gender
       }
     }
   }`);
