@@ -24,8 +24,10 @@ const ADD_CATEGORY = gql`
 const CategoriesPage = () => {
   const [categoryName, setCategoryName] = useState("");
   const [
+    ,
     // addCategoryResult
-    , addCategory] = useMutation(ADD_CATEGORY);
+    addCategory,
+  ] = useMutation(ADD_CATEGORY);
   const [{ data, error }] = useSubscription({ query: CATEGORY_SUBSCRIPTION });
 
   const handleAddCategory = async () => {
