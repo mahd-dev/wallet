@@ -164,7 +164,7 @@ export default function LoginPage() {
             </button>
           </form>
           <p className="mt-4 text-center text-sm">
-            Don&apost have an account?
+            Don't have an account?
             <Link to="/signup" className="ml-1 text-blue-500 hover:underline">
               Sign up
             </Link>

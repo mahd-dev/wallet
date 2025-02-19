@@ -1,10 +1,11 @@
 import { ActionFunction, json, redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import { Block } from "konsta/react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { gql, useMutation } from "urql";
 import { commitSession, getSession } from "~/session.server";
+
 const signup = gql`
   mutation signup(
     $id: String!
@@ -210,6 +211,12 @@ export default function SignupPage() {
               Sign Up
             </button>
           </Form>
+          <p className="mt-4 text-center text-sm">
+            Already have an account?
+            <Link to="/login" className="ml-1 text-blue-500 hover:underline">
+              log in
+            </Link>
+          </p>
         </div>
       </div>
     </Block>
