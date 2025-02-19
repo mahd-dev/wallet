@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import {
   IconLogout,
   IconShield,
@@ -9,7 +9,7 @@ import { useAtom } from "jotai";
 import { Block, Dialog, DialogButton, List, ListItem } from "konsta/react";
 import { useState } from "react";
 import { useMainLayoutProps } from "~/layout/MainLayout";
-import { authAtom, dirAtom, profileAtom } from "~/store/store";
+import { authAtom, dirAtom } from "~/store/store";
 
 // export const loader = async ({ request }: LoaderFunctionArgs) => {
 //   const url = new URL(request.url);
