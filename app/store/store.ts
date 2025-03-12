@@ -1,5 +1,6 @@
 import type { ProfileFragment } from "gql/graphql";
 import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import {
   AvailableLanguageTag,
   languageTag,
@@ -61,7 +62,7 @@ export const userIdAtom = atomWithStoredBroadcast<string | undefined>(
   "userId",
   undefined,
 );
-export const userAtom = atom<User | null>(null);
+export const userAtom = atomWithStorage<User | null>("connected_user", null);
 export const profileAtom = atom<ProfileFragment | null>(null);
 
 export const mainPanelAtom = atom(false);

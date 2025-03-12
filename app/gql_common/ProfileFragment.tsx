@@ -9,7 +9,7 @@ export const Profile = graphql(`
     email
     tel
     picture
-    birthDay
+    date
   }
 `);
 

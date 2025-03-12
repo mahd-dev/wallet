@@ -1,4 +1,6 @@
 import { useNavigate } from "@remix-run/react";
+import { useEffect, useState } from "react";
+
 import {
   IconLogout,
   IconShield,
@@ -7,57 +9,73 @@ import {
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { Block, Dialog, DialogButton, List, ListItem } from "konsta/react";
-import { useState } from "react";
+
 import { useMainLayoutProps } from "~/layout/MainLayout";
-import { authAtom, dirAtom } from "~/store/store";
-
-// export const loader = async ({ request }: LoaderFunctionArgs) => {
-//   const url = new URL(request.url);
-
-//   await authenticator.isAuthenticated(request, {
-//     failureRedirect: `/auth?next=${`${url.pathname}${url.search}${url.hash}`}`,
-//   });
-
-//   return {
-//     zitadelUrl: process.env.ZITADEL_HOST,
-//   };
-// };
+import { dirAtom, userAtom } from "~/store/store";
 
 export default function ProfilePage() {
   const [dir] = useAtom(dirAtom);
-  // const location = useLocation();
-  const [auth] = useAtom(authAtom);
-  // const { zitadelUrl } = useLoaderData<typeof loader>();
-
+  const [auth] = useAtom(userAtom);
   useMainLayoutProps({ navbarTitle: "My Profile" });
 
   const navigate = useNavigate();
-
-  // const [profile] = useAtom(profileAtom);
-  // const [auth] = useAtom(authAtom);
-
   const [logoutDialog, setLogoutDialog] = useState(false);
 
-  // const [, rmDevice] = useMutation(
-  //   gql(`
-  //     mutation RmUserToken($userId: String!, $token: String!) {
-  //       deleteUserDevice(input: {userId: $userId, token: $token}) {
-  //         clientMutationId
-  //         deletedUserDeviceNodeId
-  //       }
-  //     }
-  //   `)
-  // );
+  const logout = async () => {
+    try {
+      const response = await fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include", // ✅ Ensures session cookies are sent and cleared
+      });
+
+      if (!response.ok) {
+        throw new Error(`Logout failed: ${response.statusText}`);
+      }
+
+      // ✅ Remove user from localStorage
+      localStorage.removeItem("connected_user");
+
+      // ✅ Force a full reload to clear client-side state
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+  const [showUserInfo, setShowUserInfo] = useState(false);
+  const [connectedUser, setConnectedUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("connected_user");
+    if (storedUser) {
+      setConnectedUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   return (
     <Block className="!my-0 mx-auto flex max-w-3xl flex-col md:flex-row">
       <div className="flex flex-col items-center gap-1">
-        <div className="avatar mb-3">
-          <div className="mask mask-squircle size-24">
-            <img src={"/images/avatar-man.png"} alt={""} />
+        <div className="relative">
+          <div
+            className="avatar mb-3 cursor-pointer"
+            onClick={() => setShowUserInfo(!showUserInfo)}
+          >
+            <div className="mask mask-squircle size-24">
+              <img src={"/images/avatar-man.png"} alt="Profile Avatar" />
+            </div>
           </div>
+
+          {showUserInfo && connectedUser && (
+            <div className="absolute left-1/2 mt-2 w-48 -translate-x-1/2 transform rounded-lg bg-white p-3 text-center shadow-md">
+              <h3 className="text-lg font-semibold">{auth?.firstName}</h3>
+              <p className="text-sm text-gray-600">{auth?.lastName}</p>
+            </div>
+          )}
         </div>
-        <h3 className="text-xl">{auth?.firstName}</h3>
+
+        <h3 className="text-xl">
+          {auth?.firstName}
+          {auth?.lastName}
+        </h3>
         <span>{auth?.email}</span>
       </div>
       <div className="w-7"></div>
@@ -72,17 +90,7 @@ export default function ProfilePage() {
           }}
           linkProps={{ href: "/profile/edit" }}
         />
-        {/* <ListItem
-            title={t("profile.linktoNotifications")}
-            media={<i className="las la-bell" />}
-            link
-          /> */}
-        <ListItem
-          title={"Security"}
-          media={<IconShield />}
-          link
-          // linkProps={{ href: zitadelUrl }}
-        />
+        <ListItem title={"Security"} media={<IconShield />} link />
         <ListItem
           title={"Privacy Policy"}
           media={<IconUserShield />}
@@ -93,14 +101,6 @@ export default function ProfilePage() {
           }}
           linkProps={{ href: "/legal/terms" }}
         />
-        {/* <ListItem
-          title={"Invite Friends"}
-          media={<IconUserShare />}
-          link
-          onClick={async () => {
-            await WebShareLink(location.pathname, "Invitation", "Join us");
-          }}
-        /> */}
         <ListItem
           title={"Logout"}
           media={
@@ -109,42 +109,33 @@ export default function ProfilePage() {
           link
           chevronIos={false}
           chevronMaterial={false}
-          onClick={async () => {
-            setLogoutDialog(true);
-          }}
+          onClick={() => setLogoutDialog(true)}
         />
-        <Dialog
-          opened={logoutDialog}
-          onBackdropClick={() => setLogoutDialog(false)}
-          title={"Confirm logout"}
-          content={"Are you sure to want to logout ?"}
-          buttons={
-            <>
+      </List>
+
+      {/* Centered Logout Confirmation Dialog */}
+      {logoutDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <Dialog
+            opened={logoutDialog}
+            onBackdropClick={() => setLogoutDialog(false)}
+            className="w-full max-w-sm rounded-lg bg-white p-6 shadow-lg"
+          >
+            <h2 className="mb-4 text-center text-lg font-semibold">
+              Confirm logout
+            </h2>
+            <p className="mb-6 text-center text-gray-600">
+              Are you sure you want to logout?
+            </p>
+            <div className="flex justify-between">
               <DialogButton strong onClick={() => setLogoutDialog(false)}>
                 No
               </DialogButton>
-              <DialogButton
-                onClick={async () => {
-                  // const deviceToken = localStorage?.getItem("deviceToken");
-                  // if (deviceToken) {
-                  //   await rmDevice({
-                  //     token: deviceToken,
-                  //     userId: auth?.sub || "",
-                  //   });
-                  // }
-
-                  // localStorage?.removeItem("deviceToken");
-
-                  navigate(`/auth/logout`);
-                  setLogoutDialog(false);
-                }}
-              >
-                Log me out
-              </DialogButton>
-            </>
-          }
-        />
-      </List>
+              <DialogButton onClick={logout}>Log me out</DialogButton>
+            </div>
+          </Dialog>
+        </div>
+      )}
     </Block>
   );
 }

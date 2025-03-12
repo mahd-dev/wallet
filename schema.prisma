@@ -19,7 +19,7 @@ model User {
   firstName    String?
   lastName     String?
   gender       UserGender?
-  birthDay     DateTime?
+  date     DateTime?
   email        String?
   tel          String?
   picture      String?

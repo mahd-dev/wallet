@@ -1,7 +1,8 @@
 import { IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
-import { gql, useMutation, useSubscription } from "urql";
+import { gql, useMutation, useQuery } from "urql";
 
+// Subscription to listen for categories (we'll keep it but not rely on it)
 const CATEGORY_SUBSCRIPTION = gql`
   subscription CategorySubscription {
     categories {
@@ -13,6 +14,7 @@ const CATEGORY_SUBSCRIPTION = gql`
   }
 `;
 
+// Mutation to add a category
 const ADD_CATEGORY = gql`
   mutation ADD_CATEGORY($id: String!, $name: String!) {
     createCategory(input: { category: { id: $id, name: $name } }) {
@@ -21,22 +23,51 @@ const ADD_CATEGORY = gql`
   }
 `;
 
+// Query to fetch categories
+const GET_CATEGORIES = gql`
+  query GET_CATEGORIES {
+    categories {
+      nodes {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const CategoriesPage = () => {
   const [categoryName, setCategoryName] = useState("");
-  const [
-    ,
-    //addCategoryResult
-    addCategory,
-  ] = useMutation(ADD_CATEGORY);
-  const [{ data, error }] = useSubscription({ query: CATEGORY_SUBSCRIPTION });
+  
+  // Mutation hook to add a category
+  const [, addCategory] = useMutation(ADD_CATEGORY);
+  
+  // Query hook to fetch categories
+  const [{ data, error, fetching }, refetch] = useQuery({
+    query: GET_CATEGORIES,
+    requestPolicy: "network-only", // Always fetch fresh data
+  });
 
   const handleAddCategory = async () => {
     if (categoryName.trim()) {
-      await addCategory({
+      const result = await addCategory({
         id: crypto.randomUUID(), // Generate unique ID
         name: categoryName,
       });
-      setCategoryName("");
+
+      console.log("Add Category Result:", result);
+
+      // Check if category was added successfully
+      if (result.data?.createCategory) {
+        console.log("Category added successfully.");
+
+        // Trigger refetch to update the list of categories
+        refetch();
+
+        // Clear input field after adding category
+        setCategoryName("");
+      } else {
+        console.error("Failed to add category:", result.error?.message);
+      }
     }
   };
 
@@ -62,8 +93,10 @@ const CategoriesPage = () => {
         </button>
       </div>
 
-      {/* Category List */}
-      {error ? (
+      {/* Loading or Error Message */}
+      {fetching ? (
+        <p>Loading categories...</p>
+      ) : error ? (
         <p>Error: {error.message}</p>
       ) : (
         <div className="category-list">

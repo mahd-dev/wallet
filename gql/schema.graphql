@@ -344,11 +344,11 @@ type User implements Node {
   firstName: String
   lastName: String
   gender: UserGender
-  birthDay: Datetime
   email: String
   tel: String
   picture: String
   password: String
+  date: Datetime
 
   """Reads and enables pagination through a set of `UserDevice`."""
   userDevicesByUserId(
@@ -868,9 +868,6 @@ input UserFilter {
   """Filter by the object’s `gender` field."""
   gender: UserGenderFilter
 
-  """Filter by the object’s `birthDay` field."""
-  birthDay: DatetimeFilter
-
   """Filter by the object’s `email` field."""
   email: StringFilter
 
@@ -882,6 +879,9 @@ input UserFilter {
 
   """Filter by the object’s `password` field."""
   password: StringFilter
+
+  """Filter by the object’s `date` field."""
+  date: DatetimeFilter
 
   """Filter by the object’s `userDevicesByUserId` relation."""
   userDevicesByUserId: UserToManyUserDeviceFilter
@@ -2901,9 +2901,6 @@ type UserDistinctCountAggregates {
   """Distinct count of gender across the matching connection"""
   gender: BigInt
 
-  """Distinct count of birthDay across the matching connection"""
-  birthDay: BigInt
-
   """Distinct count of email across the matching connection"""
   email: BigInt
 
@@ -2915,6 +2912,9 @@ type UserDistinctCountAggregates {
 
   """Distinct count of password across the matching connection"""
   password: BigInt
+
+  """Distinct count of date across the matching connection"""
+  date: BigInt
 }
 
 """Grouping methods for `User` for usage during aggregation."""
@@ -2922,13 +2922,13 @@ enum UserGroupBy {
   FIRST_NAME
   LAST_NAME
   GENDER
-  BIRTH_DAY
-  BIRTH_DAY_TRUNCATED_TO_HOUR
-  BIRTH_DAY_TRUNCATED_TO_DAY
   EMAIL
   TEL
   PICTURE
   PASSWORD
+  DATE
+  DATE_TRUNCATED_TO_HOUR
+  DATE_TRUNCATED_TO_DAY
 }
 
 """Conditions for `User` aggregates."""
@@ -2947,39 +2947,39 @@ input UserHavingInput {
 }
 
 input UserHavingSumInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 input UserHavingDistinctCountInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 input UserHavingMinInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 input UserHavingMaxInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 input UserHavingAverageInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 input UserHavingStddevSampleInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 input UserHavingStddevPopulationInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 input UserHavingVarianceSampleInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 input UserHavingVariancePopulationInput {
-  birthDay: HavingDatetimeFilter
+  date: HavingDatetimeFilter
 }
 
 """Methods to use when ordering `User`."""
@@ -2993,8 +2993,6 @@ enum UsersOrderBy {
   LAST_NAME_DESC
   GENDER_ASC
   GENDER_DESC
-  BIRTH_DAY_ASC
-  BIRTH_DAY_DESC
   EMAIL_ASC
   EMAIL_DESC
   TEL_ASC
@@ -3003,6 +3001,8 @@ enum UsersOrderBy {
   PICTURE_DESC
   PASSWORD_ASC
   PASSWORD_DESC
+  DATE_ASC
+  DATE_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   USER_DEVICES_BY_USER_ID_COUNT_ASC
@@ -3391,9 +3391,6 @@ input UserCondition {
   """Checks for equality with the object’s `gender` field."""
   gender: UserGender
 
-  """Checks for equality with the object’s `birthDay` field."""
-  birthDay: Datetime
-
   """Checks for equality with the object’s `email` field."""
   email: String
 
@@ -3405,6 +3402,9 @@ input UserCondition {
 
   """Checks for equality with the object’s `password` field."""
   password: String
+
+  """Checks for equality with the object’s `date` field."""
+  date: Datetime
 }
 
 """
@@ -3963,11 +3963,11 @@ input UserInput {
   firstName: String
   lastName: String
   gender: UserGender
-  birthDay: Datetime
   email: String
   tel: String
   picture: String
   password: String
+  date: Datetime
 }
 
 """The output of our create `UserDevice` mutation."""
@@ -4349,11 +4349,11 @@ input UserPatch {
   firstName: String
   lastName: String
   gender: UserGender
-  birthDay: Datetime
   email: String
   tel: String
   picture: String
   password: String
+  date: Datetime
 }
 
 """All input for the `updateUser` mutation."""

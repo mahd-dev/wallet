@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useNavigate,
   useRevalidator,
 } from "@remix-run/react";
 
@@ -28,6 +29,7 @@ import {
   dirAtom,
   langAtom,
   profileAtom,
+  userAtom,
 } from "./store/store";
 
 import "./tailwind.css";
@@ -81,6 +83,8 @@ export default function App() {
     // ...data
   } = useLoaderData<typeof loader>();
 
+  const navigate = useNavigate();
+
   const revalidator = useRevalidator();
   useEffect(() => {
     revalidator.revalidate();
@@ -116,6 +120,7 @@ export default function App() {
       [currUserAtom, auth?.sub || null],
       [profileAtom, profileQ.data?.user as ProfileFragment],
       [authAtom, auth],
+
       // [langAtom, languageTag()],
     ],
     {
@@ -125,9 +130,17 @@ export default function App() {
 
   // force reload all pages on the same session when user changed
   const [currUser] = useAtom(currUserAtom);
+  const [
+    user
+  ] = useAtom(userAtom);
   useEffect(() => {
     if (currUser !== (auth?.sub || null)) window.location.reload();
   }, [auth?.sub, currUser]);
+
+  useEffect(() => {
+    const usr = localStorage?.getItem("connected_user");
+    if (!usr) navigate("/login");
+  }, []);
 
   const [, setProfile] = useAtom(profileAtom);
 

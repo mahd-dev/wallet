@@ -136,6 +136,90 @@ const entryWorker = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineP
   __proto__: null,
   defaultFetchHandler
 }, Symbol.toStringTag, { value: "Module" }));
+var __getOwnPropNames$g = Object.getOwnPropertyNames;
+var __commonJS$g = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames$g(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var require_worker_runtime$g = __commonJS$g({
+  "@remix-pwa/worker-runtime"(exports, module) {
+    module.exports = {};
+  }
+});
+var worker_runtime_default$g = require_worker_runtime$g();
+const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: worker_runtime_default$g
+}, Symbol.toStringTag, { value: "Module" }));
+var __getOwnPropNames$f = Object.getOwnPropertyNames;
+var __commonJS$f = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames$f(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var require_worker_runtime$f = __commonJS$f({
+  "@remix-pwa/worker-runtime"(exports, module) {
+    module.exports = {};
+  }
+});
+var worker_runtime_default$f = require_worker_runtime$f();
+const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: worker_runtime_default$f
+}, Symbol.toStringTag, { value: "Module" }));
+var __getOwnPropNames$e = Object.getOwnPropertyNames;
+var __commonJS$e = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames$e(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var require_worker_runtime$e = __commonJS$e({
+  "@remix-pwa/worker-runtime"(exports, module) {
+    module.exports = {};
+  }
+});
+var worker_runtime_default$e = require_worker_runtime$e();
+const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: worker_runtime_default$e
+}, Symbol.toStringTag, { value: "Module" }));
+var __getOwnPropNames$d = Object.getOwnPropertyNames;
+var __commonJS$d = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames$d(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var require_worker_runtime$d = __commonJS$d({
+  "@remix-pwa/worker-runtime"(exports, module) {
+    module.exports = {};
+  }
+});
+var worker_runtime_default$d = require_worker_runtime$d();
+const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: worker_runtime_default$d
+}, Symbol.toStringTag, { value: "Module" }));
+var __getOwnPropNames$c = Object.getOwnPropertyNames;
+var __commonJS$c = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames$c(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var require_worker_runtime$c = __commonJS$c({
+  "@remix-pwa/worker-runtime"(exports, module) {
+    module.exports = {};
+  }
+});
+var worker_runtime_default$c = require_worker_runtime$c();
+const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: worker_runtime_default$c
+}, Symbol.toStringTag, { value: "Module" }));
+var __getOwnPropNames$b = Object.getOwnPropertyNames;
+var __commonJS$b = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames$b(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var require_worker_runtime$b = __commonJS$b({
+  "@remix-pwa/worker-runtime"(exports, module) {
+    module.exports = {};
+  }
+});
+var worker_runtime_default$b = require_worker_runtime$b();
+const route5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: worker_runtime_default$b
+}, Symbol.toStringTag, { value: "Module" }));
 var __getOwnPropNames$a = Object.getOwnPropertyNames;
 var __commonJS$a = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames$a(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
@@ -146,7 +230,7 @@ var require_worker_runtime$a = __commonJS$a({
   }
 });
 var worker_runtime_default$a = require_worker_runtime$a();
-const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$a
 }, Symbol.toStringTag, { value: "Module" }));
@@ -160,7 +244,7 @@ var require_worker_runtime$9 = __commonJS$9({
   }
 });
 var worker_runtime_default$9 = require_worker_runtime$9();
-const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$9
 }, Symbol.toStringTag, { value: "Module" }));
@@ -174,7 +258,7 @@ var require_worker_runtime$8 = __commonJS$8({
   }
 });
 var worker_runtime_default$8 = require_worker_runtime$8();
-const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$8
 }, Symbol.toStringTag, { value: "Module" }));
@@ -188,7 +272,7 @@ var require_worker_runtime$7 = __commonJS$7({
   }
 });
 var worker_runtime_default$7 = require_worker_runtime$7();
-const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$7
 }, Symbol.toStringTag, { value: "Module" }));
@@ -202,7 +286,7 @@ var require_worker_runtime$6 = __commonJS$6({
   }
 });
 var worker_runtime_default$6 = require_worker_runtime$6();
-const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$6
 }, Symbol.toStringTag, { value: "Module" }));
@@ -216,7 +300,7 @@ var require_worker_runtime$5 = __commonJS$5({
   }
 });
 var worker_runtime_default$5 = require_worker_runtime$5();
-const route5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$5
 }, Symbol.toStringTag, { value: "Module" }));
@@ -230,7 +314,7 @@ var require_worker_runtime$4 = __commonJS$4({
   }
 });
 var worker_runtime_default$4 = require_worker_runtime$4();
-const route6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$4
 }, Symbol.toStringTag, { value: "Module" }));
@@ -244,7 +328,7 @@ var require_worker_runtime$3 = __commonJS$3({
   }
 });
 var worker_runtime_default$3 = require_worker_runtime$3();
-const route7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$3
 }, Symbol.toStringTag, { value: "Module" }));
@@ -258,7 +342,7 @@ var require_worker_runtime$2 = __commonJS$2({
   }
 });
 var worker_runtime_default$2 = require_worker_runtime$2();
-const route8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$2
 }, Symbol.toStringTag, { value: "Module" }));
@@ -272,7 +356,7 @@ var require_worker_runtime$1 = __commonJS$1({
   }
 });
 var worker_runtime_default$1 = require_worker_runtime$1();
-const route9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -286,7 +370,7 @@ var require_worker_runtime = __commonJS({
   }
 });
 var worker_runtime_default = require_worker_runtime();
-const route10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default
 }, Symbol.toStringTag, { value: "Module" }));
@@ -451,6 +535,30 @@ const routes = {
     hasWorkerAction: false,
     module: route1
   },
+  "routes/_app.profile._index": {
+    id: "routes/_app.profile._index",
+    parentId: "routes/_app",
+    path: "profile",
+    index: true,
+    caseSensitive: void 0,
+    hasLoader: false,
+    hasAction: false,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route2
+  },
+  "routes/auth.oidc.callback": {
+    id: "routes/auth.oidc.callback",
+    parentId: "root",
+    path: "auth/oidc/callback",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: true,
+    hasAction: false,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route3
+  },
   "routes/_app.statistiques": {
     id: "routes/_app.statistiques",
     parentId: "routes/_app",
@@ -461,7 +569,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route2
+    module: route4
   },
   "routes/_app.transactions": {
     id: "routes/_app.transactions",
@@ -473,7 +581,19 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route3
+    module: route5
+  },
+  "routes/auth.oidc._index": {
+    id: "routes/auth.oidc._index",
+    parentId: "root",
+    path: "auth/oidc",
+    index: true,
+    caseSensitive: void 0,
+    hasLoader: true,
+    hasAction: false,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route6
   },
   "routes/_app.categorie": {
     id: "routes/_app.categorie",
@@ -485,7 +605,43 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route4
+    module: route7
+  },
+  "routes/_app.balance": {
+    id: "routes/_app.balance",
+    parentId: "routes/_app",
+    path: "balance",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: false,
+    hasAction: false,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route8
+  },
+  "routes/auth.logout": {
+    id: "routes/auth.logout",
+    parentId: "root",
+    path: "auth/logout",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: false,
+    hasAction: true,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route9
+  },
+  "routes/auth.signin": {
+    id: "routes/auth.signin",
+    parentId: "root",
+    path: "auth/signin",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: true,
+    hasAction: false,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route10
   },
   "routes/_app._index": {
     id: "routes/_app._index",
@@ -497,7 +653,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route5
+    module: route11
   },
   "routes/api.upload": {
     id: "routes/api.upload",
@@ -509,7 +665,7 @@ const routes = {
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route6
+    module: route12
   },
   "routes/api.login": {
     id: "routes/api.login",
@@ -521,7 +677,7 @@ const routes = {
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route7
+    module: route13
   },
   "routes/signup": {
     id: "routes/signup",
@@ -533,7 +689,7 @@ const routes = {
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route8
+    module: route14
   },
   "routes/login": {
     id: "routes/login",
@@ -545,7 +701,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route9
+    module: route15
   },
   "routes/_app": {
     id: "routes/_app",
@@ -557,10 +713,146 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route10
+    module: route16
   }
 };
 const entry = { module: entryWorker };
+/**
+ * @remix-run/router v1.22.0
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+var Action$1;
+(function(Action2) {
+  Action2["Pop"] = "POP";
+  Action2["Push"] = "PUSH";
+  Action2["Replace"] = "REPLACE";
+})(Action$1 || (Action$1 = {}));
+function warning$1(cond, message) {
+  if (!cond) {
+    if (typeof console !== "undefined") console.warn(message);
+    try {
+      throw new Error(message);
+    } catch (e) {
+    }
+  }
+}
+var ResultType$1;
+(function(ResultType2) {
+  ResultType2["data"] = "data";
+  ResultType2["deferred"] = "deferred";
+  ResultType2["redirect"] = "redirect";
+  ResultType2["error"] = "error";
+})(ResultType$1 || (ResultType$1 = {}));
+function matchPath$1(pattern, pathname) {
+  if (typeof pattern === "string") {
+    pattern = {
+      path: pattern,
+      caseSensitive: false,
+      end: true
+    };
+  }
+  let [matcher, compiledParams] = compilePath$1(pattern.path, pattern.caseSensitive, pattern.end);
+  let match = pathname.match(matcher);
+  if (!match) return null;
+  let matchedPathname = match[0];
+  let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
+  let captureGroups = match.slice(1);
+  let params = compiledParams.reduce((memo, _ref, index) => {
+    let {
+      paramName,
+      isOptional
+    } = _ref;
+    if (paramName === "*") {
+      let splatValue = captureGroups[index] || "";
+      pathnameBase = matchedPathname.slice(0, matchedPathname.length - splatValue.length).replace(/(.)\/+$/, "$1");
+    }
+    const value = captureGroups[index];
+    if (isOptional && !value) {
+      memo[paramName] = void 0;
+    } else {
+      memo[paramName] = (value || "").replace(/%2F/g, "/");
+    }
+    return memo;
+  }, {});
+  return {
+    params,
+    pathname: matchedPathname,
+    pathnameBase,
+    pattern
+  };
+}
+function compilePath$1(path, caseSensitive, end) {
+  if (caseSensitive === void 0) {
+    caseSensitive = false;
+  }
+  if (end === void 0) {
+    end = true;
+  }
+  warning$1(path === "*" || !path.endsWith("*") || path.endsWith("/*"), 'Route path "' + path + '" will be treated as if it were ' + ('"' + path.replace(/\*$/, "/*") + '" because the `*` character must ') + "always follow a `/` in the pattern. To get rid of this warning, " + ('please change the route path to "' + path.replace(/\*$/, "/*") + '".'));
+  let params = [];
+  let regexpSource = "^" + path.replace(/\/*\*?$/, "").replace(/^\/*/, "/").replace(/[\\.*+^${}|()[\]]/g, "\\$&").replace(/\/:([\w-]+)(\?)?/g, (_, paramName, isOptional) => {
+    params.push({
+      paramName,
+      isOptional: isOptional != null
+    });
+    return isOptional ? "/?([^\\/]+)?" : "/([^\\/]+)";
+  });
+  if (path.endsWith("*")) {
+    params.push({
+      paramName: "*"
+    });
+    regexpSource += path === "*" || path === "/*" ? "(.*)$" : "(?:\\/(.+)|\\/*)$";
+  } else if (end) {
+    regexpSource += "\\/*$";
+  } else if (path !== "" && path !== "/") {
+    regexpSource += "(?:(?=\\/|$))";
+  } else ;
+  let matcher = new RegExp(regexpSource, caseSensitive ? void 0 : "i");
+  return [matcher, params];
+}
+function isRouteErrorResponse$1(error) {
+  return error != null && typeof error.status === "number" && typeof error.statusText === "string" && typeof error.internal === "boolean" && "data" in error;
+}
+const validMutationMethodsArr$1 = ["post", "put", "patch", "delete"];
+new Set(validMutationMethodsArr$1);
+const validRequestMethodsArr$1 = ["get", ...validMutationMethodsArr$1];
+new Set(validRequestMethodsArr$1);
+var mode$2 = {};
+/**
+ * @remix-run/server-runtime v2.13.1
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+Object.defineProperty(mode$2, "__esModule", { value: true });
+let ServerMode = /* @__PURE__ */ function(ServerMode2) {
+  ServerMode2["Development"] = "development";
+  ServerMode2["Production"] = "production";
+  ServerMode2["Test"] = "test";
+  return ServerMode2;
+}({});
+function isServerMode(value) {
+  return value === ServerMode.Development || value === ServerMode.Production || value === ServerMode.Test;
+}
+var ServerMode_1 = mode$2.ServerMode = ServerMode;
+var isServerMode_1 = mode$2.isServerMode = isServerMode;
+const mode$1 = /* @__PURE__ */ _mergeNamespaces({
+  __proto__: null,
+  ServerMode: ServerMode_1,
+  default: mode$2,
+  isServerMode: isServerMode_1
+}, [mode$2]);
+var responses = {};
 /**
  * @remix-run/router v1.20.0
  *
@@ -4676,36 +4968,6 @@ const router$2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProp
   resolveTo,
   stripBasename
 }, Symbol.toStringTag, { value: "Module" }));
-var mode$2 = {};
-/**
- * @remix-run/server-runtime v2.13.1
- *
- * Copyright (c) Remix Software Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.md file in the root directory of this source tree.
- *
- * @license MIT
- */
-Object.defineProperty(mode$2, "__esModule", { value: true });
-let ServerMode = /* @__PURE__ */ function(ServerMode2) {
-  ServerMode2["Development"] = "development";
-  ServerMode2["Production"] = "production";
-  ServerMode2["Test"] = "test";
-  return ServerMode2;
-}({});
-function isServerMode(value) {
-  return value === ServerMode.Development || value === ServerMode.Production || value === ServerMode.Test;
-}
-var ServerMode_1 = mode$2.ServerMode = ServerMode;
-var isServerMode_1 = mode$2.isServerMode = isServerMode;
-const mode$1 = /* @__PURE__ */ _mergeNamespaces({
-  __proto__: null,
-  ServerMode: ServerMode_1,
-  default: mode$2,
-  isServerMode: isServerMode_1
-}, [mode$2]);
-var responses = {};
 const require$$0 = /* @__PURE__ */ getAugmentedNamespace(router$2);
 var errors$2 = {};
 const require$$1$1 = /* @__PURE__ */ getAugmentedNamespace(mode$1);
@@ -4895,7 +5157,7 @@ function clone(_object) {
 }
 function getURLParameters(request, path = "") {
   const url = new URL(request.url);
-  const match = matchPath(path, url.pathname);
+  const match = matchPath$1(path, url.pathname);
   return {
     ...Object.fromEntries(new URL(request.url).searchParams.entries()),
     ...match == null ? void 0 : match.params
@@ -5029,7 +5291,7 @@ function _errorHandler({ error, handler: handleError }) {
     error.headers.set("X-Remix-Catch", "yes");
     return error;
   }
-  if (isRouteErrorResponse(error)) {
+  if (isRouteErrorResponse$1(error)) {
     error.error && handleError(error.error);
     return errorResponseToJson(error);
   }
