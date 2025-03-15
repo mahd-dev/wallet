@@ -28,6 +28,7 @@ model User {
   budgets      Budget[]
   reports      Report[]
   password     String?
+  otp          OtpVerification[]
 }
 
 model Category {
@@ -72,6 +73,20 @@ model Report {
   file_path  String?
   user       User?   @relation(fields: [user_id], references: [oidcId])
 }
+
+model OtpVerification {
+  id        String   @id @default(uuid()) 
+  user_id   String    
+  @@index([user_id])
+  email     String?  
+  otp       String   
+  expiresAt DateTime 
+  createdAt DateTime @default(now()) // Timestamp of when OTP was created
+
+  // Relation to User model
+  user      User   @relation(fields: [user_id], references: [oidcId])
+}
+
 
 model UserDevice {
   User   User   @relation(fields: [userId], references: [oidcId])

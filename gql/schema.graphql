@@ -85,6 +85,40 @@ type Query implements Node {
     filter: CategoryFilter
   ): CategoriesConnection
 
+  """Reads and enables pagination through a set of `OtpVerification`."""
+  otpVerifications(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `OtpVerification`."""
+    orderBy: [OtpVerificationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OtpVerificationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: OtpVerificationFilter
+  ): OtpVerificationsConnection
+
   """Reads and enables pagination through a set of `Report`."""
   reports(
     """Only read the first `n` values of the set."""
@@ -222,6 +256,7 @@ type Query implements Node {
   ): UserDevicesConnection
   budget(budgetId: String!): Budget
   category(id: String!): Category
+  otpVerification(id: String!): OtpVerification
   report(reportId: String!): Report
   transaction(transactionId: String!): Transaction
   user(oidcId: String!): User
@@ -239,6 +274,14 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Category`."""
     nodeId: ID!
   ): Category
+
+  """Reads a single `OtpVerification` using its globally unique `ID`."""
+  otpVerificationByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `OtpVerification`.
+    """
+    nodeId: ID!
+  ): OtpVerification
 
   """Reads a single `Report` using its globally unique `ID`."""
   reportByNodeId(
@@ -485,6 +528,40 @@ type User implements Node {
     """
     filter: ReportFilter
   ): ReportsConnection!
+
+  """Reads and enables pagination through a set of `OtpVerification`."""
+  otpVerificationsByUserId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `OtpVerification`."""
+    orderBy: [OtpVerificationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OtpVerificationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: OtpVerificationFilter
+  ): OtpVerificationsConnection!
 }
 
 enum UserGender {
@@ -906,6 +983,12 @@ input UserFilter {
 
   """Some related `reportsByUserId` exist."""
   reportsByUserIdExist: Boolean
+
+  """Filter by the object’s `otpVerificationsByUserId` relation."""
+  otpVerificationsByUserId: UserToManyOtpVerificationFilter
+
+  """Some related `otpVerificationsByUserId` exist."""
+  otpVerificationsByUserIdExist: Boolean
 
   """Checks for all expressions in this list."""
   and: [UserFilter!]
@@ -1716,6 +1799,86 @@ input ReportDistinctCountAggregateFilter {
   filePath: BigIntFilter
 }
 
+"""
+A filter to be used against many `OtpVerification` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyOtpVerificationFilter {
+  """
+  Every related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: OtpVerificationFilter
+
+  """
+  Some related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: OtpVerificationFilter
+
+  """
+  No related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: OtpVerificationFilter
+
+  """Aggregates across related `OtpVerification` match the filter criteria."""
+  aggregates: OtpVerificationAggregatesFilter
+}
+
+"""
+A filter to be used against `OtpVerification` object types. All fields are combined with a logical ‘and.’
+"""
+input OtpVerificationFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `userId` field."""
+  userId: StringFilter
+
+  """Filter by the object’s `otp` field."""
+  otp: StringFilter
+
+  """Filter by the object’s `expiresAt` field."""
+  expiresAt: DatetimeFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `email` field."""
+  email: StringFilter
+
+  """Filter by the object’s `user` relation."""
+  user: UserFilter
+
+  """Checks for all expressions in this list."""
+  and: [OtpVerificationFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [OtpVerificationFilter!]
+
+  """Negates the expression."""
+  not: OtpVerificationFilter
+}
+
+"""
+A filter to be used against aggregates of `OtpVerification` object types.
+"""
+input OtpVerificationAggregatesFilter {
+  """
+  A filter that must pass for the relevant `OtpVerification` object to be included within the aggregate.
+  """
+  filter: OtpVerificationFilter
+
+  """Distinct count aggregate over matching `OtpVerification` objects."""
+  distinctCount: OtpVerificationDistinctCountAggregateFilter
+}
+
+input OtpVerificationDistinctCountAggregateFilter {
+  id: BigIntFilter
+  userId: BigIntFilter
+  otp: BigIntFilter
+  expiresAt: BigIntFilter
+  createdAt: BigIntFilter
+  email: BigIntFilter
+}
+
 """A connection to a list of `Transaction` values."""
 type TransactionsConnection {
   """A list of `Transaction` objects."""
@@ -2269,6 +2432,213 @@ input ReportCondition {
 
   """Checks for equality with the object’s `filePath` field."""
   filePath: String
+}
+
+"""A connection to a list of `OtpVerification` values."""
+type OtpVerificationsConnection {
+  """A list of `OtpVerification` objects."""
+  nodes: [OtpVerification!]!
+
+  """
+  A list of edges which contains the `OtpVerification` and cursor to aid in pagination.
+  """
+  edges: [OtpVerificationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `OtpVerification` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: OtpVerificationAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates(
+    """
+    The method to use when grouping `OtpVerification` for these aggregates.
+    """
+    groupBy: [OtpVerificationGroupBy!]!
+
+    """Conditions on the grouped aggregates."""
+    having: OtpVerificationHavingInput
+  ): [OtpVerificationAggregates!]
+}
+
+type OtpVerification implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  userId: String!
+  otp: String!
+  expiresAt: Datetime!
+  createdAt: Datetime!
+  email: String
+
+  """Reads a single `User` that is related to this `OtpVerification`."""
+  user: User
+}
+
+"""A `OtpVerification` edge in the connection."""
+type OtpVerificationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `OtpVerification` at the end of the edge."""
+  node: OtpVerification!
+}
+
+type OtpVerificationAggregates {
+  keys: [String!]
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: OtpVerificationDistinctCountAggregates
+}
+
+type OtpVerificationDistinctCountAggregates {
+  """Distinct count of id across the matching connection"""
+  id: BigInt
+
+  """Distinct count of userId across the matching connection"""
+  userId: BigInt
+
+  """Distinct count of otp across the matching connection"""
+  otp: BigInt
+
+  """Distinct count of expiresAt across the matching connection"""
+  expiresAt: BigInt
+
+  """Distinct count of createdAt across the matching connection"""
+  createdAt: BigInt
+
+  """Distinct count of email across the matching connection"""
+  email: BigInt
+}
+
+"""Grouping methods for `OtpVerification` for usage during aggregation."""
+enum OtpVerificationGroupBy {
+  USER_ID
+  OTP
+  EXPIRES_AT
+  EXPIRES_AT_TRUNCATED_TO_HOUR
+  EXPIRES_AT_TRUNCATED_TO_DAY
+  CREATED_AT
+  CREATED_AT_TRUNCATED_TO_HOUR
+  CREATED_AT_TRUNCATED_TO_DAY
+  EMAIL
+}
+
+"""Conditions for `OtpVerification` aggregates."""
+input OtpVerificationHavingInput {
+  AND: [OtpVerificationHavingInput!]
+  OR: [OtpVerificationHavingInput!]
+  sum: OtpVerificationHavingSumInput
+  distinctCount: OtpVerificationHavingDistinctCountInput
+  min: OtpVerificationHavingMinInput
+  max: OtpVerificationHavingMaxInput
+  average: OtpVerificationHavingAverageInput
+  stddevSample: OtpVerificationHavingStddevSampleInput
+  stddevPopulation: OtpVerificationHavingStddevPopulationInput
+  varianceSample: OtpVerificationHavingVarianceSampleInput
+  variancePopulation: OtpVerificationHavingVariancePopulationInput
+}
+
+input OtpVerificationHavingSumInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+input OtpVerificationHavingDistinctCountInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+input OtpVerificationHavingMinInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+input OtpVerificationHavingMaxInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+input OtpVerificationHavingAverageInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+input OtpVerificationHavingStddevSampleInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+input OtpVerificationHavingStddevPopulationInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+input OtpVerificationHavingVarianceSampleInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+input OtpVerificationHavingVariancePopulationInput {
+  expiresAt: HavingDatetimeFilter
+  createdAt: HavingDatetimeFilter
+}
+
+"""Methods to use when ordering `OtpVerification`."""
+enum OtpVerificationsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  OTP_ASC
+  OTP_DESC
+  EXPIRES_AT_ASC
+  EXPIRES_AT_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `OtpVerification` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input OtpVerificationCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: String
+
+  """Checks for equality with the object’s `otp` field."""
+  otp: String
+
+  """Checks for equality with the object’s `expiresAt` field."""
+  expiresAt: Datetime
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `email` field."""
+  email: String
 }
 
 """A `Budget` edge in the connection."""
@@ -3373,6 +3743,116 @@ enum UsersOrderBy {
   REPORTS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC
   REPORTS_BY_USER_ID_VARIANCE_POPULATION_FILE_PATH_ASC
   REPORTS_BY_USER_ID_VARIANCE_POPULATION_FILE_PATH_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_COUNT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_COUNT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_SUM_EMAIL_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EMAIL_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MIN_EMAIL_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_MAX_EMAIL_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EMAIL_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EMAIL_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EMAIL_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EMAIL_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_OTP_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_OTP_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EXPIRES_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EXPIRES_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EMAIL_ASC
+  OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EMAIL_DESC
 }
 
 """
@@ -3426,6 +3906,14 @@ type Mutation {
     """
     input: CreateCategoryInput!
   ): CreateCategoryPayload
+
+  """Creates a single `OtpVerification`."""
+  createOtpVerification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateOtpVerificationInput!
+  ): CreateOtpVerificationPayload
 
   """Creates a single `Report`."""
   createReport(
@@ -3490,6 +3978,24 @@ type Mutation {
     """
     input: UpdateCategoryInput!
   ): UpdateCategoryPayload
+
+  """
+  Updates a single `OtpVerification` using its globally unique id and a patch.
+  """
+  updateOtpVerificationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateOtpVerificationByNodeIdInput!
+  ): UpdateOtpVerificationPayload
+
+  """Updates a single `OtpVerification` using a unique key and a patch."""
+  updateOtpVerification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateOtpVerificationInput!
+  ): UpdateOtpVerificationPayload
 
   """Updates a single `Report` using its globally unique id and a patch."""
   updateReportByNodeId(
@@ -3599,6 +4105,22 @@ type Mutation {
     input: DeleteCategoryInput!
   ): DeleteCategoryPayload
 
+  """Deletes a single `OtpVerification` using its globally unique id."""
+  deleteOtpVerificationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteOtpVerificationByNodeIdInput!
+  ): DeleteOtpVerificationPayload
+
+  """Deletes a single `OtpVerification` using a unique key."""
+  deleteOtpVerification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteOtpVerificationInput!
+  ): DeleteOtpVerificationPayload
+
   """Deletes a single `Report` using its globally unique id."""
   deleteReportByNodeId(
     """
@@ -3690,6 +4212,16 @@ type Mutation {
     """
     input: UpsertCategoryInput!
   ): UpsertCategoryPayload
+
+  """Upserts a single `OtpVerification`."""
+  upsertOtpVerification(
+    where: UpsertOtpVerificationWhere
+
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpsertOtpVerificationInput!
+  ): UpsertOtpVerificationPayload
 
   """Upserts a single `Report`."""
   upsertReport(
@@ -3822,6 +4354,54 @@ input CreateCategoryInput {
 input CategoryInput {
   id: String!
   name: String!
+}
+
+"""The output of our create `OtpVerification` mutation."""
+type CreateOtpVerificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `OtpVerification` that was created by this mutation."""
+  otpVerification: OtpVerification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `OtpVerification`."""
+  user: User
+
+  """An edge for our `OtpVerification`. May be used by Relay 1."""
+  otpVerificationEdge(
+    """The method to use when ordering `OtpVerification`."""
+    orderBy: [OtpVerificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): OtpVerificationsEdge
+}
+
+"""All input for the create `OtpVerification` mutation."""
+input CreateOtpVerificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `OtpVerification` to be created by this mutation."""
+  otpVerification: OtpVerificationInput!
+}
+
+"""An input for mutations affecting `OtpVerification`"""
+input OtpVerificationInput {
+  id: String!
+  userId: String!
+  otp: String!
+  expiresAt: Datetime!
+  createdAt: Datetime
+  email: String
 }
 
 """The output of our create `Report` mutation."""
@@ -4152,6 +4732,78 @@ input UpdateCategoryInput {
   An object where the defined keys will be set on the `Category` being updated.
   """
   patch: CategoryPatch!
+  id: String!
+}
+
+"""The output of our update `OtpVerification` mutation."""
+type UpdateOtpVerificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `OtpVerification` that was updated by this mutation."""
+  otpVerification: OtpVerification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `OtpVerification`."""
+  user: User
+
+  """An edge for our `OtpVerification`. May be used by Relay 1."""
+  otpVerificationEdge(
+    """The method to use when ordering `OtpVerification`."""
+    orderBy: [OtpVerificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): OtpVerificationsEdge
+}
+
+"""All input for the `updateOtpVerificationByNodeId` mutation."""
+input UpdateOtpVerificationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `OtpVerification` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `OtpVerification` being updated.
+  """
+  patch: OtpVerificationPatch!
+}
+
+"""
+Represents an update to a `OtpVerification`. Fields that are set will be updated.
+"""
+input OtpVerificationPatch {
+  id: String
+  userId: String
+  otp: String
+  expiresAt: Datetime
+  createdAt: Datetime
+  email: String
+}
+
+"""All input for the `updateOtpVerification` mutation."""
+input UpdateOtpVerificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `OtpVerification` being updated.
+  """
+  patch: OtpVerificationPatch!
   id: String!
 }
 
@@ -4558,6 +5210,57 @@ input DeleteCategoryInput {
   id: String!
 }
 
+"""The output of our delete `OtpVerification` mutation."""
+type DeleteOtpVerificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `OtpVerification` that was deleted by this mutation."""
+  otpVerification: OtpVerification
+  deletedOtpVerificationNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `OtpVerification`."""
+  user: User
+
+  """An edge for our `OtpVerification`. May be used by Relay 1."""
+  otpVerificationEdge(
+    """The method to use when ordering `OtpVerification`."""
+    orderBy: [OtpVerificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): OtpVerificationsEdge
+}
+
+"""All input for the `deleteOtpVerificationByNodeId` mutation."""
+input DeleteOtpVerificationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `OtpVerification` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteOtpVerification` mutation."""
+input DeleteOtpVerificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: String!
+}
+
 """The output of our delete `Report` mutation."""
 type DeleteReportPayload {
   """
@@ -4855,6 +5558,47 @@ input UpsertCategoryInput {
   category: CategoryInput!
 }
 
+"""The output of our upsert `OtpVerification` mutation."""
+type UpsertOtpVerificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `OtpVerification` that was upserted by this mutation."""
+  otpVerification: OtpVerification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `OtpVerification`."""
+  user: User
+
+  """An edge for our `OtpVerification`. May be used by Relay 1."""
+  otpVerificationEdge(
+    """The method to use when ordering `OtpVerification`."""
+    orderBy: [OtpVerificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): OtpVerificationsEdge
+}
+
+"""Where conditions for the upsert `OtpVerification` mutation."""
+input UpsertOtpVerificationWhere {
+  id: String
+}
+
+"""All input for the upsert `OtpVerification` mutation."""
+input UpsertOtpVerificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `OtpVerification` to be upserted by this mutation."""
+  otpVerification: OtpVerificationInput!
+}
+
 """The output of our upsert `Report` mutation."""
 type UpsertReportPayload {
   """
@@ -5128,6 +5872,42 @@ type Subscription {
     filter: CategoryFilter
   ): CategoriesConnection
 
+  """
+  Reads and enables pagination through a set of `OtpVerification`. (live)
+  """
+  otpVerifications(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `OtpVerification`."""
+    orderBy: [OtpVerificationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OtpVerificationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: OtpVerificationFilter
+  ): OtpVerificationsConnection
+
   """Reads and enables pagination through a set of `Report`. (live)"""
   reports(
     """Only read the first `n` values of the set."""
@@ -5271,6 +6051,9 @@ type Subscription {
   category(id: String!): Category
 
   """ (live)"""
+  otpVerification(id: String!): OtpVerification
+
+  """ (live)"""
   report(reportId: String!): Report
 
   """ (live)"""
@@ -5296,6 +6079,16 @@ type Subscription {
     """The globally unique `ID` to be used in selecting a single `Category`."""
     nodeId: ID!
   ): Category
+
+  """
+  Reads a single `OtpVerification` using its globally unique `ID`. (live)
+  """
+  otpVerificationByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `OtpVerification`.
+    """
+    nodeId: ID!
+  ): OtpVerification
 
   """Reads a single `Report` using its globally unique `ID`. (live)"""
   reportByNodeId(

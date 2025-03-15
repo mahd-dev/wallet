@@ -47,6 +47,7 @@ const EDIT_TRANSACTION = gql`
   mutation EDIT_TRANSACTION(
     $id: String!
     $amount: Float!
+    $date: Datetime!
     $categoryId: String!
     $description: String!
     $type: Typetransaction!
@@ -56,6 +57,7 @@ const EDIT_TRANSACTION = gql`
       input: {
         patch: {
           amount: $amount
+          date: $date
           categoryId: $categoryId
           description: $description
           type: $type
@@ -67,8 +69,8 @@ const EDIT_TRANSACTION = gql`
       transaction {
         transactionId
         type
-        categoryId
         date
+        categoryId
         description
         amount
       }
@@ -87,7 +89,8 @@ interface TransactionModalProps {
     categoryId: string;
     type: "EXPENSE" | "INCOME";
     description?: string;
-    id: string; // Add this line
+    id: string;
+    date: string; // Add this line
   };
   setEditData: React.Dispatch<React.SetStateAction<any>>;
   handleEdit: () => Promise<void>;
@@ -145,7 +148,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     user_id: user?.oidcId,
     category_id: categoryId,
     amount,
-    date: new Date().toISOString(),
+    date: isEditing ? editData?.date : new Date().toISOString(),
     description: editData?.description || "",
     type: type,
     transaction_id: transactionId,
@@ -157,8 +160,8 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       const editVariables = {
         id: editData?.id, // Assuming you pass the id of the transaction
         amount,
+        date: editData?.date,
         categoryId,
-       
         description: editData?.description || "",
         type,
         clientMutationId: nanoid(),

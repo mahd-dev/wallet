@@ -2,6 +2,7 @@ import { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/react";
 import { gql } from "gql";
 import { gqlSsrClient } from "~/utils/gql_ssr_client";
+import { sendEmail } from "./mailer";
 
 const LOGIN = gql(`  query LOGIN_USER($email: String!, $password: String!) {
     users(
@@ -39,11 +40,20 @@ export const action: ActionFunction = async ({ request }) => {
     if (!resp.data?.users?.nodes?.length) {
       return json({ error: "Invalid credentials" }, { status: 401 });
     }
-
+    
+    console.log('Sending email to:', email);
+     await sendEmail(
+      email, // Recipient's email
+      "Login Success", // Subject of the email
+      "You have successfully logged into your account." // Body of the email
+    );
+    
+    
     return json({
       success: true,
       user: resp.data.users.nodes[0],
     });
+    
   } catch (error) {
     console.log("error", error);
     return json(
@@ -55,3 +65,5 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 };
+
+
