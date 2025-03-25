@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Fab } from "konsta/react";
 import { IconPlus } from "@tabler/icons-react";
 import TransactionModal from '~/components/TransactionModal';
+import { gql } from 'urql';
+import { useMutation, useQuery } from "urql";
+import { nanoid } from "nanoid";
 
 /*export const loader: LoaderFunction = async () => {
   return new Response(
@@ -27,6 +30,7 @@ export default function HomePage() {
 
   return (
     <div>
+      <h1 className="text-2xl font-bold mb-4">Transactions</h1>
       <Fab
         onClick={handleFabClick}
         className="fixed bottom-6 right-6 z-50 transform rounded-full bg-blue-500 p-5 text-white shadow-xl transition-transform hover:scale-110 hover:bg-blue-600"
@@ -46,3 +50,4 @@ export default function HomePage() {
     </div>
   );
 }
+
