@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+ import { useEffect, useState } from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { useQuery, gql } from "urql";
@@ -99,7 +99,7 @@ export default function Statistiques() {
     if (!data) return;
   
     const transactions = data.transactions.nodes;
-// Extract unique years from transactions
+      // Extract unique years from transactions
   const uniqueYears = Array.from(
     new Set(transactions.map((tx) => dayjs(tx.date).year().toString()))
   );
@@ -113,63 +113,108 @@ export default function Statistiques() {
     
     // Filter by month if selectedMonth is not null
     const filteredTransactions = selectedMonth
-      ? filteredByYear.filter((tx) => dayjs(tx.date).month() === parseInt(selectedMonth))
-      : filteredByYear;
+    ? filteredByYear.filter((tx) => dayjs(tx.date).month() === parseInt(selectedMonth))
+    : filteredByYear;
   
-    const monthlyData = Array(12).fill(null).map(() => ({ income: 0, expense: 0 }));
-    const categoryData: Record<string, number> = {};
+  let groupedData: Record<number, { income: number; expense: number }> = {};
   
-    filteredTransactions.forEach(({ amount, type, date, category }) => {
-      const monthIndex = dayjs(date).month();
+  if (selectedMonth !== null) {
+    // Group by day if a specific month is selected
+    for (let day = 1; day <= 31; day++) {
+      groupedData[day] = { income: 0, expense: 0 };
+    }
+  
+    filteredTransactions.forEach(({ amount, type, date }) => {
+      const dayIndex = dayjs(date).date();  // Group by day
+      if (!groupedData[dayIndex]) {
+        groupedData[dayIndex] = { income: 0, expense: 0 };
+      }
+  
       if (type === "INCOME") {
-        monthlyData[monthIndex].income += amount;
-      } else if (type === "EXPENSE") {
-        monthlyData[monthIndex].expense += amount;
-        categoryData[category.name] = (categoryData[category.name] || 0) + amount;
+        groupedData[dayIndex].income += amount;
+      } else {
+        groupedData[dayIndex].expense += amount;
       }
     });
-
-
-    
-    // Income/Expense Bar Chart Data
-    setIncomeExpenseData({
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Income",
-          data: monthlyData.map((data) => data.income),
-          backgroundColor: Array(12).fill("rgba(75, 192, 192, 0.6)"),
-        },
-        {
-          label: "Expenses",
-          data: monthlyData.map((data) => data.expense),
-          backgroundColor: Array(12).fill("rgba(255, 99, 132, 0.6)"),
-        },
-      ],
-    });
+  } else {
+    // Group by month if the whole year is selected
+    for (let i = 0; i < 12; i++) {
+      groupedData[i] = { income: 0, expense: 0 };
+    }
   
-    // Balance Bar Chart Data
-    setBalanceData({
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Balance",
-          data: monthlyData.map((data) => data.income - data.expense),
-          backgroundColor: monthlyData.map((data) =>
-            data.income - data.expense >= 0 ? "rgba(54, 162, 235, 0.6)" : "rgba(255, 99, 132, 0.6)"
-          ),
-        },
-      ],
+    filteredTransactions.forEach(({ amount, type, date }) => {
+      const monthIndex = dayjs(date).month();  // Group by month
+      if (!groupedData[monthIndex]) {
+        groupedData[monthIndex] = { income: 0, expense: 0 };
+      }
+  
+      if (type === "INCOME") {
+        groupedData[monthIndex].income += amount;
+      } else {
+        groupedData[monthIndex].expense += amount;
+      }
     });
+  }
+  
+  // Prepare Income/Expense Data for Chart
+  const incomeData = selectedMonth !== null 
+    ? Array(31).fill(0).map((_, index) => groupedData[index + 1]?.income || 0)
+    : Array(12).fill(0).map((_, index) => groupedData[index]?.income || 0);
+  
+  const expenseData = selectedMonth !== null
+    ? Array(31).fill(0).map((_, index) => groupedData[index + 1]?.expense || 0)
+    : Array(12).fill(0).map((_, index) => groupedData[index]?.expense || 0);
+  
+  // Income/Expense Bar Chart Data
+  setIncomeExpenseData({
+    labels: selectedMonth !== null
+      ? Array.from({ length: 31 }, (_, i) => `Day ${i + 1}`)
+      : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Income",
+        data: incomeData,
+        backgroundColor: Array(incomeData.length).fill("rgba(75, 192, 192, 0.6)"),
+      },
+      {
+        label: "Expenses",
+        data: expenseData,
+        backgroundColor: Array(expenseData.length).fill("rgba(255, 99, 132, 0.6)"),
+      },
+    ],
+  });
+  
+  // Balance Bar Chart Data
+  setBalanceData({
+    labels: selectedMonth !== null
+      ? Array.from({ length: 31 }, (_, i) => `Day ${i + 1}`)
+      : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Balance",
+        data: selectedMonth !== null
+          ? incomeData.map((income, index) => income - expenseData[index])
+          : incomeData.map((income, index) => income - expenseData[index]),
+        backgroundColor: selectedMonth !== null
+          ? incomeData.map((income, index) =>
+              income - expenseData[index] >= 0 ? "rgba(54, 162, 235, 0.6)" : "rgba(255, 99, 132, 0.6)"
+            )
+          : incomeData.map((income, index) =>
+              income - expenseData[index] >= 0 ? "rgba(54, 162, 235, 0.6)" : "rgba(255, 99, 132, 0.6)"
+            ),
+      },
+    ],
+  });
+  
   
     // Category Data for Pie Chart
     const categoryDataMap: Record<string, { amount: number; type: "INCOME" | "EXPENSE" }> = {};
   
     filteredTransactions.forEach(({ amount, type, category }) => {
-      if (!categoryDataMap[category.name]) {
-        categoryDataMap[category.name] = { amount: 0, type };
+      if (!categoryDataMap[category?.name]) {
+        categoryDataMap[category?.name] = { amount: 0, type };
       }
-      categoryDataMap[category.name].amount += amount;
+      categoryDataMap[category?.name].amount += amount;
     });
   
     const categoryNames = Object.keys(categoryDataMap);

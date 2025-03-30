@@ -1,6 +1,5 @@
 import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
-import { Block } from "konsta/react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { gql, useMutation } from "urql";
@@ -29,17 +28,15 @@ const signup = gql`
     }
   }
 `;
+
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
-
-  // Ensure values are strings
   const firstName = formData.get("firstName") as string | null;
   const lastName = formData.get("lastName") as string | null;
   const email = formData.get("email") as string | null;
   const password = formData.get("password") as string | null;
   const confirmPassword = formData.get("confirmPassword") as string | null;
 
-  // Collect errors instead of returning early
   const errors: Record<string, string> = {};
 
   if (!firstName || firstName.trim().length < 2) {
@@ -62,13 +59,11 @@ export const action: ActionFunction = async ({ request }) => {
     errors.confirmPassword = "Passwords do not match";
   }
 
-  // Return all collected errors
   if (Object.keys(errors).length > 0) {
     return json({ errors }, { status: 400 });
   }
 
   const user = { id: "123", firstName, lastName, email }; // Mock user
-
   const session = await getSession(request.headers.get("Cookie"));
   session.set("userId", user.id);
 
@@ -78,23 +73,16 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function SignupPage() {
-  const [
-    ,
-    // result
-    mutate,
-  ] = useMutation(signup);
+  const [, mutate] = useMutation(signup);
   const actionData = useActionData<{ errors?: Record<string, string> }>();
-  const [
-    passwordVisible,
-    // , setPasswordVisible
-  ] = useState(false);
+  
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const transactionData = Object.fromEntries(formData) as Record<
-      string,
-      string
-    >;
+    const transactionData = Object.fromEntries(formData) as Record<string, string>;
     const variables = {
       id: nanoid(), // Generate a unique ID
       email: transactionData.email,
@@ -115,110 +103,87 @@ export default function SignupPage() {
   };
 
   return (
-    <Block className="!my-0 mx-auto max-w-7xl pt-5">
-      <div className="bg-white-500 flex h-screen items-center justify-center">
-        {/* Sign-up Card */}
-        <div className="bg-white-500 w-full max-w-md rounded-lg p-6 shadow-lg">
-          <h2 className="mb-6 text-center text-2xl font-bold">Sign Up</h2>
-          <Form onSubmit={handleSubmit} method="post" className="space-y-4">
-            <div>
-              <label htmlFor="fFisrtName" className="block text-sm font-medium">
-                First Name
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+      <div className="w-full max-w-lg rounded-3xl bg-white p-10 shadow-2xl transform hover:scale-105 transition-all duration-500">
+        <h2 className="mb-6 text-center text-4xl font-extrabold text-gray-900">Create Account</h2>
+        <Form onSubmit={handleSubmit} method="post" className="space-y-6">
+          {['firstName', 'lastName', 'email'].map((field) => (
+            <div key={field}>
+              <label className="block text-sm font-semibold capitalize text-gray-700" htmlFor={field}>
+                {field.replace(/([A-Z])/g, ' $1')}
               </label>
               <input
                 type="text"
-                name="firstName"
-                className="w-full rounded border p-2"
+                name={field}
+                className="w-full mt-1 rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
                 required
               />
-              {actionData?.errors?.firstName && (
-                <p className="text-xs text-red-500">
-                  {actionData.errors.firstName}
-                </p>
+              {actionData?.errors?.[field] && (
+                <p className="mt-1 text-xs text-red-500">{actionData.errors[field]}</p>
               )}
             </div>
-            <div>
-              <label htmlFor="fLAstName" className="block text-sm font-medium">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                className="w-full rounded border p-2"
-                required
-              />
-              {actionData?.errors?.lastName && (
-                <p className="text-xs text-red-500">
-                  {actionData.errors.lastName}
-                </p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="FEmail" className="block text-sm font-medium">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                className="w-full rounded border p-2"
-                required
-              />
-              {actionData?.errors?.email && (
-                <p className="text-xs text-red-500">
-                  {actionData.errors.email}
-                </p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="Fpassword" className="block text-sm font-medium">
-                Password
-              </label>
-              <input
-                type={passwordVisible ? "text" : "password"}
-                name="password"
-                className="w-full rounded border p-2"
-                required
-              />
-              {actionData?.errors?.password && (
-                <p className="text-xs text-red-500">
-                  {actionData.errors.password}
-                </p>
-              )}
-            </div>
-            <div>
-              <label
-                htmlFor="Fconfirmpassword"
-                className="block text-sm font-medium"
-              >
-                Confirm Password
-              </label>
-              <input
-                type={passwordVisible ? "text" : "password"}
-                name="confirmPassword"
-                className="w-full rounded border p-2"
-                required
-              />
-              {actionData?.errors?.confirmPassword && (
-                <p className="text-xs text-red-500">
-                  {actionData.errors.confirmPassword}
-                </p>
-              )}
-            </div>
+          ))}
+          
+          {/* Password Input */}
+          <div className="relative">
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+              Password
+            </label>
+            <input
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              className="w-full mt-1 rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              required
+            />
             <button
-              type="submit"
-              className="w-full rounded bg-blue-500 py-2 text-white hover:bg-blue-600"
+              type="button"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+              className="absolute right-3 top-9 text-gray-500 hover:text-gray-700"
             >
-              Sign Up
+              {passwordVisible ? "🙈" : "👁️"}
             </button>
-          </Form>
-          <p className="mt-4 text-center text-sm">
-            Already have an account?
-            <Link to="/login" className="ml-1 text-blue-500 hover:underline">
-              log in
-            </Link>
-          </p>
-        </div>
+            {actionData?.errors?.password && (
+              <p className="mt-1 text-xs text-red-500">{actionData.errors.password}</p>
+            )}
+          </div>
+
+          {/* Confirm Password Input */}
+          <div className="relative">
+            <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700">
+              Confirm Password
+            </label>
+            <input
+              type={confirmPasswordVisible ? "text" : "password"}
+              name="confirmPassword"
+              className="w-full mt-1 rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+              className="absolute right-3 top-9 text-gray-500 hover:text-gray-700"
+            >
+              {confirmPasswordVisible ? "🙈" : "👁️"}
+            </button>
+            {actionData?.errors?.confirmPassword && (
+              <p className="mt-1 text-xs text-red-500">{actionData.errors.confirmPassword}</p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white hover:bg-blue-700 transition-all duration-300"
+          >
+            Sign Up
+          </button>
+        </Form>
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Already have an account? 
+          <Link to="/login" className="ml-1 font-semibold text-blue-600 hover:underline">
+            Log in
+          </Link>
+        </p>
       </div>
-    </Block>
+    </div>
   );
 }

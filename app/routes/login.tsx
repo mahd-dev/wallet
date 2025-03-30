@@ -2,7 +2,7 @@ import { Link, useActionData, useNavigate } from "@remix-run/react";
 import { useAtom } from "jotai";
 import { Block } from "konsta/react";
 import { useState } from "react";
-import { userAtom } from "~/store/store";
+import { userAtom } from "~/store/store"; 
 /*
 export const action: ActionFunction = async ({ request }) => {
 
@@ -53,15 +53,15 @@ export default function LoginPage() {
   // const [, setCurrentUserId] = useAtom(userIdAtom);
 
   const actionData = useActionData<{ errors?: Record<string, string> }>();
-  const [
-    passwordVisible,
-    // , setPasswordVisible
-  ] = useState(false);
+  const [passwordVisible, setPasswordVisible  ] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useAtom(userAtom);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [, setError] = useState("");
+  const [error, setError] = useState(null);
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
   // const [{ data }, submitLogin] = useQuery({
   //   query: LOGIN_USER,
   //   variables: {
@@ -95,7 +95,8 @@ export default function LoginPage() {
       const result = await response.json();
       if (result) {
         setUser(result.user);
-        navigate("/");
+        // If login is successful, redirect to OTP page
+        navigate("/otp", { state: { email } });
       }
       return result;
     } catch (error) {
@@ -105,72 +106,66 @@ export default function LoginPage() {
   };
 
   return (
-    <Block className="!my-0 mx-auto max-w-7xl pt-5">
-      <div className="bg-white-500 flex h-screen items-center justify-center">
-        <div className="bg-white-500 w-full max-w-md rounded-lg p-6 shadow-lg">
-          <h2 className="mb-6 text-center text-2xl font-bold">Login</h2>
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-              try {
-                await submitLogin(email, password);
-              } catch (error) {
-                setError("Login failed. Please try again.");
-                console.error("Login error:", error);
-              }
-            }}
-            method="post"
-            className="space-y-4"
-          >
-            <div>
-              <label htmlFor="fEmail" className="block text-sm font-medium">
-                Email
-              </label>
-              <input
-                onChange={(e) => setEmail(e?.target?.value)}
-                type="email"
-                name="email"
-                className="w-full rounded border p-2"
-                required
-              />
-              {actionData?.errors?.email && (
-                <p className="text-xs text-red-500">
-                  {actionData.errors.email}
-                </p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="fPass" className="block text-sm font-medium">
-                Password
-              </label>
-              <input
-                onChange={(e) => setPassword(e?.target?.value)}
-                type={passwordVisible ? "text" : "password"}
-                name="password"
-                className="w-full rounded border p-2"
-                required
-              />
-              {actionData?.errors?.password && (
-                <p className="text-xs text-red-500">
-                  {actionData.errors.password}
-                </p>
-              )}
-            </div>
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+      <div className="w-full max-w-lg rounded-3xl bg-white p-10 shadow-2xl transform hover:scale-105 transition-all duration-500">
+        <h2 className="mb-6 text-center text-4xl font-extrabold text-gray-900">Sign In</h2>
+        {error && <p className="mb-4 text-center text-sm text-red-500">{error}</p>}
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await submitLogin(email, password);
+          }}
+          className="space-y-6"
+        >
+          <div>
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+              Email Address
+            </label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              required
+            />
+          </div>
+          <div className="relative">
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+              Password
+            </label>
+            <input
+              id="password"
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              required
+            />
             <button
-              type="submit"
-              className="w-full rounded bg-blue-500 py-2 text-white hover:bg-blue-600"
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-3 top-9 text-gray-500 hover:text-gray-700"
             >
-              Login
+              {passwordVisible ? "🙈" : "👁️"}
             </button>
-          </form>
-          <p className="mt-4 text-center text-sm">
-            Don&apost have an account?
-            <Link to="/signup" className="ml-1 text-blue-500 hover:underline">
-              Sign up
-            </Link>
-          </p>
-        </div>
+          </div>
+          <button
+            type="submit"
+            className="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white hover:bg-blue-700 transition-all duration-300"
+          >
+            Login
+          </button>
+        </form>
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Don't have an account? 
+          <Link to="/signup" className="ml-1 font-semibold text-blue-600 hover:underline">
+            Sign up
+          </Link>
+        </p>
       </div>
-    </Block>
+    </div>
   );
 }

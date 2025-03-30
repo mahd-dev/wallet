@@ -5,7 +5,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail", // You can change this if you're using a different provider
+  host: process.env.EMAIL_HOST,
+  port: 587, // You can change this if you're using a different provider
   auth: {
     user: process.env.EMAIL_USER, // Your email address
     pass: process.env.EMAIL_PASS, // Your email password or app-specific password

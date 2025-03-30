@@ -34,6 +34,7 @@ model User {
 model Category {
   id           String        @id @unique
   name         String
+  icon         String?
   transactions Transaction[]
   Budgets      Budget[]
 }
