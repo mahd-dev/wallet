@@ -1,34 +1,81 @@
-import { useAtom } from "jotai";
-import { Dialog } from "konsta/react";
-import { nanoid } from "nanoid";
-import { useState, useEffect, useRef } from "react";
-import { gql, useMutation, useQuery } from "urql";
-import { userAtom } from "~/store/store";
-import { Calendar, X, Search, ChevronDown, ShoppingBag } from "lucide-react";
 import {
-  IconHome, IconCar, IconShoppingCart, IconSoup, IconHeart, IconBriefcase, IconPlane,
-  IconGift, IconHealthRecognition, IconSportBillard, IconMusic, IconCamera, IconBook,
-  IconSchool, IconBus, IconPigMoney
+  IconBook,
+  IconBriefcase,
+  IconBus,
+  IconCamera,
+  IconCar,
+  IconGift,
+  IconHealthRecognition,
+  IconHeart,
+  IconHome,
+  IconMusic,
+  IconPigMoney,
+  IconPlane,
+  IconSchool,
+  IconShoppingCart,
+  IconSoup,
+  IconSportBillard,
 } from "@tabler/icons-react";
 import { Typetransaction } from "gql/graphql";
+import { useAtom } from "jotai";
+import { Calendar, ChevronDown, Search, ShoppingBag, X } from "lucide-react";
+import { nanoid } from "nanoid";
+import { useEffect, useRef, useState } from "react";
+import { gql, useMutation, useQuery } from "urql";
+import { userAtom } from "~/store/store";
 
 const icons = [
   { name: "Home", component: IconHome, color: "#DE3163", value: "home" },
   { name: "Car", component: IconCar, color: "#EF4444", value: "car" },
-  { name: "Shopping", component: IconShoppingCart, color: "#3B82F6", value: "shopping" },
+  {
+    name: "Shopping",
+    component: IconShoppingCart,
+    color: "#3B82F6",
+    value: "shopping",
+  },
   { name: "Food", component: IconSoup, color: "#F59E0B", value: "food" },
   { name: "Health", component: IconHeart, color: "#22C55E", value: "health" },
   { name: "Work", component: IconBriefcase, color: "#8B5CF6", value: "work" },
   { name: "Travel", component: IconPlane, color: "#EC4899", value: "travel" },
   { name: "Gifts", component: IconGift, color: "#FBBF24", value: "gifts" },
-  { name: "Medical", component: IconHealthRecognition, color: "#A855F7", value: "medical" },
-  { name: "Sports", component: IconSportBillard, color: "#16A34A", value: "sports" },
+  {
+    name: "Medical",
+    component: IconHealthRecognition,
+    color: "#A855F7",
+    value: "medical",
+  },
+  {
+    name: "Sports",
+    component: IconSportBillard,
+    color: "#16A34A",
+    value: "sports",
+  },
   { name: "Music", component: IconMusic, color: "#FCD34D", value: "music" },
-  { name: "Photography", component: IconCamera, color: "#EA580C", value: "photography" },
-  { name: "Education", component: IconBook, color: "#38B2AC", value: "education" },
+  {
+    name: "Photography",
+    component: IconCamera,
+    color: "#EA580C",
+    value: "photography",
+  },
+  {
+    name: "Education",
+    component: IconBook,
+    color: "#38B2AC",
+    value: "education",
+  },
   { name: "School", component: IconSchool, color: "#4F46E5", value: "school" },
-  { name: "Transport", component: IconBus, color: "#805AD5", value: "transport" },
-  { name: "Savings", component: IconPigMoney, color: "#EAB308", value: "savings" },
+  {
+    name: "Transport",
+    component: IconBus,
+    color: "#805AD5",
+    value: "transport",
+  },
+  {
+    name: "Savings",
+    component: IconPigMoney,
+    color: "#EAB308",
+    value: "savings",
+  },
 ];
 
 const GET_CATEGORIES = gql`
@@ -44,7 +91,6 @@ const GET_CATEGORIES = gql`
     }
   }
 `;
-
 
 const ADD_TRANSACTION_MUTATION = gql`
   mutation AddTransaction(
@@ -109,8 +155,16 @@ const EDIT_TRANSACTION = gql`
   }
 `;
 
-const DynamicIcon = ({ iconName, color, size = 20 }: { iconName: string, color?: string, size?: number }) => {
-  const iconObj = icons.find(icon => icon.value === iconName);
+const DynamicIcon = ({
+  iconName,
+  color,
+  size = 20,
+}: {
+  iconName: string;
+  color?: string;
+  size?: number;
+}) => {
+  const iconObj = icons.find((icon) => icon.value === iconName);
   if (iconObj) {
     const IconComponent = iconObj.component;
     return <IconComponent size={size} style={{ color }} />;
@@ -158,17 +212,20 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     categoryId: editData?.categoryId || "",
     type: editData?.type || "EXPENSE",
     description: editData?.description || "",
-    date: initialDate
+    date: initialDate,
   };
 
   const [amount, setAmount] = useState<number>(initialFormState.amount);
   const [categoryId, setCategoryId] = useState(initialFormState.categoryId);
   const [type, setType] = useState<"EXPENSE" | "INCOME">(initialFormState.type);
-  const [description, setDescription] = useState<string>(initialFormState.description);
+  const [description, setDescription] = useState<string>(
+    initialFormState.description,
+  );
   const [date, setDate] = useState<string>(initialFormState.date);
   const [amountError, setAmountError] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState<boolean>(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] =
+    useState<boolean>(false);
   const [user] = useAtom(userAtom);
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -179,11 +236,11 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
   const [{ data }] = useQuery({
     query: GET_CATEGORIES,
-    variables: user ? { userId: user.oidcId } : undefined,  // Pass the userId here
-    pause: !user,  // Pause until user is available
-    requestPolicy: "network-only",  // Ensure we always fetch fresh data
+    variables: user ? { userId: user.oidcId } : undefined, // Pass the userId here
+    pause: !user, // Pause until user is available
+    requestPolicy: "network-only", // Ensure we always fetch fresh data
   });
-  
+
   const [result, mutate] = useMutation(ADD_TRANSACTION_MUTATION);
   const [editResult, editMutate] = useMutation(EDIT_TRANSACTION);
 
@@ -200,25 +257,25 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  
+
   useEffect(() => {
     if (basicOpened && amountInputRef.current) {
       setTimeout(() => amountInputRef.current?.focus(), 100);
     }
   }, [basicOpened]);
-  
+
   useEffect(() => {
     if (showCategoryDropdown && searchInputRef.current) {
       setTimeout(() => searchInputRef.current?.focus(), 100);
     }
   }, [showCategoryDropdown]);
-  
+
   useEffect(() => {
     if (!categoryId && data?.categories?.nodes?.length > 0) {
       setCategoryId(data.categories.nodes[0].id);
     }
   }, [data, categoryId]);
-  
+
   useEffect(() => {
     if (isEditing && editData) {
       setAmount(editData.amount || 0);
@@ -228,17 +285,17 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
       setDate(parseDate(editData.date));
     }
   }, [isEditing, editData]);
-  
+
   useEffect(() => {
     if (basicOpened && !isEditing) {
       resetForm();
     }
   }, [basicOpened, isEditing]);
-  
+
   const resetForm = () => {
     setAmount(0);
     const filteredCategories = data?.categories?.nodes?.filter(
-      (cat: any) => cat.type === "EXPENSE" || !cat.type
+      (cat: any) => cat.type === "EXPENSE" || !cat.type,
     );
     setCategoryId(filteredCategories?.[0]?.id || "");
     setType("EXPENSE");
@@ -248,7 +305,6 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     setSearchTerm("");
     setShowCategoryDropdown(false);
   };
-  
 
   const handleClose = () => {
     setBasicOpened(false);
@@ -268,30 +324,45 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   };
 
   // Helper function to update only year, month, and day, preserving original time exactly
-  const updateDatePreserveTime = (newDateStr: string, originalDateStr: string | undefined): string => {
+  const updateDatePreserveTime = (
+    newDateStr: string,
+    originalDateStr: string | undefined,
+  ): string => {
     if (!originalDateStr) return new Date().toISOString();
 
     // Parse the original date string directly
-    const originalParts = originalDateStr.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
+    const originalParts = originalDateStr.match(
+      /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/,
+    );
     if (!originalParts) return new Date().toISOString();
 
-    const [, , , , originalHours, originalMinutes, originalSeconds] = originalParts;
+    const [, , , , originalHours, originalMinutes, originalSeconds] =
+      originalParts;
 
     // Parse the new date from the date picker
-    const [newYear, newMonth, newDay] = newDateStr.split('-').map(Number);
+    const [newYear, newMonth, newDay] = newDateStr.split("-").map(Number);
 
     // Construct a new ISO string with new date and original time
-    const updatedDate = new Date(Date.UTC(newYear, newMonth - 1, newDay, parseInt(originalHours), parseInt(originalMinutes), parseInt(originalSeconds)));
+    const updatedDate = new Date(
+      Date.UTC(
+        newYear,
+        newMonth - 1,
+        newDay,
+        parseInt(originalHours),
+        parseInt(originalMinutes),
+        parseInt(originalSeconds),
+      ),
+    );
     return updatedDate.toISOString();
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     const transactionId = nanoid();
-    
+
     try {
       if (isEditing) {
         // Use the new date from the form, but preserve the original time exactly
@@ -310,7 +381,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         };
 
         const editResponse = await editMutate(editVariables);
-        
+
         if (editResponse.data?.updateTransaction?.transaction) {
           onSuccess();
           handleClose();
@@ -329,7 +400,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         };
 
         const response = await mutate(variables);
-        
+
         if (response.data?.createTransaction) {
           onSuccess();
           handleClose();
@@ -345,7 +416,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   // Create a click handler for the submit button that submits the form
   const handleButtonSubmit = () => {
     if (formRef.current) {
-      formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      formRef.current.dispatchEvent(
+        new Event("submit", { cancelable: true, bubbles: true }),
+      );
     }
   };
 
@@ -355,34 +428,38 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
   const filteredCategories = data?.categories?.nodes?.filter((cat: any) => {
     const matchesType = cat.type === type || !cat.type;
-    const matchesSearch = cat.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = cat.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
     return matchesType && matchesSearch;
   });
 
   return (
     // Custom modal implementation instead of using Dialog directly
-    <div 
-      className={`fixed inset-0 z-50 ${basicOpened ? 'block' : 'hidden'}`}
+    <div
+      className={`fixed inset-0 z-50 ${basicOpened ? "block" : "hidden"}`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
       {/* Backdrop */}
-      <div 
+      <div
         className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm"
         onClick={handleClose}
       ></div>
-      
+
       {/* Modal Content */}
-      <div className="fixed inset-0 flex items-center justify-center p-4 pointer-events-none">
-        <div 
+      <div className="pointer-events-none fixed inset-0 flex items-center justify-center p-4">
+        <div
           ref={modalRef}
-          className="w-full max-w-lg bg-white shadow-xl rounded-xl pointer-events-auto flex flex-col"
-          style={{ maxHeight: '90vh' }}
+          className="pointer-events-auto flex w-full max-w-lg flex-col rounded-xl bg-white shadow-xl"
+          style={{ maxHeight: "90vh" }}
         >
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 mt-10">
+          <div className="mt-10 flex items-center justify-between border-b border-gray-200 px-6 py-4">
             <h2 id="modal-title" className="text-xl font-medium text-gray-800">
-              {isEditing ? "Modifier la transaction" : "Ajouter une transaction"}
+              {isEditing
+                ? "Modifier la transaction"
+                : "Ajouter une transaction"}
             </h2>
             <button
               onClick={handleClose}
@@ -392,9 +469,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
               <X size={20} />
             </button>
           </div>
-          
+
           {/* Form container with flex-1 and overflow-y-auto to allow scrolling */}
-          <div className="flex-1 overflow-y-auto mt">
+          <div className="mt flex-1 overflow-y-auto">
             <form ref={formRef} onSubmit={handleSubmit} className="p-6">
               <div className="mb-6">
                 <div className="grid grid-cols-2 gap-2 rounded-lg bg-gray-100 p-1.5">
@@ -403,9 +480,10 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                     onClick={() => {
                       setType("EXPENSE");
                       const expenseCategories = data?.categories?.nodes?.filter(
-                        (cat: any) => cat.type === "EXPENSE" || !cat.type
+                        (cat: any) => cat.type === "EXPENSE" || !cat.type,
                       );
-                      if (expenseCategories?.[0]) setCategoryId(expenseCategories[0].id);
+                      if (expenseCategories?.[0])
+                        setCategoryId(expenseCategories[0].id);
                     }}
                     className={`rounded-lg px-4 py-3 text-base font-medium transition-all ${
                       type === "EXPENSE"
@@ -422,9 +500,10 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                     onClick={() => {
                       setType("INCOME");
                       const incomeCategories = data?.categories?.nodes?.filter(
-                        (cat: any) => cat.type === "INCOME" || !cat.type
+                        (cat: any) => cat.type === "INCOME" || !cat.type,
                       );
-                      if (incomeCategories?.[0]) setCategoryId(incomeCategories[0].id);
+                      if (incomeCategories?.[0])
+                        setCategoryId(incomeCategories[0].id);
                     }}
                     className={`rounded-lg px-4 py-3 text-base font-medium transition-all ${
                       type === "INCOME"
@@ -438,11 +517,13 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                   </button>
                 </div>
               </div>
-              
+
               <div className="mb-5">
-                <div className={`relative rounded-lg border ${
-                  amountError ? "border-red-300" : "border-gray-300"
-                } focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200`}>
+                <div
+                  className={`relative rounded-lg border ${
+                    amountError ? "border-red-300" : "border-gray-300"
+                  } focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200`}
+                >
                   <input
                     id="amount"
                     ref={amountInputRef}
@@ -472,111 +553,144 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                 )}
               </div>
 
-              <div className="mb-5 relative" ref={dropdownRef}>
-  <button
-    type="button"
-    onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-    className={`w-full flex items-center justify-between rounded-lg border px-4 py-3.5 text-left text-base ${
-      type === "EXPENSE"
-        ? "border-red-200 bg-red-50 text-red-800 hover:bg-red-100"
-        : "border-green-200 bg-green-50 text-green-800 hover:bg-green-100"
-    }`}
-  >
-    <div className="flex items-center space-x-3">
-      {categoryId && (() => {
-        const category = getCategory(categoryId);
-        if (category) {
-          return (
-            <>
-              <div className="flex items-center justify-center rounded-full p-1" 
-                style={{ backgroundColor: category.iconColor ? `${category.iconColor}20` : '#f3f4f6' }}>
-                <DynamicIcon 
-                  iconName={category.icon || "shopping"} 
-                  color={category.iconColor} 
-                  size={22} 
-                />
-              </div>
-              <span className="font-medium">{category.name}</span>
-            </>
-          );
-        }
-        return <span>Sélectionner une catégorie</span>;
-      })()}
-    </div>
-    <ChevronDown size={18} />
-  </button>
-
-  {showCategoryDropdown && (
-    <div className="absolute z-10 mt-1.5 w-full rounded-lg border border-gray-200 bg-white py-2 shadow-lg">
-      <div className="px-4 py-2 border-b border-gray-100">
-        <div className="relative">
-          <Search size={18} className="absolute left-3 top-3 text-gray-400" />
-          <input
-            ref={searchInputRef}
-            type="text"
-            placeholder="Rechercher une catégorie..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-md border border-gray-200 pl-10 pr-3 py-2 text-base focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
-          />
-        </div>
-      </div>
-
-      <div className="max-h-64 overflow-y-auto py-2">
-        {data?.categories?.nodes?.length > 0 ? (
-          <div className="grid grid-cols-1 gap-1">
-            {data?.categories?.nodes
-              .filter((category: {type: Typetransaction}) => category.type === type) // Filter categories based on type or if no type is set
-              .map((category: { id: string; name: string; icon: string; iconColor: string }) => (
+              <div className="relative mb-5" ref={dropdownRef}>
                 <button
-                  key={category.id}
                   type="button"
-                  onClick={() => {
-                    setCategoryId(category.id);
-                    setShowCategoryDropdown(false);
-                  }}
-                  className={`flex w-full items-center px-4 py-3 text-base transition-colors ${
-                    categoryId === category.id
-                      ? type === "EXPENSE"
-                        ? "bg-red-50 text-red-700"
-                        : "bg-green-50 text-green-700"
-                      : "hover:bg-gray-50 text-gray-700"
+                  onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                  className={`flex w-full items-center justify-between rounded-lg border px-4 py-3.5 text-left text-base ${
+                    type === "EXPENSE"
+                      ? "border-red-200 bg-red-50 text-red-800 hover:bg-red-100"
+                      : "border-green-200 bg-green-50 text-green-800 hover:bg-green-100"
                   }`}
                 >
-                  <div className="flex items-center justify-center rounded-full p-1 mr-3" 
-                      style={{ backgroundColor: category.iconColor ? `${category.iconColor}20` : '#f3f4f6' }}>
-                    <DynamicIcon 
-                      iconName={category.icon || "shopping"} 
-                      color={category.iconColor} 
-                      size={22} 
-                    />
+                  <div className="flex items-center space-x-3">
+                    {categoryId &&
+                      (() => {
+                        const category = getCategory(categoryId);
+                        if (category) {
+                          return (
+                            <>
+                              <div
+                                className="flex items-center justify-center rounded-full p-1"
+                                style={{
+                                  backgroundColor: category.iconColor
+                                    ? `${category.iconColor}20`
+                                    : "#f3f4f6",
+                                }}
+                              >
+                                <DynamicIcon
+                                  iconName={category.icon || "shopping"}
+                                  color={category.iconColor}
+                                  size={22}
+                                />
+                              </div>
+                              <span className="font-medium">
+                                {category.name}
+                              </span>
+                            </>
+                          );
+                        }
+                        return <span>Sélectionner une catégorie</span>;
+                      })()}
                   </div>
-                  <span className="font-medium">{category.name}</span>
+                  <ChevronDown size={18} />
                 </button>
-              ))}
-          </div>
-        ) : (
-          <div className="px-4 py-3 text-base text-gray-500 text-center">
-            Aucune catégorie trouvée
-          </div>
-        )}
-      </div>
-    </div>
-  )}
-</div>
 
-              
+                {showCategoryDropdown && (
+                  <div className="absolute z-10 mt-1.5 w-full rounded-lg border border-gray-200 bg-white py-2 shadow-lg">
+                    <div className="border-b border-gray-100 px-4 py-2">
+                      <div className="relative">
+                        <Search
+                          size={18}
+                          className="absolute left-3 top-3 text-gray-400"
+                        />
+                        <input
+                          ref={searchInputRef}
+                          type="text"
+                          placeholder="Rechercher une catégorie..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="w-full rounded-md border border-gray-200 py-2 pl-10 pr-3 text-base focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="max-h-64 overflow-y-auto py-2">
+                      {data?.categories?.nodes?.length > 0 ? (
+                        <div className="grid grid-cols-1 gap-1">
+                          {data?.categories?.nodes
+                            .filter(
+                              (category: { type: Typetransaction }) =>
+                                category.type === type,
+                            ) // Filter categories based on type or if no type is set
+                            .map(
+                              (category: {
+                                id: string;
+                                name: string;
+                                icon: string;
+                                iconColor: string;
+                              }) => (
+                                <button
+                                  key={category.id}
+                                  type="button"
+                                  onClick={() => {
+                                    setCategoryId(category.id);
+                                    setShowCategoryDropdown(false);
+                                  }}
+                                  className={`flex w-full items-center px-4 py-3 text-base transition-colors ${
+                                    categoryId === category.id
+                                      ? type === "EXPENSE"
+                                        ? "bg-red-50 text-red-700"
+                                        : "bg-green-50 text-green-700"
+                                      : "text-gray-700 hover:bg-gray-50"
+                                  }`}
+                                >
+                                  <div
+                                    className="mr-3 flex items-center justify-center rounded-full p-1"
+                                    style={{
+                                      backgroundColor: category.iconColor
+                                        ? `${category.iconColor}20`
+                                        : "#f3f4f6",
+                                    }}
+                                  >
+                                    <DynamicIcon
+                                      iconName={category.icon || "shopping"}
+                                      color={category.iconColor}
+                                      size={22}
+                                    />
+                                  </div>
+                                  <span className="font-medium">
+                                    {category.name}
+                                  </span>
+                                </button>
+                              ),
+                            )}
+                        </div>
+                      ) : (
+                        <div className="px-4 py-3 text-center text-base text-gray-500">
+                          Aucune catégorie trouvée
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="mb-5">
                 <input
                   id="description"
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder={type === "EXPENSE" ? "Pour quoi avez-vous dépensé?" : "D'où vient ce revenu?"}
+                  placeholder={
+                    type === "EXPENSE"
+                      ? "Pour quoi avez-vous dépensé?"
+                      : "D'où vient ce revenu?"
+                  }
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
                 />
               </div>
-              
+
               <div className="mb-5">
                 <div className="relative rounded-lg border border-gray-300 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
                   <input
@@ -591,16 +705,16 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                   </div>
                 </div>
                 <p className="mt-1.5 text-xs text-gray-500">
-                  {isEditing ? 
-                    "L'heure d'origine sera préservée lors de la modification" : 
-                    "L'heure actuelle sera automatiquement utilisée lors de l'ajout"}
+                  {isEditing
+                    ? "L'heure d'origine sera préservée lors de la modification"
+                    : "L'heure actuelle sera automatiquement utilisée lors de l'ajout"}
                 </p>
               </div>
             </form>
           </div>
-          
+
           {/* Fixed button container at the bottom */}
-          <div className="p-6 pt-0 border-t border-gray-200 bg-white">
+          <div className="border-t border-gray-200 bg-white p-6 pt-0">
             <div className="flex w-full space-x-4">
               <button
                 type="button"
@@ -614,10 +728,12 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                 onClick={handleButtonSubmit}
                 disabled={result.fetching || editResult.fetching}
                 className={`flex-1 rounded-lg px-4 py-3 text-base font-medium text-white transition-colors disabled:opacity-50 ${
-                  type === "EXPENSE" ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"
+                  type === "EXPENSE"
+                    ? "bg-red-600 hover:bg-red-700"
+                    : "bg-green-600 hover:bg-green-700"
                 }`}
               >
-                {(result.fetching || editResult.fetching) ? (
+                {result.fetching || editResult.fetching ? (
                   <div className="flex items-center justify-center gap-2">
                     <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                     <span>{isEditing ? "Modification..." : "Ajout..."}</span>

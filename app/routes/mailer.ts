@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
+import nodemailer from "nodemailer";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -13,10 +13,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-console.log('EMAIL_USER:', process.env.EMAIL_USER);
-console.log('EMAIL_PASS:', process.env.EMAIL_PASS);
+console.log("EMAIL_USER:", process.env.EMAIL_USER);
+console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
 
-export const sendEmail = async (email: string, subject: string, message: string) => {
+export const sendEmail = async (
+  email: string,
+  subject: string,
+  message: string,
+) => {
   try {
     const mailOptions = {
       from: `"Your App" <${process.env.EMAIL_USER}>`, // Sender's email address
@@ -32,5 +36,3 @@ export const sendEmail = async (email: string, subject: string, message: string)
     console.error("Error sending email:", error);
   }
 };
-
-

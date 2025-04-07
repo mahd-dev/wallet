@@ -6,7 +6,7 @@ import {
   IconShield,
   IconUserEdit,
   IconUserShield,
-} from "@tabler/icons-react"; 
+} from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { Block, Dialog, DialogButton, List, ListItem } from "konsta/react";
 

@@ -1,8 +1,7 @@
 import { Link, useActionData, useNavigate } from "@remix-run/react";
 import { useAtom } from "jotai";
-import { Block } from "konsta/react";
 import { useState } from "react";
-import { userAtom } from "~/store/store"; 
+import { userAtom } from "~/store/store";
 /*
 export const action: ActionFunction = async ({ request }) => {
 
@@ -53,7 +52,7 @@ export default function LoginPage() {
   // const [, setCurrentUserId] = useAtom(userIdAtom);
 
   const actionData = useActionData<{ errors?: Record<string, string> }>();
-  const [passwordVisible, setPasswordVisible  ] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useAtom(userAtom);
   const [email, setEmail] = useState("");
@@ -107,9 +106,13 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 p-6">
-      <div className="w-full max-w-lg rounded-3xl bg-white p-10 shadow-2xl transform hover:scale-105 transition-all duration-500">
-        <h2 className="mb-6 text-center text-4xl font-extrabold text-gray-900">Sign In</h2>
-        {error && <p className="mb-4 text-center text-sm text-red-500">{error}</p>}
+      <div className="w-full max-w-lg transform rounded-3xl bg-white p-10 shadow-2xl transition-all duration-500 hover:scale-105">
+        <h2 className="mb-6 text-center text-4xl font-extrabold text-gray-900">
+          Sign In
+        </h2>
+        {error && (
+          <p className="mb-4 text-center text-sm text-red-500">{error}</p>
+        )}
         <form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -118,7 +121,10 @@ export default function LoginPage() {
           className="space-y-6"
         >
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-gray-700"
+            >
               Email Address
             </label>
             <input
@@ -132,7 +138,10 @@ export default function LoginPage() {
             />
           </div>
           <div className="relative">
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-gray-700"
+            >
               Password
             </label>
             <input
@@ -154,14 +163,17 @@ export default function LoginPage() {
           </div>
           <button
             type="submit"
-            className="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white hover:bg-blue-700 transition-all duration-300"
+            className="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white transition-all duration-300 hover:bg-blue-700"
           >
             Login
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account? 
-          <Link to="/signup" className="ml-1 font-semibold text-blue-600 hover:underline">
+          Don't have an account?
+          <Link
+            to="/signup"
+            className="ml-1 font-semibold text-blue-600 hover:underline"
+          >
             Sign up
           </Link>
         </p>

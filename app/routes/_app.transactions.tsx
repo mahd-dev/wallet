@@ -1,37 +1,90 @@
-import { IconPencil, IconPlus, IconTrash, IconFilter, IconSortAscending, IconSearch } from "@tabler/icons-react";
+import {
+  IconBook,
+  IconBriefcase,
+  IconBus,
+  IconCamera,
+  IconCar,
+  IconFilter,
+  IconGift,
+  IconHealthRecognition,
+  IconHeart,
+  IconHome,
+  IconMusic,
+  IconPencil,
+  IconPigMoney,
+  IconPlane,
+  IconPlus,
+  IconSchool,
+  IconSearch,
+  IconShoppingCart,
+  IconSortAscending,
+  IconSoup,
+  IconSportBillard,
+  IconTrash,
+} from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { Typetransaction } from "gql/graphql";
-import { Badge, Fab, Segmented } from "konsta/react";
+import { useAtom } from "jotai";
+import { Fab } from "konsta/react";
 import { nanoid } from "nanoid";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { gql, useMutation, useQuery } from "urql";
 import TransactionModal from "~/components/TransactionModal";
-import { useAtom } from "jotai";
 import { userAtom } from "~/store/store";
-import {
-  IconHome, IconCar, IconShoppingCart, IconSoup, IconHeart, IconBriefcase, IconPlane,
-  IconGift, IconHealthRecognition, IconSportBillard, IconMusic, IconCamera, IconBook,
-  IconSchool, IconBus, IconPigMoney
-} from "@tabler/icons-react";
 
 // Icon mapping from the modal component
 const icons = [
   { name: "Home", component: IconHome, color: "#DE3163", value: "home" },
   { name: "Car", component: IconCar, color: "#EF4444", value: "car" },
-  { name: "Shopping", component: IconShoppingCart, color: "#3B82F6", value: "shopping" },
+  {
+    name: "Shopping",
+    component: IconShoppingCart,
+    color: "#3B82F6",
+    value: "shopping",
+  },
   { name: "Food", component: IconSoup, color: "#F59E0B", value: "food" },
   { name: "Health", component: IconHeart, color: "#22C55E", value: "health" },
   { name: "Work", component: IconBriefcase, color: "#8B5CF6", value: "work" },
   { name: "Travel", component: IconPlane, color: "#EC4899", value: "travel" },
   { name: "Gifts", component: IconGift, color: "#FBBF24", value: "gifts" },
-  { name: "Medical", component: IconHealthRecognition, color: "#A855F7", value: "medical" },
-  { name: "Sports", component: IconSportBillard, color: "#16A34A", value: "sports" },
+  {
+    name: "Medical",
+    component: IconHealthRecognition,
+    color: "#A855F7",
+    value: "medical",
+  },
+  {
+    name: "Sports",
+    component: IconSportBillard,
+    color: "#16A34A",
+    value: "sports",
+  },
   { name: "Music", component: IconMusic, color: "#FCD34D", value: "music" },
-  { name: "Photography", component: IconCamera, color: "#EA580C", value: "photography" },
-  { name: "Education", component: IconBook, color: "#38B2AC", value: "education" },
+  {
+    name: "Photography",
+    component: IconCamera,
+    color: "#EA580C",
+    value: "photography",
+  },
+  {
+    name: "Education",
+    component: IconBook,
+    color: "#38B2AC",
+    value: "education",
+  },
   { name: "School", component: IconSchool, color: "#4F46E5", value: "school" },
-  { name: "Transport", component: IconBus, color: "#805AD5", value: "transport" },
-  { name: "Savings", component: IconPigMoney, color: "#EAB308", value: "savings" },
+  {
+    name: "Transport",
+    component: IconBus,
+    color: "#805AD5",
+    value: "transport",
+  },
+  {
+    name: "Savings",
+    component: IconPigMoney,
+    color: "#EAB308",
+    value: "savings",
+  },
 ];
 
 // Define the Transaction type interface
@@ -59,8 +112,16 @@ interface TransactionsData {
 }
 
 // Helper function to get the appropriate icon component
-const DynamicIcon = ({ iconName, color, size = 20 }: { iconName: string; color: string; size?: number }) => {
-  const iconObj = icons.find(icon => icon.value === iconName);
+const DynamicIcon = ({
+  iconName,
+  color,
+  size = 20,
+}: {
+  iconName: string;
+  color: string;
+  size?: number;
+}) => {
+  const iconObj = icons.find((icon) => icon.value === iconName);
   if (iconObj) {
     const IconComponent = iconObj.component;
     return <IconComponent size={size} style={{ color }} />;
@@ -137,7 +198,7 @@ const EDIT_TRANSACTION = gql`
 const TransactionsList = () => {
   // Get the current user from atom store
   const [user] = useAtom(userAtom);
-  
+
   // Updated to use userId condition like in budget component
   const [{ data, fetching, error }, refetch] = useQuery<TransactionsData>({
     query: GET_TRANSACTIONS,
@@ -148,7 +209,7 @@ const TransactionsList = () => {
 
   const [, deleteTransaction] = useMutation(DELETE_TRANSACTION);
   const [, editTransaction] = useMutation(EDIT_TRANSACTION);
-  
+
   const [editData, setEditData] = useState({
     id: "",
     type: Typetransaction.Expense,
@@ -163,32 +224,36 @@ const TransactionsList = () => {
   const [activeTab, setActiveTab] = useState("tout");
   const [showFilters, setShowFilters] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [transactionToDelete, setTransactionToDelete] = useState<Transaction | null>(null);
+  const [transactionToDelete, setTransactionToDelete] =
+    useState<Transaction | null>(null);
   const [sortOrder, setSortOrder] = useState("desc");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [summaryData, setSummaryData] = useState({
     totalIncome: 0,
     totalExpense: 0,
-    balance: 0
+    balance: 0,
   });
 
   // Calculate summary data when transactions change
   useEffect(() => {
     if (data?.transactions?.nodes) {
-      const totals = data.transactions.nodes.reduce((acc, tx) => {
-        if (tx.type === "INCOME") {
-          acc.totalIncome += tx.amount;
-        } else {
-          acc.totalExpense += tx.amount;
-        }
-        return acc;
-      }, { totalIncome: 0, totalExpense: 0 });
-      
+      const totals = data.transactions.nodes.reduce(
+        (acc, tx) => {
+          if (tx.type === "INCOME") {
+            acc.totalIncome += tx.amount;
+          } else {
+            acc.totalExpense += tx.amount;
+          }
+          return acc;
+        },
+        { totalIncome: 0, totalExpense: 0 },
+      );
+
       setSummaryData({
         totalIncome: totals.totalIncome,
         totalExpense: totals.totalExpense,
-        balance: totals.totalIncome - totals.totalExpense
+        balance: totals.totalIncome - totals.totalExpense,
       });
     }
   }, [data]);
@@ -196,30 +261,30 @@ const TransactionsList = () => {
   // Extract unique categories for the filter
   const uniqueCategories = useMemo(() => {
     if (!data?.transactions?.nodes) return [];
-    
+
     const categories = new Map();
-    data.transactions.nodes.forEach(tx => {
+    data.transactions.nodes.forEach((tx) => {
       if (tx.category && !categories.has(tx.category.id)) {
         categories.set(tx.category.id, {
           id: tx.category.id,
           name: tx.category.name,
           icon: tx.category.icon,
-          iconColor: tx.category.iconColor
+          iconColor: tx.category.iconColor,
         });
       }
     });
-    
+
     return Array.from(categories.values());
   }, [data]);
 
   const handleDelete = async (id: string) => {
     setShowDeleteConfirm(false);
     console.log("Deleting transaction with ID:", id);
-  
+
     const result = await deleteTransaction({ id });
-  
+
     console.log("Delete result:", result);
-  
+
     if (result.data?.deleteTransaction) {
       console.log("Transaction deleted successfully.");
       refetch();
@@ -227,10 +292,10 @@ const TransactionsList = () => {
       console.error("Failed to delete transaction:", result.error?.message);
     }
   };
-  
+
   const handleEdit = async () => {
     console.log("Editing transaction:", editData);
-  
+
     const result = await editTransaction({
       id: editData.id,
       amount: editData.amount,
@@ -240,11 +305,14 @@ const TransactionsList = () => {
       type: editData.type,
       clientMutationId: nanoid(),
     });
-  
+
     console.log("Edit result:", result);
-  
+
     if (result.data?.updateTransaction?.transaction) {
-      console.log("Transaction updated successfully:", result.data.updateTransaction.transaction);
+      console.log(
+        "Transaction updated successfully:",
+        result.data.updateTransaction.transaction,
+      );
       refetch();
       setIsEditing(false);
       setBasicOpened(false);
@@ -257,7 +325,7 @@ const TransactionsList = () => {
     setTransactionToDelete(tx);
     setShowDeleteConfirm(true);
   };
-  
+
   const toggleSort = () => {
     setSortOrder(sortOrder === "desc" ? "asc" : "desc");
   };
@@ -268,57 +336,70 @@ const TransactionsList = () => {
     setSelectedCategory("");
   };
 
-  if (fetching) return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="flex flex-col items-center space-y-4">
-        <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"></div>
-        <p className="text-lg font-medium text-gray-600">Chargement des transactions...</p>
-      </div>
-    </div>
-  );
-
-  if (error) return (
-    <div className="flex h-screen items-center justify-center p-4">
-      <div className="max-w-md rounded-lg bg-red-50 p-6 text-center shadow-lg">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
-          <IconTrash size={28} className="text-red-600" />
+  if (fetching)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500"></div>
+          <p className="text-lg font-medium text-gray-600">
+            Chargement des transactions...
+          </p>
         </div>
-        <h3 className="mb-2 text-lg font-medium text-red-800">Erreur de chargement</h3>
-        <p className="text-red-700">{error.message}</p>
-        <button 
-          onClick={() => refetch()} 
-          className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
-        >
-          Réessayer
-        </button>
       </div>
-    </div>
-  );
+    );
+
+  if (error)
+    return (
+      <div className="flex h-screen items-center justify-center p-4">
+        <div className="max-w-md rounded-lg bg-red-50 p-6 text-center shadow-lg">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+            <IconTrash size={28} className="text-red-600" />
+          </div>
+          <h3 className="mb-2 text-lg font-medium text-red-800">
+            Erreur de chargement
+          </h3>
+          <p className="text-red-700">{error.message}</p>
+          <button
+            onClick={() => refetch()}
+            className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+          >
+            Réessayer
+          </button>
+        </div>
+      </div>
+    );
 
   // Filter and sort transactions
   let displayedTransactions = [...(data?.transactions?.nodes || [])];
-  
+
   // Apply type filter
   if (activeTab === "revenus") {
-    displayedTransactions = displayedTransactions.filter(tx => tx.type === "INCOME");
+    displayedTransactions = displayedTransactions.filter(
+      (tx) => tx.type === "INCOME",
+    );
   } else if (activeTab === "depenses") {
-    displayedTransactions = displayedTransactions.filter(tx => tx.type === "EXPENSE");
+    displayedTransactions = displayedTransactions.filter(
+      (tx) => tx.type === "EXPENSE",
+    );
   }
-  
+
   // Apply category filter
   if (selectedCategory) {
-    displayedTransactions = displayedTransactions.filter(tx => tx.category?.id === selectedCategory);
+    displayedTransactions = displayedTransactions.filter(
+      (tx) => tx.category?.id === selectedCategory,
+    );
   }
-  
+
   // Apply search filter
   if (searchQuery.trim()) {
     const query = searchQuery.toLowerCase().trim();
-    displayedTransactions = displayedTransactions.filter(tx => 
-      tx.description?.toLowerCase().includes(query) || 
-      tx.category?.name.toLowerCase().includes(query)
+    displayedTransactions = displayedTransactions.filter(
+      (tx) =>
+        tx.description?.toLowerCase().includes(query) ||
+        tx.category?.name.toLowerCase().includes(query),
     );
   }
-  
+
   // Apply sort
   displayedTransactions.sort((a, b) => {
     const dateA = new Date(a.date).getTime();
@@ -334,24 +415,26 @@ const TransactionsList = () => {
   }
 
   // Group transactions by date
-  const groupTransactionsByDate = (transactions: Transaction[]): TransactionGroup[] => {
+  const groupTransactionsByDate = (
+    transactions: Transaction[],
+  ): TransactionGroup[] => {
     const groups: Record<string, Transaction[]> = {};
-    
-    transactions.forEach(tx => {
-      const date = dayjs(tx.date).format('YYYY-MM-DD');
+
+    transactions.forEach((tx) => {
+      const date = dayjs(tx.date).format("YYYY-MM-DD");
       if (!groups[date]) {
         groups[date] = [];
       }
       groups[date].push(tx);
     });
-    
+
     return Object.entries(groups).map(([date, txs]) => ({
       date,
-      formattedDate: dayjs(date).format('dddd, D MMMM YYYY'),
-      transactions: txs
+      formattedDate: dayjs(date).format("dddd, D MMMM YYYY"),
+      transactions: txs,
     }));
   };
-  
+
   const groupedTransactions = groupTransactionsByDate(displayedTransactions);
 
   return (
@@ -359,21 +442,34 @@ const TransactionsList = () => {
       {/* Enhanced Dashboard Header */}
       <div className="mb-8 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg">
         <div className="p-6">
-          <div className="mb-6 flex flex-col items-center justify-center mt-10">
-            <p className="mb-2 text-xs uppercase tracking-wider text-blue-200">SOLDE ACTUEL</p>
-            <p className={`text-3xl font-bold ${summaryData.balance >= 0 ? 'text-green-300' : 'text-red-300'}`}>
-              {summaryData.balance >= 0 ? '+' : ''}{summaryData.balance.toFixed(2)} TND
+          <div className="mb-6 mt-10 flex flex-col items-center justify-center">
+            <p className="mb-2 text-xs uppercase tracking-wider text-blue-200">
+              SOLDE ACTUEL
+            </p>
+            <p
+              className={`text-3xl font-bold ${summaryData.balance >= 0 ? "text-green-300" : "text-red-300"}`}
+            >
+              {summaryData.balance >= 0 ? "+" : ""}
+              {summaryData.balance.toFixed(2)} TND
             </p>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4 pt-2">
             <div className="rounded-lg bg-blue-500/30 p-4 text-center">
-              <p className="mb-1 text-xs uppercase tracking-wider text-blue-100">REVENUS</p>
-              <p className="text-xl font-bold text-green-300">+{summaryData.totalIncome.toFixed(2)} TND</p>
+              <p className="mb-1 text-xs uppercase tracking-wider text-blue-100">
+                REVENUS
+              </p>
+              <p className="text-xl font-bold text-green-300">
+                +{summaryData.totalIncome.toFixed(2)} TND
+              </p>
             </div>
             <div className="rounded-lg bg-blue-500/30 p-4 text-center">
-              <p className="mb-1 text-xs uppercase tracking-wider text-blue-100">DÉPENSES</p>
-              <p className="text-xl font-bold text-red-300">-{summaryData.totalExpense.toFixed(2)} TND</p>
+              <p className="mb-1 text-xs uppercase tracking-wider text-blue-100">
+                DÉPENSES
+              </p>
+              <p className="text-xl font-bold text-red-300">
+                -{summaryData.totalExpense.toFixed(2)} TND
+              </p>
             </div>
           </div>
         </div>
@@ -385,7 +481,7 @@ const TransactionsList = () => {
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <IconSearch size={20} className="text-gray-400" />
           </div>
-          <input 
+          <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -414,17 +510,28 @@ const TransactionsList = () => {
           )}
         </div>
         <div className="flex space-x-2">
-          <button 
+          <button
             onClick={toggleSort}
             className="flex items-center rounded-lg border border-gray-300 bg-white p-2 shadow-sm hover:bg-gray-50"
-            aria-label={sortOrder === "desc" ? "Trier par ordre croissant" : "Trier par ordre décroissant"}
+            aria-label={
+              sortOrder === "desc"
+                ? "Trier par ordre croissant"
+                : "Trier par ordre décroissant"
+            }
           >
-            <IconSortAscending size={20} className={sortOrder === "asc" ? "text-blue-600" : "text-gray-500"} />
+            <IconSortAscending
+              size={20}
+              className={
+                sortOrder === "asc" ? "text-blue-600" : "text-gray-500"
+              }
+            />
           </button>
-          <button 
+          <button
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center rounded-lg border p-2 shadow-sm hover:bg-gray-50 ${
-              showFilters ? "border-blue-500 bg-blue-50 text-blue-600" : "border-gray-300 bg-white text-gray-500"
+              showFilters
+                ? "border-blue-500 bg-blue-50 text-blue-600"
+                : "border-gray-300 bg-white text-gray-500"
             }`}
             aria-label="Filtrer les transactions"
             aria-expanded={showFilters}
@@ -435,8 +542,8 @@ const TransactionsList = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div 
-        role="tablist" 
+      <div
+        role="tablist"
         className={`mb-6 overflow-hidden rounded-lg border border-gray-200 bg-white shadow transition-all duration-300 ease-in-out ${
           showFilters ? "max-h-96 opacity-100" : "max-h-0 border-0 opacity-0"
         }`}
@@ -445,7 +552,9 @@ const TransactionsList = () => {
           <button
             role="tab"
             className={`p-4 text-center font-medium transition-colors ${
-              activeTab === "tout" ? "bg-blue-50 text-blue-600" : "text-gray-500 hover:bg-gray-50"
+              activeTab === "tout"
+                ? "bg-blue-50 text-blue-600"
+                : "text-gray-500 hover:bg-gray-50"
             }`}
             onClick={() => setActiveTab("tout")}
             aria-selected={activeTab === "tout"}
@@ -455,7 +564,9 @@ const TransactionsList = () => {
           <button
             role="tab"
             className={`p-4 text-center font-medium transition-colors ${
-              activeTab === "revenus" ? "bg-green-50 text-green-600" : "text-gray-500 hover:bg-gray-50"
+              activeTab === "revenus"
+                ? "bg-green-50 text-green-600"
+                : "text-gray-500 hover:bg-gray-50"
             }`}
             onClick={() => setActiveTab("revenus")}
             aria-selected={activeTab === "revenus"}
@@ -465,7 +576,9 @@ const TransactionsList = () => {
           <button
             role="tab"
             className={`p-4 text-center font-medium transition-colors ${
-              activeTab === "depenses" ? "bg-red-50 text-red-600" : "text-gray-500 hover:bg-gray-50"
+              activeTab === "depenses"
+                ? "bg-red-50 text-red-600"
+                : "text-gray-500 hover:bg-gray-50"
             }`}
             onClick={() => setActiveTab("depenses")}
             aria-selected={activeTab === "depenses"}
@@ -473,29 +586,39 @@ const TransactionsList = () => {
             Dépenses
           </button>
         </div>
-        
+
         {/* Category Filters */}
         <div className="p-4">
-          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-500">Filtrer par catégorie</p>
+          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-500">
+            Filtrer par catégorie
+          </p>
           <div className="flex flex-wrap gap-2">
-            {uniqueCategories.map(category => (
+            {uniqueCategories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => setSelectedCategory(selectedCategory === category.id ? "" : category.id)}
+                onClick={() =>
+                  setSelectedCategory(
+                    selectedCategory === category.id ? "" : category.id,
+                  )
+                }
                 className={`flex items-center rounded-full px-3 py-1.5 text-sm transition-colors ${
-                  selectedCategory === category.id 
-                    ? "bg-blue-100 text-blue-700" 
+                  selectedCategory === category.id
+                    ? "bg-blue-100 text-blue-700"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 <span className="mr-1.5">
-                  <DynamicIcon iconName={category.icon} color={category.iconColor} size={16} />
+                  <DynamicIcon
+                    iconName={category.icon}
+                    color={category.iconColor}
+                    size={16}
+                  />
                 </span>
                 {category.name}
               </button>
             ))}
           </div>
-          
+
           {(activeTab !== "tout" || selectedCategory || searchQuery) && (
             <button
               onClick={resetFilters}
@@ -513,16 +636,17 @@ const TransactionsList = () => {
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50">
             <IconPigMoney size={32} className="text-blue-500" />
           </div>
-          <h3 className="mb-2 text-lg font-medium text-gray-800">Aucune transaction trouvée</h3>
+          <h3 className="mb-2 text-lg font-medium text-gray-800">
+            Aucune transaction trouvée
+          </h3>
           <p className="mb-6 text-gray-500">
-            {searchQuery 
+            {searchQuery
               ? "Aucune transaction ne correspond à votre recherche."
-              : activeTab === "tout" 
+              : activeTab === "tout"
                 ? "Commencez à ajouter vos transactions pour suivre vos finances."
                 : activeTab === "revenus"
                   ? "Aucun revenu enregistré jusqu'à présent."
-                  : "Aucune dépense enregistrée jusqu'à présent."
-            }
+                  : "Aucune dépense enregistrée jusqu'à présent."}
           </p>
           <button
             onClick={() => {
@@ -539,46 +663,59 @@ const TransactionsList = () => {
       {/* Transactions List */}
       {displayedTransactions.length > 0 && (
         <div className="space-y-8">
-          {groupedTransactions.map(group => (
+          {groupedTransactions.map((group) => (
             <div key={group.date} className="space-y-3">
               <div className="sticky top-0 z-10 -mx-4 bg-gray-50 px-4 py-2">
-                <h3 className="font-medium text-gray-500">{group.formattedDate}</h3>
+                <h3 className="font-medium text-gray-500">
+                  {group.formattedDate}
+                </h3>
               </div>
-              
-              {group.transactions.map(tx => (
+
+              {group.transactions.map((tx) => (
                 <div
                   key={tx.transactionId}
                   className="overflow-hidden rounded-xl bg-white shadow transition-all hover:shadow-md"
                 >
                   <div className="flex items-start p-4">
-                    <div 
+                    <div
                       className="mr-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full"
-                      style={{ 
-                        backgroundColor: tx.category?.iconColor ? `${tx.category.iconColor}20` : '#f3f4f6'
+                      style={{
+                        backgroundColor: tx.category?.iconColor
+                          ? `${tx.category.iconColor}20`
+                          : "#f3f4f6",
                       }}
                     >
-                      <DynamicIcon 
-                        iconName={tx.category?.icon || "shopping"} 
-                        color={tx.category?.iconColor} 
-                        size={24} 
+                      <DynamicIcon
+                        iconName={tx.category?.icon || "shopping"}
+                        color={tx.category?.iconColor}
+                        size={24}
                       />
                     </div>
-                    
+
                     <div className="flex-grow">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-gray-900">{tx.description || tx.category?.name || "Transaction"}</h4>
-                        <p className={`text-lg font-bold ${tx.type === "INCOME" ? "text-green-600" : "text-red-600"}`}>
-                          {tx.type === "INCOME" ? "+" : "-"}{tx.amount.toFixed(2)} TND
+                        <h4 className="font-medium text-gray-900">
+                          {tx.description || tx.category?.name || "Transaction"}
+                        </h4>
+                        <p
+                          className={`text-lg font-bold ${tx.type === "INCOME" ? "text-green-600" : "text-red-600"}`}
+                        >
+                          {tx.type === "INCOME" ? "+" : "-"}
+                          {tx.amount.toFixed(2)} TND
                         </p>
                       </div>
-                      
+
                       <div className="mt-1 flex items-center justify-between">
                         <div className="flex items-center">
-                          <span className="text-sm text-gray-500">{tx.category?.name}</span>
+                          <span className="text-sm text-gray-500">
+                            {tx.category?.name}
+                          </span>
                           <span className="mx-2 text-xs text-gray-400">•</span>
-                          <span className="text-sm text-gray-500">{dayjs(tx.date).format('HH:mm')}</span>
+                          <span className="text-sm text-gray-500">
+                            {dayjs(tx.date).format("HH:mm")}
+                          </span>
                         </div>
-                        
+
                         <div className="flex space-x-1">
                           <button
                             className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-blue-500"
@@ -620,9 +757,12 @@ const TransactionsList = () => {
       {showDeleteConfirm && transactionToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-            <h3 className="mb-4 text-lg font-medium text-gray-900">Confirmer la suppression</h3>
+            <h3 className="mb-4 text-lg font-medium text-gray-900">
+              Confirmer la suppression
+            </h3>
             <p className="mb-6 text-gray-600">
-              Êtes-vous sûr de vouloir supprimer cette transaction ? Cette action ne peut pas être annulée.
+              Êtes-vous sûr de vouloir supprimer cette transaction ? Cette
+              action ne peut pas être annulée.
             </p>
             <div className="flex justify-end space-x-4">
               <button

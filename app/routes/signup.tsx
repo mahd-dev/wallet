@@ -75,14 +75,17 @@ export const action: ActionFunction = async ({ request }) => {
 export default function SignupPage() {
   const [, mutate] = useMutation(signup);
   const actionData = useActionData<{ errors?: Record<string, string> }>();
-  
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const transactionData = Object.fromEntries(formData) as Record<string, string>;
+    const transactionData = Object.fromEntries(formData) as Record<
+      string,
+      string
+    >;
     const variables = {
       id: nanoid(), // Generate a unique ID
       email: transactionData.email,
@@ -104,35 +107,45 @@ export default function SignupPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 p-6">
-      <div className="w-full max-w-lg rounded-3xl bg-white p-10 shadow-2xl transform hover:scale-105 transition-all duration-500">
-        <h2 className="mb-6 text-center text-4xl font-extrabold text-gray-900">Create Account</h2>
+      <div className="w-full max-w-lg transform rounded-3xl bg-white p-10 shadow-2xl transition-all duration-500 hover:scale-105">
+        <h2 className="mb-6 text-center text-4xl font-extrabold text-gray-900">
+          Create Account
+        </h2>
         <Form onSubmit={handleSubmit} method="post" className="space-y-6">
-          {['firstName', 'lastName', 'email'].map((field) => (
+          {["firstName", "lastName", "email"].map((field) => (
             <div key={field}>
-              <label className="block text-sm font-semibold capitalize text-gray-700" htmlFor={field}>
-                {field.replace(/([A-Z])/g, ' $1')}
+              <label
+                className="block text-sm font-semibold capitalize text-gray-700"
+                htmlFor={field}
+              >
+                {field.replace(/([A-Z])/g, " $1")}
               </label>
               <input
                 type="text"
                 name={field}
-                className="w-full mt-1 rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
                 required
               />
               {actionData?.errors?.[field] && (
-                <p className="mt-1 text-xs text-red-500">{actionData.errors[field]}</p>
+                <p className="mt-1 text-xs text-red-500">
+                  {actionData.errors[field]}
+                </p>
               )}
             </div>
           ))}
-          
+
           {/* Password Input */}
           <div className="relative">
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-gray-700"
+            >
               Password
             </label>
             <input
               type={passwordVisible ? "text" : "password"}
               name="password"
-              className="w-full mt-1 rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
               required
             />
             <button
@@ -143,19 +156,24 @@ export default function SignupPage() {
               {passwordVisible ? "🙈" : "👁️"}
             </button>
             {actionData?.errors?.password && (
-              <p className="mt-1 text-xs text-red-500">{actionData.errors.password}</p>
+              <p className="mt-1 text-xs text-red-500">
+                {actionData.errors.password}
+              </p>
             )}
           </div>
 
           {/* Confirm Password Input */}
           <div className="relative">
-            <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-semibold text-gray-700"
+            >
               Confirm Password
             </label>
             <input
               type={confirmPasswordVisible ? "text" : "password"}
               name="confirmPassword"
-              className="w-full mt-1 rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
               required
             />
             <button
@@ -166,20 +184,25 @@ export default function SignupPage() {
               {confirmPasswordVisible ? "🙈" : "👁️"}
             </button>
             {actionData?.errors?.confirmPassword && (
-              <p className="mt-1 text-xs text-red-500">{actionData.errors.confirmPassword}</p>
+              <p className="mt-1 text-xs text-red-500">
+                {actionData.errors.confirmPassword}
+              </p>
             )}
           </div>
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white hover:bg-blue-700 transition-all duration-300"
+            className="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white transition-all duration-300 hover:bg-blue-700"
           >
             Sign Up
           </button>
         </Form>
         <p className="mt-4 text-center text-sm text-gray-600">
-          Already have an account? 
-          <Link to="/login" className="ml-1 font-semibold text-blue-600 hover:underline">
+          Already have an account?
+          <Link
+            to="/login"
+            className="ml-1 font-semibold text-blue-600 hover:underline"
+          >
             Log in
           </Link>
         </p>

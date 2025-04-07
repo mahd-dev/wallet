@@ -1,10 +1,9 @@
-import { IconPlus, IconTrash, IconEdit } from "@tabler/icons-react";
-import React, { useState } from "react";
-import { gql, useMutation, useQuery } from "urql";
-import CategoryIconPicker from "./CategoryIconPicker";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useAtom } from "jotai";
+import { useState } from "react";
+import { gql, useMutation, useQuery } from "urql";
 import { userAtom } from "~/store/store";
-import { icons } from "./CategoryIconPicker"; // Import icons from CategoryIconPicker
+import CategoryIconPicker, { icons } from "./CategoryIconPicker";
 
 // GraphQL queries and mutations
 const GET_CATEGORIES = gql`
@@ -102,7 +101,8 @@ const CategoriesPage = () => {
 
   const handleAddCategory = async () => {
     if (categoryName.trim() && selectedIcon && user?.oidcId) {
-      const iconColor = icons.find(icon => icon.value === selectedIcon)?.color || "";
+      const iconColor =
+        icons.find((icon) => icon.value === selectedIcon)?.color || "";
 
       const result = await addCategory({
         id: crypto.randomUUID(),
@@ -133,8 +133,14 @@ const CategoriesPage = () => {
   };
 
   const handleUpdateCategory = async () => {
-    if (editingCategory && categoryName.trim() && selectedIcon && user?.oidcId) {
-      const iconColor = icons.find(icon => icon.value === selectedIcon)?.color || "";
+    if (
+      editingCategory &&
+      categoryName.trim() &&
+      selectedIcon &&
+      user?.oidcId
+    ) {
+      const iconColor =
+        icons.find((icon) => icon.value === selectedIcon)?.color || "";
 
       const result = await updateCategory({
         id: editingCategory.id,
@@ -173,20 +179,20 @@ const CategoriesPage = () => {
 
   // Filter categories based on the active tab
   const filteredCategories = data?.categories?.nodes?.filter(
-    (category: Category) => category.type === activeTab
+    (category: Category) => category.type === activeTab,
   );
 
   return (
-    <div className="max-w-4xl mx-auto pt-8 pb-12 px-4 sm:px-6 mt-10">
+    <div className="mx-auto mt-10 max-w-4xl px-4 pb-12 pt-8 sm:px-6">
       {/* Tabs */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+      <div className="mb-8 overflow-hidden rounded-xl bg-white shadow-lg">
         <div className="flex border-b">
           <button
             onClick={() => setActiveTab("EXPENSE")}
             className={`flex-1 py-4 text-lg font-medium transition-colors duration-200 ${
               activeTab === "EXPENSE"
-                ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                ? "border-b-2 border-blue-600 bg-blue-50 text-blue-600"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
             }`}
           >
             EXPENSE
@@ -195,24 +201,28 @@ const CategoriesPage = () => {
             onClick={() => setActiveTab("INCOME")}
             className={`flex-1 py-4 text-lg font-medium transition-colors duration-200 ${
               activeTab === "INCOME"
-                ? "text-green-600 border-b-2 border-green-600 bg-green-50"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                ? "border-b-2 border-green-600 bg-green-50 text-green-600"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
             }`}
           >
             INCOME
           </button>
         </div>
 
-        <div className="p-6 ">
+        <div className="p-6">
           {/* Header and Add Button */}
-          <div className="flex justify-between items-center mb-8 ">
+          <div className="mb-8 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-900">
-              {activeTab === "EXPENSE" ? "EXPENSE CATEGORIES" : "INCOME CATEGORIES"}
+              {activeTab === "EXPENSE"
+                ? "EXPENSE CATEGORIES"
+                : "INCOME CATEGORIES"}
             </h1>
             <button
               onClick={handleAddNew}
-              className={`px-5 py-2.5 rounded-lg shadow-md text-white font-medium flex items-center gap-2 transition transform hover:scale-105 ${
-                activeTab === "EXPENSE" ? "bg-blue-600 hover:bg-blue-700" : "bg-green-600 hover:bg-green-700"
+              className={`flex transform items-center gap-2 rounded-lg px-5 py-2.5 font-medium text-white shadow-md transition hover:scale-105 ${
+                activeTab === "EXPENSE"
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-green-600 hover:bg-green-700"
               }`}
             >
               <IconPlus size={20} />
@@ -223,36 +233,42 @@ const CategoriesPage = () => {
           {/* Category Grid */}
           {fetching ? (
             <div className="flex justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+              <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-gray-900"></div>
             </div>
           ) : error ? (
-            <div className="bg-red-100 p-4 rounded-lg text-red-700">
+            <div className="rounded-lg bg-red-100 p-4 text-red-700">
               <p>Error: {error.message}</p>
             </div>
           ) : filteredCategories?.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <p className="text-gray-600 mb-4">No {activeTab} categories found</p>
+            <div className="rounded-lg bg-gray-50 py-12 text-center">
+              <p className="mb-4 text-gray-600">
+                No {activeTab} categories found
+              </p>
               <button
                 onClick={handleAddNew}
-                className={`px-5 py-2.5 rounded-lg shadow text-white font-medium ${
-                  activeTab === "EXPENSE" ? "bg-blue-600 hover:bg-blue-700" : "bg-green-600 hover:bg-green-700"
+                className={`rounded-lg px-5 py-2.5 font-medium text-white shadow ${
+                  activeTab === "EXPENSE"
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-green-600 hover:bg-green-700"
                 }`}
               >
                 Create your first category
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
               {filteredCategories?.map((category: Category) => {
                 // Find the icon component for the current category
-                const IconComponent = icons.find(icon => icon.value === category.icon)?.component;
-                
+                const IconComponent = icons.find(
+                  (icon) => icon.value === category.icon,
+                )?.component;
+
                 return (
                   <div
                     key={category.id}
-                    className={`rounded-xl shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden ${
-                      category.type === "EXPENSE" 
-                        ? "border-l-4 border-blue-500" 
+                    className={`overflow-hidden rounded-xl shadow-md transition-all duration-200 hover:shadow-lg ${
+                      category.type === "EXPENSE"
+                        ? "border-l-4 border-blue-500"
                         : "border-l-4 border-green-500"
                     }`}
                     style={{
@@ -260,36 +276,41 @@ const CategoriesPage = () => {
                     }}
                   >
                     <div className="p-5">
-                      <div className="flex items-center mb-3">
+                      <div className="mb-3 flex items-center">
                         {/* Icon */}
-                        <div 
-                          className="w-12 h-12 rounded-full flex items-center justify-center shadow-sm mr-4"
-                          style={{ backgroundColor: `${category.iconColor}20`, border: `1px solid ${category.iconColor}50` }}
+                        <div
+                          className="mr-4 flex h-12 w-12 items-center justify-center rounded-full shadow-sm"
+                          style={{
+                            backgroundColor: `${category.iconColor}20`,
+                            border: `1px solid ${category.iconColor}50`,
+                          }}
                         >
                           {IconComponent && (
-                            <IconComponent 
-                              size={24} 
-                              style={{ color: category.iconColor }} 
+                            <IconComponent
+                              size={24}
+                              style={{ color: category.iconColor }}
                             />
                           )}
                         </div>
-                        
+
                         {/* Name */}
-                        <h3 className="font-medium text-lg text-gray-800">{category.name}</h3>
+                        <h3 className="text-lg font-medium text-gray-800">
+                          {category.name}
+                        </h3>
                       </div>
-                      
+
                       {/* Actions */}
-                      <div className="flex justify-end gap-2 mt-4">
+                      <div className="mt-4 flex justify-end gap-2">
                         <button
                           onClick={() => handleEditCategory(category)}
-                          className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+                          className="rounded-md bg-gray-100 p-2 text-gray-700 transition-colors hover:bg-gray-200"
                           aria-label="Edit category"
                         >
                           <IconEdit size={16} />
                         </button>
                         <button
                           onClick={() => handleDeleteCategory(category.id)}
-                          className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-md transition-colors"
+                          className="rounded-md bg-red-100 p-2 text-red-600 transition-colors hover:bg-red-200"
                           aria-label="Delete category"
                         >
                           <IconTrash size={16} />
@@ -306,17 +327,17 @@ const CategoriesPage = () => {
 
       {/* Add/Edit Category */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white p-8 rounded-lg shadow-xl w-full sm:w-96">
-            <h3 className="text-xl font-bold mb-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="w-full rounded-lg bg-white p-8 shadow-xl sm:w-96">
+            <h3 className="mb-6 text-xl font-bold">
               {editingCategory ? "Edit Category" : "Add Category"}
             </h3>
             <div className="mb-4">
               <input
                 type="text"
                 value={categoryName}
-                onChange={e => setCategoryName(e.target.value)}
-                className="w-full p-3 border rounded-lg"
+                onChange={(e) => setCategoryName(e.target.value)}
+                className="w-full rounded-lg border p-3"
                 placeholder="Category Name"
                 required
               />
@@ -327,7 +348,7 @@ const CategoriesPage = () => {
               selectedColor={selectedColor}
               setSelectedColor={setSelectedColor}
             />
-            <div className="flex justify-between mt-4">
+            <div className="mt-4 flex justify-between">
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="text-sm text-gray-600 hover:text-gray-900"
@@ -335,8 +356,10 @@ const CategoriesPage = () => {
                 Cancel
               </button>
               <button
-                onClick={editingCategory ? handleUpdateCategory : handleAddCategory}
-                className="px-6 py-2 bg-blue-600 text-white rounded-md"
+                onClick={
+                  editingCategory ? handleUpdateCategory : handleAddCategory
+                }
+                className="rounded-md bg-blue-600 px-6 py-2 text-white"
               >
                 {editingCategory ? "Save Changes" : "Add Category"}
               </button>
