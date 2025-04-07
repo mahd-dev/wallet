@@ -23,3 +23,4 @@ GRANT USAGE ON SCHEMA public TO anon;
 GRANT USAGE ON SCHEMA public TO reg_user;
 --
 GRANT ALL ON TABLE public."User" TO reg_user;
+COMMENT ON TABLE "Notification" IS '@mncud';

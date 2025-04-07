@@ -85,6 +85,40 @@ type Query implements Node {
     filter: CategoryFilter
   ): CategoriesConnection
 
+  """Reads and enables pagination through a set of `Notification`."""
+  notifications(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: NotificationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: NotificationFilter
+  ): NotificationsConnection
+
   """Reads and enables pagination through a set of `OtpVerification`."""
   otpVerifications(
     """Only read the first `n` values of the set."""
@@ -256,6 +290,7 @@ type Query implements Node {
   ): UserDevicesConnection
   budget(budgetId: String!): Budget
   category(id: String!): Category
+  notification(id: String!): Notification
   otpVerification(id: String!): OtpVerification
   report(reportId: String!): Report
   transaction(transactionId: String!): Transaction
@@ -274,6 +309,14 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Category`."""
     nodeId: ID!
   ): Category
+
+  """Reads a single `Notification` using its globally unique `ID`."""
+  notificationByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `Notification`.
+    """
+    nodeId: ID!
+  ): Notification
 
   """Reads a single `OtpVerification` using its globally unique `ID`."""
   otpVerificationByNodeId(
@@ -596,6 +639,40 @@ type User implements Node {
     """
     filter: OtpVerificationFilter
   ): OtpVerificationsConnection!
+
+  """Reads and enables pagination through a set of `Notification`."""
+  notificationsByUserId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: NotificationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: NotificationFilter
+  ): NotificationsConnection!
 }
 
 enum UserGender {
@@ -1029,6 +1106,12 @@ input UserFilter {
 
   """Some related `otpVerificationsByUserId` exist."""
   otpVerificationsByUserIdExist: Boolean
+
+  """Filter by the object’s `notificationsByUserId` relation."""
+  notificationsByUserId: UserToManyNotificationFilter
+
+  """Some related `notificationsByUserId` exist."""
+  notificationsByUserIdExist: Boolean
 
   """Checks for all expressions in this list."""
   and: [UserFilter!]
@@ -1978,6 +2061,122 @@ input OtpVerificationDistinctCountAggregateFilter {
   expiresAt: BigIntFilter
   createdAt: BigIntFilter
   email: BigIntFilter
+}
+
+"""
+A filter to be used against many `Notification` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyNotificationFilter {
+  """
+  Every related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: NotificationFilter
+
+  """
+  Some related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: NotificationFilter
+
+  """
+  No related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: NotificationFilter
+
+  """Aggregates across related `Notification` match the filter criteria."""
+  aggregates: NotificationAggregatesFilter
+}
+
+"""
+A filter to be used against `Notification` object types. All fields are combined with a logical ‘and.’
+"""
+input NotificationFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `userId` field."""
+  userId: StringFilter
+
+  """Filter by the object’s `t` field."""
+  t: DatetimeFilter
+
+  """Filter by the object’s `isRead` field."""
+  isRead: BooleanFilter
+
+  """Filter by the object’s `data` field."""
+  data: JSONFilter
+
+  """Filter by the object’s `user` relation."""
+  user: UserFilter
+
+  """Checks for all expressions in this list."""
+  and: [NotificationFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [NotificationFilter!]
+
+  """Negates the expression."""
+  not: NotificationFilter
+}
+
+"""
+A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
+"""
+input BooleanFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Boolean
+
+  """Not equal to the specified value."""
+  notEqualTo: Boolean
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Boolean
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Boolean
+
+  """Included in the specified list."""
+  in: [Boolean!]
+
+  """Not included in the specified list."""
+  notIn: [Boolean!]
+
+  """Less than the specified value."""
+  lessThan: Boolean
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Boolean
+
+  """Greater than the specified value."""
+  greaterThan: Boolean
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Boolean
+}
+
+"""A filter to be used against aggregates of `Notification` object types."""
+input NotificationAggregatesFilter {
+  """
+  A filter that must pass for the relevant `Notification` object to be included within the aggregate.
+  """
+  filter: NotificationFilter
+
+  """Distinct count aggregate over matching `Notification` objects."""
+  distinctCount: NotificationDistinctCountAggregateFilter
+}
+
+input NotificationDistinctCountAggregateFilter {
+  id: BigIntFilter
+  userId: BigIntFilter
+  t: BigIntFilter
+  isRead: BigIntFilter
+  data: BigIntFilter
 }
 
 """A connection to a list of `Category` values."""
@@ -3116,6 +3315,188 @@ input OtpVerificationCondition {
   email: String
 }
 
+"""A connection to a list of `Notification` values."""
+type NotificationsConnection {
+  """A list of `Notification` objects."""
+  nodes: [Notification!]!
+
+  """
+  A list of edges which contains the `Notification` and cursor to aid in pagination.
+  """
+  edges: [NotificationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Notification` you could get from the connection."""
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: NotificationAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates(
+    """The method to use when grouping `Notification` for these aggregates."""
+    groupBy: [NotificationGroupBy!]!
+
+    """Conditions on the grouped aggregates."""
+    having: NotificationHavingInput
+  ): [NotificationAggregates!]
+}
+
+type Notification implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  userId: String!
+  t: Datetime!
+  isRead: Boolean!
+  data: JSON!
+
+  """Reads a single `User` that is related to this `Notification`."""
+  user: User
+}
+
+"""A `Notification` edge in the connection."""
+type NotificationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Notification` at the end of the edge."""
+  node: Notification!
+}
+
+type NotificationAggregates {
+  keys: [String!]
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: NotificationDistinctCountAggregates
+}
+
+type NotificationDistinctCountAggregates {
+  """Distinct count of id across the matching connection"""
+  id: BigInt
+
+  """Distinct count of userId across the matching connection"""
+  userId: BigInt
+
+  """Distinct count of t across the matching connection"""
+  t: BigInt
+
+  """Distinct count of isRead across the matching connection"""
+  isRead: BigInt
+
+  """Distinct count of data across the matching connection"""
+  data: BigInt
+}
+
+"""Grouping methods for `Notification` for usage during aggregation."""
+enum NotificationGroupBy {
+  USER_ID
+  T
+  T_TRUNCATED_TO_HOUR
+  T_TRUNCATED_TO_DAY
+  IS_READ
+  DATA
+}
+
+"""Conditions for `Notification` aggregates."""
+input NotificationHavingInput {
+  AND: [NotificationHavingInput!]
+  OR: [NotificationHavingInput!]
+  sum: NotificationHavingSumInput
+  distinctCount: NotificationHavingDistinctCountInput
+  min: NotificationHavingMinInput
+  max: NotificationHavingMaxInput
+  average: NotificationHavingAverageInput
+  stddevSample: NotificationHavingStddevSampleInput
+  stddevPopulation: NotificationHavingStddevPopulationInput
+  varianceSample: NotificationHavingVarianceSampleInput
+  variancePopulation: NotificationHavingVariancePopulationInput
+}
+
+input NotificationHavingSumInput {
+  t: HavingDatetimeFilter
+}
+
+input NotificationHavingDistinctCountInput {
+  t: HavingDatetimeFilter
+}
+
+input NotificationHavingMinInput {
+  t: HavingDatetimeFilter
+}
+
+input NotificationHavingMaxInput {
+  t: HavingDatetimeFilter
+}
+
+input NotificationHavingAverageInput {
+  t: HavingDatetimeFilter
+}
+
+input NotificationHavingStddevSampleInput {
+  t: HavingDatetimeFilter
+}
+
+input NotificationHavingStddevPopulationInput {
+  t: HavingDatetimeFilter
+}
+
+input NotificationHavingVarianceSampleInput {
+  t: HavingDatetimeFilter
+}
+
+input NotificationHavingVariancePopulationInput {
+  t: HavingDatetimeFilter
+}
+
+"""Methods to use when ordering `Notification`."""
+enum NotificationsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  T_ASC
+  T_DESC
+  IS_READ_ASC
+  IS_READ_DESC
+  DATA_ASC
+  DATA_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Notification` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input NotificationCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: String
+
+  """Checks for equality with the object’s `t` field."""
+  t: Datetime
+
+  """Checks for equality with the object’s `isRead` field."""
+  isRead: Boolean
+
+  """Checks for equality with the object’s `data` field."""
+  data: JSON
+}
+
 """A `Budget` edge in the connection."""
 type BudgetsEdge {
   """A cursor for use in pagination."""
@@ -4107,6 +4488,98 @@ enum UsersOrderBy {
   OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC
   OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EMAIL_ASC
   OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EMAIL_DESC
+  NOTIFICATIONS_BY_USER_ID_COUNT_ASC
+  NOTIFICATIONS_BY_USER_ID_COUNT_DESC
+  NOTIFICATIONS_BY_USER_ID_SUM_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_SUM_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_SUM_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_SUM_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_SUM_T_ASC
+  NOTIFICATIONS_BY_USER_ID_SUM_T_DESC
+  NOTIFICATIONS_BY_USER_ID_SUM_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_SUM_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_SUM_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_SUM_DATA_DESC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_T_ASC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_T_DESC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_DATA_DESC
+  NOTIFICATIONS_BY_USER_ID_MIN_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_MIN_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_MIN_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_MIN_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_MIN_T_ASC
+  NOTIFICATIONS_BY_USER_ID_MIN_T_DESC
+  NOTIFICATIONS_BY_USER_ID_MIN_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_MIN_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_MIN_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_MIN_DATA_DESC
+  NOTIFICATIONS_BY_USER_ID_MAX_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_MAX_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_MAX_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_MAX_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_MAX_T_ASC
+  NOTIFICATIONS_BY_USER_ID_MAX_T_DESC
+  NOTIFICATIONS_BY_USER_ID_MAX_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_MAX_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_MAX_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_MAX_DATA_DESC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_T_ASC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_T_DESC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_AVERAGE_DATA_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_T_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_T_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_DATA_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_T_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_T_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_DATA_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_T_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_T_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_DATA_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_T_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_T_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_IS_READ_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_IS_READ_DESC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_DATA_ASC
+  NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_DATA_DESC
 }
 
 """
@@ -4160,6 +4633,14 @@ type Mutation {
     """
     input: CreateCategoryInput!
   ): CreateCategoryPayload
+
+  """Creates a single `Notification`."""
+  createNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateNotificationInput!
+  ): CreateNotificationPayload
 
   """Creates a single `OtpVerification`."""
   createOtpVerification(
@@ -4232,6 +4713,24 @@ type Mutation {
     """
     input: UpdateCategoryInput!
   ): UpdateCategoryPayload
+
+  """
+  Updates a single `Notification` using its globally unique id and a patch.
+  """
+  updateNotificationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateNotificationByNodeIdInput!
+  ): UpdateNotificationPayload
+
+  """Updates a single `Notification` using a unique key and a patch."""
+  updateNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateNotificationInput!
+  ): UpdateNotificationPayload
 
   """
   Updates a single `OtpVerification` using its globally unique id and a patch.
@@ -4359,6 +4858,22 @@ type Mutation {
     input: DeleteCategoryInput!
   ): DeleteCategoryPayload
 
+  """Deletes a single `Notification` using its globally unique id."""
+  deleteNotificationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteNotificationByNodeIdInput!
+  ): DeleteNotificationPayload
+
+  """Deletes a single `Notification` using a unique key."""
+  deleteNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteNotificationInput!
+  ): DeleteNotificationPayload
+
   """Deletes a single `OtpVerification` using its globally unique id."""
   deleteOtpVerificationByNodeId(
     """
@@ -4447,6 +4962,30 @@ type Mutation {
     input: DeleteUserDeviceByTokenInput!
   ): DeleteUserDevicePayload
 
+  """Creates one or many `Notification`."""
+  mnCreateNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: mnCreateNotificationInput!
+  ): mnCreateNotificationPayload
+
+  """Updates one or many `Notification` using a unique key and a patch."""
+  mnUpdateNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: mnUpdateNotificationInput!
+  ): mnUpdateNotificationPayload
+
+  """Deletes one or many `Notification` a unique key via a patch."""
+  mnDeleteNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: mnDeleteNotificationInput!
+  ): mnDeleteNotificationPayload
+
   """Upserts a single `Budget`."""
   upsertBudget(
     where: UpsertBudgetWhere
@@ -4466,6 +5005,16 @@ type Mutation {
     """
     input: UpsertCategoryInput!
   ): UpsertCategoryPayload
+
+  """Upserts a single `Notification`."""
+  upsertNotification(
+    where: UpsertNotificationWhere
+
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpsertNotificationInput!
+  ): UpsertNotificationPayload
 
   """Upserts a single `OtpVerification`."""
   upsertOtpVerification(
@@ -4615,6 +5164,53 @@ input CategoryInput {
   iconColor: String
   userId: String
   type: Typetransaction
+}
+
+"""The output of our create `Notification` mutation."""
+type CreateNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Notification` that was created by this mutation."""
+  notification: Notification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `Notification`."""
+  user: User
+
+  """An edge for our `Notification`. May be used by Relay 1."""
+  notificationEdge(
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NotificationsEdge
+}
+
+"""All input for the create `Notification` mutation."""
+input CreateNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Notification` to be created by this mutation."""
+  notification: NotificationInput!
+}
+
+"""An input for mutations affecting `Notification`"""
+input NotificationInput {
+  id: String!
+  userId: String!
+  t: Datetime
+  isRead: Boolean
+  data: JSON!
 }
 
 """The output of our create `OtpVerification` mutation."""
@@ -5000,6 +5596,77 @@ input UpdateCategoryInput {
   An object where the defined keys will be set on the `Category` being updated.
   """
   patch: CategoryPatch!
+  id: String!
+}
+
+"""The output of our update `Notification` mutation."""
+type UpdateNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Notification` that was updated by this mutation."""
+  notification: Notification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `Notification`."""
+  user: User
+
+  """An edge for our `Notification`. May be used by Relay 1."""
+  notificationEdge(
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NotificationsEdge
+}
+
+"""All input for the `updateNotificationByNodeId` mutation."""
+input UpdateNotificationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Notification` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Notification` being updated.
+  """
+  patch: NotificationPatch!
+}
+
+"""
+Represents an update to a `Notification`. Fields that are set will be updated.
+"""
+input NotificationPatch {
+  id: String
+  userId: String
+  t: Datetime
+  isRead: Boolean
+  data: JSON
+}
+
+"""All input for the `updateNotification` mutation."""
+input UpdateNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Notification` being updated.
+  """
+  patch: NotificationPatch!
   id: String!
 }
 
@@ -5481,6 +6148,57 @@ input DeleteCategoryInput {
   id: String!
 }
 
+"""The output of our delete `Notification` mutation."""
+type DeleteNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Notification` that was deleted by this mutation."""
+  notification: Notification
+  deletedNotificationNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `Notification`."""
+  user: User
+
+  """An edge for our `Notification`. May be used by Relay 1."""
+  notificationEdge(
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NotificationsEdge
+}
+
+"""All input for the `deleteNotificationByNodeId` mutation."""
+input DeleteNotificationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Notification` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteNotification` mutation."""
+input DeleteNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: String!
+}
+
 """The output of our delete `OtpVerification` mutation."""
 type DeleteOtpVerificationPayload {
   """
@@ -5747,6 +6465,119 @@ input DeleteUserDeviceByTokenInput {
   token: String!
 }
 
+"""The output of our many create `Notification` mutation."""
+type mnCreateNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Notification` that was created by this mutation."""
+  notification: Notification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `Notification`."""
+  user: User
+
+  """An edge for our `Notification`. May be used by Relay 1."""
+  notificationEdge(
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NotificationsEdge
+}
+
+"""All input for the create mn`Notification` mutation."""
+input mnCreateNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The one or many `Notification` to be created by this mutation."""
+  mnNotification: [NotificationInput!]
+}
+
+"""The output of our update mn `Notification` mutation."""
+type mnUpdateNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,                 unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Notification` that was updated by this mutation."""
+  notification: Notification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `Notification`."""
+  user: User
+
+  """An edge for our `Notification`. May be used by Relay 1."""
+  notificationEdge(
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NotificationsEdge
+}
+
+"""All input for the update `mnUpdateNotification` mutation."""
+input mnUpdateNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The one or many `Notification` to be updated."""
+  mnPatch: [NotificationPatch!]
+}
+
+"""The output of our delete mn `Notification` mutation."""
+type mnDeleteNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Notification` that was deleted by this mutation."""
+  notification: Notification
+  deletedNotificationNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `Notification`."""
+  user: User
+
+  """An edge for our `Notification`. May be used by Relay 1."""
+  notificationEdge(
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NotificationsEdge
+}
+
+"""All input for the delete `mnDeleteNotification` mutation."""
+input mnDeleteNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The one or many `Notification` to be deleted. You must provide the PK values!
+  """
+  mnPatch: [NotificationPatch!]
+}
+
 """The output of our upsert `Budget` mutation."""
 type UpsertBudgetPayload {
   """
@@ -5830,6 +6661,47 @@ input UpsertCategoryInput {
 
   """The `Category` to be upserted by this mutation."""
   category: CategoryInput!
+}
+
+"""The output of our upsert `Notification` mutation."""
+type UpsertNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Notification` that was upserted by this mutation."""
+  notification: Notification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `Notification`."""
+  user: User
+
+  """An edge for our `Notification`. May be used by Relay 1."""
+  notificationEdge(
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NotificationsEdge
+}
+
+"""Where conditions for the upsert `Notification` mutation."""
+input UpsertNotificationWhere {
+  id: String
+}
+
+"""All input for the upsert `Notification` mutation."""
+input UpsertNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Notification` to be upserted by this mutation."""
+  notification: NotificationInput!
 }
 
 """The output of our upsert `OtpVerification` mutation."""
@@ -6146,6 +7018,40 @@ type Subscription {
     filter: CategoryFilter
   ): CategoriesConnection
 
+  """Reads and enables pagination through a set of `Notification`. (live)"""
+  notifications(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Notification`."""
+    orderBy: [NotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: NotificationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: NotificationFilter
+  ): NotificationsConnection
+
   """
   Reads and enables pagination through a set of `OtpVerification`. (live)
   """
@@ -6325,6 +7231,9 @@ type Subscription {
   category(id: String!): Category
 
   """ (live)"""
+  notification(id: String!): Notification
+
+  """ (live)"""
   otpVerification(id: String!): OtpVerification
 
   """ (live)"""
@@ -6353,6 +7262,14 @@ type Subscription {
     """The globally unique `ID` to be used in selecting a single `Category`."""
     nodeId: ID!
   ): Category
+
+  """Reads a single `Notification` using its globally unique `ID`. (live)"""
+  notificationByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `Notification`.
+    """
+    nodeId: ID!
+  ): Notification
 
   """
   Reads a single `OtpVerification` using its globally unique `ID`. (live)

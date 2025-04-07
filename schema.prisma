@@ -30,6 +30,7 @@ model User {
   password     String?
   otp          OtpVerification[]
   categories          Category[]
+  notifications Notification[]
 }
 
 model Category {
@@ -101,4 +102,15 @@ model UserDevice {
   ua     Json?
 
   @@id([userId, token])
+}
+
+model Notification {
+  id String @id @unique
+
+  userId String
+  User   User   @relation(fields: [userId], references: [oidcId])
+
+  t      DateTime @default(now())
+  isRead Boolean  @default(false)
+  data   Json
 }

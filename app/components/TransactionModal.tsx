@@ -22,6 +22,8 @@ import { Calendar, ChevronDown, Search, ShoppingBag, X } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useEffect, useRef, useState } from "react";
 import { gql, useMutation, useQuery } from "urql";
+import { triggerNotifEvent } from "~/notif/helper";
+import { ExpenseExeceededType } from "~/notif/types";
 import { userAtom } from "~/store/store";
 
 const icons = [
@@ -408,6 +410,13 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
           console.error("Add Mutation Error:", response.error);
         }
       }
+
+
+      // Trigger notification event
+      triggerNotifEvent("expenseExeceededEvent", {
+        userIds: [user?.oidcId || ""],
+        type: ExpenseExeceededType.Exceeded,
+      })
     } catch (error) {
       console.error("Unexpected Error:", error);
     }
@@ -415,6 +424,8 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
   // Create a click handler for the submit button that submits the form
   const handleButtonSubmit = () => {
+    
+
     if (formRef.current) {
       formRef.current.dispatchEvent(
         new Event("submit", { cancelable: true, bubbles: true }),

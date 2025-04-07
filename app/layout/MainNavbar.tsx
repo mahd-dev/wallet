@@ -291,7 +291,7 @@ export default function MainNavbar() {
         ) : (
           <>
             {!location.pathname.startsWith("/auth") && (
-              <Link to={`/auth/signin?next=${location.pathname}`}>
+              <Link to={`/login?next=${location.pathname}`}>
                 <Icon
                   className="cartpopover-navbar-link-mobile mx-2 mt-1"
                   ios={<IconLogin2 />}

@@ -15,10 +15,13 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n        mutation InitProfile(\n          $oidcId: String!\n          $firstName: String\n          $lastName: String\n          $email: String\n          $tel: String\n          $picture: String\n        ) {\n          createUser(\n            input: {\n              user: {\n                oidcId: $oidcId\n                firstName: $firstName\n                lastName: $lastName\n                email: $email\n                tel: $tel\n                picture: $picture\n              }\n            }\n          ) {\n            clientMutationId\n          }\n        }\n      ": types.InitProfileDocument,
+    "\n      mutation ToggleIsRead($id: String!, $isRead: Boolean!) {\n        updateNotification(input: {id: $id, patch: {isRead: $isRead}}){clientMutationId}\n      }\n    ": types.ToggleIsReadDocument,
     "\n  query GET_CATEGORIES($userId: String!) {\n    categories(condition: { userId: $userId }) {\n      nodes {\n        type\n        id\n        name\n        icon\n        iconColor\n      }\n    }\n  }\n": types.Get_CategoriesDocument,
     "\n  mutation AddTransaction(\n    $user_id: String!\n    $category_id: String!\n    $amount: Float!\n    $date: Datetime!\n    $description: String\n    $transaction_id: String!\n    $type: Typetransaction!\n  ) {\n    createTransaction(\n      input: {\n        transaction: {\n          userId: $user_id\n          categoryId: $category_id\n          amount: $amount\n          date: $date\n          description: $description\n          transactionId: $transaction_id\n          type: $type\n        }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n": types.AddTransactionDocument,
     "\n  mutation EDIT_TRANSACTION1(\n    $id: String!\n    $amount: Float!\n    $date: Datetime!\n    $categoryId: String!\n    $description: String!\n    $type: Typetransaction!\n    $clientMutationId: String!\n  ) {\n    updateTransaction(\n      input: {\n        patch: {\n          amount: $amount\n          date: $date\n          categoryId: $categoryId\n          description: $description\n          type: $type\n        }\n        transactionId: $id\n        clientMutationId: $clientMutationId\n      }\n    ) {\n      transaction {\n        transactionId\n        type\n        date\n        categoryId\n        description\n        amount\n      }\n    }\n  }\n": types.Edit_Transaction1Document,
     "\n  fragment Profile on User {\n    firstName\n    lastName\n    gender\n    email\n    tel\n    picture\n    date\n  }\n": types.ProfileFragmentDoc,
+    "\n      query GetUsersDevices($usersIds: [String!]!) {\n        userDevices(filter: { userId: { in: $usersIds } }) {\n          nodes {\n            userId\n            token\n          }\n        }\n      }\n    ": types.GetUsersDevicesDocument,
+    "\n        mutation NotifyUsers($notifications: [NotificationInput!]) {\n          mnCreateNotification(input: { mnNotification: $notifications }) {\n            clientMutationId\n          }\n        }\n      ": types.NotifyUsersDocument,
     "\n      query GetProfile($oidcId: String!) {\n        user(oidcId: $oidcId) { ...Profile }\n        \n      }\n    ": types.GetProfileDocument,
     "\n      subscription ProfileSub($oidcId: String!) {\n        user(oidcId: $oidcId) { ...Profile }\n        \n      }\n    ": types.ProfileSubDocument,
     "\n  query GET_USER_TRANSACTIONS($userId: String!) {\n    transactions(orderBy: DATE_DESC, condition: { userId: $userId }) {\n      nodes {\n        transactionId\n        type\n        date\n        amount\n      }\n    }\n  }\n": types.Get_User_TransactionsDocument,
@@ -32,7 +35,9 @@ const documents = {
     "\n  mutation ADD_CATEGORY(\n    $id: String!\n    $userId: String!\n    $name: String!\n    $icon: String!\n    $iconColor: String!\n    $type: Typetransaction!\n  ) {\n    createCategory(\n      input: {\n        category: {\n          id: $id\n          userId: $userId\n          name: $name\n          icon: $icon\n          iconColor: $iconColor\n          type: $type\n        }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n": types.Add_CategoryDocument,
     "\n  mutation DELETE_CATEGORY($id: String!) {\n    deleteCategory(input: { id: $id }) {\n      clientMutationId\n    }\n  }\n": types.Delete_CategoryDocument,
     "\n  mutation UPDATE_CATEGORY(\n    $id: String!\n    $name: String!\n    $icon: String!\n    $iconColor: String!\n    $type: Typetransaction!\n  ) {\n    updateCategory(\n      input: {\n        id: $id\n        patch: { name: $name, icon: $icon, iconColor: $iconColor, type: $type }\n      }\n    ) {\n      clientMutationId\n    }\n  }\n": types.Update_CategoryDocument,
+    "\n    subscription Notifs($userId: String!) {\n      notifications(condition: {userId: $userId}, orderBy: T_DESC) {\n        nodes {\n          id\n          t\n          isRead\n          data\n        }\n      }\n    }\n    ": types.NotifsDocument,
     "\n  query GET_TRANSACTIONS3($userId: String!) {\n    transactions(orderBy: DATE_DESC, condition: { userId: $userId }) {\n      nodes {\n        transactionId\n        type\n        date\n        amount\n        category {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.Get_Transactions3Document,
+    "\n      mutation SetUserToken($userId: String!, $token: String!, $ua: JSON) {\n        upsertUserDevice(\n          input: { userDevice: { userId: $userId, token: $token, ua: $ua } }\n          where: { token: $token, userId: $userId }\n        ) {\n          clientMutationId\n        }\n      }\n    ": types.SetUserTokenDocument,
     "\n  query GET_TRANSACTIONS4($userId: String!) {\n    transactions(orderBy: DATE_DESC, condition: { userId: $userId }) {\n      nodes {\n        transactionId\n        type\n        userId\n        categoryId\n        date\n        description\n        amount\n        category {\n          id\n          name\n          icon\n          iconColor\n        }\n      }\n    }\n  }\n": types.Get_Transactions4Document,
     "\n  mutation DELETE_TRANSACTION($id: String!) {\n    deleteTransaction(input: { transactionId: $id }) {\n      clientMutationId\n    }\n  }\n": types.Delete_TransactionDocument,
     "\n  mutation EDIT_TRANSACTION2(\n    $id: String!\n    $amount: Float!\n    $categoryId: String!\n    $date: Datetime!\n    $description: String!\n    $type: Typetransaction!\n    $clientMutationId: String!\n  ) {\n    updateTransaction(\n      input: {\n        patch: {\n          amount: $amount\n          categoryId: $categoryId\n          date: $date\n          description: $description\n          type: $type\n        }\n        transactionId: $id\n        clientMutationId: $clientMutationId\n      }\n    ) {\n      transaction {\n        transactionId\n        type\n        categoryId\n        date\n        description\n        amount\n      }\n    }\n  }\n": types.Edit_Transaction2Document,
@@ -65,6 +70,10 @@ export function gql(source: "\n        mutation InitProfile(\n          $oidcId:
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n      mutation ToggleIsRead($id: String!, $isRead: Boolean!) {\n        updateNotification(input: {id: $id, patch: {isRead: $isRead}}){clientMutationId}\n      }\n    "): (typeof documents)["\n      mutation ToggleIsRead($id: String!, $isRead: Boolean!) {\n        updateNotification(input: {id: $id, patch: {isRead: $isRead}}){clientMutationId}\n      }\n    "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  query GET_CATEGORIES($userId: String!) {\n    categories(condition: { userId: $userId }) {\n      nodes {\n        type\n        id\n        name\n        icon\n        iconColor\n      }\n    }\n  }\n"): (typeof documents)["\n  query GET_CATEGORIES($userId: String!) {\n    categories(condition: { userId: $userId }) {\n      nodes {\n        type\n        id\n        name\n        icon\n        iconColor\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -78,6 +87,14 @@ export function gql(source: "\n  mutation EDIT_TRANSACTION1(\n    $id: String!\n
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  fragment Profile on User {\n    firstName\n    lastName\n    gender\n    email\n    tel\n    picture\n    date\n  }\n"): (typeof documents)["\n  fragment Profile on User {\n    firstName\n    lastName\n    gender\n    email\n    tel\n    picture\n    date\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n      query GetUsersDevices($usersIds: [String!]!) {\n        userDevices(filter: { userId: { in: $usersIds } }) {\n          nodes {\n            userId\n            token\n          }\n        }\n      }\n    "): (typeof documents)["\n      query GetUsersDevices($usersIds: [String!]!) {\n        userDevices(filter: { userId: { in: $usersIds } }) {\n          nodes {\n            userId\n            token\n          }\n        }\n      }\n    "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n        mutation NotifyUsers($notifications: [NotificationInput!]) {\n          mnCreateNotification(input: { mnNotification: $notifications }) {\n            clientMutationId\n          }\n        }\n      "): (typeof documents)["\n        mutation NotifyUsers($notifications: [NotificationInput!]) {\n          mnCreateNotification(input: { mnNotification: $notifications }) {\n            clientMutationId\n          }\n        }\n      "];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -133,7 +150,15 @@ export function gql(source: "\n  mutation UPDATE_CATEGORY(\n    $id: String!\n  
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n    subscription Notifs($userId: String!) {\n      notifications(condition: {userId: $userId}, orderBy: T_DESC) {\n        nodes {\n          id\n          t\n          isRead\n          data\n        }\n      }\n    }\n    "): (typeof documents)["\n    subscription Notifs($userId: String!) {\n      notifications(condition: {userId: $userId}, orderBy: T_DESC) {\n        nodes {\n          id\n          t\n          isRead\n          data\n        }\n      }\n    }\n    "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  query GET_TRANSACTIONS3($userId: String!) {\n    transactions(orderBy: DATE_DESC, condition: { userId: $userId }) {\n      nodes {\n        transactionId\n        type\n        date\n        amount\n        category {\n          id\n          name\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GET_TRANSACTIONS3($userId: String!) {\n    transactions(orderBy: DATE_DESC, condition: { userId: $userId }) {\n      nodes {\n        transactionId\n        type\n        date\n        amount\n        category {\n          id\n          name\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n      mutation SetUserToken($userId: String!, $token: String!, $ua: JSON) {\n        upsertUserDevice(\n          input: { userDevice: { userId: $userId, token: $token, ua: $ua } }\n          where: { token: $token, userId: $userId }\n        ) {\n          clientMutationId\n        }\n      }\n    "): (typeof documents)["\n      mutation SetUserToken($userId: String!, $token: String!, $ua: JSON) {\n        upsertUserDevice(\n          input: { userDevice: { userId: $userId, token: $token, ua: $ua } }\n          where: { token: $token, userId: $userId }\n        ) {\n          clientMutationId\n        }\n      }\n    "];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

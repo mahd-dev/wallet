@@ -108,10 +108,10 @@ export default function MainPanelContent() {
             title={"Signin"}
             onClick={(e) => {
               e.preventDefault();
-              navigate(`/auth`);
+              navigate(`/login`);
               setMainPanel(false);
             }}
-            linkProps={{ href: "/auth" }}
+            linkProps={{ href: "/login" }}
           />
         )}
       </List>

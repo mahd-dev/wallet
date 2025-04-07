@@ -85,6 +85,32 @@ export type BigIntFilter = {
   notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
+/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
+export type BooleanFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
 /** A filter to be used against aggregates of `Budget` object types. */
 export type BudgetAggregatesFilter = {
   /** Mean average aggregate over matching `Budget` objects. */
@@ -731,6 +757,17 @@ export type CreateCategoryInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** All input for the create `Notification` mutation. */
+export type CreateNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Notification` to be created by this mutation. */
+  notification: NotificationInput;
+};
+
 /** All input for the create `OtpVerification` mutation. */
 export type CreateOtpVerificationInput = {
   /**
@@ -846,6 +883,27 @@ export type DeleteCategoryByNodeIdInput = {
 
 /** All input for the `deleteCategory` mutation. */
 export type DeleteCategoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+};
+
+/** All input for the `deleteNotificationByNodeId` mutation. */
+export type DeleteNotificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Notification` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteNotification` mutation. */
+export type DeleteNotificationInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1084,6 +1142,157 @@ export type JsonFilter = {
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['JSON']['input']>>;
 };
+
+/** A filter to be used against aggregates of `Notification` object types. */
+export type NotificationAggregatesFilter = {
+  /** Distinct count aggregate over matching `Notification` objects. */
+  distinctCount?: InputMaybe<NotificationDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Notification` object to be included within the aggregate. */
+  filter?: InputMaybe<NotificationFilter>;
+};
+
+/**
+ * A condition to be used against `Notification` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type NotificationCondition = {
+  /** Checks for equality with the object’s `data` field. */
+  data?: InputMaybe<Scalars['JSON']['input']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `isRead` field. */
+  isRead?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Checks for equality with the object’s `t` field. */
+  t?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type NotificationDistinctCountAggregateFilter = {
+  data?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  isRead?: InputMaybe<BigIntFilter>;
+  t?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
+};
+
+/** A filter to be used against `Notification` object types. All fields are combined with a logical ‘and.’ */
+export type NotificationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<NotificationFilter>>;
+  /** Filter by the object’s `data` field. */
+  data?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `isRead` field. */
+  isRead?: InputMaybe<BooleanFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<NotificationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<NotificationFilter>>;
+  /** Filter by the object’s `t` field. */
+  t?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `Notification` for usage during aggregation. */
+export enum NotificationGroupBy {
+  Data = 'DATA',
+  IsRead = 'IS_READ',
+  T = 'T',
+  TTruncatedToDay = 'T_TRUNCATED_TO_DAY',
+  TTruncatedToHour = 'T_TRUNCATED_TO_HOUR',
+  UserId = 'USER_ID'
+}
+
+export type NotificationHavingAverageInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingDistinctCountInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `Notification` aggregates. */
+export type NotificationHavingInput = {
+  AND?: InputMaybe<Array<NotificationHavingInput>>;
+  OR?: InputMaybe<Array<NotificationHavingInput>>;
+  average?: InputMaybe<NotificationHavingAverageInput>;
+  distinctCount?: InputMaybe<NotificationHavingDistinctCountInput>;
+  max?: InputMaybe<NotificationHavingMaxInput>;
+  min?: InputMaybe<NotificationHavingMinInput>;
+  stddevPopulation?: InputMaybe<NotificationHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<NotificationHavingStddevSampleInput>;
+  sum?: InputMaybe<NotificationHavingSumInput>;
+  variancePopulation?: InputMaybe<NotificationHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<NotificationHavingVarianceSampleInput>;
+};
+
+export type NotificationHavingMaxInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingMinInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingStddevPopulationInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingStddevSampleInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingSumInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingVariancePopulationInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingVarianceSampleInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `Notification` */
+export type NotificationInput = {
+  data: Scalars['JSON']['input'];
+  id: Scalars['String']['input'];
+  isRead?: InputMaybe<Scalars['Boolean']['input']>;
+  t?: InputMaybe<Scalars['Datetime']['input']>;
+  userId: Scalars['String']['input'];
+};
+
+/** Represents an update to a `Notification`. Fields that are set will be updated. */
+export type NotificationPatch = {
+  data?: InputMaybe<Scalars['JSON']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  isRead?: InputMaybe<Scalars['Boolean']['input']>;
+  t?: InputMaybe<Scalars['Datetime']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Methods to use when ordering `Notification`. */
+export enum NotificationsOrderBy {
+  DataAsc = 'DATA_ASC',
+  DataDesc = 'DATA_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  IsReadAsc = 'IS_READ_ASC',
+  IsReadDesc = 'IS_READ_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TAsc = 'T_ASC',
+  TDesc = 'T_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 /** A filter to be used against aggregates of `OtpVerification` object types. */
 export type OtpVerificationAggregatesFilter = {
@@ -1743,6 +1952,31 @@ export type UpdateCategoryInput = {
   patch: CategoryPatch;
 };
 
+/** All input for the `updateNotificationByNodeId` mutation. */
+export type UpdateNotificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Notification` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `Notification` being updated. */
+  patch: NotificationPatch;
+};
+
+/** All input for the `updateNotification` mutation. */
+export type UpdateNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+  /** An object where the defined keys will be set on the `Notification` being updated. */
+  patch: NotificationPatch;
+};
+
 /** All input for the `updateOtpVerificationByNodeId` mutation. */
 export type UpdateOtpVerificationByNodeIdInput = {
   /**
@@ -1904,6 +2138,19 @@ export type UpsertCategoryInput = {
 
 /** Where conditions for the upsert `Category` mutation. */
 export type UpsertCategoryWhere = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** All input for the upsert `Notification` mutation. */
+export type UpsertNotificationInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Notification` to be upserted by this mutation. */
+  notification: NotificationInput;
+};
+
+/** Where conditions for the upsert `Notification` mutation. */
+export type UpsertNotificationWhere = {
   id?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -2103,6 +2350,10 @@ export type UserFilter = {
   lastName?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `notificationsByUserId` relation. */
+  notificationsByUserId?: InputMaybe<UserToManyNotificationFilter>;
+  /** Some related `notificationsByUserId` exist. */
+  notificationsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `oidcId` field. */
   oidcId?: InputMaybe<StringFilter>;
   /** Checks for any expressions in this list. */
@@ -2275,6 +2526,18 @@ export type UserToManyCategoryFilter = {
   none?: InputMaybe<CategoryFilter>;
   /** Some related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<CategoryFilter>;
+};
+
+/** A filter to be used against many `Notification` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyNotificationFilter = {
+  /** Aggregates across related `Notification` match the filter criteria. */
+  aggregates?: InputMaybe<NotificationAggregatesFilter>;
+  /** Every related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<NotificationFilter>;
+  /** No related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<NotificationFilter>;
+  /** Some related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<NotificationFilter>;
 };
 
 /** A filter to be used against many `OtpVerification` object types. All fields are combined with a logical ‘and.’ */
@@ -2558,6 +2821,98 @@ export enum UsersOrderBy {
   LastNameAsc = 'LAST_NAME_ASC',
   LastNameDesc = 'LAST_NAME_DESC',
   Natural = 'NATURAL',
+  NotificationsByUserIdAverageDataAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_DATA_ASC',
+  NotificationsByUserIdAverageDataDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_DATA_DESC',
+  NotificationsByUserIdAverageIdAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_ID_ASC',
+  NotificationsByUserIdAverageIdDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_ID_DESC',
+  NotificationsByUserIdAverageIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_IS_READ_ASC',
+  NotificationsByUserIdAverageIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_IS_READ_DESC',
+  NotificationsByUserIdAverageTAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_T_ASC',
+  NotificationsByUserIdAverageTDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_T_DESC',
+  NotificationsByUserIdAverageUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  NotificationsByUserIdAverageUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  NotificationsByUserIdCountAsc = 'NOTIFICATIONS_BY_USER_ID_COUNT_ASC',
+  NotificationsByUserIdCountDesc = 'NOTIFICATIONS_BY_USER_ID_COUNT_DESC',
+  NotificationsByUserIdDistinctCountDataAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_DATA_ASC',
+  NotificationsByUserIdDistinctCountDataDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_DATA_DESC',
+  NotificationsByUserIdDistinctCountIdAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
+  NotificationsByUserIdDistinctCountIdDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
+  NotificationsByUserIdDistinctCountIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_IS_READ_ASC',
+  NotificationsByUserIdDistinctCountIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_IS_READ_DESC',
+  NotificationsByUserIdDistinctCountTAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_T_ASC',
+  NotificationsByUserIdDistinctCountTDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_T_DESC',
+  NotificationsByUserIdDistinctCountUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  NotificationsByUserIdDistinctCountUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  NotificationsByUserIdMaxDataAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_DATA_ASC',
+  NotificationsByUserIdMaxDataDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_DATA_DESC',
+  NotificationsByUserIdMaxIdAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_ID_ASC',
+  NotificationsByUserIdMaxIdDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_ID_DESC',
+  NotificationsByUserIdMaxIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_IS_READ_ASC',
+  NotificationsByUserIdMaxIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_IS_READ_DESC',
+  NotificationsByUserIdMaxTAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_T_ASC',
+  NotificationsByUserIdMaxTDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_T_DESC',
+  NotificationsByUserIdMaxUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_USER_ID_ASC',
+  NotificationsByUserIdMaxUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_USER_ID_DESC',
+  NotificationsByUserIdMinDataAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_DATA_ASC',
+  NotificationsByUserIdMinDataDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_DATA_DESC',
+  NotificationsByUserIdMinIdAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_ID_ASC',
+  NotificationsByUserIdMinIdDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_ID_DESC',
+  NotificationsByUserIdMinIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_IS_READ_ASC',
+  NotificationsByUserIdMinIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_IS_READ_DESC',
+  NotificationsByUserIdMinTAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_T_ASC',
+  NotificationsByUserIdMinTDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_T_DESC',
+  NotificationsByUserIdMinUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_USER_ID_ASC',
+  NotificationsByUserIdMinUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_USER_ID_DESC',
+  NotificationsByUserIdStddevPopulationDataAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_DATA_ASC',
+  NotificationsByUserIdStddevPopulationDataDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_DATA_DESC',
+  NotificationsByUserIdStddevPopulationIdAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
+  NotificationsByUserIdStddevPopulationIdDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
+  NotificationsByUserIdStddevPopulationIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_IS_READ_ASC',
+  NotificationsByUserIdStddevPopulationIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_IS_READ_DESC',
+  NotificationsByUserIdStddevPopulationTAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_T_ASC',
+  NotificationsByUserIdStddevPopulationTDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_T_DESC',
+  NotificationsByUserIdStddevPopulationUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  NotificationsByUserIdStddevPopulationUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  NotificationsByUserIdStddevSampleDataAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_DATA_ASC',
+  NotificationsByUserIdStddevSampleDataDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_DATA_DESC',
+  NotificationsByUserIdStddevSampleIdAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
+  NotificationsByUserIdStddevSampleIdDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
+  NotificationsByUserIdStddevSampleIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_IS_READ_ASC',
+  NotificationsByUserIdStddevSampleIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_IS_READ_DESC',
+  NotificationsByUserIdStddevSampleTAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_T_ASC',
+  NotificationsByUserIdStddevSampleTDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_T_DESC',
+  NotificationsByUserIdStddevSampleUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  NotificationsByUserIdStddevSampleUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  NotificationsByUserIdSumDataAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_DATA_ASC',
+  NotificationsByUserIdSumDataDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_DATA_DESC',
+  NotificationsByUserIdSumIdAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_ID_ASC',
+  NotificationsByUserIdSumIdDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_ID_DESC',
+  NotificationsByUserIdSumIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_IS_READ_ASC',
+  NotificationsByUserIdSumIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_IS_READ_DESC',
+  NotificationsByUserIdSumTAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_T_ASC',
+  NotificationsByUserIdSumTDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_T_DESC',
+  NotificationsByUserIdSumUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_USER_ID_ASC',
+  NotificationsByUserIdSumUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_USER_ID_DESC',
+  NotificationsByUserIdVariancePopulationDataAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_DATA_ASC',
+  NotificationsByUserIdVariancePopulationDataDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_DATA_DESC',
+  NotificationsByUserIdVariancePopulationIdAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
+  NotificationsByUserIdVariancePopulationIdDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
+  NotificationsByUserIdVariancePopulationIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_IS_READ_ASC',
+  NotificationsByUserIdVariancePopulationIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_IS_READ_DESC',
+  NotificationsByUserIdVariancePopulationTAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_T_ASC',
+  NotificationsByUserIdVariancePopulationTDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_T_DESC',
+  NotificationsByUserIdVariancePopulationUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  NotificationsByUserIdVariancePopulationUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  NotificationsByUserIdVarianceSampleDataAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_DATA_ASC',
+  NotificationsByUserIdVarianceSampleDataDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_DATA_DESC',
+  NotificationsByUserIdVarianceSampleIdAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
+  NotificationsByUserIdVarianceSampleIdDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
+  NotificationsByUserIdVarianceSampleIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_IS_READ_ASC',
+  NotificationsByUserIdVarianceSampleIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_IS_READ_DESC',
+  NotificationsByUserIdVarianceSampleTAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_T_ASC',
+  NotificationsByUserIdVarianceSampleTDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_T_DESC',
+  NotificationsByUserIdVarianceSampleUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  NotificationsByUserIdVarianceSampleUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   OidcIdAsc = 'OIDC_ID_ASC',
   OidcIdDesc = 'OIDC_ID_DESC',
   OtpVerificationsByUserIdAverageCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
@@ -2938,6 +3293,36 @@ export enum UsersOrderBy {
   UserDevicesByUserIdVarianceSampleUserIdDesc = 'USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC'
 }
 
+/** All input for the create mn`Notification` mutation. */
+export type MnCreateNotificationInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The one or many `Notification` to be created by this mutation. */
+  mnNotification?: InputMaybe<Array<NotificationInput>>;
+};
+
+/** All input for the delete `mnDeleteNotification` mutation. */
+export type MnDeleteNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The one or many `Notification` to be deleted. You must provide the PK values! */
+  mnPatch?: InputMaybe<Array<NotificationPatch>>;
+};
+
+/** All input for the update `mnUpdateNotification` mutation. */
+export type MnUpdateNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The one or many `Notification` to be updated. */
+  mnPatch?: InputMaybe<Array<NotificationPatch>>;
+};
+
 export type InitProfileMutationVariables = Exact<{
   oidcId: Scalars['String']['input'];
   firstName?: InputMaybe<Scalars['String']['input']>;
@@ -2949,6 +3334,14 @@ export type InitProfileMutationVariables = Exact<{
 
 
 export type InitProfileMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'CreateUserPayload', clientMutationId?: string | null } | null };
+
+export type ToggleIsReadMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  isRead: Scalars['Boolean']['input'];
+}>;
+
+
+export type ToggleIsReadMutation = { __typename?: 'Mutation', updateNotification?: { __typename?: 'UpdateNotificationPayload', clientMutationId?: string | null } | null };
 
 export type Get_CategoriesQueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -2984,6 +3377,20 @@ export type Edit_Transaction1MutationVariables = Exact<{
 export type Edit_Transaction1Mutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, categoryId?: string | null, description?: string | null, amount: number } | null } | null };
 
 export type ProfileFragment = { __typename?: 'User', firstName?: string | null, lastName?: string | null, gender?: UserGender | null, email?: string | null, tel?: string | null, picture?: string | null, date?: any | null } & { ' $fragmentName'?: 'ProfileFragment' };
+
+export type GetUsersDevicesQueryVariables = Exact<{
+  usersIds: Array<Scalars['String']['input']> | Scalars['String']['input'];
+}>;
+
+
+export type GetUsersDevicesQuery = { __typename?: 'Query', userDevices?: { __typename?: 'UserDevicesConnection', nodes: Array<{ __typename?: 'UserDevice', userId: string, token: string }> } | null };
+
+export type NotifyUsersMutationVariables = Exact<{
+  notifications?: InputMaybe<Array<NotificationInput> | NotificationInput>;
+}>;
+
+
+export type NotifyUsersMutation = { __typename?: 'Mutation', mnCreateNotification?: { __typename?: 'mnCreateNotificationPayload', clientMutationId?: string | null } | null };
 
 export type GetProfileQueryVariables = Exact<{
   oidcId: Scalars['String']['input'];
@@ -3101,12 +3508,28 @@ export type Update_CategoryMutationVariables = Exact<{
 
 export type Update_CategoryMutation = { __typename?: 'Mutation', updateCategory?: { __typename?: 'UpdateCategoryPayload', clientMutationId?: string | null } | null };
 
+export type NotifsSubscriptionVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type NotifsSubscription = { __typename?: 'Subscription', notifications?: { __typename?: 'NotificationsConnection', nodes: Array<{ __typename?: 'Notification', id: string, t: any, isRead: boolean, data: { [key: string]: any } }> } | null };
+
 export type Get_Transactions3QueryVariables = Exact<{
   userId: Scalars['String']['input'];
 }>;
 
 
 export type Get_Transactions3Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
+
+export type SetUserTokenMutationVariables = Exact<{
+  userId: Scalars['String']['input'];
+  token: Scalars['String']['input'];
+  ua?: InputMaybe<Scalars['JSON']['input']>;
+}>;
+
+
+export type SetUserTokenMutation = { __typename?: 'Mutation', upsertUserDevice?: { __typename?: 'UpsertUserDevicePayload', clientMutationId?: string | null } | null };
 
 export type Get_Transactions4QueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -3185,9 +3608,12 @@ export type SignupMutation = { __typename?: 'Mutation', createUser?: { __typenam
 
 export const ProfileFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<ProfileFragment, unknown>;
 export const InitProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InitProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tel"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"picture"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"firstName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lastName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"tel"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tel"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"picture"},"value":{"kind":"Variable","name":{"kind":"Name","value":"picture"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<InitProfileMutation, InitProfileMutationVariables>;
+export const ToggleIsReadDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ToggleIsRead"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isRead"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateNotification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"isRead"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isRead"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<ToggleIsReadMutation, ToggleIsReadMutationVariables>;
 export const Get_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_CATEGORIES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}}]}}]}}]}}]} as unknown as DocumentNode<Get_CategoriesQuery, Get_CategoriesQueryVariables>;
 export const AddTransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddTransaction"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"transaction_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transaction"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"transaction_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<AddTransactionMutation, AddTransactionMutationVariables>;
 export const Edit_Transaction1Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION1"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_Transaction1Mutation, Edit_Transaction1MutationVariables>;
+export const GetUsersDevicesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUsersDevices"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"usersIds"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userDevices"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"usersIds"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]}}]} as unknown as DocumentNode<GetUsersDevicesQuery, GetUsersDevicesQueryVariables>;
+export const NotifyUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"NotifyUsers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"notifications"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NotificationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mnCreateNotification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"mnNotification"},"value":{"kind":"Variable","name":{"kind":"Name","value":"notifications"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<NotifyUsersMutation, NotifyUsersMutationVariables>;
 export const GetProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Profile"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
 export const ProfileSubDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"ProfileSub"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Profile"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<ProfileSubSubscription, ProfileSubSubscriptionVariables>;
 export const Get_User_TransactionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_TRANSACTIONS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_TransactionsQuery, Get_User_TransactionsQueryVariables>;
@@ -3201,7 +3627,9 @@ export const Get_User_Categories3Document = {"kind":"Document","definitions":[{"
 export const Add_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ADD_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"icon"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"icon"},"value":{"kind":"Variable","name":{"kind":"Name","value":"icon"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"iconColor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Add_CategoryMutation, Add_CategoryMutationVariables>;
 export const Delete_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_CategoryMutation, Delete_CategoryMutationVariables>;
 export const Update_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UPDATE_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"icon"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"icon"},"value":{"kind":"Variable","name":{"kind":"Name","value":"icon"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"iconColor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Update_CategoryMutation, Update_CategoryMutationVariables>;
+export const NotifsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"Notifs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"notifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"T_DESC"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"t"}},{"kind":"Field","name":{"kind":"Name","value":"isRead"}},{"kind":"Field","name":{"kind":"Name","value":"data"}}]}}]}}]}}]} as unknown as DocumentNode<NotifsSubscription, NotifsSubscriptionVariables>;
 export const Get_Transactions3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions3Query, Get_Transactions3QueryVariables>;
+export const SetUserTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetUserToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ua"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"JSON"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertUserDevice"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userDevice"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"token"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"ua"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ua"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"token"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<SetUserTokenMutation, SetUserTokenMutationVariables>;
 export const Get_Transactions4Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS4"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions4Query, Get_Transactions4QueryVariables>;
 export const Delete_TransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_TRANSACTION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_TransactionMutation, Delete_TransactionMutationVariables>;
 export const Edit_Transaction2Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION2"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_Transaction2Mutation, Edit_Transaction2MutationVariables>;
@@ -3287,6 +3715,32 @@ export type BigIntFilter = {
   notEqualTo?: InputMaybe<Scalars['BigInt']['input']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
+export type BooleanFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Boolean']['input']>>;
 };
 
 export type Budget = Node & {
@@ -4235,6 +4689,41 @@ export type CreateCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
 };
 
+/** All input for the create `Notification` mutation. */
+export type CreateNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Notification` to be created by this mutation. */
+  notification: NotificationInput;
+};
+
+/** The output of our create `Notification` mutation. */
+export type CreateNotificationPayload = {
+  __typename?: 'CreateNotificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `Notification` that was created by this mutation. */
+  notification?: Maybe<Notification>;
+  /** An edge for our `Notification`. May be used by Relay 1. */
+  notificationEdge?: Maybe<NotificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Notification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our create `Notification` mutation. */
+export type CreateNotificationPayloadNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
+};
+
 /** All input for the create `OtpVerification` mutation. */
 export type CreateOtpVerificationInput = {
   /**
@@ -4528,6 +5017,52 @@ export type DeleteCategoryPayload = {
 /** The output of our delete `Category` mutation. */
 export type DeleteCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+/** All input for the `deleteNotificationByNodeId` mutation. */
+export type DeleteNotificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Notification` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteNotification` mutation. */
+export type DeleteNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+};
+
+/** The output of our delete `Notification` mutation. */
+export type DeleteNotificationPayload = {
+  __typename?: 'DeleteNotificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedNotificationNodeId?: Maybe<Scalars['ID']['output']>;
+  /** The `Notification` that was deleted by this mutation. */
+  notification?: Maybe<Notification>;
+  /** An edge for our `Notification`. May be used by Relay 1. */
+  notificationEdge?: Maybe<NotificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Notification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our delete `Notification` mutation. */
+export type DeleteNotificationPayloadNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
 };
 
 /** All input for the `deleteOtpVerificationByNodeId` mutation. */
@@ -4893,6 +5428,8 @@ export type Mutation = {
   createBudget?: Maybe<CreateBudgetPayload>;
   /** Creates a single `Category`. */
   createCategory?: Maybe<CreateCategoryPayload>;
+  /** Creates a single `Notification`. */
+  createNotification?: Maybe<CreateNotificationPayload>;
   /** Creates a single `OtpVerification`. */
   createOtpVerification?: Maybe<CreateOtpVerificationPayload>;
   /** Creates a single `Report`. */
@@ -4911,6 +5448,10 @@ export type Mutation = {
   deleteCategory?: Maybe<DeleteCategoryPayload>;
   /** Deletes a single `Category` using its globally unique id. */
   deleteCategoryByNodeId?: Maybe<DeleteCategoryPayload>;
+  /** Deletes a single `Notification` using a unique key. */
+  deleteNotification?: Maybe<DeleteNotificationPayload>;
+  /** Deletes a single `Notification` using its globally unique id. */
+  deleteNotificationByNodeId?: Maybe<DeleteNotificationPayload>;
   /** Deletes a single `OtpVerification` using a unique key. */
   deleteOtpVerification?: Maybe<DeleteOtpVerificationPayload>;
   /** Deletes a single `OtpVerification` using its globally unique id. */
@@ -4933,6 +5474,12 @@ export type Mutation = {
   deleteUserDeviceByNodeId?: Maybe<DeleteUserDevicePayload>;
   /** Deletes a single `UserDevice` using a unique key. */
   deleteUserDeviceByToken?: Maybe<DeleteUserDevicePayload>;
+  /** Creates one or many `Notification`. */
+  mnCreateNotification?: Maybe<MnCreateNotificationPayload>;
+  /** Deletes one or many `Notification` a unique key via a patch. */
+  mnDeleteNotification?: Maybe<MnDeleteNotificationPayload>;
+  /** Updates one or many `Notification` using a unique key and a patch. */
+  mnUpdateNotification?: Maybe<MnUpdateNotificationPayload>;
   /** Updates a single `Budget` using a unique key and a patch. */
   updateBudget?: Maybe<UpdateBudgetPayload>;
   /** Updates a single `Budget` using its globally unique id and a patch. */
@@ -4941,6 +5488,10 @@ export type Mutation = {
   updateCategory?: Maybe<UpdateCategoryPayload>;
   /** Updates a single `Category` using its globally unique id and a patch. */
   updateCategoryByNodeId?: Maybe<UpdateCategoryPayload>;
+  /** Updates a single `Notification` using a unique key and a patch. */
+  updateNotification?: Maybe<UpdateNotificationPayload>;
+  /** Updates a single `Notification` using its globally unique id and a patch. */
+  updateNotificationByNodeId?: Maybe<UpdateNotificationPayload>;
   /** Updates a single `OtpVerification` using a unique key and a patch. */
   updateOtpVerification?: Maybe<UpdateOtpVerificationPayload>;
   /** Updates a single `OtpVerification` using its globally unique id and a patch. */
@@ -4967,6 +5518,8 @@ export type Mutation = {
   upsertBudget?: Maybe<UpsertBudgetPayload>;
   /** Upserts a single `Category`. */
   upsertCategory?: Maybe<UpsertCategoryPayload>;
+  /** Upserts a single `Notification`. */
+  upsertNotification?: Maybe<UpsertNotificationPayload>;
   /** Upserts a single `OtpVerification`. */
   upsertOtpVerification?: Maybe<UpsertOtpVerificationPayload>;
   /** Upserts a single `Report`. */
@@ -4989,6 +5542,12 @@ export type MutationCreateBudgetArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateCategoryArgs = {
   input: CreateCategoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateNotificationArgs = {
+  input: CreateNotificationInput;
 };
 
 
@@ -5043,6 +5602,18 @@ export type MutationDeleteCategoryArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteCategoryByNodeIdArgs = {
   input: DeleteCategoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteNotificationArgs = {
+  input: DeleteNotificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteNotificationByNodeIdArgs = {
+  input: DeleteNotificationByNodeIdInput;
 };
 
 
@@ -5113,6 +5684,24 @@ export type MutationDeleteUserDeviceByTokenArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationMnCreateNotificationArgs = {
+  input: MnCreateNotificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationMnDeleteNotificationArgs = {
+  input: MnDeleteNotificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationMnUpdateNotificationArgs = {
+  input: MnUpdateNotificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateBudgetArgs = {
   input: UpdateBudgetInput;
 };
@@ -5133,6 +5722,18 @@ export type MutationUpdateCategoryArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateCategoryByNodeIdArgs = {
   input: UpdateCategoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateNotificationArgs = {
+  input: UpdateNotificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateNotificationByNodeIdArgs = {
+  input: UpdateNotificationByNodeIdInput;
 };
 
 
@@ -5217,6 +5818,13 @@ export type MutationUpsertCategoryArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertNotificationArgs = {
+  input: UpsertNotificationInput;
+  where?: InputMaybe<UpsertNotificationWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertOtpVerificationArgs = {
   input: UpsertOtpVerificationInput;
   where?: InputMaybe<UpsertOtpVerificationWhere>;
@@ -5255,6 +5863,224 @@ export type Node = {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']['output'];
 };
+
+export type Notification = Node & {
+  __typename?: 'Notification';
+  data: Scalars['JSON']['output'];
+  id: Scalars['String']['output'];
+  isRead: Scalars['Boolean']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']['output'];
+  t: Scalars['Datetime']['output'];
+  /** Reads a single `User` that is related to this `Notification`. */
+  user?: Maybe<User>;
+  userId: Scalars['String']['output'];
+};
+
+export type NotificationAggregates = {
+  __typename?: 'NotificationAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<NotificationDistinctCountAggregates>;
+  keys?: Maybe<Array<Scalars['String']['output']>>;
+};
+
+/** A filter to be used against aggregates of `Notification` object types. */
+export type NotificationAggregatesFilter = {
+  /** Distinct count aggregate over matching `Notification` objects. */
+  distinctCount?: InputMaybe<NotificationDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Notification` object to be included within the aggregate. */
+  filter?: InputMaybe<NotificationFilter>;
+};
+
+/**
+ * A condition to be used against `Notification` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type NotificationCondition = {
+  /** Checks for equality with the object’s `data` field. */
+  data?: InputMaybe<Scalars['JSON']['input']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `isRead` field. */
+  isRead?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Checks for equality with the object’s `t` field. */
+  t?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type NotificationDistinctCountAggregateFilter = {
+  data?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  isRead?: InputMaybe<BigIntFilter>;
+  t?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
+};
+
+export type NotificationDistinctCountAggregates = {
+  __typename?: 'NotificationDistinctCountAggregates';
+  /** Distinct count of data across the matching connection */
+  data?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of isRead across the matching connection */
+  isRead?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of t across the matching connection */
+  t?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of userId across the matching connection */
+  userId?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A filter to be used against `Notification` object types. All fields are combined with a logical ‘and.’ */
+export type NotificationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<NotificationFilter>>;
+  /** Filter by the object’s `data` field. */
+  data?: InputMaybe<JsonFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `isRead` field. */
+  isRead?: InputMaybe<BooleanFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<NotificationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<NotificationFilter>>;
+  /** Filter by the object’s `t` field. */
+  t?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `Notification` for usage during aggregation. */
+export enum NotificationGroupBy {
+  Data = 'DATA',
+  IsRead = 'IS_READ',
+  T = 'T',
+  TTruncatedToDay = 'T_TRUNCATED_TO_DAY',
+  TTruncatedToHour = 'T_TRUNCATED_TO_HOUR',
+  UserId = 'USER_ID'
+}
+
+export type NotificationHavingAverageInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingDistinctCountInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `Notification` aggregates. */
+export type NotificationHavingInput = {
+  AND?: InputMaybe<Array<NotificationHavingInput>>;
+  OR?: InputMaybe<Array<NotificationHavingInput>>;
+  average?: InputMaybe<NotificationHavingAverageInput>;
+  distinctCount?: InputMaybe<NotificationHavingDistinctCountInput>;
+  max?: InputMaybe<NotificationHavingMaxInput>;
+  min?: InputMaybe<NotificationHavingMinInput>;
+  stddevPopulation?: InputMaybe<NotificationHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<NotificationHavingStddevSampleInput>;
+  sum?: InputMaybe<NotificationHavingSumInput>;
+  variancePopulation?: InputMaybe<NotificationHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<NotificationHavingVarianceSampleInput>;
+};
+
+export type NotificationHavingMaxInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingMinInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingStddevPopulationInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingStddevSampleInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingSumInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingVariancePopulationInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type NotificationHavingVarianceSampleInput = {
+  t?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `Notification` */
+export type NotificationInput = {
+  data: Scalars['JSON']['input'];
+  id: Scalars['String']['input'];
+  isRead?: InputMaybe<Scalars['Boolean']['input']>;
+  t?: InputMaybe<Scalars['Datetime']['input']>;
+  userId: Scalars['String']['input'];
+};
+
+/** Represents an update to a `Notification`. Fields that are set will be updated. */
+export type NotificationPatch = {
+  data?: InputMaybe<Scalars['JSON']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  isRead?: InputMaybe<Scalars['Boolean']['input']>;
+  t?: InputMaybe<Scalars['Datetime']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A connection to a list of `Notification` values. */
+export type NotificationsConnection = {
+  __typename?: 'NotificationsConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<NotificationAggregates>;
+  /** A list of edges which contains the `Notification` and cursor to aid in pagination. */
+  edges: Array<NotificationsEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<NotificationAggregates>>;
+  /** A list of `Notification` objects. */
+  nodes: Array<Notification>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Notification` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `Notification` values. */
+export type NotificationsConnectionGroupedAggregatesArgs = {
+  groupBy: Array<NotificationGroupBy>;
+  having?: InputMaybe<NotificationHavingInput>;
+};
+
+/** A `Notification` edge in the connection. */
+export type NotificationsEdge = {
+  __typename?: 'NotificationsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Notification` at the end of the edge. */
+  node: Notification;
+};
+
+/** Methods to use when ordering `Notification`. */
+export enum NotificationsOrderBy {
+  DataAsc = 'DATA_ASC',
+  DataDesc = 'DATA_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  IsReadAsc = 'IS_READ_ASC',
+  IsReadDesc = 'IS_READ_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TAsc = 'T_ASC',
+  TDesc = 'T_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 export type OtpVerification = Node & {
   __typename?: 'OtpVerification';
@@ -5528,6 +6354,11 @@ export type Query = Node & {
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID']['output'];
+  notification?: Maybe<Notification>;
+  /** Reads a single `Notification` using its globally unique `ID`. */
+  notificationByNodeId?: Maybe<Notification>;
+  /** Reads and enables pagination through a set of `Notification`. */
+  notifications?: Maybe<NotificationsConnection>;
   otpVerification?: Maybe<OtpVerification>;
   /** Reads a single `OtpVerification` using its globally unique `ID`. */
   otpVerificationByNodeId?: Maybe<OtpVerification>;
@@ -5615,6 +6446,31 @@ export type QueryCategoryByNodeIdArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryNodeArgs = {
   nodeId: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryNotificationArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryNotificationByNodeIdArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryNotificationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<NotificationCondition>;
+  filter?: InputMaybe<NotificationFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
 };
 
 
@@ -6025,6 +6881,12 @@ export type Subscription = {
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. (live) */
   nodeId: Scalars['ID']['output'];
   /**  (live) */
+  notification?: Maybe<Notification>;
+  /** Reads a single `Notification` using its globally unique `ID`. (live) */
+  notificationByNodeId?: Maybe<Notification>;
+  /** Reads and enables pagination through a set of `Notification`. (live) */
+  notifications?: Maybe<NotificationsConnection>;
+  /**  (live) */
   otpVerification?: Maybe<OtpVerification>;
   /** Reads a single `OtpVerification` using its globally unique `ID`. (live) */
   otpVerificationByNodeId?: Maybe<OtpVerification>;
@@ -6264,6 +7126,94 @@ export type SubscriptionCategoryByNodeIdArgs = {
  */
 export type SubscriptionNodeArgs = {
   nodeId: Scalars['ID']['input'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionNotificationArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionNotificationByNodeIdArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionNotificationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<NotificationCondition>;
+  filter?: InputMaybe<NotificationFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
 };
 
 
@@ -7238,6 +8188,55 @@ export type UpdateCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
 };
 
+/** All input for the `updateNotificationByNodeId` mutation. */
+export type UpdateNotificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `Notification` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `Notification` being updated. */
+  patch: NotificationPatch;
+};
+
+/** All input for the `updateNotification` mutation. */
+export type UpdateNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+  /** An object where the defined keys will be set on the `Notification` being updated. */
+  patch: NotificationPatch;
+};
+
+/** The output of our update `Notification` mutation. */
+export type UpdateNotificationPayload = {
+  __typename?: 'UpdateNotificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `Notification` that was updated by this mutation. */
+  notification?: Maybe<Notification>;
+  /** An edge for our `Notification`. May be used by Relay 1. */
+  notificationEdge?: Maybe<NotificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Notification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our update `Notification` mutation. */
+export type UpdateNotificationPayloadNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
+};
+
 /** All input for the `updateOtpVerificationByNodeId` mutation. */
 export type UpdateOtpVerificationByNodeIdInput = {
   /**
@@ -7566,6 +8565,40 @@ export type UpsertCategoryWhere = {
   id?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** All input for the upsert `Notification` mutation. */
+export type UpsertNotificationInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Notification` to be upserted by this mutation. */
+  notification: NotificationInput;
+};
+
+/** The output of our upsert `Notification` mutation. */
+export type UpsertNotificationPayload = {
+  __typename?: 'UpsertNotificationPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `Notification` that was upserted by this mutation. */
+  notification?: Maybe<Notification>;
+  /** An edge for our `Notification`. May be used by Relay 1. */
+  notificationEdge?: Maybe<NotificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Notification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our upsert `Notification` mutation. */
+export type UpsertNotificationPayloadNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
+};
+
+/** Where conditions for the upsert `Notification` mutation. */
+export type UpsertNotificationWhere = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** All input for the upsert `OtpVerification` mutation. */
 export type UpsertOtpVerificationInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
@@ -7750,6 +8783,8 @@ export type User = Node & {
   lastName?: Maybe<Scalars['String']['output']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']['output'];
+  /** Reads and enables pagination through a set of `Notification`. */
+  notificationsByUserId: NotificationsConnection;
   oidcId: Scalars['String']['output'];
   /** Reads and enables pagination through a set of `OtpVerification`. */
   otpVerificationsByUserId: OtpVerificationsConnection;
@@ -7786,6 +8821,18 @@ export type UserCategoriesByUserIdArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+
+export type UserNotificationsByUserIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<NotificationCondition>;
+  filter?: InputMaybe<NotificationFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
 };
 
 
@@ -8056,6 +9103,10 @@ export type UserFilter = {
   lastName?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `notificationsByUserId` relation. */
+  notificationsByUserId?: InputMaybe<UserToManyNotificationFilter>;
+  /** Some related `notificationsByUserId` exist. */
+  notificationsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `oidcId` field. */
   oidcId?: InputMaybe<StringFilter>;
   /** Checks for any expressions in this list. */
@@ -8228,6 +9279,18 @@ export type UserToManyCategoryFilter = {
   none?: InputMaybe<CategoryFilter>;
   /** Some related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<CategoryFilter>;
+};
+
+/** A filter to be used against many `Notification` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyNotificationFilter = {
+  /** Aggregates across related `Notification` match the filter criteria. */
+  aggregates?: InputMaybe<NotificationAggregatesFilter>;
+  /** Every related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<NotificationFilter>;
+  /** No related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<NotificationFilter>;
+  /** Some related `Notification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<NotificationFilter>;
 };
 
 /** A filter to be used against many `OtpVerification` object types. All fields are combined with a logical ‘and.’ */
@@ -8544,6 +9607,98 @@ export enum UsersOrderBy {
   LastNameAsc = 'LAST_NAME_ASC',
   LastNameDesc = 'LAST_NAME_DESC',
   Natural = 'NATURAL',
+  NotificationsByUserIdAverageDataAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_DATA_ASC',
+  NotificationsByUserIdAverageDataDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_DATA_DESC',
+  NotificationsByUserIdAverageIdAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_ID_ASC',
+  NotificationsByUserIdAverageIdDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_ID_DESC',
+  NotificationsByUserIdAverageIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_IS_READ_ASC',
+  NotificationsByUserIdAverageIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_IS_READ_DESC',
+  NotificationsByUserIdAverageTAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_T_ASC',
+  NotificationsByUserIdAverageTDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_T_DESC',
+  NotificationsByUserIdAverageUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  NotificationsByUserIdAverageUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  NotificationsByUserIdCountAsc = 'NOTIFICATIONS_BY_USER_ID_COUNT_ASC',
+  NotificationsByUserIdCountDesc = 'NOTIFICATIONS_BY_USER_ID_COUNT_DESC',
+  NotificationsByUserIdDistinctCountDataAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_DATA_ASC',
+  NotificationsByUserIdDistinctCountDataDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_DATA_DESC',
+  NotificationsByUserIdDistinctCountIdAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
+  NotificationsByUserIdDistinctCountIdDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
+  NotificationsByUserIdDistinctCountIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_IS_READ_ASC',
+  NotificationsByUserIdDistinctCountIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_IS_READ_DESC',
+  NotificationsByUserIdDistinctCountTAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_T_ASC',
+  NotificationsByUserIdDistinctCountTDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_T_DESC',
+  NotificationsByUserIdDistinctCountUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  NotificationsByUserIdDistinctCountUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  NotificationsByUserIdMaxDataAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_DATA_ASC',
+  NotificationsByUserIdMaxDataDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_DATA_DESC',
+  NotificationsByUserIdMaxIdAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_ID_ASC',
+  NotificationsByUserIdMaxIdDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_ID_DESC',
+  NotificationsByUserIdMaxIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_IS_READ_ASC',
+  NotificationsByUserIdMaxIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_IS_READ_DESC',
+  NotificationsByUserIdMaxTAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_T_ASC',
+  NotificationsByUserIdMaxTDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_T_DESC',
+  NotificationsByUserIdMaxUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_MAX_USER_ID_ASC',
+  NotificationsByUserIdMaxUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_MAX_USER_ID_DESC',
+  NotificationsByUserIdMinDataAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_DATA_ASC',
+  NotificationsByUserIdMinDataDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_DATA_DESC',
+  NotificationsByUserIdMinIdAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_ID_ASC',
+  NotificationsByUserIdMinIdDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_ID_DESC',
+  NotificationsByUserIdMinIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_IS_READ_ASC',
+  NotificationsByUserIdMinIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_IS_READ_DESC',
+  NotificationsByUserIdMinTAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_T_ASC',
+  NotificationsByUserIdMinTDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_T_DESC',
+  NotificationsByUserIdMinUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_MIN_USER_ID_ASC',
+  NotificationsByUserIdMinUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_MIN_USER_ID_DESC',
+  NotificationsByUserIdStddevPopulationDataAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_DATA_ASC',
+  NotificationsByUserIdStddevPopulationDataDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_DATA_DESC',
+  NotificationsByUserIdStddevPopulationIdAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
+  NotificationsByUserIdStddevPopulationIdDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
+  NotificationsByUserIdStddevPopulationIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_IS_READ_ASC',
+  NotificationsByUserIdStddevPopulationIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_IS_READ_DESC',
+  NotificationsByUserIdStddevPopulationTAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_T_ASC',
+  NotificationsByUserIdStddevPopulationTDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_T_DESC',
+  NotificationsByUserIdStddevPopulationUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  NotificationsByUserIdStddevPopulationUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  NotificationsByUserIdStddevSampleDataAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_DATA_ASC',
+  NotificationsByUserIdStddevSampleDataDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_DATA_DESC',
+  NotificationsByUserIdStddevSampleIdAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
+  NotificationsByUserIdStddevSampleIdDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
+  NotificationsByUserIdStddevSampleIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_IS_READ_ASC',
+  NotificationsByUserIdStddevSampleIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_IS_READ_DESC',
+  NotificationsByUserIdStddevSampleTAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_T_ASC',
+  NotificationsByUserIdStddevSampleTDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_T_DESC',
+  NotificationsByUserIdStddevSampleUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  NotificationsByUserIdStddevSampleUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  NotificationsByUserIdSumDataAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_DATA_ASC',
+  NotificationsByUserIdSumDataDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_DATA_DESC',
+  NotificationsByUserIdSumIdAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_ID_ASC',
+  NotificationsByUserIdSumIdDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_ID_DESC',
+  NotificationsByUserIdSumIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_IS_READ_ASC',
+  NotificationsByUserIdSumIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_IS_READ_DESC',
+  NotificationsByUserIdSumTAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_T_ASC',
+  NotificationsByUserIdSumTDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_T_DESC',
+  NotificationsByUserIdSumUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_SUM_USER_ID_ASC',
+  NotificationsByUserIdSumUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_SUM_USER_ID_DESC',
+  NotificationsByUserIdVariancePopulationDataAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_DATA_ASC',
+  NotificationsByUserIdVariancePopulationDataDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_DATA_DESC',
+  NotificationsByUserIdVariancePopulationIdAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
+  NotificationsByUserIdVariancePopulationIdDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
+  NotificationsByUserIdVariancePopulationIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_IS_READ_ASC',
+  NotificationsByUserIdVariancePopulationIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_IS_READ_DESC',
+  NotificationsByUserIdVariancePopulationTAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_T_ASC',
+  NotificationsByUserIdVariancePopulationTDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_T_DESC',
+  NotificationsByUserIdVariancePopulationUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  NotificationsByUserIdVariancePopulationUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  NotificationsByUserIdVarianceSampleDataAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_DATA_ASC',
+  NotificationsByUserIdVarianceSampleDataDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_DATA_DESC',
+  NotificationsByUserIdVarianceSampleIdAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
+  NotificationsByUserIdVarianceSampleIdDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
+  NotificationsByUserIdVarianceSampleIsReadAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_IS_READ_ASC',
+  NotificationsByUserIdVarianceSampleIsReadDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_IS_READ_DESC',
+  NotificationsByUserIdVarianceSampleTAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_T_ASC',
+  NotificationsByUserIdVarianceSampleTDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_T_DESC',
+  NotificationsByUserIdVarianceSampleUserIdAsc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  NotificationsByUserIdVarianceSampleUserIdDesc = 'NOTIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   OidcIdAsc = 'OIDC_ID_ASC',
   OidcIdDesc = 'OIDC_ID_DESC',
   OtpVerificationsByUserIdAverageCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
@@ -8924,6 +10079,100 @@ export enum UsersOrderBy {
   UserDevicesByUserIdVarianceSampleUserIdDesc = 'USER_DEVICES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC'
 }
 
+/** All input for the create mn`Notification` mutation. */
+export type MnCreateNotificationInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The one or many `Notification` to be created by this mutation. */
+  mnNotification?: InputMaybe<Array<NotificationInput>>;
+};
+
+/** The output of our many create `Notification` mutation. */
+export type MnCreateNotificationPayload = {
+  __typename?: 'mnCreateNotificationPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `Notification` that was created by this mutation. */
+  notification?: Maybe<Notification>;
+  /** An edge for our `Notification`. May be used by Relay 1. */
+  notificationEdge?: Maybe<NotificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Notification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our many create `Notification` mutation. */
+export type MnCreateNotificationPayloadNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
+};
+
+/** All input for the delete `mnDeleteNotification` mutation. */
+export type MnDeleteNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The one or many `Notification` to be deleted. You must provide the PK values! */
+  mnPatch?: InputMaybe<Array<NotificationPatch>>;
+};
+
+/** The output of our delete mn `Notification` mutation. */
+export type MnDeleteNotificationPayload = {
+  __typename?: 'mnDeleteNotificationPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedNotificationNodeId?: Maybe<Scalars['ID']['output']>;
+  /** The `Notification` that was deleted by this mutation. */
+  notification?: Maybe<Notification>;
+  /** An edge for our `Notification`. May be used by Relay 1. */
+  notificationEdge?: Maybe<NotificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Notification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our delete mn `Notification` mutation. */
+export type MnDeleteNotificationPayloadNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
+};
+
+/** All input for the update `mnUpdateNotification` mutation. */
+export type MnUpdateNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The one or many `Notification` to be updated. */
+  mnPatch?: InputMaybe<Array<NotificationPatch>>;
+};
+
+/** The output of our update mn `Notification` mutation. */
+export type MnUpdateNotificationPayload = {
+  __typename?: 'mnUpdateNotificationPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input,                 unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `Notification` that was updated by this mutation. */
+  notification?: Maybe<Notification>;
+  /** An edge for our `Notification`. May be used by Relay 1. */
+  notificationEdge?: Maybe<NotificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Notification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our update mn `Notification` mutation. */
+export type MnUpdateNotificationPayloadNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<NotificationsOrderBy>>;
+};
+
 export type InitProfileMutationVariables = Exact<{
   oidcId: Scalars['String']['input'];
   firstName?: InputMaybe<Scalars['String']['input']>;
@@ -8935,6 +10184,14 @@ export type InitProfileMutationVariables = Exact<{
 
 
 export type InitProfileMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'CreateUserPayload', clientMutationId?: string | null } | null };
+
+export type ToggleIsReadMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  isRead: Scalars['Boolean']['input'];
+}>;
+
+
+export type ToggleIsReadMutation = { __typename?: 'Mutation', updateNotification?: { __typename?: 'UpdateNotificationPayload', clientMutationId?: string | null } | null };
 
 export type Get_CategoriesQueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -8970,6 +10227,20 @@ export type Edit_Transaction1MutationVariables = Exact<{
 export type Edit_Transaction1Mutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, categoryId?: string | null, description?: string | null, amount: number } | null } | null };
 
 export type ProfileFragment = { __typename?: 'User', firstName?: string | null, lastName?: string | null, gender?: UserGender | null, email?: string | null, tel?: string | null, picture?: string | null, date?: any | null } & { ' $fragmentName'?: 'ProfileFragment' };
+
+export type GetUsersDevicesQueryVariables = Exact<{
+  usersIds: Array<Scalars['String']['input']> | Scalars['String']['input'];
+}>;
+
+
+export type GetUsersDevicesQuery = { __typename?: 'Query', userDevices?: { __typename?: 'UserDevicesConnection', nodes: Array<{ __typename?: 'UserDevice', userId: string, token: string }> } | null };
+
+export type NotifyUsersMutationVariables = Exact<{
+  notifications?: InputMaybe<Array<NotificationInput> | NotificationInput>;
+}>;
+
+
+export type NotifyUsersMutation = { __typename?: 'Mutation', mnCreateNotification?: { __typename?: 'mnCreateNotificationPayload', clientMutationId?: string | null } | null };
 
 export type GetProfileQueryVariables = Exact<{
   oidcId: Scalars['String']['input'];
@@ -9087,12 +10358,28 @@ export type Update_CategoryMutationVariables = Exact<{
 
 export type Update_CategoryMutation = { __typename?: 'Mutation', updateCategory?: { __typename?: 'UpdateCategoryPayload', clientMutationId?: string | null } | null };
 
+export type NotifsSubscriptionVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type NotifsSubscription = { __typename?: 'Subscription', notifications?: { __typename?: 'NotificationsConnection', nodes: Array<{ __typename?: 'Notification', id: string, t: any, isRead: boolean, data: { [key: string]: any } }> } | null };
+
 export type Get_Transactions3QueryVariables = Exact<{
   userId: Scalars['String']['input'];
 }>;
 
 
 export type Get_Transactions3Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
+
+export type SetUserTokenMutationVariables = Exact<{
+  userId: Scalars['String']['input'];
+  token: Scalars['String']['input'];
+  ua?: InputMaybe<Scalars['JSON']['input']>;
+}>;
+
+
+export type SetUserTokenMutation = { __typename?: 'Mutation', upsertUserDevice?: { __typename?: 'UpsertUserDevicePayload', clientMutationId?: string | null } | null };
 
 export type Get_Transactions4QueryVariables = Exact<{
   userId: Scalars['String']['input'];

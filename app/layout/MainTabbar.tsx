@@ -4,6 +4,7 @@ import {
   IconList,
   IconMoneybag,
   IconSmartHome,
+  IconWallet,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { Badge } from "konsta/react";
@@ -109,7 +110,14 @@ const MainTabBar = (props: { disabled?: boolean }) => {
         label={"categorie"}
         to="/categorie"
       />
+            <TabBarItem
+        active={location.pathname.startsWith("/budget")}
+        icon={<IconWallet stroke={1} size={32} />}
+        label={"budget"}
+        to="/budget"
+      />
     </div>
+    
   );
 };
 

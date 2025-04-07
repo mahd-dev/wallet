@@ -40,7 +40,7 @@ export default function OTPPage() {
 
       if (res.success) {
         localStorage.setItem("validOtp", "true");
-        navigate("/");
+        navigate("/success");
       } else {
         if (res.error) {
           return setError(res.error);
