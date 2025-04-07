@@ -60,9 +60,9 @@ const postgraphileMiddleware = postgraphile(pgPool, pgSchema, {
   allowExplain: true,
   pgSettings: (req) => ({
     role:
-      (req as any).auth?.role || ((req as any).auth?.sub ? "reg_user" : "anon"),
+      (req as any).auth?.role || ((req as any).auth?.sub ? "reg_user" : "postgres"),
     "jwt.claims.role":
-      (req as any).auth?.role || ((req as any).auth?.sub ? "reg_user" : "anon"),
+      (req as any).auth?.role || ((req as any).auth?.sub ? "reg_user" : "postgres"),
     "jwt.claims.sub": (req as any).auth?.sub,
     "jwt.claims.user_id": (req as any).auth?.sub,
   }),

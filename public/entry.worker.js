@@ -136,6 +136,20 @@ const entryWorker = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineP
   __proto__: null,
   defaultFetchHandler
 }, Symbol.toStringTag, { value: "Module" }));
+var __getOwnPropNames$l = Object.getOwnPropertyNames;
+var __commonJS$l = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames$l(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+var require_worker_runtime$l = __commonJS$l({
+  "@remix-pwa/worker-runtime"(exports, module) {
+    module.exports = {};
+  }
+});
+var worker_runtime_default$l = require_worker_runtime$l();
+const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: worker_runtime_default$l
+}, Symbol.toStringTag, { value: "Module" }));
 var __getOwnPropNames$k = Object.getOwnPropertyNames;
 var __commonJS$k = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames$k(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
@@ -146,7 +160,7 @@ var require_worker_runtime$k = __commonJS$k({
   }
 });
 var worker_runtime_default$k = require_worker_runtime$k();
-const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$k
 }, Symbol.toStringTag, { value: "Module" }));
@@ -160,7 +174,7 @@ var require_worker_runtime$j = __commonJS$j({
   }
 });
 var worker_runtime_default$j = require_worker_runtime$j();
-const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$j
 }, Symbol.toStringTag, { value: "Module" }));
@@ -174,7 +188,7 @@ var require_worker_runtime$i = __commonJS$i({
   }
 });
 var worker_runtime_default$i = require_worker_runtime$i();
-const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$i
 }, Symbol.toStringTag, { value: "Module" }));
@@ -188,7 +202,7 @@ var require_worker_runtime$h = __commonJS$h({
   }
 });
 var worker_runtime_default$h = require_worker_runtime$h();
-const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$h
 }, Symbol.toStringTag, { value: "Module" }));
@@ -202,7 +216,7 @@ var require_worker_runtime$g = __commonJS$g({
   }
 });
 var worker_runtime_default$g = require_worker_runtime$g();
-const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$g
 }, Symbol.toStringTag, { value: "Module" }));
@@ -216,7 +230,7 @@ var require_worker_runtime$f = __commonJS$f({
   }
 });
 var worker_runtime_default$f = require_worker_runtime$f();
-const route5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$f
 }, Symbol.toStringTag, { value: "Module" }));
@@ -230,7 +244,7 @@ var require_worker_runtime$e = __commonJS$e({
   }
 });
 var worker_runtime_default$e = require_worker_runtime$e();
-const route6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$e
 }, Symbol.toStringTag, { value: "Module" }));
@@ -244,7 +258,7 @@ var require_worker_runtime$d = __commonJS$d({
   }
 });
 var worker_runtime_default$d = require_worker_runtime$d();
-const route7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$d
 }, Symbol.toStringTag, { value: "Module" }));
@@ -258,7 +272,7 @@ var require_worker_runtime$c = __commonJS$c({
   }
 });
 var worker_runtime_default$c = require_worker_runtime$c();
-const route8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$c
 }, Symbol.toStringTag, { value: "Module" }));
@@ -272,7 +286,7 @@ var require_worker_runtime$b = __commonJS$b({
   }
 });
 var worker_runtime_default$b = require_worker_runtime$b();
-const route9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$b
 }, Symbol.toStringTag, { value: "Module" }));
@@ -286,7 +300,7 @@ var require_worker_runtime$a = __commonJS$a({
   }
 });
 var worker_runtime_default$a = require_worker_runtime$a();
-const route10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$a
 }, Symbol.toStringTag, { value: "Module" }));
@@ -300,7 +314,7 @@ var require_worker_runtime$9 = __commonJS$9({
   }
 });
 var worker_runtime_default$9 = require_worker_runtime$9();
-const route11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$9
 }, Symbol.toStringTag, { value: "Module" }));
@@ -314,7 +328,7 @@ var require_worker_runtime$8 = __commonJS$8({
   }
 });
 var worker_runtime_default$8 = require_worker_runtime$8();
-const route12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$8
 }, Symbol.toStringTag, { value: "Module" }));
@@ -328,7 +342,7 @@ var require_worker_runtime$7 = __commonJS$7({
   }
 });
 var worker_runtime_default$7 = require_worker_runtime$7();
-const route13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$7
 }, Symbol.toStringTag, { value: "Module" }));
@@ -342,7 +356,7 @@ var require_worker_runtime$6 = __commonJS$6({
   }
 });
 var worker_runtime_default$6 = require_worker_runtime$6();
-const route14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$6
 }, Symbol.toStringTag, { value: "Module" }));
@@ -356,7 +370,7 @@ var require_worker_runtime$5 = __commonJS$5({
   }
 });
 var worker_runtime_default$5 = require_worker_runtime$5();
-const route15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$5
 }, Symbol.toStringTag, { value: "Module" }));
@@ -370,7 +384,7 @@ var require_worker_runtime$4 = __commonJS$4({
   }
 });
 var worker_runtime_default$4 = require_worker_runtime$4();
-const route16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$4
 }, Symbol.toStringTag, { value: "Module" }));
@@ -384,7 +398,7 @@ var require_worker_runtime$3 = __commonJS$3({
   }
 });
 var worker_runtime_default$3 = require_worker_runtime$3();
-const route17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$3
 }, Symbol.toStringTag, { value: "Module" }));
@@ -398,7 +412,7 @@ var require_worker_runtime$2 = __commonJS$2({
   }
 });
 var worker_runtime_default$2 = require_worker_runtime$2();
-const route18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$2
 }, Symbol.toStringTag, { value: "Module" }));
@@ -412,7 +426,7 @@ var require_worker_runtime$1 = __commonJS$1({
   }
 });
 var worker_runtime_default$1 = require_worker_runtime$1();
-const route19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -426,7 +440,7 @@ var require_worker_runtime = __commonJS({
   }
 });
 var worker_runtime_default = require_worker_runtime();
-const route20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: worker_runtime_default
 }, Symbol.toStringTag, { value: "Module" }));
@@ -436,13 +450,6 @@ const assets = [
   "/logo.svg",
   "/mahd-wide.svg",
   "/mahd.svg",
-  "/fonts/Tajawal-Black.ttf",
-  "/fonts/Tajawal-Bold.ttf",
-  "/fonts/Tajawal-ExtraBold.ttf",
-  "/fonts/Tajawal-ExtraLight.ttf",
-  "/fonts/Tajawal-Light.ttf",
-  "/fonts/Tajawal-Medium.ttf",
-  "/fonts/Tajawal-Regular.ttf",
   "/img/bg-gradient.svg",
   "/img/loader.svg",
   "/img/plant.webp",
@@ -453,6 +460,13 @@ const assets = [
   "/img/wlcm-0.svg",
   "/img/wlcm-1.svg",
   "/img/wlcm-2.svg",
+  "/fonts/Tajawal-Black.ttf",
+  "/fonts/Tajawal-Bold.ttf",
+  "/fonts/Tajawal-ExtraBold.ttf",
+  "/fonts/Tajawal-ExtraLight.ttf",
+  "/fonts/Tajawal-Light.ttf",
+  "/fonts/Tajawal-Medium.ttf",
+  "/fonts/Tajawal-Regular.ttf",
   "/icons/android/android-launchericon-144-144.png",
   "/icons/android/android-launchericon-192-192.png",
   "/icons/android/android-launchericon-48-48.png",
@@ -615,6 +629,18 @@ const routes = {
     hasWorkerAction: false,
     module: route3
   },
+  "routes/CategoryIconPicker": {
+    id: "routes/CategoryIconPicker",
+    parentId: "root",
+    path: "CategoryIconPicker",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: false,
+    hasAction: false,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route4
+  },
   "routes/_app.statistiques": {
     id: "routes/_app.statistiques",
     parentId: "routes/_app",
@@ -625,7 +651,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route4
+    module: route5
   },
   "routes/_app.transactions": {
     id: "routes/_app.transactions",
@@ -637,7 +663,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route5
+    module: route6
   },
   "routes/auth.oidc._index": {
     id: "routes/auth.oidc._index",
@@ -649,7 +675,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route6
+    module: route7
   },
   "routes/api.resend-otp": {
     id: "routes/api.resend-otp",
@@ -661,7 +687,7 @@ const routes = {
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route7
+    module: route8
   },
   "routes/api.verify-otp": {
     id: "routes/api.verify-otp",
@@ -673,24 +699,12 @@ const routes = {
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route8
+    module: route9
   },
   "routes/_app.categorie": {
     id: "routes/_app.categorie",
     parentId: "routes/_app",
     path: "categorie",
-    index: void 0,
-    caseSensitive: void 0,
-    hasLoader: false,
-    hasAction: false,
-    hasWorkerLoader: false,
-    hasWorkerAction: false,
-    module: route9
-  },
-  "routes/_app.balance": {
-    id: "routes/_app.balance",
-    parentId: "routes/_app",
-    path: "balance",
     index: void 0,
     caseSensitive: void 0,
     hasLoader: false,
@@ -723,6 +737,18 @@ const routes = {
     hasWorkerAction: false,
     module: route12
   },
+  "routes/_app.budget": {
+    id: "routes/_app.budget",
+    parentId: "routes/_app",
+    path: "budget",
+    index: void 0,
+    caseSensitive: void 0,
+    hasLoader: false,
+    hasAction: false,
+    hasWorkerLoader: false,
+    hasWorkerAction: false,
+    module: route13
+  },
   "routes/_app._index": {
     id: "routes/_app._index",
     parentId: "routes/_app",
@@ -733,7 +759,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route13
+    module: route14
   },
   "routes/api.upload": {
     id: "routes/api.upload",
@@ -745,7 +771,7 @@ const routes = {
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route14
+    module: route15
   },
   "routes/api.login": {
     id: "routes/api.login",
@@ -757,7 +783,7 @@ const routes = {
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route15
+    module: route16
   },
   "routes/mailer": {
     id: "routes/mailer",
@@ -769,7 +795,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route16
+    module: route17
   },
   "routes/signup": {
     id: "routes/signup",
@@ -781,7 +807,7 @@ const routes = {
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route17
+    module: route18
   },
   "routes/login": {
     id: "routes/login",
@@ -793,7 +819,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route18
+    module: route19
   },
   "routes/_app": {
     id: "routes/_app",
@@ -805,7 +831,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route19
+    module: route20
   },
   "routes/otp": {
     id: "routes/otp",
@@ -817,7 +843,7 @@ const routes = {
     hasAction: false,
     hasWorkerLoader: false,
     hasWorkerAction: false,
-    module: route20
+    module: route21
   }
 };
 const entry = { module: entryWorker };

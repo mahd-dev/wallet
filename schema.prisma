@@ -29,14 +29,19 @@ model User {
   reports      Report[]
   password     String?
   otp          OtpVerification[]
+  categories          Category[]
 }
 
 model Category {
   id           String        @id @unique
   name         String
   icon         String?
+  iconColor String? 
+  type         Typetransaction @default(expense)
   transactions Transaction[]
   Budgets      Budget[]
+  userId      String?
+  user        User?         @relation(fields: [userId], references: [oidcId])
 }
 
 enum Typetransaction {

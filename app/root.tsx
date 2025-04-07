@@ -130,16 +130,19 @@ export default function App() {
 
   // force reload all pages on the same session when user changed
   const [currUser] = useAtom(currUserAtom);
-  const [
-    user
-  ] = useAtom(userAtom);
+  const [user] = useAtom(userAtom);
   useEffect(() => {
     if (currUser !== (auth?.sub || null)) window.location.reload();
   }, [auth?.sub, currUser]);
 
   useEffect(() => {
     const usr = localStorage?.getItem("connected_user");
-    if (!usr) navigate("/login");
+    const validOtp = localStorage.getItem("validOtp");
+
+    if (!usr) return navigate("/login");
+    if (validOtp !== "true") {
+      return navigate("/otp");
+    }
   }, []);
 
   const [, setProfile] = useAtom(profileAtom);

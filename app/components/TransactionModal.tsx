@@ -1,20 +1,50 @@
 import { useAtom } from "jotai";
 import { Dialog } from "konsta/react";
 import { nanoid } from "nanoid";
-import { useState, useEffect } from "react";
-import { gql, useMutation, useSubscription } from "urql";
+import { useState, useEffect, useRef } from "react";
+import { gql, useMutation, useQuery } from "urql";
 import { userAtom } from "~/store/store";
+import { Calendar, X, Search, ChevronDown, ShoppingBag } from "lucide-react";
+import {
+  IconHome, IconCar, IconShoppingCart, IconSoup, IconHeart, IconBriefcase, IconPlane,
+  IconGift, IconHealthRecognition, IconSportBillard, IconMusic, IconCamera, IconBook,
+  IconSchool, IconBus, IconPigMoney
+} from "@tabler/icons-react";
+import { Typetransaction } from "gql/graphql";
 
-const CATEGORY_SUBSCRIPTION = gql`
-  subscription CategorySubscription {
-    categories {
+const icons = [
+  { name: "Home", component: IconHome, color: "#DE3163", value: "home" },
+  { name: "Car", component: IconCar, color: "#EF4444", value: "car" },
+  { name: "Shopping", component: IconShoppingCart, color: "#3B82F6", value: "shopping" },
+  { name: "Food", component: IconSoup, color: "#F59E0B", value: "food" },
+  { name: "Health", component: IconHeart, color: "#22C55E", value: "health" },
+  { name: "Work", component: IconBriefcase, color: "#8B5CF6", value: "work" },
+  { name: "Travel", component: IconPlane, color: "#EC4899", value: "travel" },
+  { name: "Gifts", component: IconGift, color: "#FBBF24", value: "gifts" },
+  { name: "Medical", component: IconHealthRecognition, color: "#A855F7", value: "medical" },
+  { name: "Sports", component: IconSportBillard, color: "#16A34A", value: "sports" },
+  { name: "Music", component: IconMusic, color: "#FCD34D", value: "music" },
+  { name: "Photography", component: IconCamera, color: "#EA580C", value: "photography" },
+  { name: "Education", component: IconBook, color: "#38B2AC", value: "education" },
+  { name: "School", component: IconSchool, color: "#4F46E5", value: "school" },
+  { name: "Transport", component: IconBus, color: "#805AD5", value: "transport" },
+  { name: "Savings", component: IconPigMoney, color: "#EAB308", value: "savings" },
+];
+
+const GET_CATEGORIES = gql`
+  query GET_CATEGORIES($userId: String!) {
+    categories(condition: { userId: $userId }) {
       nodes {
+        type
         id
         name
+        icon
+        iconColor
       }
     }
   }
 `;
+
 
 const ADD_TRANSACTION_MUTATION = gql`
   mutation AddTransaction(
@@ -43,8 +73,9 @@ const ADD_TRANSACTION_MUTATION = gql`
     }
   }
 `;
+
 const EDIT_TRANSACTION = gql`
-  mutation EDIT_TRANSACTION(
+  mutation EDIT_TRANSACTION1(
     $id: String!
     $amount: Float!
     $date: Datetime!
@@ -78,6 +109,14 @@ const EDIT_TRANSACTION = gql`
   }
 `;
 
+const DynamicIcon = ({ iconName, color, size = 20 }: { iconName: string, color?: string, size?: number }) => {
+  const iconObj = icons.find(icon => icon.value === iconName);
+  if (iconObj) {
+    const IconComponent = iconObj.component;
+    return <IconComponent size={size} style={{ color }} />;
+  }
+  return <ShoppingBag size={size} color={color} />;
+};
 
 interface TransactionModalProps {
   basicOpened: boolean;
@@ -90,7 +129,7 @@ interface TransactionModalProps {
     type: "EXPENSE" | "INCOME";
     description?: string;
     id: string;
-    date: string; // Add this line
+    date: string;
   };
   setEditData: React.Dispatch<React.SetStateAction<any>>;
   handleEdit: () => Promise<void>;
@@ -107,203 +146,491 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   handleEdit,
   onSuccess,
 }) => {
-  
-  const [amount, setAmount] = useState<number>(editData?.amount || 0);
-  const [categoryId, setCategoryId] = useState(editData?.categoryId || "");
-  const [type, setType] = useState<"EXPENSE" | "INCOME">(editData?.type || "EXPENSE");
+  const currentDate = new Date().toISOString().split("T")[0];
+  const parseDate = (dateString: string | undefined) => {
+    if (!dateString) return currentDate;
+    return new Date(dateString).toISOString().split("T")[0];
+  };
+
+  const initialDate = parseDate(editData?.date);
+  const initialFormState = {
+    amount: editData?.amount || 0,
+    categoryId: editData?.categoryId || "",
+    type: editData?.type || "EXPENSE",
+    description: editData?.description || "",
+    date: initialDate
+  };
+
+  const [amount, setAmount] = useState<number>(initialFormState.amount);
+  const [categoryId, setCategoryId] = useState(initialFormState.categoryId);
+  const [type, setType] = useState<"EXPENSE" | "INCOME">(initialFormState.type);
+  const [description, setDescription] = useState<string>(initialFormState.description);
+  const [date, setDate] = useState<string>(initialFormState.date);
+  const [amountError, setAmountError] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState<boolean>(false);
   const [user] = useAtom(userAtom);
-  //const [transactions, setTransactions] = useState<any[]>([]);
 
+  const modalRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const amountInputRef = useRef<HTMLInputElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  // Use category subscription to keep the list updated
-  const [{ data, error }] = useSubscription({ query: CATEGORY_SUBSCRIPTION });
+  const [{ data }] = useQuery({
+    query: GET_CATEGORIES,
+    variables: user ? { userId: user.oidcId } : undefined,  // Pass the userId here
+    pause: !user,  // Pause until user is available
+    requestPolicy: "network-only",  // Ensure we always fetch fresh data
+  });
   
-   const [result, mutate] = useMutation(ADD_TRANSACTION_MUTATION);
+  const [result, mutate] = useMutation(ADD_TRANSACTION_MUTATION);
+  const [editResult, editMutate] = useMutation(EDIT_TRANSACTION);
 
   useEffect(() => {
-    // Reset category ID to the first category if empty
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !modalRef.current?.contains(event.target as Node) // Check if the click is inside the modal
+      ) {
+        setShowCategoryDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+  
+  useEffect(() => {
+    if (basicOpened && amountInputRef.current) {
+      setTimeout(() => amountInputRef.current?.focus(), 100);
+    }
+  }, [basicOpened]);
+  
+  useEffect(() => {
+    if (showCategoryDropdown && searchInputRef.current) {
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    }
+  }, [showCategoryDropdown]);
+  
+  useEffect(() => {
     if (!categoryId && data?.categories?.nodes?.length > 0) {
       setCategoryId(data.categories.nodes[0].id);
     }
   }, [data, categoryId]);
-
-  const [editResult, editMutate] = useMutation(EDIT_TRANSACTION);
-
-useEffect(() => {
-    if (isEditing) {
-      setAmount(editData?.amount || 0);
-      setCategoryId(editData?.categoryId || "");
-      setType(editData?.type || "EXPENSE");
+  
+  useEffect(() => {
+    if (isEditing && editData) {
+      setAmount(editData.amount || 0);
+      setCategoryId(editData.categoryId || "");
+      setType(editData.type || "EXPENSE");
+      setDescription(editData.description || "");
+      setDate(parseDate(editData.date));
     }
-  }
-, [isEditing, editData]);
+  }, [isEditing, editData]);
+  
+  useEffect(() => {
+    if (basicOpened && !isEditing) {
+      resetForm();
+    }
+  }, [basicOpened, isEditing]);
+  
+  const resetForm = () => {
+    setAmount(0);
+    const filteredCategories = data?.categories?.nodes?.filter(
+      (cat: any) => cat.type === "EXPENSE" || !cat.type
+    );
+    setCategoryId(filteredCategories?.[0]?.id || "");
+    setType("EXPENSE");
+    setDescription("");
+    setDate(new Date().toISOString().split("T")[0]);
+    setAmountError("");
+    setSearchTerm("");
+    setShowCategoryDropdown(false);
+  };
   
 
-const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  
-  const transactionId = nanoid();
-
-  const variables = {
-    user_id: user?.oidcId,
-    category_id: categoryId,
-    amount,
-    date: isEditing ? editData?.date : new Date().toISOString(),
-    description: editData?.description || "",
-    type: type,
-    transaction_id: transactionId,
+  const handleClose = () => {
+    setBasicOpened(false);
+    setTimeout(() => {
+      resetForm();
+      if (!isEditing) setIsEditing(false);
+    }, 300);
   };
 
-  try {
-    if (isEditing) {
-      // Edit mutation
-      const editVariables = {
-        id: editData?.id, // Assuming you pass the id of the transaction
-        amount,
-        date: editData?.date,
-        categoryId,
-        description: editData?.description || "",
-        type,
-        clientMutationId: nanoid(),
-      };
-
-      const editResponse = await editMutate(editVariables);
-      
-      if (editResponse.error) {
-        console.error("Edit Mutation Error:", editResponse.error);
-      } else {
-        console.log("Transaction Edited Successfully:", editResponse.data);
-        onSuccess();
-        setBasicOpened(false);
-        setIsEditing(false);
-      }
-    } else {
-      // Add mutation
-      const response = await mutate(variables);
-      
-      if (response.error) {
-        console.error("Add Mutation Error:", response.error);
-      } else {
-        console.log("Transaction Added Successfully:", response.data);
-        onSuccess();
-        setBasicOpened(false);
-      }
+  const validateForm = (): boolean => {
+    if (amount <= 0) {
+      setAmountError("Le montant doit être supérieur à 0");
+      return false;
     }
-  } catch (error) {
-    console.error("Unexpected Error:", error);
-  }
-};
+    setAmountError("");
+    return true;
+  };
 
+  // Helper function to update only year, month, and day, preserving original time exactly
+  const updateDatePreserveTime = (newDateStr: string, originalDateStr: string | undefined): string => {
+    if (!originalDateStr) return new Date().toISOString();
+
+    // Parse the original date string directly
+    const originalParts = originalDateStr.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
+    if (!originalParts) return new Date().toISOString();
+
+    const [, , , , originalHours, originalMinutes, originalSeconds] = originalParts;
+
+    // Parse the new date from the date picker
+    const [newYear, newMonth, newDay] = newDateStr.split('-').map(Number);
+
+    // Construct a new ISO string with new date and original time
+    const updatedDate = new Date(Date.UTC(newYear, newMonth - 1, newDay, parseInt(originalHours), parseInt(originalMinutes), parseInt(originalSeconds)));
+    return updatedDate.toISOString();
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    const transactionId = nanoid();
+    
+    try {
+      if (isEditing) {
+        // Use the new date from the form, but preserve the original time exactly
+        const fullDateTime = updateDatePreserveTime(date, editData?.date);
+        console.log("Original date:", editData?.date);
+        console.log("Updated date:", fullDateTime);
+
+        const editVariables = {
+          id: editData?.id,
+          amount,
+          date: fullDateTime,
+          categoryId,
+          description: description || "",
+          type,
+          clientMutationId: nanoid(),
+        };
+
+        const editResponse = await editMutate(editVariables);
+        
+        if (editResponse.data?.updateTransaction?.transaction) {
+          onSuccess();
+          handleClose();
+        } else {
+          console.error("Edit Mutation Error:", editResponse.error);
+        }
+      } else {
+        const variables = {
+          user_id: user?.oidcId,
+          category_id: categoryId,
+          amount,
+          date: new Date().toISOString(), // Use current time for new transactions
+          description: description || "",
+          type,
+          transaction_id: transactionId,
+        };
+
+        const response = await mutate(variables);
+        
+        if (response.data?.createTransaction) {
+          onSuccess();
+          handleClose();
+        } else {
+          console.error("Add Mutation Error:", response.error);
+        }
+      }
+    } catch (error) {
+      console.error("Unexpected Error:", error);
+    }
+  };
+
+  // Create a click handler for the submit button that submits the form
+  const handleButtonSubmit = () => {
+    if (formRef.current) {
+      formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    }
+  };
+
+  const getCategory = (id: string) => {
+    return data?.categories?.nodes?.find((cat: any) => cat.id === id);
+  };
+
+  const filteredCategories = data?.categories?.nodes?.filter((cat: any) => {
+    const matchesType = cat.type === type || !cat.type;
+    const matchesSearch = cat.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesType && matchesSearch;
+  });
 
   return (
-    <Dialog
-      opened={basicOpened}
-      onBackdropClick={() => setBasicOpened(false)}
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 p-4 backdrop-blur-sm"
+    // Custom modal implementation instead of using Dialog directly
+    <div 
+      className={`fixed inset-0 z-50 ${basicOpened ? 'block' : 'hidden'}`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
     >
-      <div className="mx-4 w-full max-w-sm overflow-y-auto rounded-lg bg-white shadow-xl">
-        <div className="p-4">
-          <h2 className="mb-4 text-center text-xl font-bold text-gray-800">
-            {isEditing ? "Modifier la transaction" : "Ajouter une transaction"}
-          </h2>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Radio Buttons */}
-            <div className="mb-4 flex justify-center gap-6">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="type"
-                  value="EXPENSE"
-                  checked={type === "EXPENSE"}
-                  onChange={() => setType("EXPENSE")}
-                  className="size-4 border-2 border-gray-300 text-blue-500"
-                />
-                <span className="text-gray-700">Dépense</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="type"
-                  value="INCOME"
-                  checked={type === "INCOME"}
-                  onChange={() => setType("INCOME")}
-                  className="size-4 border-2 border-gray-300 text-blue-500"
-                />
-                <span className="text-gray-700">Revenu</span>
-              </label>
-            </div>
-
-            {/* Amount Input */}
-            <div className="mb-4">
-              <input
-                type="number"
-                name="amount"
-                step="0.01"
-                placeholder="0 TND"
-                value={amount}
-                onChange={(e) => setAmount(parseFloat(e.target.value))}
-                className="w-full rounded-lg border border-gray-200 px-4 py-3 text-center text-2xl font-bold focus:border-blue-500 focus:ring-2 focus:ring-blue-300"
-              />
-            </div>
-
-            {/* Category Selection */}
-            <div className="mb-4">
-              <h3 className="mb-2 text-sm font-semibold text-gray-600">
-                Catégorie
-              </h3>
-              {error ? (
-                <p className="text-red-500">Erreur lors du chargement des catégories</p>
-              ) : (
-                <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 flex space-x-3 overflow-x-auto pb-3">
-                  {data?.categories?.nodes?.map((catg: { id: string; name: string }) => (
-                    <button
-                      key={catg.id}
-                      type="button"
-                      onClick={() => setCategoryId(catg.id)}
-                      className={`flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                        categoryId === catg.id
-                          ? "bg-blue-500 text-white shadow-sm"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      {catg.name}
-                    </button>
-                  ))}
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm"
+        onClick={handleClose}
+      ></div>
+      
+      {/* Modal Content */}
+      <div className="fixed inset-0 flex items-center justify-center p-4 pointer-events-none">
+        <div 
+          ref={modalRef}
+          className="w-full max-w-lg bg-white shadow-xl rounded-xl pointer-events-auto flex flex-col"
+          style={{ maxHeight: '90vh' }}
+        >
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 mt-10">
+            <h2 id="modal-title" className="text-xl font-medium text-gray-800">
+              {isEditing ? "Modifier la transaction" : "Ajouter une transaction"}
+            </h2>
+            <button
+              onClick={handleClose}
+              className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              aria-label="Fermer"
+            >
+              <X size={20} />
+            </button>
+          </div>
+          
+          {/* Form container with flex-1 and overflow-y-auto to allow scrolling */}
+          <div className="flex-1 overflow-y-auto mt">
+            <form ref={formRef} onSubmit={handleSubmit} className="p-6">
+              <div className="mb-6">
+                <div className="grid grid-cols-2 gap-2 rounded-lg bg-gray-100 p-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setType("EXPENSE");
+                      const expenseCategories = data?.categories?.nodes?.filter(
+                        (cat: any) => cat.type === "EXPENSE" || !cat.type
+                      );
+                      if (expenseCategories?.[0]) setCategoryId(expenseCategories[0].id);
+                    }}
+                    className={`rounded-lg px-4 py-3 text-base font-medium transition-all ${
+                      type === "EXPENSE"
+                        ? "bg-white text-red-600 shadow-sm"
+                        : "text-gray-600 hover:bg-gray-200"
+                    }`}
+                    aria-pressed={type === "EXPENSE"}
+                    aria-label="Type dépense"
+                  >
+                    Dépense
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setType("INCOME");
+                      const incomeCategories = data?.categories?.nodes?.filter(
+                        (cat: any) => cat.type === "INCOME" || !cat.type
+                      );
+                      if (incomeCategories?.[0]) setCategoryId(incomeCategories[0].id);
+                    }}
+                    className={`rounded-lg px-4 py-3 text-base font-medium transition-all ${
+                      type === "INCOME"
+                        ? "bg-white text-green-600 shadow-sm"
+                        : "text-gray-600 hover:bg-gray-200"
+                    }`}
+                    aria-pressed={type === "INCOME"}
+                    aria-label="Type revenu"
+                  >
+                    Revenu
+                  </button>
                 </div>
-              )}
-            </div>
+              </div>
+              
+              <div className="mb-5">
+                <div className={`relative rounded-lg border ${
+                  amountError ? "border-red-300" : "border-gray-300"
+                } focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200`}>
+                  <input
+                    id="amount"
+                    ref={amountInputRef}
+                    type="number"
+                    name="amount"
+                    step="0.01"
+                    placeholder="0.00"
+                    value={amount || ""}
+                    onChange={(e) => {
+                      setAmount(parseFloat(e.target.value) || 0);
+                      if (parseFloat(e.target.value) > 0) setAmountError("");
+                    }}
+                    className={`w-full rounded-lg border-0 px-4 py-4 text-center text-3xl font-bold ${
+                      type === "EXPENSE" ? "text-red-600" : "text-green-600"
+                    } focus:outline-none focus:ring-0`}
+                    aria-invalid={!!amountError}
+                    aria-describedby={amountError ? "amount-error" : undefined}
+                  />
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                    <span className="text-lg text-gray-500">TND</span>
+                  </div>
+                </div>
+                {amountError && (
+                  <p id="amount-error" className="mt-1.5 text-sm text-red-600">
+                    {amountError}
+                  </p>
+                )}
+              </div>
 
-            {/* Action Buttons */}
-            <div className="mt-6 flex gap-3">
+              <div className="mb-5 relative" ref={dropdownRef}>
+  <button
+    type="button"
+    onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+    className={`w-full flex items-center justify-between rounded-lg border px-4 py-3.5 text-left text-base ${
+      type === "EXPENSE"
+        ? "border-red-200 bg-red-50 text-red-800 hover:bg-red-100"
+        : "border-green-200 bg-green-50 text-green-800 hover:bg-green-100"
+    }`}
+  >
+    <div className="flex items-center space-x-3">
+      {categoryId && (() => {
+        const category = getCategory(categoryId);
+        if (category) {
+          return (
+            <>
+              <div className="flex items-center justify-center rounded-full p-1" 
+                style={{ backgroundColor: category.iconColor ? `${category.iconColor}20` : '#f3f4f6' }}>
+                <DynamicIcon 
+                  iconName={category.icon || "shopping"} 
+                  color={category.iconColor} 
+                  size={22} 
+                />
+              </div>
+              <span className="font-medium">{category.name}</span>
+            </>
+          );
+        }
+        return <span>Sélectionner une catégorie</span>;
+      })()}
+    </div>
+    <ChevronDown size={18} />
+  </button>
+
+  {showCategoryDropdown && (
+    <div className="absolute z-10 mt-1.5 w-full rounded-lg border border-gray-200 bg-white py-2 shadow-lg">
+      <div className="px-4 py-2 border-b border-gray-100">
+        <div className="relative">
+          <Search size={18} className="absolute left-3 top-3 text-gray-400" />
+          <input
+            ref={searchInputRef}
+            type="text"
+            placeholder="Rechercher une catégorie..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-md border border-gray-200 pl-10 pr-3 py-2 text-base focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          />
+        </div>
+      </div>
+
+      <div className="max-h-64 overflow-y-auto py-2">
+        {data?.categories?.nodes?.length > 0 ? (
+          <div className="grid grid-cols-1 gap-1">
+            {data?.categories?.nodes
+              .filter((category: {type: Typetransaction}) => category.type === type) // Filter categories based on type or if no type is set
+              .map((category: { id: string; name: string; icon: string; iconColor: string }) => (
+                <button
+                  key={category.id}
+                  type="button"
+                  onClick={() => {
+                    setCategoryId(category.id);
+                    setShowCategoryDropdown(false);
+                  }}
+                  className={`flex w-full items-center px-4 py-3 text-base transition-colors ${
+                    categoryId === category.id
+                      ? type === "EXPENSE"
+                        ? "bg-red-50 text-red-700"
+                        : "bg-green-50 text-green-700"
+                      : "hover:bg-gray-50 text-gray-700"
+                  }`}
+                >
+                  <div className="flex items-center justify-center rounded-full p-1 mr-3" 
+                      style={{ backgroundColor: category.iconColor ? `${category.iconColor}20` : '#f3f4f6' }}>
+                    <DynamicIcon 
+                      iconName={category.icon || "shopping"} 
+                      color={category.iconColor} 
+                      size={22} 
+                    />
+                  </div>
+                  <span className="font-medium">{category.name}</span>
+                </button>
+              ))}
+          </div>
+        ) : (
+          <div className="px-4 py-3 text-base text-gray-500 text-center">
+            Aucune catégorie trouvée
+          </div>
+        )}
+      </div>
+    </div>
+  )}
+</div>
+
+              
+              <div className="mb-5">
+                <input
+                  id="description"
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder={type === "EXPENSE" ? "Pour quoi avez-vous dépensé?" : "D'où vient ce revenu?"}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                />
+              </div>
+              
+              <div className="mb-5">
+                <div className="relative rounded-lg border border-gray-300 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
+                  <input
+                    id="date"
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full rounded-lg border-0 py-3 pl-4 pr-10 text-base text-gray-700 focus:outline-none focus:ring-0"
+                  />
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                    <Calendar size={18} className="text-gray-400" />
+                  </div>
+                </div>
+                <p className="mt-1.5 text-xs text-gray-500">
+                  {isEditing ? 
+                    "L'heure d'origine sera préservée lors de la modification" : 
+                    "L'heure actuelle sera automatiquement utilisée lors de l'ajout"}
+                </p>
+              </div>
+            </form>
+          </div>
+          
+          {/* Fixed button container at the bottom */}
+          <div className="p-6 pt-0 border-t border-gray-200 bg-white">
+            <div className="flex w-full space-x-4">
               <button
                 type="button"
-                onClick={() => setBasicOpened(false)}
-                className="flex-1 rounded-lg bg-gray-100 px-4 py-2.5 font-medium text-gray-700 transition-colors hover:bg-gray-200"
+                onClick={handleClose}
+                className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
               >
                 Annuler
               </button>
               <button
-                type="submit"
-                disabled={result.fetching}
-                className="flex-1 rounded-lg bg-blue-500 px-4 py-2.5 font-medium text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+                type="button"
+                onClick={handleButtonSubmit}
+                disabled={result.fetching || editResult.fetching}
+                className={`flex-1 rounded-lg px-4 py-3 text-base font-medium text-white transition-colors disabled:opacity-50 ${
+                  type === "EXPENSE" ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"
+                }`}
               >
-                {result.fetching ? (
+                {(result.fetching || editResult.fetching) ? (
                   <div className="flex items-center justify-center gap-2">
-                    <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    {isEditing ? "Modification..." : "Ajout..."}
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    <span>{isEditing ? "Modification..." : "Ajout..."}</span>
                   </div>
-                ) : isEditing ? (
-                  "Modifier"
                 ) : (
-                  "Ajouter"
+                  <span>{isEditing ? "Modifier" : "Ajouter"}</span>
                 )}
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
-    </Dialog>
+    </div>
   );
 };
 

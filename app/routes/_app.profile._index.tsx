@@ -6,7 +6,7 @@ import {
   IconShield,
   IconUserEdit,
   IconUserShield,
-} from "@tabler/icons-react";
+} from "@tabler/icons-react"; 
 import { useAtom } from "jotai";
 import { Block, Dialog, DialogButton, List, ListItem } from "konsta/react";
 
@@ -34,6 +34,7 @@ export default function ProfilePage() {
 
       // ✅ Remove user from localStorage
       localStorage.removeItem("connected_user");
+      localStorage.removeItem("validOtp");
 
       // ✅ Force a full reload to clear client-side state
       window.location.href = "/login";

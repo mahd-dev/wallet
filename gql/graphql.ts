@@ -435,6 +435,10 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdVarianceSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByCategoryIdVarianceSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
   BudgetsByCategoryIdVarianceSampleUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  IconAsc = 'ICON_ASC',
+  IconColorAsc = 'ICON_COLOR_ASC',
+  IconColorDesc = 'ICON_COLOR_DESC',
+  IconDesc = 'ICON_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   NameAsc = 'NAME_ASC',
@@ -569,18 +573,47 @@ export enum CategoriesOrderBy {
   TransactionsByCategoryIdVarianceSampleTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_ASC',
   TransactionsByCategoryIdVarianceSampleTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_DESC',
   TransactionsByCategoryIdVarianceSampleUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  TransactionsByCategoryIdVarianceSampleUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC'
+  TransactionsByCategoryIdVarianceSampleUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
 }
+
+/** A filter to be used against aggregates of `Category` object types. */
+export type CategoryAggregatesFilter = {
+  /** Distinct count aggregate over matching `Category` objects. */
+  distinctCount?: InputMaybe<CategoryDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Category` object to be included within the aggregate. */
+  filter?: InputMaybe<CategoryFilter>;
+};
 
 /**
  * A condition to be used against `Category` object types. All fields are tested
  * for equality and combined with a logical ‘and.’
  */
 export type CategoryCondition = {
+  /** Checks for equality with the object’s `icon` field. */
+  icon?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `iconColor` field. */
+  iconColor?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Typetransaction>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CategoryDistinctCountAggregateFilter = {
+  icon?: InputMaybe<BigIntFilter>;
+  iconColor?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  name?: InputMaybe<BigIntFilter>;
+  type?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
 };
 
 /** A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’ */
@@ -591,6 +624,10 @@ export type CategoryFilter = {
   budgetsByCategoryId?: InputMaybe<CategoryToManyBudgetFilter>;
   /** Some related `budgetsByCategoryId` exist. */
   budgetsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `icon` field. */
+  icon?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `iconColor` field. */
+  iconColor?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<StringFilter>;
   /** Filter by the object’s `name` field. */
@@ -603,11 +640,23 @@ export type CategoryFilter = {
   transactionsByCategoryId?: InputMaybe<CategoryToManyTransactionFilter>;
   /** Some related `transactionsByCategoryId` exist. */
   transactionsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<TypetransactionFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
 };
 
 /** Grouping methods for `Category` for usage during aggregation. */
 export enum CategoryGroupBy {
-  Name = 'NAME'
+  Icon = 'ICON',
+  IconColor = 'ICON_COLOR',
+  Name = 'NAME',
+  Type = 'TYPE',
+  UserId = 'USER_ID'
 }
 
 /** Conditions for `Category` aggregates. */
@@ -618,14 +667,22 @@ export type CategoryHavingInput = {
 
 /** An input for mutations affecting `Category` */
 export type CategoryInput = {
+  icon?: InputMaybe<Scalars['String']['input']>;
+  iconColor?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['String']['input'];
   name: Scalars['String']['input'];
+  type?: InputMaybe<Typetransaction>;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Represents an update to a `Category`. Fields that are set will be updated. */
 export type CategoryPatch = {
+  icon?: InputMaybe<Scalars['String']['input']>;
+  iconColor?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Typetransaction>;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’ */
@@ -672,6 +729,17 @@ export type CreateCategoryInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** All input for the create `OtpVerification` mutation. */
+export type CreateOtpVerificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `OtpVerification` to be created by this mutation. */
+  otpVerification: OtpVerificationInput;
 };
 
 /** All input for the create `Report` mutation. */
@@ -778,6 +846,27 @@ export type DeleteCategoryByNodeIdInput = {
 
 /** All input for the `deleteCategory` mutation. */
 export type DeleteCategoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+};
+
+/** All input for the `deleteOtpVerificationByNodeId` mutation. */
+export type DeleteOtpVerificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `OtpVerification` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteOtpVerification` mutation. */
+export type DeleteOtpVerificationInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -995,6 +1084,178 @@ export type JsonFilter = {
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['JSON']['input']>>;
 };
+
+/** A filter to be used against aggregates of `OtpVerification` object types. */
+export type OtpVerificationAggregatesFilter = {
+  /** Distinct count aggregate over matching `OtpVerification` objects. */
+  distinctCount?: InputMaybe<OtpVerificationDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `OtpVerification` object to be included within the aggregate. */
+  filter?: InputMaybe<OtpVerificationFilter>;
+};
+
+/**
+ * A condition to be used against `OtpVerification` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type OtpVerificationCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `email` field. */
+  email?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `expiresAt` field. */
+  expiresAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `otp` field. */
+  otp?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type OtpVerificationDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  email?: InputMaybe<BigIntFilter>;
+  expiresAt?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  otp?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
+};
+
+/** A filter to be used against `OtpVerification` object types. All fields are combined with a logical ‘and.’ */
+export type OtpVerificationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<OtpVerificationFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `email` field. */
+  email?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `expiresAt` field. */
+  expiresAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<OtpVerificationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<OtpVerificationFilter>>;
+  /** Filter by the object’s `otp` field. */
+  otp?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `OtpVerification` for usage during aggregation. */
+export enum OtpVerificationGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Email = 'EMAIL',
+  ExpiresAt = 'EXPIRES_AT',
+  ExpiresAtTruncatedToDay = 'EXPIRES_AT_TRUNCATED_TO_DAY',
+  ExpiresAtTruncatedToHour = 'EXPIRES_AT_TRUNCATED_TO_HOUR',
+  Otp = 'OTP',
+  UserId = 'USER_ID'
+}
+
+export type OtpVerificationHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `OtpVerification` aggregates. */
+export type OtpVerificationHavingInput = {
+  AND?: InputMaybe<Array<OtpVerificationHavingInput>>;
+  OR?: InputMaybe<Array<OtpVerificationHavingInput>>;
+  average?: InputMaybe<OtpVerificationHavingAverageInput>;
+  distinctCount?: InputMaybe<OtpVerificationHavingDistinctCountInput>;
+  max?: InputMaybe<OtpVerificationHavingMaxInput>;
+  min?: InputMaybe<OtpVerificationHavingMinInput>;
+  stddevPopulation?: InputMaybe<OtpVerificationHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<OtpVerificationHavingStddevSampleInput>;
+  sum?: InputMaybe<OtpVerificationHavingSumInput>;
+  variancePopulation?: InputMaybe<OtpVerificationHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<OtpVerificationHavingVarianceSampleInput>;
+};
+
+export type OtpVerificationHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `OtpVerification` */
+export type OtpVerificationInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  expiresAt: Scalars['Datetime']['input'];
+  id: Scalars['String']['input'];
+  otp: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+/** Represents an update to a `OtpVerification`. Fields that are set will be updated. */
+export type OtpVerificationPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  expiresAt?: InputMaybe<Scalars['Datetime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  otp?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Methods to use when ordering `OtpVerification`. */
+export enum OtpVerificationsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EmailAsc = 'EMAIL_ASC',
+  EmailDesc = 'EMAIL_DESC',
+  ExpiresAtAsc = 'EXPIRES_AT_ASC',
+  ExpiresAtDesc = 'EXPIRES_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  OtpAsc = 'OTP_ASC',
+  OtpDesc = 'OTP_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 /** A filter to be used against aggregates of `Report` object types. */
 export type ReportAggregatesFilter = {
@@ -1482,6 +1743,31 @@ export type UpdateCategoryInput = {
   patch: CategoryPatch;
 };
 
+/** All input for the `updateOtpVerificationByNodeId` mutation. */
+export type UpdateOtpVerificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `OtpVerification` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `OtpVerification` being updated. */
+  patch: OtpVerificationPatch;
+};
+
+/** All input for the `updateOtpVerification` mutation. */
+export type UpdateOtpVerificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+  /** An object where the defined keys will be set on the `OtpVerification` being updated. */
+  patch: OtpVerificationPatch;
+};
+
 /** All input for the `updateReportByNodeId` mutation. */
 export type UpdateReportByNodeIdInput = {
   /**
@@ -1618,6 +1904,19 @@ export type UpsertCategoryInput = {
 
 /** Where conditions for the upsert `Category` mutation. */
 export type UpsertCategoryWhere = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** All input for the upsert `OtpVerification` mutation. */
+export type UpsertOtpVerificationInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `OtpVerification` to be upserted by this mutation. */
+  otpVerification: OtpVerificationInput;
+};
+
+/** Where conditions for the upsert `OtpVerification` mutation. */
+export type UpsertOtpVerificationWhere = {
   id?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1788,6 +2087,10 @@ export type UserFilter = {
   budgetsByUserId?: InputMaybe<UserToManyBudgetFilter>;
   /** Some related `budgetsByUserId` exist. */
   budgetsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `categoriesByUserId` relation. */
+  categoriesByUserId?: InputMaybe<UserToManyCategoryFilter>;
+  /** Some related `categoriesByUserId` exist. */
+  categoriesByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `date` field. */
   date?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `email` field. */
@@ -1804,6 +2107,10 @@ export type UserFilter = {
   oidcId?: InputMaybe<StringFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<UserFilter>>;
+  /** Filter by the object’s `otpVerificationsByUserId` relation. */
+  otpVerificationsByUserId?: InputMaybe<UserToManyOtpVerificationFilter>;
+  /** Some related `otpVerificationsByUserId` exist. */
+  otpVerificationsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `password` field. */
   password?: InputMaybe<StringFilter>;
   /** Filter by the object’s `picture` field. */
@@ -1958,6 +2265,30 @@ export type UserToManyBudgetFilter = {
   some?: InputMaybe<BudgetFilter>;
 };
 
+/** A filter to be used against many `Category` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyCategoryFilter = {
+  /** Aggregates across related `Category` match the filter criteria. */
+  aggregates?: InputMaybe<CategoryAggregatesFilter>;
+  /** Every related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<CategoryFilter>;
+  /** No related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<CategoryFilter>;
+  /** Some related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<CategoryFilter>;
+};
+
+/** A filter to be used against many `OtpVerification` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyOtpVerificationFilter = {
+  /** Aggregates across related `OtpVerification` match the filter criteria. */
+  aggregates?: InputMaybe<OtpVerificationAggregatesFilter>;
+  /** Every related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<OtpVerificationFilter>;
+  /** No related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<OtpVerificationFilter>;
+  /** Some related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<OtpVerificationFilter>;
+};
+
 /** A filter to be used against many `Report` object types. All fields are combined with a logical ‘and.’ */
 export type UserToManyReportFilter = {
   /** Aggregates across related `Report` match the filter criteria. */
@@ -2106,6 +2437,116 @@ export enum UsersOrderBy {
   BudgetsByUserIdVarianceSampleMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByUserIdVarianceSampleUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
   BudgetsByUserIdVarianceSampleUserIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  CategoriesByUserIdAverageIconAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_ASC',
+  CategoriesByUserIdAverageIconColorAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_ASC',
+  CategoriesByUserIdAverageIconColorDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_DESC',
+  CategoriesByUserIdAverageIconDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_DESC',
+  CategoriesByUserIdAverageIdAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ID_ASC',
+  CategoriesByUserIdAverageIdDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_ID_DESC',
+  CategoriesByUserIdAverageNameAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_NAME_ASC',
+  CategoriesByUserIdAverageNameDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_NAME_DESC',
+  CategoriesByUserIdAverageTypeAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_TYPE_ASC',
+  CategoriesByUserIdAverageTypeDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_TYPE_DESC',
+  CategoriesByUserIdAverageUserIdAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  CategoriesByUserIdAverageUserIdDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  CategoriesByUserIdCountAsc = 'CATEGORIES_BY_USER_ID_COUNT_ASC',
+  CategoriesByUserIdCountDesc = 'CATEGORIES_BY_USER_ID_COUNT_DESC',
+  CategoriesByUserIdDistinctCountIconAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_ASC',
+  CategoriesByUserIdDistinctCountIconColorAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_ASC',
+  CategoriesByUserIdDistinctCountIconColorDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_DESC',
+  CategoriesByUserIdDistinctCountIconDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_DESC',
+  CategoriesByUserIdDistinctCountIdAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
+  CategoriesByUserIdDistinctCountIdDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
+  CategoriesByUserIdDistinctCountNameAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_NAME_ASC',
+  CategoriesByUserIdDistinctCountNameDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_NAME_DESC',
+  CategoriesByUserIdDistinctCountTypeAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_TYPE_ASC',
+  CategoriesByUserIdDistinctCountTypeDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_TYPE_DESC',
+  CategoriesByUserIdDistinctCountUserIdAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  CategoriesByUserIdDistinctCountUserIdDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  CategoriesByUserIdMaxIconAsc = 'CATEGORIES_BY_USER_ID_MAX_ICON_ASC',
+  CategoriesByUserIdMaxIconColorAsc = 'CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_ASC',
+  CategoriesByUserIdMaxIconColorDesc = 'CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_DESC',
+  CategoriesByUserIdMaxIconDesc = 'CATEGORIES_BY_USER_ID_MAX_ICON_DESC',
+  CategoriesByUserIdMaxIdAsc = 'CATEGORIES_BY_USER_ID_MAX_ID_ASC',
+  CategoriesByUserIdMaxIdDesc = 'CATEGORIES_BY_USER_ID_MAX_ID_DESC',
+  CategoriesByUserIdMaxNameAsc = 'CATEGORIES_BY_USER_ID_MAX_NAME_ASC',
+  CategoriesByUserIdMaxNameDesc = 'CATEGORIES_BY_USER_ID_MAX_NAME_DESC',
+  CategoriesByUserIdMaxTypeAsc = 'CATEGORIES_BY_USER_ID_MAX_TYPE_ASC',
+  CategoriesByUserIdMaxTypeDesc = 'CATEGORIES_BY_USER_ID_MAX_TYPE_DESC',
+  CategoriesByUserIdMaxUserIdAsc = 'CATEGORIES_BY_USER_ID_MAX_USER_ID_ASC',
+  CategoriesByUserIdMaxUserIdDesc = 'CATEGORIES_BY_USER_ID_MAX_USER_ID_DESC',
+  CategoriesByUserIdMinIconAsc = 'CATEGORIES_BY_USER_ID_MIN_ICON_ASC',
+  CategoriesByUserIdMinIconColorAsc = 'CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_ASC',
+  CategoriesByUserIdMinIconColorDesc = 'CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_DESC',
+  CategoriesByUserIdMinIconDesc = 'CATEGORIES_BY_USER_ID_MIN_ICON_DESC',
+  CategoriesByUserIdMinIdAsc = 'CATEGORIES_BY_USER_ID_MIN_ID_ASC',
+  CategoriesByUserIdMinIdDesc = 'CATEGORIES_BY_USER_ID_MIN_ID_DESC',
+  CategoriesByUserIdMinNameAsc = 'CATEGORIES_BY_USER_ID_MIN_NAME_ASC',
+  CategoriesByUserIdMinNameDesc = 'CATEGORIES_BY_USER_ID_MIN_NAME_DESC',
+  CategoriesByUserIdMinTypeAsc = 'CATEGORIES_BY_USER_ID_MIN_TYPE_ASC',
+  CategoriesByUserIdMinTypeDesc = 'CATEGORIES_BY_USER_ID_MIN_TYPE_DESC',
+  CategoriesByUserIdMinUserIdAsc = 'CATEGORIES_BY_USER_ID_MIN_USER_ID_ASC',
+  CategoriesByUserIdMinUserIdDesc = 'CATEGORIES_BY_USER_ID_MIN_USER_ID_DESC',
+  CategoriesByUserIdStddevPopulationIconAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_ASC',
+  CategoriesByUserIdStddevPopulationIconColorAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_ASC',
+  CategoriesByUserIdStddevPopulationIconColorDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_DESC',
+  CategoriesByUserIdStddevPopulationIconDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_DESC',
+  CategoriesByUserIdStddevPopulationIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
+  CategoriesByUserIdStddevPopulationIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
+  CategoriesByUserIdStddevPopulationNameAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_NAME_ASC',
+  CategoriesByUserIdStddevPopulationNameDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_NAME_DESC',
+  CategoriesByUserIdStddevPopulationTypeAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_TYPE_ASC',
+  CategoriesByUserIdStddevPopulationTypeDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_TYPE_DESC',
+  CategoriesByUserIdStddevPopulationUserIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  CategoriesByUserIdStddevPopulationUserIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  CategoriesByUserIdStddevSampleIconAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_ASC',
+  CategoriesByUserIdStddevSampleIconColorAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_ASC',
+  CategoriesByUserIdStddevSampleIconColorDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_DESC',
+  CategoriesByUserIdStddevSampleIconDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_DESC',
+  CategoriesByUserIdStddevSampleIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
+  CategoriesByUserIdStddevSampleIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
+  CategoriesByUserIdStddevSampleNameAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_NAME_ASC',
+  CategoriesByUserIdStddevSampleNameDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_NAME_DESC',
+  CategoriesByUserIdStddevSampleTypeAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_TYPE_ASC',
+  CategoriesByUserIdStddevSampleTypeDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_TYPE_DESC',
+  CategoriesByUserIdStddevSampleUserIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  CategoriesByUserIdStddevSampleUserIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  CategoriesByUserIdSumIconAsc = 'CATEGORIES_BY_USER_ID_SUM_ICON_ASC',
+  CategoriesByUserIdSumIconColorAsc = 'CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_ASC',
+  CategoriesByUserIdSumIconColorDesc = 'CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_DESC',
+  CategoriesByUserIdSumIconDesc = 'CATEGORIES_BY_USER_ID_SUM_ICON_DESC',
+  CategoriesByUserIdSumIdAsc = 'CATEGORIES_BY_USER_ID_SUM_ID_ASC',
+  CategoriesByUserIdSumIdDesc = 'CATEGORIES_BY_USER_ID_SUM_ID_DESC',
+  CategoriesByUserIdSumNameAsc = 'CATEGORIES_BY_USER_ID_SUM_NAME_ASC',
+  CategoriesByUserIdSumNameDesc = 'CATEGORIES_BY_USER_ID_SUM_NAME_DESC',
+  CategoriesByUserIdSumTypeAsc = 'CATEGORIES_BY_USER_ID_SUM_TYPE_ASC',
+  CategoriesByUserIdSumTypeDesc = 'CATEGORIES_BY_USER_ID_SUM_TYPE_DESC',
+  CategoriesByUserIdSumUserIdAsc = 'CATEGORIES_BY_USER_ID_SUM_USER_ID_ASC',
+  CategoriesByUserIdSumUserIdDesc = 'CATEGORIES_BY_USER_ID_SUM_USER_ID_DESC',
+  CategoriesByUserIdVariancePopulationIconAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_ASC',
+  CategoriesByUserIdVariancePopulationIconColorAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_ASC',
+  CategoriesByUserIdVariancePopulationIconColorDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_DESC',
+  CategoriesByUserIdVariancePopulationIconDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_DESC',
+  CategoriesByUserIdVariancePopulationIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
+  CategoriesByUserIdVariancePopulationIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
+  CategoriesByUserIdVariancePopulationNameAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_NAME_ASC',
+  CategoriesByUserIdVariancePopulationNameDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_NAME_DESC',
+  CategoriesByUserIdVariancePopulationTypeAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_TYPE_ASC',
+  CategoriesByUserIdVariancePopulationTypeDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_TYPE_DESC',
+  CategoriesByUserIdVariancePopulationUserIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  CategoriesByUserIdVariancePopulationUserIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  CategoriesByUserIdVarianceSampleIconAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_ASC',
+  CategoriesByUserIdVarianceSampleIconColorAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_ASC',
+  CategoriesByUserIdVarianceSampleIconColorDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_DESC',
+  CategoriesByUserIdVarianceSampleIconDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_DESC',
+  CategoriesByUserIdVarianceSampleIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
+  CategoriesByUserIdVarianceSampleIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
+  CategoriesByUserIdVarianceSampleNameAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_NAME_ASC',
+  CategoriesByUserIdVarianceSampleNameDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_NAME_DESC',
+  CategoriesByUserIdVarianceSampleTypeAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_TYPE_ASC',
+  CategoriesByUserIdVarianceSampleTypeDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_TYPE_DESC',
+  CategoriesByUserIdVarianceSampleUserIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  CategoriesByUserIdVarianceSampleUserIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   DateAsc = 'DATE_ASC',
   DateDesc = 'DATE_DESC',
   EmailAsc = 'EMAIL_ASC',
@@ -2119,6 +2560,116 @@ export enum UsersOrderBy {
   Natural = 'NATURAL',
   OidcIdAsc = 'OIDC_ID_ASC',
   OidcIdDesc = 'OIDC_ID_DESC',
+  OtpVerificationsByUserIdAverageCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
+  OtpVerificationsByUserIdAverageCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
+  OtpVerificationsByUserIdAverageEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EMAIL_ASC',
+  OtpVerificationsByUserIdAverageEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EMAIL_DESC',
+  OtpVerificationsByUserIdAverageExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdAverageExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdAverageIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_ID_ASC',
+  OtpVerificationsByUserIdAverageIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_ID_DESC',
+  OtpVerificationsByUserIdAverageOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_OTP_ASC',
+  OtpVerificationsByUserIdAverageOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_OTP_DESC',
+  OtpVerificationsByUserIdAverageUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  OtpVerificationsByUserIdAverageUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  OtpVerificationsByUserIdCountAsc = 'OTP_VERIFICATIONS_BY_USER_ID_COUNT_ASC',
+  OtpVerificationsByUserIdCountDesc = 'OTP_VERIFICATIONS_BY_USER_ID_COUNT_DESC',
+  OtpVerificationsByUserIdDistinctCountCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  OtpVerificationsByUserIdDistinctCountCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  OtpVerificationsByUserIdDistinctCountEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EMAIL_ASC',
+  OtpVerificationsByUserIdDistinctCountEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EMAIL_DESC',
+  OtpVerificationsByUserIdDistinctCountExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdDistinctCountExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdDistinctCountIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
+  OtpVerificationsByUserIdDistinctCountIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
+  OtpVerificationsByUserIdDistinctCountOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_OTP_ASC',
+  OtpVerificationsByUserIdDistinctCountOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_OTP_DESC',
+  OtpVerificationsByUserIdDistinctCountUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  OtpVerificationsByUserIdDistinctCountUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  OtpVerificationsByUserIdMaxCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_CREATED_AT_ASC',
+  OtpVerificationsByUserIdMaxCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_CREATED_AT_DESC',
+  OtpVerificationsByUserIdMaxEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_EMAIL_ASC',
+  OtpVerificationsByUserIdMaxEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_EMAIL_DESC',
+  OtpVerificationsByUserIdMaxExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdMaxExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdMaxIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_ID_ASC',
+  OtpVerificationsByUserIdMaxIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_ID_DESC',
+  OtpVerificationsByUserIdMaxOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_OTP_ASC',
+  OtpVerificationsByUserIdMaxOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_OTP_DESC',
+  OtpVerificationsByUserIdMaxUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_USER_ID_ASC',
+  OtpVerificationsByUserIdMaxUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_USER_ID_DESC',
+  OtpVerificationsByUserIdMinCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_CREATED_AT_ASC',
+  OtpVerificationsByUserIdMinCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_CREATED_AT_DESC',
+  OtpVerificationsByUserIdMinEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_EMAIL_ASC',
+  OtpVerificationsByUserIdMinEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_EMAIL_DESC',
+  OtpVerificationsByUserIdMinExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdMinExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdMinIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_ID_ASC',
+  OtpVerificationsByUserIdMinIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_ID_DESC',
+  OtpVerificationsByUserIdMinOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_OTP_ASC',
+  OtpVerificationsByUserIdMinOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_OTP_DESC',
+  OtpVerificationsByUserIdMinUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_USER_ID_ASC',
+  OtpVerificationsByUserIdMinUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_USER_ID_DESC',
+  OtpVerificationsByUserIdStddevPopulationCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  OtpVerificationsByUserIdStddevPopulationCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
+  OtpVerificationsByUserIdStddevPopulationEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EMAIL_ASC',
+  OtpVerificationsByUserIdStddevPopulationEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EMAIL_DESC',
+  OtpVerificationsByUserIdStddevPopulationExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdStddevPopulationExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdStddevPopulationIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
+  OtpVerificationsByUserIdStddevPopulationIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
+  OtpVerificationsByUserIdStddevPopulationOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_OTP_ASC',
+  OtpVerificationsByUserIdStddevPopulationOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_OTP_DESC',
+  OtpVerificationsByUserIdStddevPopulationUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  OtpVerificationsByUserIdStddevPopulationUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  OtpVerificationsByUserIdStddevSampleCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  OtpVerificationsByUserIdStddevSampleCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
+  OtpVerificationsByUserIdStddevSampleEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EMAIL_ASC',
+  OtpVerificationsByUserIdStddevSampleEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EMAIL_DESC',
+  OtpVerificationsByUserIdStddevSampleExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdStddevSampleExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdStddevSampleIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
+  OtpVerificationsByUserIdStddevSampleIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
+  OtpVerificationsByUserIdStddevSampleOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_OTP_ASC',
+  OtpVerificationsByUserIdStddevSampleOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_OTP_DESC',
+  OtpVerificationsByUserIdStddevSampleUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  OtpVerificationsByUserIdStddevSampleUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  OtpVerificationsByUserIdSumCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_CREATED_AT_ASC',
+  OtpVerificationsByUserIdSumCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_CREATED_AT_DESC',
+  OtpVerificationsByUserIdSumEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_EMAIL_ASC',
+  OtpVerificationsByUserIdSumEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_EMAIL_DESC',
+  OtpVerificationsByUserIdSumExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdSumExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdSumIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_ID_ASC',
+  OtpVerificationsByUserIdSumIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_ID_DESC',
+  OtpVerificationsByUserIdSumOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_OTP_ASC',
+  OtpVerificationsByUserIdSumOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_OTP_DESC',
+  OtpVerificationsByUserIdSumUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_USER_ID_ASC',
+  OtpVerificationsByUserIdSumUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_USER_ID_DESC',
+  OtpVerificationsByUserIdVariancePopulationCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  OtpVerificationsByUserIdVariancePopulationCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
+  OtpVerificationsByUserIdVariancePopulationEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EMAIL_ASC',
+  OtpVerificationsByUserIdVariancePopulationEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EMAIL_DESC',
+  OtpVerificationsByUserIdVariancePopulationExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdVariancePopulationExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdVariancePopulationIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
+  OtpVerificationsByUserIdVariancePopulationIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
+  OtpVerificationsByUserIdVariancePopulationOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_OTP_ASC',
+  OtpVerificationsByUserIdVariancePopulationOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_OTP_DESC',
+  OtpVerificationsByUserIdVariancePopulationUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  OtpVerificationsByUserIdVariancePopulationUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  OtpVerificationsByUserIdVarianceSampleCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  OtpVerificationsByUserIdVarianceSampleCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
+  OtpVerificationsByUserIdVarianceSampleEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EMAIL_ASC',
+  OtpVerificationsByUserIdVarianceSampleEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EMAIL_DESC',
+  OtpVerificationsByUserIdVarianceSampleExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdVarianceSampleExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdVarianceSampleIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
+  OtpVerificationsByUserIdVarianceSampleIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
+  OtpVerificationsByUserIdVarianceSampleOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_OTP_ASC',
+  OtpVerificationsByUserIdVarianceSampleOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_OTP_DESC',
+  OtpVerificationsByUserIdVarianceSampleUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  OtpVerificationsByUserIdVarianceSampleUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   PasswordAsc = 'PASSWORD_ASC',
   PasswordDesc = 'PASSWORD_DESC',
   PictureAsc = 'PICTURE_ASC',
@@ -2399,10 +2950,12 @@ export type InitProfileMutationVariables = Exact<{
 
 export type InitProfileMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'CreateUserPayload', clientMutationId?: string | null } | null };
 
-export type CategorySubscriptionSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type Get_CategoriesQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
 
 
-export type CategorySubscriptionSubscription = { __typename?: 'Subscription', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string }> } | null };
+export type Get_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', type: Typetransaction, id: string, name: string, icon?: string | null, iconColor?: string | null }> } | null };
 
 export type AddTransactionMutationVariables = Exact<{
   user_id: Scalars['String']['input'];
@@ -2417,18 +2970,18 @@ export type AddTransactionMutationVariables = Exact<{
 
 export type AddTransactionMutation = { __typename?: 'Mutation', createTransaction?: { __typename?: 'CreateTransactionPayload', clientMutationId?: string | null } | null };
 
-export type Edit_TransactionMutationVariables = Exact<{
+export type Edit_Transaction1MutationVariables = Exact<{
   id: Scalars['String']['input'];
   amount: Scalars['Float']['input'];
-  categoryId: Scalars['String']['input'];
   date: Scalars['Datetime']['input'];
+  categoryId: Scalars['String']['input'];
   description: Scalars['String']['input'];
   type: Typetransaction;
   clientMutationId: Scalars['String']['input'];
 }>;
 
 
-export type Edit_TransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, description?: string | null, amount: number } | null } | null };
+export type Edit_Transaction1Mutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, categoryId?: string | null, description?: string | null, amount: number } | null } | null };
 
 export type ProfileFragment = { __typename?: 'User', firstName?: string | null, lastName?: string | null, gender?: UserGender | null, email?: string | null, tel?: string | null, picture?: string | null, date?: any | null } & { ' $fragmentName'?: 'ProfileFragment' };
 
@@ -2452,23 +3005,115 @@ export type ProfileSubSubscription = { __typename?: 'Subscription', user?: (
     & { ' $fragmentRefs'?: { 'ProfileFragment': ProfileFragment } }
   ) | null };
 
+export type Get_User_TransactionsQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_User_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number }> } | null };
+
+export type Get_User_CategoriesQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_User_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null }> } | null };
+
+export type AddBudgetMutationVariables = Exact<{
+  budget_id: Scalars['String']['input'];
+  user_id: Scalars['String']['input'];
+  category_id: Scalars['String']['input'];
+  amount: Scalars['Float']['input'];
+  month: Scalars['Datetime']['input'];
+  alert_threshold?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type AddBudgetMutation = { __typename?: 'Mutation', createBudget?: { __typename?: 'CreateBudgetPayload', clientMutationId?: string | null } | null };
+
+export type Get_BudgetsQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_BudgetsQuery = { __typename?: 'Query', budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null } | null }> } | null };
+
+export type Get_User_Transactions2QueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_User_Transactions2Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null } | null }> } | null };
+
+export type Delete_BudgetMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type Delete_BudgetMutation = { __typename?: 'Mutation', deleteBudget?: { __typename?: 'DeleteBudgetPayload', clientMutationId?: string | null } | null };
+
+export type Edit_BudgetMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  amount: Scalars['Float']['input'];
+  categoryId: Scalars['String']['input'];
+  month: Scalars['Datetime']['input'];
+  alertThreshold?: InputMaybe<Scalars['Int']['input']>;
+  clientMutationId: Scalars['String']['input'];
+}>;
+
+
+export type Edit_BudgetMutation = { __typename?: 'Mutation', updateBudget?: { __typename?: 'UpdateBudgetPayload', budget?: { __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null } | null } | null };
+
+export type Get_User_Categories3QueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_User_Categories3Query = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction }> } | null };
+
 export type Add_CategoryMutationVariables = Exact<{
   id: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
   name: Scalars['String']['input'];
+  icon: Scalars['String']['input'];
+  iconColor: Scalars['String']['input'];
+  type: Typetransaction;
 }>;
 
 
 export type Add_CategoryMutation = { __typename?: 'Mutation', createCategory?: { __typename?: 'CreateCategoryPayload', clientMutationId?: string | null } | null };
 
-export type Get_CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type Delete_CategoryMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
 
 
-export type Get_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string }> } | null };
+export type Delete_CategoryMutation = { __typename?: 'Mutation', deleteCategory?: { __typename?: 'DeleteCategoryPayload', clientMutationId?: string | null } | null };
 
-export type Get_TransactionsQueryVariables = Exact<{ [key: string]: never; }>;
+export type Update_CategoryMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  icon: Scalars['String']['input'];
+  iconColor: Scalars['String']['input'];
+  type: Typetransaction;
+}>;
 
 
-export type Get_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
+export type Update_CategoryMutation = { __typename?: 'Mutation', updateCategory?: { __typename?: 'UpdateCategoryPayload', clientMutationId?: string | null } | null };
+
+export type Get_Transactions3QueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_Transactions3Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
+
+export type Get_Transactions4QueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_Transactions4Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null } | null }> } | null };
 
 export type Delete_TransactionMutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -2477,6 +3122,19 @@ export type Delete_TransactionMutationVariables = Exact<{
 
 export type Delete_TransactionMutation = { __typename?: 'Mutation', deleteTransaction?: { __typename?: 'DeleteTransactionPayload', clientMutationId?: string | null } | null };
 
+export type Edit_Transaction2MutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  amount: Scalars['Float']['input'];
+  categoryId: Scalars['String']['input'];
+  date: Scalars['Datetime']['input'];
+  description: Scalars['String']['input'];
+  type: Typetransaction;
+  clientMutationId: Scalars['String']['input'];
+}>;
+
+
+export type Edit_Transaction2Mutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, description?: string | null, amount: number } | null } | null };
+
 export type Login_UserQueryVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -2484,6 +3142,35 @@ export type Login_UserQueryVariables = Exact<{
 
 
 export type Login_UserQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', nodes: Array<{ __typename?: 'User', password?: string | null, email?: string | null, oidcId: string, firstName?: string | null, lastName?: string | null, gender?: UserGender | null }> } | null };
+
+export type CreateOtpVerificationMutationVariables = Exact<{
+  input: CreateOtpVerificationInput;
+}>;
+
+
+export type CreateOtpVerificationMutation = { __typename?: 'Mutation', createOtpVerification?: { __typename?: 'CreateOtpVerificationPayload', otpVerification?: { __typename?: 'OtpVerification', id: string, otp: string, expiresAt: any, email?: string | null } | null } | null };
+
+export type Get_UserQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type Get_UserQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', nodes: Array<{ __typename?: 'User', email?: string | null, oidcId: string, firstName?: string | null, lastName?: string | null, gender?: UserGender | null }> } | null };
+
+export type MyMutationMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type MyMutationMutation = { __typename?: 'Mutation', deleteOtpVerification?: { __typename?: 'DeleteOtpVerificationPayload', clientMutationId?: string | null, deletedOtpVerificationNodeId?: string | null } | null };
+
+export type Check_OtpQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+  otp: Scalars['String']['input'];
+}>;
+
+
+export type Check_OtpQuery = { __typename?: 'Query', otpVerifications?: { __typename?: 'OtpVerificationsConnection', nodes: Array<{ __typename?: 'OtpVerification', id: string, otp: string, email?: string | null, expiresAt: any }> } | null };
 
 export type SignupMutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -2498,16 +3185,31 @@ export type SignupMutation = { __typename?: 'Mutation', createUser?: { __typenam
 
 export const ProfileFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<ProfileFragment, unknown>;
 export const InitProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InitProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tel"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"picture"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"firstName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lastName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"tel"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tel"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"picture"},"value":{"kind":"Variable","name":{"kind":"Name","value":"picture"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<InitProfileMutation, InitProfileMutationVariables>;
-export const CategorySubscriptionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"CategorySubscription"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<CategorySubscriptionSubscription, CategorySubscriptionSubscriptionVariables>;
+export const Get_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_CATEGORIES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}}]}}]}}]}}]} as unknown as DocumentNode<Get_CategoriesQuery, Get_CategoriesQueryVariables>;
 export const AddTransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddTransaction"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"transaction_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transaction"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"transaction_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<AddTransactionMutation, AddTransactionMutationVariables>;
-export const Edit_TransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_TransactionMutation, Edit_TransactionMutationVariables>;
+export const Edit_Transaction1Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION1"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_Transaction1Mutation, Edit_Transaction1MutationVariables>;
 export const GetProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Profile"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
 export const ProfileSubDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"ProfileSub"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Profile"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<ProfileSubSubscription, ProfileSubSubscriptionVariables>;
-export const Add_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ADD_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Add_CategoryMutation, Add_CategoryMutationVariables>;
-export const Get_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_CATEGORIES"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<Get_CategoriesQuery, Get_CategoriesQueryVariables>;
-export const Get_TransactionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_TransactionsQuery, Get_TransactionsQueryVariables>;
+export const Get_User_TransactionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_TRANSACTIONS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_TransactionsQuery, Get_User_TransactionsQueryVariables>;
+export const Get_User_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_CATEGORIES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_CategoriesQuery, Get_User_CategoriesQueryVariables>;
+export const AddBudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddBudget"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"budget_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"month"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"alert_threshold"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budget"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"budget_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"month"},"value":{"kind":"Variable","name":{"kind":"Name","value":"month"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"alertThreshold"},"value":{"kind":"Variable","name":{"kind":"Name","value":"alert_threshold"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<AddBudgetMutation, AddBudgetMutationVariables>;
+export const Get_BudgetsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_BUDGETS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"MONTH_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"alertThreshold"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_BudgetsQuery, Get_BudgetsQueryVariables>;
+export const Get_User_Transactions2Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_TRANSACTIONS2"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_Transactions2Query, Get_User_Transactions2QueryVariables>;
+export const Delete_BudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_BUDGET"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_BudgetMutation, Delete_BudgetMutationVariables>;
+export const Edit_BudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_BUDGET"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"month"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"alertThreshold"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"month"},"value":{"kind":"Variable","name":{"kind":"Name","value":"month"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"alertThreshold"},"value":{"kind":"Variable","name":{"kind":"Name","value":"alertThreshold"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budget"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"alertThreshold"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_BudgetMutation, Edit_BudgetMutationVariables>;
+export const Get_User_Categories3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_CATEGORIES3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_Categories3Query, Get_User_Categories3QueryVariables>;
+export const Add_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ADD_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"icon"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"icon"},"value":{"kind":"Variable","name":{"kind":"Name","value":"icon"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"iconColor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Add_CategoryMutation, Add_CategoryMutationVariables>;
+export const Delete_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_CategoryMutation, Delete_CategoryMutationVariables>;
+export const Update_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UPDATE_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"icon"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"icon"},"value":{"kind":"Variable","name":{"kind":"Name","value":"icon"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"iconColor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Update_CategoryMutation, Update_CategoryMutationVariables>;
+export const Get_Transactions3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions3Query, Get_Transactions3QueryVariables>;
+export const Get_Transactions4Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS4"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions4Query, Get_Transactions4QueryVariables>;
 export const Delete_TransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_TRANSACTION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_TransactionMutation, Delete_TransactionMutationVariables>;
+export const Edit_Transaction2Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION2"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_Transaction2Mutation, Edit_Transaction2MutationVariables>;
 export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LOGIN_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"password"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"oidcId"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]}}]}}]} as unknown as DocumentNode<Login_UserQuery, Login_UserQueryVariables>;
+export const CreateOtpVerificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOtpVerification"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateOtpVerificationInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOtpVerification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"otpVerification"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"otp"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<CreateOtpVerificationMutation, CreateOtpVerificationMutationVariables>;
+export const Get_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"oidcId"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]}}]}}]} as unknown as DocumentNode<Get_UserQuery, Get_UserQueryVariables>;
+export const MyMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MyMutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteOtpVerification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}},{"kind":"Field","name":{"kind":"Name","value":"deletedOtpVerificationNodeId"}}]}}]}}]} as unknown as DocumentNode<MyMutationMutation, MyMutationMutationVariables>;
+export const Check_OtpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CHECK_OTP"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"otp"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"otpVerifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"otp"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"otp"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"otp"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}}]}}]}}]}}]} as unknown as DocumentNode<Check_OtpQuery, Check_OtpQueryVariables>;
 export const SignupDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"signup"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"firstName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lastName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<SignupMutation, SignupMutationVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -3122,6 +3824,10 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdVarianceSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByCategoryIdVarianceSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
   BudgetsByCategoryIdVarianceSampleUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  IconAsc = 'ICON_ASC',
+  IconColorAsc = 'ICON_COLOR_ASC',
+  IconColorDesc = 'ICON_COLOR_DESC',
+  IconDesc = 'ICON_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   NameAsc = 'NAME_ASC',
@@ -3256,19 +3962,29 @@ export enum CategoriesOrderBy {
   TransactionsByCategoryIdVarianceSampleTypeAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_ASC',
   TransactionsByCategoryIdVarianceSampleTypeDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_DESC',
   TransactionsByCategoryIdVarianceSampleUserIdAsc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
-  TransactionsByCategoryIdVarianceSampleUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC'
+  TransactionsByCategoryIdVarianceSampleUserIdDesc = 'TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
 }
 
 export type Category = Node & {
   __typename?: 'Category';
   /** Reads and enables pagination through a set of `Budget`. */
   budgetsByCategoryId: BudgetsConnection;
+  icon?: Maybe<Scalars['String']['output']>;
+  iconColor?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   name: Scalars['String']['output'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']['output'];
   /** Reads and enables pagination through a set of `Transaction`. */
   transactionsByCategoryId: TransactionsConnection;
+  type: Typetransaction;
+  /** Reads a single `User` that is related to this `Category`. */
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -3302,23 +4018,56 @@ export type CategoryAggregates = {
   keys?: Maybe<Array<Scalars['String']['output']>>;
 };
 
+/** A filter to be used against aggregates of `Category` object types. */
+export type CategoryAggregatesFilter = {
+  /** Distinct count aggregate over matching `Category` objects. */
+  distinctCount?: InputMaybe<CategoryDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Category` object to be included within the aggregate. */
+  filter?: InputMaybe<CategoryFilter>;
+};
+
 /**
  * A condition to be used against `Category` object types. All fields are tested
  * for equality and combined with a logical ‘and.’
  */
 export type CategoryCondition = {
+  /** Checks for equality with the object’s `icon` field. */
+  icon?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `iconColor` field. */
+  iconColor?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<Typetransaction>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CategoryDistinctCountAggregateFilter = {
+  icon?: InputMaybe<BigIntFilter>;
+  iconColor?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  name?: InputMaybe<BigIntFilter>;
+  type?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
 };
 
 export type CategoryDistinctCountAggregates = {
   __typename?: 'CategoryDistinctCountAggregates';
+  /** Distinct count of icon across the matching connection */
+  icon?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of iconColor across the matching connection */
+  iconColor?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of id across the matching connection */
   id?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of name across the matching connection */
   name?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of type across the matching connection */
+  type?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of userId across the matching connection */
+  userId?: Maybe<Scalars['BigInt']['output']>;
 };
 
 /** A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’ */
@@ -3329,6 +4078,10 @@ export type CategoryFilter = {
   budgetsByCategoryId?: InputMaybe<CategoryToManyBudgetFilter>;
   /** Some related `budgetsByCategoryId` exist. */
   budgetsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `icon` field. */
+  icon?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `iconColor` field. */
+  iconColor?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<StringFilter>;
   /** Filter by the object’s `name` field. */
@@ -3341,11 +4094,23 @@ export type CategoryFilter = {
   transactionsByCategoryId?: InputMaybe<CategoryToManyTransactionFilter>;
   /** Some related `transactionsByCategoryId` exist. */
   transactionsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<TypetransactionFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
 };
 
 /** Grouping methods for `Category` for usage during aggregation. */
 export enum CategoryGroupBy {
-  Name = 'NAME'
+  Icon = 'ICON',
+  IconColor = 'ICON_COLOR',
+  Name = 'NAME',
+  Type = 'TYPE',
+  UserId = 'USER_ID'
 }
 
 /** Conditions for `Category` aggregates. */
@@ -3356,14 +4121,22 @@ export type CategoryHavingInput = {
 
 /** An input for mutations affecting `Category` */
 export type CategoryInput = {
+  icon?: InputMaybe<Scalars['String']['input']>;
+  iconColor?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['String']['input'];
   name: Scalars['String']['input'];
+  type?: InputMaybe<Typetransaction>;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Represents an update to a `Category`. Fields that are set will be updated. */
 export type CategoryPatch = {
+  icon?: InputMaybe<Scalars['String']['input']>;
+  iconColor?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Typetransaction>;
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’ */
@@ -3452,12 +4225,49 @@ export type CreateCategoryPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Category`. */
+  user?: Maybe<User>;
 };
 
 
 /** The output of our create `Category` mutation. */
 export type CreateCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+/** All input for the create `OtpVerification` mutation. */
+export type CreateOtpVerificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `OtpVerification` to be created by this mutation. */
+  otpVerification: OtpVerificationInput;
+};
+
+/** The output of our create `OtpVerification` mutation. */
+export type CreateOtpVerificationPayload = {
+  __typename?: 'CreateOtpVerificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `OtpVerification` that was created by this mutation. */
+  otpVerification?: Maybe<OtpVerification>;
+  /** An edge for our `OtpVerification`. May be used by Relay 1. */
+  otpVerificationEdge?: Maybe<OtpVerificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `OtpVerification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our create `OtpVerification` mutation. */
+export type CreateOtpVerificationPayloadOtpVerificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<OtpVerificationsOrderBy>>;
 };
 
 /** All input for the create `Report` mutation. */
@@ -3710,12 +4520,60 @@ export type DeleteCategoryPayload = {
   deletedCategoryNodeId?: Maybe<Scalars['ID']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Category`. */
+  user?: Maybe<User>;
 };
 
 
 /** The output of our delete `Category` mutation. */
 export type DeleteCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+/** All input for the `deleteOtpVerificationByNodeId` mutation. */
+export type DeleteOtpVerificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `OtpVerification` to be deleted. */
+  nodeId: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteOtpVerification` mutation. */
+export type DeleteOtpVerificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+};
+
+/** The output of our delete `OtpVerification` mutation. */
+export type DeleteOtpVerificationPayload = {
+  __typename?: 'DeleteOtpVerificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedOtpVerificationNodeId?: Maybe<Scalars['ID']['output']>;
+  /** The `OtpVerification` that was deleted by this mutation. */
+  otpVerification?: Maybe<OtpVerification>;
+  /** An edge for our `OtpVerification`. May be used by Relay 1. */
+  otpVerificationEdge?: Maybe<OtpVerificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `OtpVerification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our delete `OtpVerification` mutation. */
+export type DeleteOtpVerificationPayloadOtpVerificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<OtpVerificationsOrderBy>>;
 };
 
 /** All input for the `deleteReportByNodeId` mutation. */
@@ -4035,6 +4893,8 @@ export type Mutation = {
   createBudget?: Maybe<CreateBudgetPayload>;
   /** Creates a single `Category`. */
   createCategory?: Maybe<CreateCategoryPayload>;
+  /** Creates a single `OtpVerification`. */
+  createOtpVerification?: Maybe<CreateOtpVerificationPayload>;
   /** Creates a single `Report`. */
   createReport?: Maybe<CreateReportPayload>;
   /** Creates a single `Transaction`. */
@@ -4051,6 +4911,10 @@ export type Mutation = {
   deleteCategory?: Maybe<DeleteCategoryPayload>;
   /** Deletes a single `Category` using its globally unique id. */
   deleteCategoryByNodeId?: Maybe<DeleteCategoryPayload>;
+  /** Deletes a single `OtpVerification` using a unique key. */
+  deleteOtpVerification?: Maybe<DeleteOtpVerificationPayload>;
+  /** Deletes a single `OtpVerification` using its globally unique id. */
+  deleteOtpVerificationByNodeId?: Maybe<DeleteOtpVerificationPayload>;
   /** Deletes a single `Report` using a unique key. */
   deleteReport?: Maybe<DeleteReportPayload>;
   /** Deletes a single `Report` using its globally unique id. */
@@ -4077,6 +4941,10 @@ export type Mutation = {
   updateCategory?: Maybe<UpdateCategoryPayload>;
   /** Updates a single `Category` using its globally unique id and a patch. */
   updateCategoryByNodeId?: Maybe<UpdateCategoryPayload>;
+  /** Updates a single `OtpVerification` using a unique key and a patch. */
+  updateOtpVerification?: Maybe<UpdateOtpVerificationPayload>;
+  /** Updates a single `OtpVerification` using its globally unique id and a patch. */
+  updateOtpVerificationByNodeId?: Maybe<UpdateOtpVerificationPayload>;
   /** Updates a single `Report` using a unique key and a patch. */
   updateReport?: Maybe<UpdateReportPayload>;
   /** Updates a single `Report` using its globally unique id and a patch. */
@@ -4099,6 +4967,8 @@ export type Mutation = {
   upsertBudget?: Maybe<UpsertBudgetPayload>;
   /** Upserts a single `Category`. */
   upsertCategory?: Maybe<UpsertCategoryPayload>;
+  /** Upserts a single `OtpVerification`. */
+  upsertOtpVerification?: Maybe<UpsertOtpVerificationPayload>;
   /** Upserts a single `Report`. */
   upsertReport?: Maybe<UpsertReportPayload>;
   /** Upserts a single `Transaction`. */
@@ -4119,6 +4989,12 @@ export type MutationCreateBudgetArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateCategoryArgs = {
   input: CreateCategoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateOtpVerificationArgs = {
+  input: CreateOtpVerificationInput;
 };
 
 
@@ -4167,6 +5043,18 @@ export type MutationDeleteCategoryArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteCategoryByNodeIdArgs = {
   input: DeleteCategoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteOtpVerificationArgs = {
+  input: DeleteOtpVerificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteOtpVerificationByNodeIdArgs = {
+  input: DeleteOtpVerificationByNodeIdInput;
 };
 
 
@@ -4249,6 +5137,18 @@ export type MutationUpdateCategoryByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateOtpVerificationArgs = {
+  input: UpdateOtpVerificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateOtpVerificationByNodeIdArgs = {
+  input: UpdateOtpVerificationByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateReportArgs = {
   input: UpdateReportInput;
 };
@@ -4317,6 +5217,13 @@ export type MutationUpsertCategoryArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertOtpVerificationArgs = {
+  input: UpsertOtpVerificationInput;
+  where?: InputMaybe<UpsertOtpVerificationWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertReportArgs = {
   input: UpsertReportInput;
   where?: InputMaybe<UpsertReportWhere>;
@@ -4349,6 +5256,248 @@ export type Node = {
   nodeId: Scalars['ID']['output'];
 };
 
+export type OtpVerification = Node & {
+  __typename?: 'OtpVerification';
+  createdAt: Scalars['Datetime']['output'];
+  email?: Maybe<Scalars['String']['output']>;
+  expiresAt: Scalars['Datetime']['output'];
+  id: Scalars['String']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']['output'];
+  otp: Scalars['String']['output'];
+  /** Reads a single `User` that is related to this `OtpVerification`. */
+  user?: Maybe<User>;
+  userId: Scalars['String']['output'];
+};
+
+export type OtpVerificationAggregates = {
+  __typename?: 'OtpVerificationAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<OtpVerificationDistinctCountAggregates>;
+  keys?: Maybe<Array<Scalars['String']['output']>>;
+};
+
+/** A filter to be used against aggregates of `OtpVerification` object types. */
+export type OtpVerificationAggregatesFilter = {
+  /** Distinct count aggregate over matching `OtpVerification` objects. */
+  distinctCount?: InputMaybe<OtpVerificationDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `OtpVerification` object to be included within the aggregate. */
+  filter?: InputMaybe<OtpVerificationFilter>;
+};
+
+/**
+ * A condition to be used against `OtpVerification` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type OtpVerificationCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `email` field. */
+  email?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `expiresAt` field. */
+  expiresAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `otp` field. */
+  otp?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type OtpVerificationDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  email?: InputMaybe<BigIntFilter>;
+  expiresAt?: InputMaybe<BigIntFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  otp?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
+};
+
+export type OtpVerificationDistinctCountAggregates = {
+  __typename?: 'OtpVerificationDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of email across the matching connection */
+  email?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of expiresAt across the matching connection */
+  expiresAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of id across the matching connection */
+  id?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of otp across the matching connection */
+  otp?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of userId across the matching connection */
+  userId?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A filter to be used against `OtpVerification` object types. All fields are combined with a logical ‘and.’ */
+export type OtpVerificationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<OtpVerificationFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `email` field. */
+  email?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `expiresAt` field. */
+  expiresAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<OtpVerificationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<OtpVerificationFilter>>;
+  /** Filter by the object’s `otp` field. */
+  otp?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `OtpVerification` for usage during aggregation. */
+export enum OtpVerificationGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Email = 'EMAIL',
+  ExpiresAt = 'EXPIRES_AT',
+  ExpiresAtTruncatedToDay = 'EXPIRES_AT_TRUNCATED_TO_DAY',
+  ExpiresAtTruncatedToHour = 'EXPIRES_AT_TRUNCATED_TO_HOUR',
+  Otp = 'OTP',
+  UserId = 'USER_ID'
+}
+
+export type OtpVerificationHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `OtpVerification` aggregates. */
+export type OtpVerificationHavingInput = {
+  AND?: InputMaybe<Array<OtpVerificationHavingInput>>;
+  OR?: InputMaybe<Array<OtpVerificationHavingInput>>;
+  average?: InputMaybe<OtpVerificationHavingAverageInput>;
+  distinctCount?: InputMaybe<OtpVerificationHavingDistinctCountInput>;
+  max?: InputMaybe<OtpVerificationHavingMaxInput>;
+  min?: InputMaybe<OtpVerificationHavingMinInput>;
+  stddevPopulation?: InputMaybe<OtpVerificationHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<OtpVerificationHavingStddevSampleInput>;
+  sum?: InputMaybe<OtpVerificationHavingSumInput>;
+  variancePopulation?: InputMaybe<OtpVerificationHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<OtpVerificationHavingVarianceSampleInput>;
+};
+
+export type OtpVerificationHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type OtpVerificationHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `OtpVerification` */
+export type OtpVerificationInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  expiresAt: Scalars['Datetime']['input'];
+  id: Scalars['String']['input'];
+  otp: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+/** Represents an update to a `OtpVerification`. Fields that are set will be updated. */
+export type OtpVerificationPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  expiresAt?: InputMaybe<Scalars['Datetime']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  otp?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A connection to a list of `OtpVerification` values. */
+export type OtpVerificationsConnection = {
+  __typename?: 'OtpVerificationsConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<OtpVerificationAggregates>;
+  /** A list of edges which contains the `OtpVerification` and cursor to aid in pagination. */
+  edges: Array<OtpVerificationsEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<OtpVerificationAggregates>>;
+  /** A list of `OtpVerification` objects. */
+  nodes: Array<OtpVerification>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `OtpVerification` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `OtpVerification` values. */
+export type OtpVerificationsConnectionGroupedAggregatesArgs = {
+  groupBy: Array<OtpVerificationGroupBy>;
+  having?: InputMaybe<OtpVerificationHavingInput>;
+};
+
+/** A `OtpVerification` edge in the connection. */
+export type OtpVerificationsEdge = {
+  __typename?: 'OtpVerificationsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `OtpVerification` at the end of the edge. */
+  node: OtpVerification;
+};
+
+/** Methods to use when ordering `OtpVerification`. */
+export enum OtpVerificationsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EmailAsc = 'EMAIL_ASC',
+  EmailDesc = 'EMAIL_DESC',
+  ExpiresAtAsc = 'EXPIRES_AT_ASC',
+  ExpiresAtDesc = 'EXPIRES_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  OtpAsc = 'OTP_ASC',
+  OtpDesc = 'OTP_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
+
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -4379,6 +5528,11 @@ export type Query = Node & {
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID']['output'];
+  otpVerification?: Maybe<OtpVerification>;
+  /** Reads a single `OtpVerification` using its globally unique `ID`. */
+  otpVerificationByNodeId?: Maybe<OtpVerification>;
+  /** Reads and enables pagination through a set of `OtpVerification`. */
+  otpVerifications?: Maybe<OtpVerificationsConnection>;
   /**
    * Exposes the root query type nested one level down. This is helpful for Relay 1
    * which can only query top level fields if they are in a particular form.
@@ -4461,6 +5615,31 @@ export type QueryCategoryByNodeIdArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryNodeArgs = {
   nodeId: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOtpVerificationArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOtpVerificationByNodeIdArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOtpVerificationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<OtpVerificationCondition>;
+  filter?: InputMaybe<OtpVerificationFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<OtpVerificationsOrderBy>>;
 };
 
 
@@ -4845,6 +6024,12 @@ export type Subscription = {
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. (live) */
   nodeId: Scalars['ID']['output'];
+  /**  (live) */
+  otpVerification?: Maybe<OtpVerification>;
+  /** Reads a single `OtpVerification` using its globally unique `ID`. (live) */
+  otpVerificationByNodeId?: Maybe<OtpVerification>;
+  /** Reads and enables pagination through a set of `OtpVerification`. (live) */
+  otpVerifications?: Maybe<OtpVerificationsConnection>;
   /**
    * Exposes the root query type nested one level down. This is helpful for Relay 1
    * which can only query top level fields if they are in a particular form. (live)
@@ -5079,6 +6264,94 @@ export type SubscriptionCategoryByNodeIdArgs = {
  */
 export type SubscriptionNodeArgs = {
   nodeId: Scalars['ID']['input'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionOtpVerificationArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionOtpVerificationByNodeIdArgs = {
+  nodeId: Scalars['ID']['input'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionOtpVerificationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<OtpVerificationCondition>;
+  filter?: InputMaybe<OtpVerificationFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<OtpVerificationsOrderBy>>;
 };
 
 
@@ -5955,12 +7228,63 @@ export type UpdateCategoryPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Category`. */
+  user?: Maybe<User>;
 };
 
 
 /** The output of our update `Category` mutation. */
 export type UpdateCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+/** All input for the `updateOtpVerificationByNodeId` mutation. */
+export type UpdateOtpVerificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `OtpVerification` to be updated. */
+  nodeId: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `OtpVerification` being updated. */
+  patch: OtpVerificationPatch;
+};
+
+/** All input for the `updateOtpVerification` mutation. */
+export type UpdateOtpVerificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+  /** An object where the defined keys will be set on the `OtpVerification` being updated. */
+  patch: OtpVerificationPatch;
+};
+
+/** The output of our update `OtpVerification` mutation. */
+export type UpdateOtpVerificationPayload = {
+  __typename?: 'UpdateOtpVerificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `OtpVerification` that was updated by this mutation. */
+  otpVerification?: Maybe<OtpVerification>;
+  /** An edge for our `OtpVerification`. May be used by Relay 1. */
+  otpVerificationEdge?: Maybe<OtpVerificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `OtpVerification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our update `OtpVerification` mutation. */
+export type UpdateOtpVerificationPayloadOtpVerificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<OtpVerificationsOrderBy>>;
 };
 
 /** All input for the `updateReportByNodeId` mutation. */
@@ -6227,6 +7551,8 @@ export type UpsertCategoryPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `Category`. */
+  user?: Maybe<User>;
 };
 
 
@@ -6237,6 +7563,40 @@ export type UpsertCategoryPayloadCategoryEdgeArgs = {
 
 /** Where conditions for the upsert `Category` mutation. */
 export type UpsertCategoryWhere = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** All input for the upsert `OtpVerification` mutation. */
+export type UpsertOtpVerificationInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `OtpVerification` to be upserted by this mutation. */
+  otpVerification: OtpVerificationInput;
+};
+
+/** The output of our upsert `OtpVerification` mutation. */
+export type UpsertOtpVerificationPayload = {
+  __typename?: 'UpsertOtpVerificationPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `OtpVerification` that was upserted by this mutation. */
+  otpVerification?: Maybe<OtpVerification>;
+  /** An edge for our `OtpVerification`. May be used by Relay 1. */
+  otpVerificationEdge?: Maybe<OtpVerificationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `OtpVerification`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our upsert `OtpVerification` mutation. */
+export type UpsertOtpVerificationPayloadOtpVerificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<OtpVerificationsOrderBy>>;
+};
+
+/** Where conditions for the upsert `OtpVerification` mutation. */
+export type UpsertOtpVerificationWhere = {
   id?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -6381,6 +7741,8 @@ export type User = Node & {
   __typename?: 'User';
   /** Reads and enables pagination through a set of `Budget`. */
   budgetsByUserId: BudgetsConnection;
+  /** Reads and enables pagination through a set of `Category`. */
+  categoriesByUserId: CategoriesConnection;
   date?: Maybe<Scalars['Datetime']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
@@ -6389,6 +7751,8 @@ export type User = Node & {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']['output'];
   oidcId: Scalars['String']['output'];
+  /** Reads and enables pagination through a set of `OtpVerification`. */
+  otpVerificationsByUserId: OtpVerificationsConnection;
   password?: Maybe<Scalars['String']['output']>;
   picture?: Maybe<Scalars['String']['output']>;
   /** Reads and enables pagination through a set of `Report`. */
@@ -6410,6 +7774,30 @@ export type UserBudgetsByUserIdArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<BudgetsOrderBy>>;
+};
+
+
+export type UserCategoriesByUserIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<CategoryCondition>;
+  filter?: InputMaybe<CategoryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
+};
+
+
+export type UserOtpVerificationsByUserIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<OtpVerificationCondition>;
+  filter?: InputMaybe<OtpVerificationFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<OtpVerificationsOrderBy>>;
 };
 
 
@@ -6652,6 +8040,10 @@ export type UserFilter = {
   budgetsByUserId?: InputMaybe<UserToManyBudgetFilter>;
   /** Some related `budgetsByUserId` exist. */
   budgetsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `categoriesByUserId` relation. */
+  categoriesByUserId?: InputMaybe<UserToManyCategoryFilter>;
+  /** Some related `categoriesByUserId` exist. */
+  categoriesByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `date` field. */
   date?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `email` field. */
@@ -6668,6 +8060,10 @@ export type UserFilter = {
   oidcId?: InputMaybe<StringFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<UserFilter>>;
+  /** Filter by the object’s `otpVerificationsByUserId` relation. */
+  otpVerificationsByUserId?: InputMaybe<UserToManyOtpVerificationFilter>;
+  /** Some related `otpVerificationsByUserId` exist. */
+  otpVerificationsByUserIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `password` field. */
   password?: InputMaybe<StringFilter>;
   /** Filter by the object’s `picture` field. */
@@ -6820,6 +8216,30 @@ export type UserToManyBudgetFilter = {
   none?: InputMaybe<BudgetFilter>;
   /** Some related `Budget` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<BudgetFilter>;
+};
+
+/** A filter to be used against many `Category` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyCategoryFilter = {
+  /** Aggregates across related `Category` match the filter criteria. */
+  aggregates?: InputMaybe<CategoryAggregatesFilter>;
+  /** Every related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<CategoryFilter>;
+  /** No related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<CategoryFilter>;
+  /** Some related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<CategoryFilter>;
+};
+
+/** A filter to be used against many `OtpVerification` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyOtpVerificationFilter = {
+  /** Aggregates across related `OtpVerification` match the filter criteria. */
+  aggregates?: InputMaybe<OtpVerificationAggregatesFilter>;
+  /** Every related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<OtpVerificationFilter>;
+  /** No related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<OtpVerificationFilter>;
+  /** Some related `OtpVerification` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<OtpVerificationFilter>;
 };
 
 /** A filter to be used against many `Report` object types. All fields are combined with a logical ‘and.’ */
@@ -7003,6 +8423,116 @@ export enum UsersOrderBy {
   BudgetsByUserIdVarianceSampleMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByUserIdVarianceSampleUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
   BudgetsByUserIdVarianceSampleUserIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  CategoriesByUserIdAverageIconAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_ASC',
+  CategoriesByUserIdAverageIconColorAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_ASC',
+  CategoriesByUserIdAverageIconColorDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_DESC',
+  CategoriesByUserIdAverageIconDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_DESC',
+  CategoriesByUserIdAverageIdAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ID_ASC',
+  CategoriesByUserIdAverageIdDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_ID_DESC',
+  CategoriesByUserIdAverageNameAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_NAME_ASC',
+  CategoriesByUserIdAverageNameDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_NAME_DESC',
+  CategoriesByUserIdAverageTypeAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_TYPE_ASC',
+  CategoriesByUserIdAverageTypeDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_TYPE_DESC',
+  CategoriesByUserIdAverageUserIdAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  CategoriesByUserIdAverageUserIdDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  CategoriesByUserIdCountAsc = 'CATEGORIES_BY_USER_ID_COUNT_ASC',
+  CategoriesByUserIdCountDesc = 'CATEGORIES_BY_USER_ID_COUNT_DESC',
+  CategoriesByUserIdDistinctCountIconAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_ASC',
+  CategoriesByUserIdDistinctCountIconColorAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_ASC',
+  CategoriesByUserIdDistinctCountIconColorDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_DESC',
+  CategoriesByUserIdDistinctCountIconDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_DESC',
+  CategoriesByUserIdDistinctCountIdAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
+  CategoriesByUserIdDistinctCountIdDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
+  CategoriesByUserIdDistinctCountNameAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_NAME_ASC',
+  CategoriesByUserIdDistinctCountNameDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_NAME_DESC',
+  CategoriesByUserIdDistinctCountTypeAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_TYPE_ASC',
+  CategoriesByUserIdDistinctCountTypeDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_TYPE_DESC',
+  CategoriesByUserIdDistinctCountUserIdAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  CategoriesByUserIdDistinctCountUserIdDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  CategoriesByUserIdMaxIconAsc = 'CATEGORIES_BY_USER_ID_MAX_ICON_ASC',
+  CategoriesByUserIdMaxIconColorAsc = 'CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_ASC',
+  CategoriesByUserIdMaxIconColorDesc = 'CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_DESC',
+  CategoriesByUserIdMaxIconDesc = 'CATEGORIES_BY_USER_ID_MAX_ICON_DESC',
+  CategoriesByUserIdMaxIdAsc = 'CATEGORIES_BY_USER_ID_MAX_ID_ASC',
+  CategoriesByUserIdMaxIdDesc = 'CATEGORIES_BY_USER_ID_MAX_ID_DESC',
+  CategoriesByUserIdMaxNameAsc = 'CATEGORIES_BY_USER_ID_MAX_NAME_ASC',
+  CategoriesByUserIdMaxNameDesc = 'CATEGORIES_BY_USER_ID_MAX_NAME_DESC',
+  CategoriesByUserIdMaxTypeAsc = 'CATEGORIES_BY_USER_ID_MAX_TYPE_ASC',
+  CategoriesByUserIdMaxTypeDesc = 'CATEGORIES_BY_USER_ID_MAX_TYPE_DESC',
+  CategoriesByUserIdMaxUserIdAsc = 'CATEGORIES_BY_USER_ID_MAX_USER_ID_ASC',
+  CategoriesByUserIdMaxUserIdDesc = 'CATEGORIES_BY_USER_ID_MAX_USER_ID_DESC',
+  CategoriesByUserIdMinIconAsc = 'CATEGORIES_BY_USER_ID_MIN_ICON_ASC',
+  CategoriesByUserIdMinIconColorAsc = 'CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_ASC',
+  CategoriesByUserIdMinIconColorDesc = 'CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_DESC',
+  CategoriesByUserIdMinIconDesc = 'CATEGORIES_BY_USER_ID_MIN_ICON_DESC',
+  CategoriesByUserIdMinIdAsc = 'CATEGORIES_BY_USER_ID_MIN_ID_ASC',
+  CategoriesByUserIdMinIdDesc = 'CATEGORIES_BY_USER_ID_MIN_ID_DESC',
+  CategoriesByUserIdMinNameAsc = 'CATEGORIES_BY_USER_ID_MIN_NAME_ASC',
+  CategoriesByUserIdMinNameDesc = 'CATEGORIES_BY_USER_ID_MIN_NAME_DESC',
+  CategoriesByUserIdMinTypeAsc = 'CATEGORIES_BY_USER_ID_MIN_TYPE_ASC',
+  CategoriesByUserIdMinTypeDesc = 'CATEGORIES_BY_USER_ID_MIN_TYPE_DESC',
+  CategoriesByUserIdMinUserIdAsc = 'CATEGORIES_BY_USER_ID_MIN_USER_ID_ASC',
+  CategoriesByUserIdMinUserIdDesc = 'CATEGORIES_BY_USER_ID_MIN_USER_ID_DESC',
+  CategoriesByUserIdStddevPopulationIconAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_ASC',
+  CategoriesByUserIdStddevPopulationIconColorAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_ASC',
+  CategoriesByUserIdStddevPopulationIconColorDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_DESC',
+  CategoriesByUserIdStddevPopulationIconDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_DESC',
+  CategoriesByUserIdStddevPopulationIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
+  CategoriesByUserIdStddevPopulationIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
+  CategoriesByUserIdStddevPopulationNameAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_NAME_ASC',
+  CategoriesByUserIdStddevPopulationNameDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_NAME_DESC',
+  CategoriesByUserIdStddevPopulationTypeAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_TYPE_ASC',
+  CategoriesByUserIdStddevPopulationTypeDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_TYPE_DESC',
+  CategoriesByUserIdStddevPopulationUserIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  CategoriesByUserIdStddevPopulationUserIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  CategoriesByUserIdStddevSampleIconAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_ASC',
+  CategoriesByUserIdStddevSampleIconColorAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_ASC',
+  CategoriesByUserIdStddevSampleIconColorDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_DESC',
+  CategoriesByUserIdStddevSampleIconDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_DESC',
+  CategoriesByUserIdStddevSampleIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
+  CategoriesByUserIdStddevSampleIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
+  CategoriesByUserIdStddevSampleNameAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_NAME_ASC',
+  CategoriesByUserIdStddevSampleNameDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_NAME_DESC',
+  CategoriesByUserIdStddevSampleTypeAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_TYPE_ASC',
+  CategoriesByUserIdStddevSampleTypeDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_TYPE_DESC',
+  CategoriesByUserIdStddevSampleUserIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  CategoriesByUserIdStddevSampleUserIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  CategoriesByUserIdSumIconAsc = 'CATEGORIES_BY_USER_ID_SUM_ICON_ASC',
+  CategoriesByUserIdSumIconColorAsc = 'CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_ASC',
+  CategoriesByUserIdSumIconColorDesc = 'CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_DESC',
+  CategoriesByUserIdSumIconDesc = 'CATEGORIES_BY_USER_ID_SUM_ICON_DESC',
+  CategoriesByUserIdSumIdAsc = 'CATEGORIES_BY_USER_ID_SUM_ID_ASC',
+  CategoriesByUserIdSumIdDesc = 'CATEGORIES_BY_USER_ID_SUM_ID_DESC',
+  CategoriesByUserIdSumNameAsc = 'CATEGORIES_BY_USER_ID_SUM_NAME_ASC',
+  CategoriesByUserIdSumNameDesc = 'CATEGORIES_BY_USER_ID_SUM_NAME_DESC',
+  CategoriesByUserIdSumTypeAsc = 'CATEGORIES_BY_USER_ID_SUM_TYPE_ASC',
+  CategoriesByUserIdSumTypeDesc = 'CATEGORIES_BY_USER_ID_SUM_TYPE_DESC',
+  CategoriesByUserIdSumUserIdAsc = 'CATEGORIES_BY_USER_ID_SUM_USER_ID_ASC',
+  CategoriesByUserIdSumUserIdDesc = 'CATEGORIES_BY_USER_ID_SUM_USER_ID_DESC',
+  CategoriesByUserIdVariancePopulationIconAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_ASC',
+  CategoriesByUserIdVariancePopulationIconColorAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_ASC',
+  CategoriesByUserIdVariancePopulationIconColorDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_DESC',
+  CategoriesByUserIdVariancePopulationIconDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_DESC',
+  CategoriesByUserIdVariancePopulationIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
+  CategoriesByUserIdVariancePopulationIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
+  CategoriesByUserIdVariancePopulationNameAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_NAME_ASC',
+  CategoriesByUserIdVariancePopulationNameDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_NAME_DESC',
+  CategoriesByUserIdVariancePopulationTypeAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_TYPE_ASC',
+  CategoriesByUserIdVariancePopulationTypeDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_TYPE_DESC',
+  CategoriesByUserIdVariancePopulationUserIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  CategoriesByUserIdVariancePopulationUserIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  CategoriesByUserIdVarianceSampleIconAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_ASC',
+  CategoriesByUserIdVarianceSampleIconColorAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_ASC',
+  CategoriesByUserIdVarianceSampleIconColorDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_DESC',
+  CategoriesByUserIdVarianceSampleIconDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_DESC',
+  CategoriesByUserIdVarianceSampleIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
+  CategoriesByUserIdVarianceSampleIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
+  CategoriesByUserIdVarianceSampleNameAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_NAME_ASC',
+  CategoriesByUserIdVarianceSampleNameDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_NAME_DESC',
+  CategoriesByUserIdVarianceSampleTypeAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_TYPE_ASC',
+  CategoriesByUserIdVarianceSampleTypeDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_TYPE_DESC',
+  CategoriesByUserIdVarianceSampleUserIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  CategoriesByUserIdVarianceSampleUserIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   DateAsc = 'DATE_ASC',
   DateDesc = 'DATE_DESC',
   EmailAsc = 'EMAIL_ASC',
@@ -7016,6 +8546,116 @@ export enum UsersOrderBy {
   Natural = 'NATURAL',
   OidcIdAsc = 'OIDC_ID_ASC',
   OidcIdDesc = 'OIDC_ID_DESC',
+  OtpVerificationsByUserIdAverageCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
+  OtpVerificationsByUserIdAverageCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
+  OtpVerificationsByUserIdAverageEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EMAIL_ASC',
+  OtpVerificationsByUserIdAverageEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EMAIL_DESC',
+  OtpVerificationsByUserIdAverageExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdAverageExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdAverageIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_ID_ASC',
+  OtpVerificationsByUserIdAverageIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_ID_DESC',
+  OtpVerificationsByUserIdAverageOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_OTP_ASC',
+  OtpVerificationsByUserIdAverageOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_OTP_DESC',
+  OtpVerificationsByUserIdAverageUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_ASC',
+  OtpVerificationsByUserIdAverageUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_AVERAGE_USER_ID_DESC',
+  OtpVerificationsByUserIdCountAsc = 'OTP_VERIFICATIONS_BY_USER_ID_COUNT_ASC',
+  OtpVerificationsByUserIdCountDesc = 'OTP_VERIFICATIONS_BY_USER_ID_COUNT_DESC',
+  OtpVerificationsByUserIdDistinctCountCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  OtpVerificationsByUserIdDistinctCountCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  OtpVerificationsByUserIdDistinctCountEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EMAIL_ASC',
+  OtpVerificationsByUserIdDistinctCountEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EMAIL_DESC',
+  OtpVerificationsByUserIdDistinctCountExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdDistinctCountExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdDistinctCountIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_ASC',
+  OtpVerificationsByUserIdDistinctCountIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_ID_DESC',
+  OtpVerificationsByUserIdDistinctCountOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_OTP_ASC',
+  OtpVerificationsByUserIdDistinctCountOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_OTP_DESC',
+  OtpVerificationsByUserIdDistinctCountUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
+  OtpVerificationsByUserIdDistinctCountUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  OtpVerificationsByUserIdMaxCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_CREATED_AT_ASC',
+  OtpVerificationsByUserIdMaxCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_CREATED_AT_DESC',
+  OtpVerificationsByUserIdMaxEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_EMAIL_ASC',
+  OtpVerificationsByUserIdMaxEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_EMAIL_DESC',
+  OtpVerificationsByUserIdMaxExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdMaxExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdMaxIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_ID_ASC',
+  OtpVerificationsByUserIdMaxIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_ID_DESC',
+  OtpVerificationsByUserIdMaxOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_OTP_ASC',
+  OtpVerificationsByUserIdMaxOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_OTP_DESC',
+  OtpVerificationsByUserIdMaxUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_USER_ID_ASC',
+  OtpVerificationsByUserIdMaxUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MAX_USER_ID_DESC',
+  OtpVerificationsByUserIdMinCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_CREATED_AT_ASC',
+  OtpVerificationsByUserIdMinCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_CREATED_AT_DESC',
+  OtpVerificationsByUserIdMinEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_EMAIL_ASC',
+  OtpVerificationsByUserIdMinEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_EMAIL_DESC',
+  OtpVerificationsByUserIdMinExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdMinExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdMinIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_ID_ASC',
+  OtpVerificationsByUserIdMinIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_ID_DESC',
+  OtpVerificationsByUserIdMinOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_OTP_ASC',
+  OtpVerificationsByUserIdMinOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_OTP_DESC',
+  OtpVerificationsByUserIdMinUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_USER_ID_ASC',
+  OtpVerificationsByUserIdMinUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_MIN_USER_ID_DESC',
+  OtpVerificationsByUserIdStddevPopulationCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  OtpVerificationsByUserIdStddevPopulationCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
+  OtpVerificationsByUserIdStddevPopulationEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EMAIL_ASC',
+  OtpVerificationsByUserIdStddevPopulationEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EMAIL_DESC',
+  OtpVerificationsByUserIdStddevPopulationExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdStddevPopulationExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdStddevPopulationIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_ASC',
+  OtpVerificationsByUserIdStddevPopulationIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_ID_DESC',
+  OtpVerificationsByUserIdStddevPopulationOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_OTP_ASC',
+  OtpVerificationsByUserIdStddevPopulationOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_OTP_DESC',
+  OtpVerificationsByUserIdStddevPopulationUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
+  OtpVerificationsByUserIdStddevPopulationUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  OtpVerificationsByUserIdStddevSampleCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  OtpVerificationsByUserIdStddevSampleCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
+  OtpVerificationsByUserIdStddevSampleEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EMAIL_ASC',
+  OtpVerificationsByUserIdStddevSampleEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EMAIL_DESC',
+  OtpVerificationsByUserIdStddevSampleExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdStddevSampleExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdStddevSampleIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_ASC',
+  OtpVerificationsByUserIdStddevSampleIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_ID_DESC',
+  OtpVerificationsByUserIdStddevSampleOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_OTP_ASC',
+  OtpVerificationsByUserIdStddevSampleOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_OTP_DESC',
+  OtpVerificationsByUserIdStddevSampleUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
+  OtpVerificationsByUserIdStddevSampleUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  OtpVerificationsByUserIdSumCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_CREATED_AT_ASC',
+  OtpVerificationsByUserIdSumCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_CREATED_AT_DESC',
+  OtpVerificationsByUserIdSumEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_EMAIL_ASC',
+  OtpVerificationsByUserIdSumEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_EMAIL_DESC',
+  OtpVerificationsByUserIdSumExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdSumExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdSumIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_ID_ASC',
+  OtpVerificationsByUserIdSumIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_ID_DESC',
+  OtpVerificationsByUserIdSumOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_OTP_ASC',
+  OtpVerificationsByUserIdSumOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_OTP_DESC',
+  OtpVerificationsByUserIdSumUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_USER_ID_ASC',
+  OtpVerificationsByUserIdSumUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_SUM_USER_ID_DESC',
+  OtpVerificationsByUserIdVariancePopulationCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  OtpVerificationsByUserIdVariancePopulationCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
+  OtpVerificationsByUserIdVariancePopulationEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EMAIL_ASC',
+  OtpVerificationsByUserIdVariancePopulationEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EMAIL_DESC',
+  OtpVerificationsByUserIdVariancePopulationExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdVariancePopulationExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdVariancePopulationIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_ASC',
+  OtpVerificationsByUserIdVariancePopulationIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_ID_DESC',
+  OtpVerificationsByUserIdVariancePopulationOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_OTP_ASC',
+  OtpVerificationsByUserIdVariancePopulationOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_OTP_DESC',
+  OtpVerificationsByUserIdVariancePopulationUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
+  OtpVerificationsByUserIdVariancePopulationUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  OtpVerificationsByUserIdVarianceSampleCreatedAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  OtpVerificationsByUserIdVarianceSampleCreatedAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
+  OtpVerificationsByUserIdVarianceSampleEmailAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EMAIL_ASC',
+  OtpVerificationsByUserIdVarianceSampleEmailDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EMAIL_DESC',
+  OtpVerificationsByUserIdVarianceSampleExpiresAtAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EXPIRES_AT_ASC',
+  OtpVerificationsByUserIdVarianceSampleExpiresAtDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_EXPIRES_AT_DESC',
+  OtpVerificationsByUserIdVarianceSampleIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC',
+  OtpVerificationsByUserIdVarianceSampleIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC',
+  OtpVerificationsByUserIdVarianceSampleOtpAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_OTP_ASC',
+  OtpVerificationsByUserIdVarianceSampleOtpDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_OTP_DESC',
+  OtpVerificationsByUserIdVarianceSampleUserIdAsc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
+  OtpVerificationsByUserIdVarianceSampleUserIdDesc = 'OTP_VERIFICATIONS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
   PasswordAsc = 'PASSWORD_ASC',
   PasswordDesc = 'PASSWORD_DESC',
   PictureAsc = 'PICTURE_ASC',
@@ -7296,10 +8936,12 @@ export type InitProfileMutationVariables = Exact<{
 
 export type InitProfileMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'CreateUserPayload', clientMutationId?: string | null } | null };
 
-export type CategorySubscriptionSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type Get_CategoriesQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
 
 
-export type CategorySubscriptionSubscription = { __typename?: 'Subscription', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string }> } | null };
+export type Get_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', type: Typetransaction, id: string, name: string, icon?: string | null, iconColor?: string | null }> } | null };
 
 export type AddTransactionMutationVariables = Exact<{
   user_id: Scalars['String']['input'];
@@ -7314,18 +8956,18 @@ export type AddTransactionMutationVariables = Exact<{
 
 export type AddTransactionMutation = { __typename?: 'Mutation', createTransaction?: { __typename?: 'CreateTransactionPayload', clientMutationId?: string | null } | null };
 
-export type Edit_TransactionMutationVariables = Exact<{
+export type Edit_Transaction1MutationVariables = Exact<{
   id: Scalars['String']['input'];
   amount: Scalars['Float']['input'];
-  categoryId: Scalars['String']['input'];
   date: Scalars['Datetime']['input'];
+  categoryId: Scalars['String']['input'];
   description: Scalars['String']['input'];
   type: Typetransaction;
   clientMutationId: Scalars['String']['input'];
 }>;
 
 
-export type Edit_TransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, description?: string | null, amount: number } | null } | null };
+export type Edit_Transaction1Mutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, categoryId?: string | null, description?: string | null, amount: number } | null } | null };
 
 export type ProfileFragment = { __typename?: 'User', firstName?: string | null, lastName?: string | null, gender?: UserGender | null, email?: string | null, tel?: string | null, picture?: string | null, date?: any | null } & { ' $fragmentName'?: 'ProfileFragment' };
 
@@ -7349,23 +8991,115 @@ export type ProfileSubSubscription = { __typename?: 'Subscription', user?: (
     & { ' $fragmentRefs'?: { 'ProfileFragment': ProfileFragment } }
   ) | null };
 
+export type Get_User_TransactionsQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_User_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number }> } | null };
+
+export type Get_User_CategoriesQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_User_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null }> } | null };
+
+export type AddBudgetMutationVariables = Exact<{
+  budget_id: Scalars['String']['input'];
+  user_id: Scalars['String']['input'];
+  category_id: Scalars['String']['input'];
+  amount: Scalars['Float']['input'];
+  month: Scalars['Datetime']['input'];
+  alert_threshold?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type AddBudgetMutation = { __typename?: 'Mutation', createBudget?: { __typename?: 'CreateBudgetPayload', clientMutationId?: string | null } | null };
+
+export type Get_BudgetsQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_BudgetsQuery = { __typename?: 'Query', budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null } | null }> } | null };
+
+export type Get_User_Transactions2QueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_User_Transactions2Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null } | null }> } | null };
+
+export type Delete_BudgetMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type Delete_BudgetMutation = { __typename?: 'Mutation', deleteBudget?: { __typename?: 'DeleteBudgetPayload', clientMutationId?: string | null } | null };
+
+export type Edit_BudgetMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  amount: Scalars['Float']['input'];
+  categoryId: Scalars['String']['input'];
+  month: Scalars['Datetime']['input'];
+  alertThreshold?: InputMaybe<Scalars['Int']['input']>;
+  clientMutationId: Scalars['String']['input'];
+}>;
+
+
+export type Edit_BudgetMutation = { __typename?: 'Mutation', updateBudget?: { __typename?: 'UpdateBudgetPayload', budget?: { __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null } | null } | null };
+
+export type Get_User_Categories3QueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_User_Categories3Query = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction }> } | null };
+
 export type Add_CategoryMutationVariables = Exact<{
   id: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
   name: Scalars['String']['input'];
+  icon: Scalars['String']['input'];
+  iconColor: Scalars['String']['input'];
+  type: Typetransaction;
 }>;
 
 
 export type Add_CategoryMutation = { __typename?: 'Mutation', createCategory?: { __typename?: 'CreateCategoryPayload', clientMutationId?: string | null } | null };
 
-export type Get_CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type Delete_CategoryMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
 
 
-export type Get_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string }> } | null };
+export type Delete_CategoryMutation = { __typename?: 'Mutation', deleteCategory?: { __typename?: 'DeleteCategoryPayload', clientMutationId?: string | null } | null };
 
-export type Get_TransactionsQueryVariables = Exact<{ [key: string]: never; }>;
+export type Update_CategoryMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  icon: Scalars['String']['input'];
+  iconColor: Scalars['String']['input'];
+  type: Typetransaction;
+}>;
 
 
-export type Get_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
+export type Update_CategoryMutation = { __typename?: 'Mutation', updateCategory?: { __typename?: 'UpdateCategoryPayload', clientMutationId?: string | null } | null };
+
+export type Get_Transactions3QueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_Transactions3Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
+
+export type Get_Transactions4QueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type Get_Transactions4Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null } | null }> } | null };
 
 export type Delete_TransactionMutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -7374,6 +9108,19 @@ export type Delete_TransactionMutationVariables = Exact<{
 
 export type Delete_TransactionMutation = { __typename?: 'Mutation', deleteTransaction?: { __typename?: 'DeleteTransactionPayload', clientMutationId?: string | null } | null };
 
+export type Edit_Transaction2MutationVariables = Exact<{
+  id: Scalars['String']['input'];
+  amount: Scalars['Float']['input'];
+  categoryId: Scalars['String']['input'];
+  date: Scalars['Datetime']['input'];
+  description: Scalars['String']['input'];
+  type: Typetransaction;
+  clientMutationId: Scalars['String']['input'];
+}>;
+
+
+export type Edit_Transaction2Mutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, description?: string | null, amount: number } | null } | null };
+
 export type Login_UserQueryVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -7381,6 +9128,35 @@ export type Login_UserQueryVariables = Exact<{
 
 
 export type Login_UserQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', nodes: Array<{ __typename?: 'User', password?: string | null, email?: string | null, oidcId: string, firstName?: string | null, lastName?: string | null, gender?: UserGender | null }> } | null };
+
+export type CreateOtpVerificationMutationVariables = Exact<{
+  input: CreateOtpVerificationInput;
+}>;
+
+
+export type CreateOtpVerificationMutation = { __typename?: 'Mutation', createOtpVerification?: { __typename?: 'CreateOtpVerificationPayload', otpVerification?: { __typename?: 'OtpVerification', id: string, otp: string, expiresAt: any, email?: string | null } | null } | null };
+
+export type Get_UserQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type Get_UserQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', nodes: Array<{ __typename?: 'User', email?: string | null, oidcId: string, firstName?: string | null, lastName?: string | null, gender?: UserGender | null }> } | null };
+
+export type MyMutationMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type MyMutationMutation = { __typename?: 'Mutation', deleteOtpVerification?: { __typename?: 'DeleteOtpVerificationPayload', clientMutationId?: string | null, deletedOtpVerificationNodeId?: string | null } | null };
+
+export type Check_OtpQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+  otp: Scalars['String']['input'];
+}>;
+
+
+export type Check_OtpQuery = { __typename?: 'Query', otpVerifications?: { __typename?: 'OtpVerificationsConnection', nodes: Array<{ __typename?: 'OtpVerification', id: string, otp: string, email?: string | null, expiresAt: any }> } | null };
 
 export type SignupMutationVariables = Exact<{
   id: Scalars['String']['input'];

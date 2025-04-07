@@ -427,6 +427,40 @@ type User implements Node {
     filter: UserDeviceFilter
   ): UserDevicesConnection!
 
+  """Reads and enables pagination through a set of `Category`."""
+  categoriesByUserId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Category`."""
+    orderBy: [CategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CategoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CategoryFilter
+  ): CategoriesConnection!
+
   """Reads and enables pagination through a set of `Transaction`."""
   transactionsByUserId(
     """Only read the first `n` values of the set."""
@@ -966,6 +1000,12 @@ input UserFilter {
   """Some related `userDevicesByUserId` exist."""
   userDevicesByUserIdExist: Boolean
 
+  """Filter by the object’s `categoriesByUserId` relation."""
+  categoriesByUserId: UserToManyCategoryFilter
+
+  """Some related `categoriesByUserId` exist."""
+  categoriesByUserIdExist: Boolean
+
   """Filter by the object’s `transactionsByUserId` relation."""
   transactionsByUserId: UserToManyTransactionFilter
 
@@ -1167,9 +1207,129 @@ input BigIntFilter {
 }
 
 """
+A filter to be used against many `Category` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyCategoryFilter {
+  """
+  Every related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CategoryFilter
+
+  """
+  Some related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CategoryFilter
+
+  """
+  No related `Category` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CategoryFilter
+
+  """Aggregates across related `Category` match the filter criteria."""
+  aggregates: CategoryAggregatesFilter
+}
+
+"""
+A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’
+"""
+input CategoryFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Filter by the object’s `icon` field."""
+  icon: StringFilter
+
+  """Filter by the object’s `iconColor` field."""
+  iconColor: StringFilter
+
+  """Filter by the object’s `userId` field."""
+  userId: StringFilter
+
+  """Filter by the object’s `type` field."""
+  type: TypetransactionFilter
+
+  """Filter by the object’s `transactionsByCategoryId` relation."""
+  transactionsByCategoryId: CategoryToManyTransactionFilter
+
+  """Some related `transactionsByCategoryId` exist."""
+  transactionsByCategoryIdExist: Boolean
+
+  """Filter by the object’s `budgetsByCategoryId` relation."""
+  budgetsByCategoryId: CategoryToManyBudgetFilter
+
+  """Some related `budgetsByCategoryId` exist."""
+  budgetsByCategoryIdExist: Boolean
+
+  """Filter by the object’s `user` relation."""
+  user: UserFilter
+
+  """A related `user` exists."""
+  userExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [CategoryFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [CategoryFilter!]
+
+  """Negates the expression."""
+  not: CategoryFilter
+}
+
+"""
+A filter to be used against Typetransaction fields. All fields are combined with a logical ‘and.’
+"""
+input TypetransactionFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Typetransaction
+
+  """Not equal to the specified value."""
+  notEqualTo: Typetransaction
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Typetransaction
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Typetransaction
+
+  """Included in the specified list."""
+  in: [Typetransaction!]
+
+  """Not included in the specified list."""
+  notIn: [Typetransaction!]
+
+  """Less than the specified value."""
+  lessThan: Typetransaction
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Typetransaction
+
+  """Greater than the specified value."""
+  greaterThan: Typetransaction
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Typetransaction
+}
+
+enum Typetransaction {
+  INCOME
+  EXPENSE
+}
+
+"""
 A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’
 """
-input UserToManyTransactionFilter {
+input CategoryToManyTransactionFilter {
   """
   Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
@@ -1276,111 +1436,6 @@ input FloatFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: Float
-}
-
-"""
-A filter to be used against Typetransaction fields. All fields are combined with a logical ‘and.’
-"""
-input TypetransactionFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Typetransaction
-
-  """Not equal to the specified value."""
-  notEqualTo: Typetransaction
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Typetransaction
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Typetransaction
-
-  """Included in the specified list."""
-  in: [Typetransaction!]
-
-  """Not included in the specified list."""
-  notIn: [Typetransaction!]
-
-  """Less than the specified value."""
-  lessThan: Typetransaction
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Typetransaction
-
-  """Greater than the specified value."""
-  greaterThan: Typetransaction
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Typetransaction
-}
-
-enum Typetransaction {
-  INCOME
-  EXPENSE
-}
-
-"""
-A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’
-"""
-input CategoryFilter {
-  """Filter by the object’s `id` field."""
-  id: StringFilter
-
-  """Filter by the object’s `name` field."""
-  name: StringFilter
-
-  """Filter by the object’s `icon` field."""
-  icon: StringFilter
-
-  """Filter by the object’s `transactionsByCategoryId` relation."""
-  transactionsByCategoryId: CategoryToManyTransactionFilter
-
-  """Some related `transactionsByCategoryId` exist."""
-  transactionsByCategoryIdExist: Boolean
-
-  """Filter by the object’s `budgetsByCategoryId` relation."""
-  budgetsByCategoryId: CategoryToManyBudgetFilter
-
-  """Some related `budgetsByCategoryId` exist."""
-  budgetsByCategoryIdExist: Boolean
-
-  """Checks for all expressions in this list."""
-  and: [CategoryFilter!]
-
-  """Checks for any expressions in this list."""
-  or: [CategoryFilter!]
-
-  """Negates the expression."""
-  not: CategoryFilter
-}
-
-"""
-A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’
-"""
-input CategoryToManyTransactionFilter {
-  """
-  Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: TransactionFilter
-
-  """
-  Some related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: TransactionFilter
-
-  """
-  No related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: TransactionFilter
-
-  """Aggregates across related `Transaction` match the filter criteria."""
-  aggregates: TransactionAggregatesFilter
 }
 
 """A filter to be used against aggregates of `Transaction` object types."""
@@ -1706,6 +1761,49 @@ input BudgetVariancePopulationAggregateFilter {
   alertThreshold: BigFloatFilter
 }
 
+"""A filter to be used against aggregates of `Category` object types."""
+input CategoryAggregatesFilter {
+  """
+  A filter that must pass for the relevant `Category` object to be included within the aggregate.
+  """
+  filter: CategoryFilter
+
+  """Distinct count aggregate over matching `Category` objects."""
+  distinctCount: CategoryDistinctCountAggregateFilter
+}
+
+input CategoryDistinctCountAggregateFilter {
+  id: BigIntFilter
+  name: BigIntFilter
+  icon: BigIntFilter
+  iconColor: BigIntFilter
+  userId: BigIntFilter
+  type: BigIntFilter
+}
+
+"""
+A filter to be used against many `Transaction` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyTransactionFilter {
+  """
+  Every related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TransactionFilter
+
+  """
+  Some related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TransactionFilter
+
+  """
+  No related `Transaction` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TransactionFilter
+
+  """Aggregates across related `Transaction` match the filter criteria."""
+  aggregates: TransactionAggregatesFilter
+}
+
 """
 A filter to be used against many `Budget` object types. All fields are combined with a logical ‘and.’
 """
@@ -1882,57 +1980,37 @@ input OtpVerificationDistinctCountAggregateFilter {
   email: BigIntFilter
 }
 
-"""A connection to a list of `Transaction` values."""
-type TransactionsConnection {
-  """A list of `Transaction` objects."""
-  nodes: [Transaction!]!
+"""A connection to a list of `Category` values."""
+type CategoriesConnection {
+  """A list of `Category` objects."""
+  nodes: [Category!]!
 
   """
-  A list of edges which contains the `Transaction` and cursor to aid in pagination.
+  A list of edges which contains the `Category` and cursor to aid in pagination.
   """
-  edges: [TransactionsEdge!]!
+  edges: [CategoriesEdge!]!
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  """The count of *all* `Transaction` you could get from the connection."""
+  """The count of *all* `Category` you could get from the connection."""
   totalCount: Int!
 
   """
   Aggregates across the matching connection (ignoring before/after/first/last/offset)
   """
-  aggregates: TransactionAggregates
+  aggregates: CategoryAggregates
 
   """
   Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
   """
   groupedAggregates(
-    """The method to use when grouping `Transaction` for these aggregates."""
-    groupBy: [TransactionGroupBy!]!
+    """The method to use when grouping `Category` for these aggregates."""
+    groupBy: [CategoryGroupBy!]!
 
     """Conditions on the grouped aggregates."""
-    having: TransactionHavingInput
-  ): [TransactionAggregates!]
-}
-
-type Transaction implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  transactionId: String!
-  userId: String
-  categoryId: String
-  amount: Float!
-  date: Datetime
-  description: String
-  type: Typetransaction!
-
-  """Reads a single `User` that is related to this `Transaction`."""
-  user: User
-
-  """Reads a single `Category` that is related to this `Transaction`."""
-  category: Category
+    having: CategoryHavingInput
+  ): [CategoryAggregates!]
 }
 
 type Category implements Node {
@@ -1943,6 +2021,12 @@ type Category implements Node {
   id: String!
   name: String!
   icon: String
+  iconColor: String
+  userId: String
+  type: Typetransaction!
+
+  """Reads a single `User` that is related to this `Category`."""
+  user: User
 
   """Reads and enables pagination through a set of `Transaction`."""
   transactionsByCategoryId(
@@ -2013,94 +2097,57 @@ type Category implements Node {
   ): BudgetsConnection!
 }
 
-"""Methods to use when ordering `Transaction`."""
-enum TransactionsOrderBy {
-  NATURAL
-  TRANSACTION_ID_ASC
-  TRANSACTION_ID_DESC
-  USER_ID_ASC
-  USER_ID_DESC
-  CATEGORY_ID_ASC
-  CATEGORY_ID_DESC
-  AMOUNT_ASC
-  AMOUNT_DESC
-  DATE_ASC
-  DATE_DESC
-  DESCRIPTION_ASC
-  DESCRIPTION_DESC
-  TYPE_ASC
-  TYPE_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
+"""A connection to a list of `Transaction` values."""
+type TransactionsConnection {
+  """A list of `Transaction` objects."""
+  nodes: [Transaction!]!
+
+  """
+  A list of edges which contains the `Transaction` and cursor to aid in pagination.
+  """
+  edges: [TransactionsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Transaction` you could get from the connection."""
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: TransactionAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates(
+    """The method to use when grouping `Transaction` for these aggregates."""
+    groupBy: [TransactionGroupBy!]!
+
+    """Conditions on the grouped aggregates."""
+    having: TransactionHavingInput
+  ): [TransactionAggregates!]
 }
 
-"""
-A condition to be used against `Transaction` object types. All fields are tested
-for equality and combined with a logical ‘and.’
-"""
-input TransactionCondition {
-  """Checks for equality with the object’s `transactionId` field."""
-  transactionId: String
-
-  """Checks for equality with the object’s `userId` field."""
+type Transaction implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  transactionId: String!
   userId: String
-
-  """Checks for equality with the object’s `categoryId` field."""
   categoryId: String
-
-  """Checks for equality with the object’s `amount` field."""
-  amount: Float
-
-  """Checks for equality with the object’s `date` field."""
+  amount: Float!
   date: Datetime
-
-  """Checks for equality with the object’s `description` field."""
   description: String
+  type: Typetransaction!
 
-  """Checks for equality with the object’s `type` field."""
-  type: Typetransaction
-}
+  """Reads a single `User` that is related to this `Transaction`."""
+  user: User
 
-"""Methods to use when ordering `Budget`."""
-enum BudgetsOrderBy {
-  NATURAL
-  BUDGET_ID_ASC
-  BUDGET_ID_DESC
-  USER_ID_ASC
-  USER_ID_DESC
-  CATEGORY_ID_ASC
-  CATEGORY_ID_DESC
-  AMOUNT_ASC
-  AMOUNT_DESC
-  MONTH_ASC
-  MONTH_DESC
-  ALERT_THRESHOLD_ASC
-  ALERT_THRESHOLD_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `Budget` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input BudgetCondition {
-  """Checks for equality with the object’s `budgetId` field."""
-  budgetId: String
-
-  """Checks for equality with the object’s `userId` field."""
-  userId: String
-
-  """Checks for equality with the object’s `categoryId` field."""
-  categoryId: String
-
-  """Checks for equality with the object’s `amount` field."""
-  amount: Float
-
-  """Checks for equality with the object’s `month` field."""
-  month: Datetime
-
-  """Checks for equality with the object’s `alertThreshold` field."""
-  alertThreshold: Int
+  """Reads a single `Category` that is related to this `Transaction`."""
+  category: Category
 }
 
 """A `Transaction` edge in the connection."""
@@ -2312,6 +2359,430 @@ input TransactionHavingVarianceSampleInput {
 input TransactionHavingVariancePopulationInput {
   amount: HavingFloatFilter
   date: HavingDatetimeFilter
+}
+
+"""Methods to use when ordering `Transaction`."""
+enum TransactionsOrderBy {
+  NATURAL
+  TRANSACTION_ID_ASC
+  TRANSACTION_ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  CATEGORY_ID_ASC
+  CATEGORY_ID_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  DATE_ASC
+  DATE_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  TYPE_ASC
+  TYPE_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Transaction` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input TransactionCondition {
+  """Checks for equality with the object’s `transactionId` field."""
+  transactionId: String
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: String
+
+  """Checks for equality with the object’s `categoryId` field."""
+  categoryId: String
+
+  """Checks for equality with the object’s `amount` field."""
+  amount: Float
+
+  """Checks for equality with the object’s `date` field."""
+  date: Datetime
+
+  """Checks for equality with the object’s `description` field."""
+  description: String
+
+  """Checks for equality with the object’s `type` field."""
+  type: Typetransaction
+}
+
+"""Methods to use when ordering `Budget`."""
+enum BudgetsOrderBy {
+  NATURAL
+  BUDGET_ID_ASC
+  BUDGET_ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  CATEGORY_ID_ASC
+  CATEGORY_ID_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  MONTH_ASC
+  MONTH_DESC
+  ALERT_THRESHOLD_ASC
+  ALERT_THRESHOLD_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Budget` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input BudgetCondition {
+  """Checks for equality with the object’s `budgetId` field."""
+  budgetId: String
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: String
+
+  """Checks for equality with the object’s `categoryId` field."""
+  categoryId: String
+
+  """Checks for equality with the object’s `amount` field."""
+  amount: Float
+
+  """Checks for equality with the object’s `month` field."""
+  month: Datetime
+
+  """Checks for equality with the object’s `alertThreshold` field."""
+  alertThreshold: Int
+}
+
+"""A `Category` edge in the connection."""
+type CategoriesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Category` at the end of the edge."""
+  node: Category!
+}
+
+type CategoryAggregates {
+  keys: [String!]
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: CategoryDistinctCountAggregates
+}
+
+type CategoryDistinctCountAggregates {
+  """Distinct count of id across the matching connection"""
+  id: BigInt
+
+  """Distinct count of name across the matching connection"""
+  name: BigInt
+
+  """Distinct count of icon across the matching connection"""
+  icon: BigInt
+
+  """Distinct count of iconColor across the matching connection"""
+  iconColor: BigInt
+
+  """Distinct count of userId across the matching connection"""
+  userId: BigInt
+
+  """Distinct count of type across the matching connection"""
+  type: BigInt
+}
+
+"""Grouping methods for `Category` for usage during aggregation."""
+enum CategoryGroupBy {
+  NAME
+  ICON
+  ICON_COLOR
+  USER_ID
+  TYPE
+}
+
+"""Conditions for `Category` aggregates."""
+input CategoryHavingInput {
+  AND: [CategoryHavingInput!]
+  OR: [CategoryHavingInput!]
+}
+
+"""Methods to use when ordering `Category`."""
+enum CategoriesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  NAME_ASC
+  NAME_DESC
+  ICON_ASC
+  ICON_DESC
+  ICON_COLOR_ASC
+  ICON_COLOR_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  TYPE_ASC
+  TYPE_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_COUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_COUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_SUM_TYPE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TYPE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MIN_TYPE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_MAX_TYPE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TYPE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TYPE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TYPE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TRANSACTION_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TRANSACTION_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DATE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DATE_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DESCRIPTION_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DESCRIPTION_DESC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TYPE_ASC
+  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TYPE_DESC
+  BUDGETS_BY_CATEGORY_ID_COUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_COUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_SUM_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_SUM_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_SUM_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_SUM_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_SUM_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_SUM_ALERT_THRESHOLD_DESC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_ALERT_THRESHOLD_DESC
+  BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_MIN_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_MIN_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_MIN_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_MIN_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_MIN_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_MIN_ALERT_THRESHOLD_DESC
+  BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_MAX_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_MAX_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_MAX_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_MAX_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_MAX_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_MAX_ALERT_THRESHOLD_DESC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_AVERAGE_ALERT_THRESHOLD_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_ALERT_THRESHOLD_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_DESC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_ASC
+  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_DESC
+}
+
+"""
+A condition to be used against `Category` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input CategoryCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `icon` field."""
+  icon: String
+
+  """Checks for equality with the object’s `iconColor` field."""
+  iconColor: String
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: String
+
+  """Checks for equality with the object’s `type` field."""
+  type: Typetransaction
 }
 
 """A connection to a list of `Report` values."""
@@ -2880,346 +3351,6 @@ input BudgetHavingVariancePopulationInput {
   alertThreshold: HavingIntFilter
 }
 
-"""A connection to a list of `Category` values."""
-type CategoriesConnection {
-  """A list of `Category` objects."""
-  nodes: [Category!]!
-
-  """
-  A list of edges which contains the `Category` and cursor to aid in pagination.
-  """
-  edges: [CategoriesEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Category` you could get from the connection."""
-  totalCount: Int!
-
-  """
-  Aggregates across the matching connection (ignoring before/after/first/last/offset)
-  """
-  aggregates: CategoryAggregates
-
-  """
-  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
-  """
-  groupedAggregates(
-    """The method to use when grouping `Category` for these aggregates."""
-    groupBy: [CategoryGroupBy!]!
-
-    """Conditions on the grouped aggregates."""
-    having: CategoryHavingInput
-  ): [CategoryAggregates!]
-}
-
-"""A `Category` edge in the connection."""
-type CategoriesEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Category` at the end of the edge."""
-  node: Category!
-}
-
-type CategoryAggregates {
-  keys: [String!]
-
-  """
-  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
-  """
-  distinctCount: CategoryDistinctCountAggregates
-}
-
-type CategoryDistinctCountAggregates {
-  """Distinct count of id across the matching connection"""
-  id: BigInt
-
-  """Distinct count of name across the matching connection"""
-  name: BigInt
-
-  """Distinct count of icon across the matching connection"""
-  icon: BigInt
-}
-
-"""Grouping methods for `Category` for usage during aggregation."""
-enum CategoryGroupBy {
-  NAME
-  ICON
-}
-
-"""Conditions for `Category` aggregates."""
-input CategoryHavingInput {
-  AND: [CategoryHavingInput!]
-  OR: [CategoryHavingInput!]
-}
-
-"""Methods to use when ordering `Category`."""
-enum CategoriesOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  NAME_ASC
-  NAME_DESC
-  ICON_ASC
-  ICON_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_COUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_COUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_SUM_TYPE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_DISTINCT_COUNT_TYPE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MIN_TYPE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_MAX_TYPE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_AVERAGE_TYPE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_SAMPLE_TYPE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_STDDEV_POPULATION_TYPE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_SAMPLE_TYPE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TRANSACTION_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TRANSACTION_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DATE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DATE_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DESCRIPTION_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_DESCRIPTION_DESC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TYPE_ASC
-  TRANSACTIONS_BY_CATEGORY_ID_VARIANCE_POPULATION_TYPE_DESC
-  BUDGETS_BY_CATEGORY_ID_COUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_COUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_SUM_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_SUM_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_SUM_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_SUM_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_SUM_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_SUM_ALERT_THRESHOLD_DESC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_ALERT_THRESHOLD_DESC
-  BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_MIN_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_MIN_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_MIN_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_MIN_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_MIN_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_MIN_ALERT_THRESHOLD_DESC
-  BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_MAX_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_MAX_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_MAX_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_MAX_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_MAX_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_MAX_ALERT_THRESHOLD_DESC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_AVERAGE_ALERT_THRESHOLD_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_ALERT_THRESHOLD_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_ALERT_THRESHOLD_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_ALERT_THRESHOLD_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_AMOUNT_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_DESC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_ASC
-  BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_ALERT_THRESHOLD_DESC
-}
-
-"""
-A condition to be used against `Category` object types. All fields are tested
-for equality and combined with a logical ‘and.’
-"""
-input CategoryCondition {
-  """Checks for equality with the object’s `id` field."""
-  id: String
-
-  """Checks for equality with the object’s `name` field."""
-  name: String
-
-  """Checks for equality with the object’s `icon` field."""
-  icon: String
-}
-
 """A connection to a list of `User` values."""
 type UsersConnection {
   """A list of `User` objects."""
@@ -3444,6 +3575,116 @@ enum UsersOrderBy {
   USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_TOKEN_DESC
   USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_UA_ASC
   USER_DEVICES_BY_USER_ID_VARIANCE_POPULATION_UA_DESC
+  CATEGORIES_BY_USER_ID_COUNT_ASC
+  CATEGORIES_BY_USER_ID_COUNT_DESC
+  CATEGORIES_BY_USER_ID_SUM_ID_ASC
+  CATEGORIES_BY_USER_ID_SUM_ID_DESC
+  CATEGORIES_BY_USER_ID_SUM_NAME_ASC
+  CATEGORIES_BY_USER_ID_SUM_NAME_DESC
+  CATEGORIES_BY_USER_ID_SUM_ICON_ASC
+  CATEGORIES_BY_USER_ID_SUM_ICON_DESC
+  CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_SUM_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_SUM_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_SUM_TYPE_ASC
+  CATEGORIES_BY_USER_ID_SUM_TYPE_DESC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ID_ASC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ID_DESC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_NAME_ASC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_NAME_DESC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_ASC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_DESC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_TYPE_ASC
+  CATEGORIES_BY_USER_ID_DISTINCT_COUNT_TYPE_DESC
+  CATEGORIES_BY_USER_ID_MIN_ID_ASC
+  CATEGORIES_BY_USER_ID_MIN_ID_DESC
+  CATEGORIES_BY_USER_ID_MIN_NAME_ASC
+  CATEGORIES_BY_USER_ID_MIN_NAME_DESC
+  CATEGORIES_BY_USER_ID_MIN_ICON_ASC
+  CATEGORIES_BY_USER_ID_MIN_ICON_DESC
+  CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_MIN_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_MIN_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_MIN_TYPE_ASC
+  CATEGORIES_BY_USER_ID_MIN_TYPE_DESC
+  CATEGORIES_BY_USER_ID_MAX_ID_ASC
+  CATEGORIES_BY_USER_ID_MAX_ID_DESC
+  CATEGORIES_BY_USER_ID_MAX_NAME_ASC
+  CATEGORIES_BY_USER_ID_MAX_NAME_DESC
+  CATEGORIES_BY_USER_ID_MAX_ICON_ASC
+  CATEGORIES_BY_USER_ID_MAX_ICON_DESC
+  CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_MAX_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_MAX_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_MAX_TYPE_ASC
+  CATEGORIES_BY_USER_ID_MAX_TYPE_DESC
+  CATEGORIES_BY_USER_ID_AVERAGE_ID_ASC
+  CATEGORIES_BY_USER_ID_AVERAGE_ID_DESC
+  CATEGORIES_BY_USER_ID_AVERAGE_NAME_ASC
+  CATEGORIES_BY_USER_ID_AVERAGE_NAME_DESC
+  CATEGORIES_BY_USER_ID_AVERAGE_ICON_ASC
+  CATEGORIES_BY_USER_ID_AVERAGE_ICON_DESC
+  CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_AVERAGE_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_AVERAGE_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_AVERAGE_TYPE_ASC
+  CATEGORIES_BY_USER_ID_AVERAGE_TYPE_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ID_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ID_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_NAME_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_NAME_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_TYPE_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_TYPE_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ID_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ID_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_NAME_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_NAME_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_TYPE_ASC
+  CATEGORIES_BY_USER_ID_STDDEV_POPULATION_TYPE_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ID_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ID_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_NAME_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_NAME_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_TYPE_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_TYPE_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ID_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ID_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_NAME_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_NAME_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_TYPE_ASC
+  CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_TYPE_DESC
   TRANSACTIONS_BY_USER_ID_COUNT_ASC
   TRANSACTIONS_BY_USER_ID_COUNT_DESC
   TRANSACTIONS_BY_USER_ID_SUM_TRANSACTION_ID_ASC
@@ -4344,6 +4585,9 @@ type CreateCategoryPayload {
   """
   query: Query
 
+  """Reads a single `User` that is related to this `Category`."""
+  user: User
+
   """An edge for our `Category`. May be used by Relay 1."""
   categoryEdge(
     """The method to use when ordering `Category`."""
@@ -4368,6 +4612,9 @@ input CategoryInput {
   id: String!
   name: String!
   icon: String
+  iconColor: String
+  userId: String
+  type: Typetransaction
 }
 
 """The output of our create `OtpVerification` mutation."""
@@ -4700,6 +4947,9 @@ type UpdateCategoryPayload {
   """
   query: Query
 
+  """Reads a single `User` that is related to this `Category`."""
+  user: User
+
   """An edge for our `Category`. May be used by Relay 1."""
   categoryEdge(
     """The method to use when ordering `Category`."""
@@ -4733,6 +4983,9 @@ input CategoryPatch {
   id: String
   name: String
   icon: String
+  iconColor: String
+  userId: String
+  type: Typetransaction
 }
 
 """All input for the `updateCategory` mutation."""
@@ -5194,6 +5447,9 @@ type DeleteCategoryPayload {
   """
   query: Query
 
+  """Reads a single `User` that is related to this `Category`."""
+  user: User
+
   """An edge for our `Category`. May be used by Relay 1."""
   categoryEdge(
     """The method to use when ordering `Category`."""
@@ -5549,6 +5805,9 @@ type UpsertCategoryPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """Reads a single `User` that is related to this `Category`."""
+  user: User
 
   """An edge for our `Category`. May be used by Relay 1."""
   categoryEdge(

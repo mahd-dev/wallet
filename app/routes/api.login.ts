@@ -1,8 +1,10 @@
 import { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/react";
-import { gql } from "gql";
+import { gql } from "@urql/core";
 import { gqlSsrClient } from "~/utils/gql_ssr_client";
 import { sendEmail } from "./mailer";
+
+// GraphQL query to authenticate the user
 
 const LOGIN = gql(`  query LOGIN_USER($email: String!, $password: String!) {
     users(
@@ -18,6 +20,25 @@ const LOGIN = gql(`  query LOGIN_USER($email: String!, $password: String!) {
       }
     }
   }`);
+
+const CREATE_OTP_VERIFICATION =
+  gql(`  mutation CreateOtpVerification($input: CreateOtpVerificationInput!) {
+    createOtpVerification(input: $input) {
+      otpVerification {
+        id
+        otp
+        expiresAt
+        email
+      }
+    }
+  }
+`);
+
+// Generate a 4-digit OTP
+const generateOtp = (): string => {
+  return Math.floor(1000 + Math.random() * 9000).toString();
+};
+
 export const action: ActionFunction = async ({ request }) => {
   try {
     const formData = await request.formData();
@@ -31,8 +52,10 @@ export const action: ActionFunction = async ({ request }) => {
 
     const client = gqlSsrClient();
 
+    // Check user credentials
     const resp = await client.query(LOGIN, { email, password });
 
+    console.log("login response", resp?.data?.users?.nodes[0]);
     if (resp.error) {
       return json({ error: resp.error.message }, { status: 400 });
     }
@@ -40,22 +63,51 @@ export const action: ActionFunction = async ({ request }) => {
     if (!resp.data?.users?.nodes?.length) {
       return json({ error: "Invalid credentials" }, { status: 401 });
     }
-    
-    console.log('Sending email to:', email);
-     await sendEmail(
-      email, // Recipient's email
-      "Login Success", // Subject of the email
-      "You have successfully logged into your account." // Body of the email
+
+    const user = resp?.data?.users?.nodes[0];
+
+    // Generate OTP and expiration time
+    const otp = generateOtp();
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // OTP expires in 5 minutes
+
+    // Create OTP verification entry
+    const otpResp = await client
+      .mutation(CREATE_OTP_VERIFICATION, {
+        input: {
+          otpVerification: {
+            id: crypto.randomUUID(),
+            userId: user.oidcId,
+            otp,
+            expiresAt: expiresAt.toISOString(),
+            email: user.email,
+            createdAt: new Date().toISOString(),
+          },
+        },
+      })
+      .toPromise();
+
+    if (otpResp.error) {
+      console.error("OTP Mutation Error:", otpResp.error);
+      return json({ error: otpResp.error.message }, { status: 500 });
+    }
+
+    if (otpResp.error) {
+      return json({ error: otpResp.error.message }, { status: 500 });
+    }
+
+    console.log("Sending OTP to:", user.email);
+    await sendEmail(
+      user.email, // Recipient's email
+      "Your OTP for Login", // Subject
+      `Your OTP code is: ${otp}. It expires in 5 minutes.`, // Message
     );
-    
-    
+
     return json({
       success: true,
       user: resp.data.users.nodes[0],
     });
-    
   } catch (error) {
-    console.log("error", error);
+    console.log("Error:", error);
     return json(
       {
         error: "An unexpected error occurred",
@@ -65,5 +117,3 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 };
-
-

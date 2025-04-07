@@ -84,6 +84,7 @@
     "konsta": "^4.0.1",
     "livekit-client": "^2.5.10",
     "livekit-server-sdk": "^2.7.2",
+    "lucide-react": "^0.487.0",
     "mime": "^4.0.4",
     "morgan": "^1.10.0",
     "nanoid": "^5.0.7",

@@ -5,6 +5,8 @@ import { useQuery, gql } from "urql";
 import dayjs from "dayjs";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import { useAtom } from "jotai";
+import { userAtom } from "~/store/store";
 
 Chart.register(...registerables);
 
@@ -37,8 +39,8 @@ interface ChartData {
 
 // GraphQL Query for fetching transactions
 const GET_TRANSACTIONS = gql`
-  query GET_TRANSACTIONS {
-    transactions(orderBy: DATE_DESC) {
+  query GET_TRANSACTIONS3($userId: String!) {
+    transactions(orderBy: DATE_DESC, condition: { userId: $userId }) {
       nodes {
         transactionId
         type
@@ -53,8 +55,15 @@ const GET_TRANSACTIONS = gql`
   }
 `;
 
+
 export default function Statistiques() {
-  const [{ data, fetching, error }] = useQuery<TransactionsData>({ query: GET_TRANSACTIONS });
+  const [user] = useAtom(userAtom);
+    // GraphQL query to fetch transactions for the specific user
+    const [{ data, fetching, error }] = useQuery<TransactionsData>({
+      query: GET_TRANSACTIONS,
+      variables: { userId: user ? user.oidcId : "" }, // Pass userId from the atom
+      pause: !user, // Pause until user is available
+    });
   const [selectedYear, setSelectedYear] = useState<string>(dayjs().year().toString());
   const [incomeExpenseData, setIncomeExpenseData] = useState<ChartData | null>(null);
   const [balanceData, setBalanceData] = useState<ChartData | null>(null);

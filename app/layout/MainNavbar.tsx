@@ -29,7 +29,7 @@ const menu = [
   { path: "/transactions", name: " transactions" },
   { path: "/statistiques", name: " statistiques" },
   { path: "/categorie", name: "categorie" },
-  { path: "/balance", name: "balance" },
+  { path: "/budget", name: "budget" },
 ];
 
 export default function MainNavbar() {
