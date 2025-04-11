@@ -1,84 +1,15 @@
-import {
-  IconBook,
-  IconBriefcase,
-  IconBus,
-  IconCamera,
-  IconCar,
-  IconGift,
-  IconHealthRecognition,
-  IconHeart,
-  IconHome,
-  IconMusic,
-  IconPigMoney,
-  IconPlane,
-  IconSchool,
-  IconShoppingCart,
-  IconSoup,
-  IconSportBillard,
-} from "@tabler/icons-react";
 import { Typetransaction } from "gql/graphql";
 import { useAtom } from "jotai";
 import { Calendar, ChevronDown, Search, ShoppingBag, X } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useEffect, useRef, useState } from "react";
-import { gql, useMutation, useQuery } from "urql";
+import { gql, useMutation, useQuery, useClient } from "urql";
 import { triggerNotifEvent } from "~/notif/helper";
 import { ExpenseExeceededType } from "~/notif/types";
 import { userAtom } from "~/store/store";
+import { icons } from "../routes/CategoryIconPicker";
+import dayjs from "dayjs";
 
-const icons = [
-  { name: "Home", component: IconHome, color: "#DE3163", value: "home" },
-  { name: "Car", component: IconCar, color: "#EF4444", value: "car" },
-  {
-    name: "Shopping",
-    component: IconShoppingCart,
-    color: "#3B82F6",
-    value: "shopping",
-  },
-  { name: "Food", component: IconSoup, color: "#F59E0B", value: "food" },
-  { name: "Health", component: IconHeart, color: "#22C55E", value: "health" },
-  { name: "Work", component: IconBriefcase, color: "#8B5CF6", value: "work" },
-  { name: "Travel", component: IconPlane, color: "#EC4899", value: "travel" },
-  { name: "Gifts", component: IconGift, color: "#FBBF24", value: "gifts" },
-  {
-    name: "Medical",
-    component: IconHealthRecognition,
-    color: "#A855F7",
-    value: "medical",
-  },
-  {
-    name: "Sports",
-    component: IconSportBillard,
-    color: "#16A34A",
-    value: "sports",
-  },
-  { name: "Music", component: IconMusic, color: "#FCD34D", value: "music" },
-  {
-    name: "Photography",
-    component: IconCamera,
-    color: "#EA580C",
-    value: "photography",
-  },
-  {
-    name: "Education",
-    component: IconBook,
-    color: "#38B2AC",
-    value: "education",
-  },
-  { name: "School", component: IconSchool, color: "#4F46E5", value: "school" },
-  {
-    name: "Transport",
-    component: IconBus,
-    color: "#805AD5",
-    value: "transport",
-  },
-  {
-    name: "Savings",
-    component: IconPigMoney,
-    color: "#EAB308",
-    value: "savings",
-  },
-];
 
 const GET_CATEGORIES = gql`
   query GET_CATEGORIES($userId: String!) {
@@ -155,6 +86,43 @@ const EDIT_TRANSACTION = gql`
       }
     }
   }
+`;
+
+const GET_BUDGET_FOR_CATEGORY = gql`
+  query GET_BUDGET_FOR_CATEGORY($userId: String!, $categoryId: String!,$month: Datetime!) {
+    budgets(
+      condition: { userId: $userId, categoryId: $categoryId }
+      filter: { month: { equalTo: $month } }
+    ) {
+      nodes {
+        budgetId
+        userId
+        categoryId
+        amount
+        month
+      }
+    }
+  }
+`;
+
+const GET_TRANSACTIONS_FOR_CATEGORY = gql`
+  query GET_TRANSACTIONS_FOR_CATEGORY($userId: String!, $categoryId: String!, $start: Datetime!, $end: Datetime!) {
+  transactions(
+    condition: {userId: $userId, categoryId: $categoryId, type: EXPENSE}
+    filter: {date: {greaterThanOrEqualTo: $start, lessThanOrEqualTo: $end}}
+  ) {
+    nodes {
+      transactionId
+      amount
+      date
+    }
+    aggregates {
+      sum {
+        amount
+      }
+    }
+  }
+}
 `;
 
 const DynamicIcon = ({
@@ -235,6 +203,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   const amountInputRef = useRef<HTMLInputElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  
+  // Get the urql client to use in checkBudgetExceeded
+  const client = useClient();
 
   const [{ data }] = useQuery({
     query: GET_CATEGORIES,
@@ -358,24 +329,93 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     return updatedDate.toISOString();
   };
 
+  // Add this function to check if the transaction exceeds budget - now using the existing client
+  const checkBudgetExceeded = async (categoryId: string, amount: number, transactionDate: string, isExpense: boolean) => {
+    if (!isExpense) return false; // Only check for expense transactions
+    
+    // Get the month of the transaction in YYYY-MM format
+    const transactionMonth = new Date(transactionDate).toISOString().substring(0, 7);
+    console.log("transactionDate:", transactionDate);
+    
+    try {
+      // Fetch budget for this category and month using the existing client
+      const budgetResult = await client.query(GET_BUDGET_FOR_CATEGORY, {
+        userId: user?.oidcId,
+        categoryId,
+        month: transactionDate
+      }).toPromise();
+
+      console.log("Budget Result:", budgetResult);
+      
+      if (!budgetResult.data?.budgets?.nodes || budgetResult.data?.budgets?.nodes?.length === 0) {
+        return false; // No budget found for this category and month
+      }
+      
+      const budget = budgetResult.data?.budgets?.nodes[0];
+      console.log('dayjs(transactionDate).endOf("month").toISOString()', dayjs(transactionDate).endOf("month").toISOString())
+      // Fetch all transactions for this category and month
+      const transactionsResult = await client.query(GET_TRANSACTIONS_FOR_CATEGORY, {
+        userId: user?.oidcId,
+        categoryId,
+        start: transactionDate,
+        end: dayjs(transactionDate).endOf("month").toISOString(),
+      }).toPromise();
+      
+      // Filter transactions to match the exact month and exclude the current transaction if editing
+      const relevantTransactions = transactionsResult.data?.transactions.nodes.filter(
+        (transaction: any) => {
+          const transMonth = new Date(transaction.date).toISOString().substring(0, 7);
+          // When editing, exclude the transaction being edited (it will be included with the new amount)
+          if (isEditing && transaction.transactionId === editData?.id) {
+            return false;
+          }
+          return transMonth === transactionMonth;
+        }
+      );
+
+      console.log("transactionsResult.data?.transactions.nodes", transactionsResult?.data?.transactions?.nodes)
+      
+      // Calculate total expenses for this category in this month
+      const totalExpenses = transactionsResult.data?.transactions.nodes?.reduce(
+        (sum: number, transaction: any) => sum + transaction.amount, 0
+      );
+      console.log("Total Expenses:", totalExpenses);
+      console.log("Budget Amount:", budget.amount);
+      // Add the current transaction amount to check if it exceeds the budget
+      const newTotal = totalExpenses + amount;
+      console.log("New Total:", newTotal);
+      
+      // Check if the new total exceeds the budget
+      return newTotal > budget.amount;
+    } catch (error) {
+      console.error("Error checking budget:", error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!validateForm()) return;
 
     const transactionId = nanoid();
+    const isExpenseType = type === "EXPENSE";
 
     try {
+      // Determine if this transaction will exceed the budget
+      let budgetExceeded = false;
+      
       if (isEditing) {
-        // Use the new date from the form, but preserve the original time exactly
-        const fullDateTime = updateDatePreserveTime(date, editData?.date);
-        console.log("Original date:", editData?.date);
-        console.log("Updated date:", fullDateTime);
+        
+        // Check if editing will cause budget to be exceeded (only if it's an expense)
+        if (isExpenseType) {
+          budgetExceeded = await checkBudgetExceeded(categoryId, amount, dayjs(editData?.date).format("YYYY-MM-01 00:00"), isExpenseType);
+        }
 
         const editVariables = {
           id: editData?.id,
           amount,
-          date: fullDateTime,
+          date: updateDatePreserveTime(date, editData?.date),
           categoryId,
           description: description || "",
           type,
@@ -391,11 +431,18 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
           console.error("Edit Mutation Error:", editResponse.error);
         }
       } else {
+        // Check if new transaction will cause budget to be exceeded (only if it's an expense)
+        if (isExpenseType) {
+          budgetExceeded = await checkBudgetExceeded(categoryId, amount, dayjs().format("YYYY-MM-01 00:00"), isExpenseType);
+          console.log("Budget Exceeded:", budgetExceeded);
+
+        }
+
         const variables = {
           user_id: user?.oidcId,
           category_id: categoryId,
           amount,
-          date: new Date().toISOString(), // Use current time for new transactions
+          date: updateDatePreserveTime(date, new Date().toISOString()), // Use selected date with current time
           description: description || "",
           type,
           transaction_id: transactionId,
@@ -411,12 +458,14 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         }
       }
 
-
-      // Trigger notification event
-      triggerNotifEvent("expenseExeceededEvent", {
-        userIds: [user?.oidcId || ""],
-        type: ExpenseExeceededType.Exceeded,
-      })
+      // Only trigger notification event if budget is exceeded and it's an expense transaction
+      if (budgetExceeded && isExpenseType) {
+        triggerNotifEvent("expenseExeceededEvent", {
+          userIds: [user?.oidcId || ""],
+          type: ExpenseExeceededType.Exceeded,
+          categoryId, // This would normally cause an error
+        } as any); // Using type assertion to bypass the type check
+      }
     } catch (error) {
       console.error("Unexpected Error:", error);
     }
@@ -424,8 +473,6 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
   // Create a click handler for the submit button that submits the form
   const handleButtonSubmit = () => {
-    
-
     if (formRef.current) {
       formRef.current.dispatchEvent(
         new Event("submit", { cancelable: true, bubbles: true }),
@@ -627,55 +674,51 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                     </div>
 
                     <div className="max-h-64 overflow-y-auto py-2">
-                      {data?.categories?.nodes?.length > 0 ? (
+                      {filteredCategories?.length > 0 ? (
                         <div className="grid grid-cols-1 gap-1">
-                          {data?.categories?.nodes
-                            .filter(
-                              (category: { type: Typetransaction }) =>
-                                category.type === type,
-                            ) // Filter categories based on type or if no type is set
-                            .map(
-                              (category: {
-                                id: string;
-                                name: string;
-                                icon: string;
-                                iconColor: string;
-                              }) => (
-                                <button
-                                  key={category.id}
-                                  type="button"
-                                  onClick={() => {
-                                    setCategoryId(category.id);
-                                    setShowCategoryDropdown(false);
+                          {filteredCategories.map(
+                            (category: {
+                              id: string;
+                              name: string;
+                              icon: string;
+                              iconColor: string;
+                              type: Typetransaction;
+                            }) => (
+                              <button
+                                key={category.id}
+                                type="button"
+                                onClick={() => {
+                                  setCategoryId(category.id);
+                                  setShowCategoryDropdown(false);
+                                }}
+                                className={`flex w-full items-center px-4 py-3 text-base transition-colors ${
+                                  categoryId === category.id
+                                    ? type === "EXPENSE"
+                                      ? "bg-red-50 text-red-700"
+                                      : "bg-green-50 text-green-700"
+                                    : "text-gray-700 hover:bg-gray-50"
+                                }`}
+                              >
+                                <div
+                                  className="mr-3 flex items-center justify-center rounded-full p-1"
+                                  style={{
+                                    backgroundColor: category.iconColor
+                                      ? `${category.iconColor}20`
+                                      : "#f3f4f6",
                                   }}
-                                  className={`flex w-full items-center px-4 py-3 text-base transition-colors ${
-                                    categoryId === category.id
-                                      ? type === "EXPENSE"
-                                        ? "bg-red-50 text-red-700"
-                                        : "bg-green-50 text-green-700"
-                                      : "text-gray-700 hover:bg-gray-50"
-                                  }`}
                                 >
-                                  <div
-                                    className="mr-3 flex items-center justify-center rounded-full p-1"
-                                    style={{
-                                      backgroundColor: category.iconColor
-                                        ? `${category.iconColor}20`
-                                        : "#f3f4f6",
-                                    }}
-                                  >
-                                    <DynamicIcon
-                                      iconName={category.icon || "shopping"}
-                                      color={category.iconColor}
-                                      size={22}
-                                    />
-                                  </div>
-                                  <span className="font-medium">
-                                    {category.name}
-                                  </span>
-                                </button>
-                              ),
-                            )}
+                                  <DynamicIcon
+                                    iconName={category.icon || "shopping"}
+                                    color={category.iconColor}
+                                    size={22}
+                                  />
+                                </div>
+                                <span className="font-medium">
+                                  {category.name}
+                                </span>
+                              </button>
+                            ),
+                          )}
                         </div>
                       ) : (
                         <div className="px-4 py-3 text-center text-base text-gray-500">

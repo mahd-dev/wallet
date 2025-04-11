@@ -1,15 +1,13 @@
 import { useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
-
 import {
   IconLogout,
   IconShield,
   IconUserEdit,
-  IconUserShield,
+  IconKey,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { Block, Dialog, DialogButton, List, ListItem } from "konsta/react";
-
 import { useMainLayoutProps } from "~/layout/MainLayout";
 import { dirAtom, userAtom } from "~/store/store";
 
@@ -17,32 +15,10 @@ export default function ProfilePage() {
   const [dir] = useAtom(dirAtom);
   const [auth] = useAtom(userAtom);
   useMainLayoutProps({ navbarTitle: "My Profile" });
-
+  
   const navigate = useNavigate();
   const [logoutDialog, setLogoutDialog] = useState(false);
-
-  const logout = async () => {
-    try {
-      const response = await fetch("/auth/logout", {
-        method: "POST",
-        credentials: "include", // ✅ Ensures session cookies are sent and cleared
-      });
-
-      if (!response.ok) {
-        throw new Error(`Logout failed: ${response.statusText}`);
-      }
-
-      // ✅ Remove user from localStorage
-      localStorage.removeItem("connected_user");
-      localStorage.removeItem("validOtp");
-
-      // ✅ Force a full reload to clear client-side state
-      window.location.href = "/login";
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
-  const [showUserInfo, setShowUserInfo] = useState(false);
+  const [resetPasswordDialog, setResetPasswordDialog] = useState(false);
   const [connectedUser, setConnectedUser] = useState(null);
 
   useEffect(() => {
@@ -52,91 +28,150 @@ export default function ProfilePage() {
     }
   }, []);
 
+  const logout = async () => {
+    try {
+      const response = await fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!response.ok) throw new Error(`Logout failed: ${response.statusText}`);
+      
+      localStorage.removeItem("connected_user");
+      localStorage.removeItem("validOtp");
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    // Placeholder for password reset logic
+    try {
+      // This would typically send a reset email or trigger a reset flow
+      console.log("Password reset requested for:", auth?.email);
+      setResetPasswordDialog(false);
+      // Add toast notification here if you have one
+    } catch (error) {
+      console.error("Password reset error:", error);
+    }
+  };
+
   return (
-    <Block className="!my-0 mx-auto flex max-w-3xl flex-col md:flex-row">
-      <div className="flex flex-col items-center gap-1">
-        <div className="relative">
-          <div
-            className="avatar mb-3 cursor-pointer"
-            onClick={() => setShowUserInfo(!showUserInfo)}
-          >
-            <div className="mask mask-squircle size-24">
-              <img src={"/images/avatar-man.png"} alt="Profile Avatar" />
+    <Block className="max-w-2xl mx-auto my-6 p-6 bg-white rounded-xl shadow-lg">
+      {/* Profile Header */}
+      <div className="flex flex-col items-center mb-8">
+        <div className="relative mb-4">
+          <div className="avatar">
+            <div className="w-24 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100 mt-10">
+              <img src="/images/avatar-man.png" alt="Profile Avatar" />
             </div>
           </div>
-
-          {showUserInfo && connectedUser && (
-            <div className="absolute left-1/2 mt-2 w-48 -translate-x-1/2 transform rounded-lg bg-white p-3 text-center shadow-md">
-              <h3 className="text-lg font-semibold">{auth?.firstName}</h3>
-              <p className="text-sm text-gray-600">{auth?.lastName}</p>
-            </div>
-          )}
         </div>
-
-        <h3 className="text-xl">
-          {auth?.firstName}
-          {auth?.lastName}
-        </h3>
-        <span>{auth?.email}</span>
+        
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800">
+            {auth?.firstName} {auth?.lastName}
+          </h2>
+          <p className="text-gray-600 mt-1">{auth?.email}</p>
+        </div>
       </div>
-      <div className="w-7"></div>
-      <List strong inset className="flex-1 md:my-0">
+
+      {/* Profile Options */}
+      <List strong inset className="rounded-lg overflow-hidden">
         <ListItem
-          title={"Edit my profile"}
-          media={<IconUserEdit />}
+          title="Edit Profile"
+          media={<IconUserEdit className="text-blue-500" />}
           link
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("/profile/edit");
-          }}
-          linkProps={{ href: "/profile/edit" }}
+          onClick={() => navigate("/profile/edit")}
+          className="hover:bg-gray-50 transition-colors"
         />
-        <ListItem title={"Security"} media={<IconShield />} link />
+        
         <ListItem
-          title={"Privacy Policy"}
-          media={<IconUserShield />}
+          title="Security"
+          media={<IconShield className="text-green-500" />}
           link
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("/legal/terms");
-          }}
-          linkProps={{ href: "/legal/terms" }}
+          onClick={() => navigate("/security")}
+          className="hover:bg-gray-50 transition-colors"
         />
+        
         <ListItem
-          title={"Logout"}
-          media={
-            <IconLogout className={`${dir === "ltr" ? "-scale-x-100" : ""}`} />
-          }
+          title="Reset Password"
+          media={<IconKey className="text-yellow-500" />}
+          link
+          onClick={() => setResetPasswordDialog(true)}
+          className="hover:bg-gray-50 transition-colors"
+        />
+        
+        <ListItem
+          title="Logout"
+          media={<IconLogout className={`${dir === "ltr" ? "-scale-x-100" : ""} text-red-500`} />}
           link
           chevronIos={false}
           chevronMaterial={false}
           onClick={() => setLogoutDialog(true)}
+          className="hover:bg-gray-50 transition-colors"
         />
       </List>
 
-      {/* Centered Logout Confirmation Dialog */}
-      {logoutDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <Dialog
-            opened={logoutDialog}
-            onBackdropClick={() => setLogoutDialog(false)}
-            className="w-full max-w-sm rounded-lg bg-white p-6 shadow-lg"
-          >
-            <h2 className="mb-4 text-center text-lg font-semibold">
-              Confirm logout
-            </h2>
-            <p className="mb-6 text-center text-gray-600">
-              Are you sure you want to logout?
-            </p>
-            <div className="flex justify-between">
-              <DialogButton strong onClick={() => setLogoutDialog(false)}>
-                No
-              </DialogButton>
-              <DialogButton onClick={logout}>Log me out</DialogButton>
-            </div>
-          </Dialog>
+      {/* Logout Dialog */}
+      <Dialog
+        opened={logoutDialog}
+        onBackdropClick={() => setLogoutDialog(false)}
+        className="max-w-md mx-auto rounded-lg"
+      >
+        <div className="p-6">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Confirm Logout
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Are you sure you want to logout from your account?
+          </p>
+          <div className="flex justify-end gap-4">
+            <DialogButton
+              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+              onClick={() => setLogoutDialog(false)}
+            >
+              Cancel
+            </DialogButton>
+            <DialogButton
+              className="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
+              onClick={logout}
+            >
+              Logout
+            </DialogButton>
+          </div>
         </div>
-      )}
+      </Dialog>
+
+      {/* Reset Password Dialog */}
+      <Dialog
+        opened={resetPasswordDialog}
+        onBackdropClick={() => setResetPasswordDialog(false)}
+        className="max-w-md mx-auto rounded-lg"
+      >
+        <div className="p-6">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Reset Password
+          </h2>
+          <p className="text-gray-600 mb-6">
+            We'll send a password reset link to {auth?.email}.
+          </p>
+          <div className="flex justify-end gap-4">
+            <DialogButton
+              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+              onClick={() => setResetPasswordDialog(false)}
+            >
+              Cancel
+            </DialogButton>
+            <DialogButton
+              className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+              onClick={handleResetPassword}
+            >
+              Send Reset Link
+            </DialogButton>
+          </div>
+        </div>
+      </Dialog>
     </Block>
   );
 }

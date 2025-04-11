@@ -17,7 +17,7 @@ import { atomWithStoredBroadcast } from "./broadcast";
 //       .split(";")
 //       .map((cookie) => cookie.split("=")) ?? [],
 //   ).lang &&
-//   navigator.language.slice(0, 2) || languageTag();
+//   navigator.language.slice(0, 2) || languageTag();z
 
 export const langAtom = atomWithStoredBroadcast<AvailableLanguageTag>(
   "lang",

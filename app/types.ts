@@ -10,6 +10,8 @@ declare global {
 }
 
 export interface User {
+  bio: ReactNode;
+  phone: ReactNode;
   oidcId: string;
   email: string;
   firstName: string;

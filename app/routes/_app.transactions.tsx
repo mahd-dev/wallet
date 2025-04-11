@@ -1,25 +1,11 @@
 import {
-  IconBook,
-  IconBriefcase,
-  IconBus,
-  IconCamera,
-  IconCar,
   IconFilter,
-  IconGift,
-  IconHealthRecognition,
-  IconHeart,
-  IconHome,
-  IconMusic,
   IconPencil,
   IconPigMoney,
-  IconPlane,
   IconPlus,
-  IconSchool,
   IconSearch,
   IconShoppingCart,
   IconSortAscending,
-  IconSoup,
-  IconSportBillard,
   IconTrash,
 } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -31,61 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { gql, useMutation, useQuery } from "urql";
 import TransactionModal from "~/components/TransactionModal";
 import { userAtom } from "~/store/store";
-
-// Icon mapping from the modal component
-const icons = [
-  { name: "Home", component: IconHome, color: "#DE3163", value: "home" },
-  { name: "Car", component: IconCar, color: "#EF4444", value: "car" },
-  {
-    name: "Shopping",
-    component: IconShoppingCart,
-    color: "#3B82F6",
-    value: "shopping",
-  },
-  { name: "Food", component: IconSoup, color: "#F59E0B", value: "food" },
-  { name: "Health", component: IconHeart, color: "#22C55E", value: "health" },
-  { name: "Work", component: IconBriefcase, color: "#8B5CF6", value: "work" },
-  { name: "Travel", component: IconPlane, color: "#EC4899", value: "travel" },
-  { name: "Gifts", component: IconGift, color: "#FBBF24", value: "gifts" },
-  {
-    name: "Medical",
-    component: IconHealthRecognition,
-    color: "#A855F7",
-    value: "medical",
-  },
-  {
-    name: "Sports",
-    component: IconSportBillard,
-    color: "#16A34A",
-    value: "sports",
-  },
-  { name: "Music", component: IconMusic, color: "#FCD34D", value: "music" },
-  {
-    name: "Photography",
-    component: IconCamera,
-    color: "#EA580C",
-    value: "photography",
-  },
-  {
-    name: "Education",
-    component: IconBook,
-    color: "#38B2AC",
-    value: "education",
-  },
-  { name: "School", component: IconSchool, color: "#4F46E5", value: "school" },
-  {
-    name: "Transport",
-    component: IconBus,
-    color: "#805AD5",
-    value: "transport",
-  },
-  {
-    name: "Savings",
-    component: IconPigMoney,
-    color: "#EAB308",
-    value: "savings",
-  },
-];
+import { icons } from "./CategoryIconPicker";
 
 // Define the Transaction type interface
 interface Transaction {
@@ -101,13 +33,26 @@ interface Transaction {
     name: string;
     icon: string;
     iconColor: string;
+    type: string;
   };
+}
+
+// Define the Category interface
+interface Category {
+  id: string;
+  name: string;
+  icon: string;
+  iconColor: string;
+  type: string;
 }
 
 // Define the query result type
 interface TransactionsData {
   transactions: {
     nodes: Transaction[];
+  };
+  categories: {
+    nodes: Category[];
   };
 }
 
@@ -129,7 +74,6 @@ const DynamicIcon = ({
   return <IconShoppingCart size={size} color={color} />;
 };
 
-// Updated to include userId filter condition
 const GET_TRANSACTIONS = gql`
   query GET_TRANSACTIONS4($userId: String!) {
     transactions(orderBy: DATE_DESC, condition: { userId: $userId }) {
@@ -146,7 +90,18 @@ const GET_TRANSACTIONS = gql`
           name
           icon
           iconColor
+          type
         }
+      }
+    }
+    
+    categories (condition: { userId: $userId }) {
+      nodes {
+        id
+        name
+        icon
+        iconColor
+        type
       }
     }
   }
@@ -258,24 +213,19 @@ const TransactionsList = () => {
     }
   }, [data]);
 
-  // Extract unique categories for the filter
-  const uniqueCategories = useMemo(() => {
-    if (!data?.transactions?.nodes) return [];
+  // Filter categories based on active tab
+  const filteredCategories = useMemo(() => {
+    if (!data?.categories?.nodes) return [];
 
-    const categories = new Map();
-    data.transactions.nodes.forEach((tx) => {
-      if (tx.category && !categories.has(tx.category.id)) {
-        categories.set(tx.category.id, {
-          id: tx.category.id,
-          name: tx.category.name,
-          icon: tx.category.icon,
-          iconColor: tx.category.iconColor,
-        });
-      }
-    });
-
-    return Array.from(categories.values());
-  }, [data]);
+    // If we're on the "all" tab, return all categories
+    if (activeTab === "tout") {
+      return data.categories.nodes;
+    }
+    
+    // Filter by type based on the active tab
+    const categoryType = activeTab === "revenus" ? "INCOME" : "EXPENSE";
+    return data.categories.nodes.filter(cat => cat.type === categoryType);
+  }, [data, activeTab]);
 
   const handleDelete = async (id: string) => {
     setShowDeleteConfirm(false);
@@ -440,7 +390,7 @@ const TransactionsList = () => {
   return (
     <div className="mx-auto mb-20 min-h-screen max-w-lg bg-gray-50 p-4">
       {/* Enhanced Dashboard Header */}
-      <div className="mb-8 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg">
+      <div className="mb-8 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg mt-10">
         <div className="p-6">
           <div className="mb-6 mt-10 flex flex-col items-center justify-center">
             <p className="mb-2 text-xs uppercase tracking-wider text-blue-200">
@@ -593,7 +543,7 @@ const TransactionsList = () => {
             Filtrer par catégorie
           </p>
           <div className="flex flex-wrap gap-2">
-            {uniqueCategories.map((category) => (
+            {filteredCategories.map((category) => (
               <button
                 key={category.id}
                 onClick={() =>

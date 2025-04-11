@@ -4,6 +4,19 @@ import { useState } from "react";
 import { gql, useMutation, useQuery } from "urql";
 import { userAtom } from "~/store/store";
 import CategoryIconPicker, { icons } from "./CategoryIconPicker";
+import { useClient } from "urql";
+
+
+// GraphQL query to check if a category has transactions
+const CHECK_CATEGORY_TRANSACTIONS = gql`
+  query CHECK_CATEGORY_TRANSACTIONS($category_id: String!) {
+    transactions(condition: { categoryId: $category_id }) {
+      nodes {
+       transactionId
+      }
+    }
+  }
+`;
 
 // GraphQL queries and mutations
 const GET_CATEGORIES = gql`
@@ -89,9 +102,19 @@ const CategoriesPage = () => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
+  const [hasTransactions, setHasTransactions] = useState(false);
+  
+  // Mutations and queries
   const [, addCategory] = useMutation(ADD_CATEGORY);
   const [, deleteCategory] = useMutation(DELETE_CATEGORY);
   const [, updateCategory] = useMutation(UPDATE_CATEGORY);
+  const [checkTransactionsResult, checkCategoryTransactions] = useQuery({
+    query: CHECK_CATEGORY_TRANSACTIONS,
+    pause: true, // Start paused so it only runs when we call it
+  });
+  
   const [{ data, error, fetching }, refetch] = useQuery({
     query: GET_CATEGORIES,
     variables: user?.oidcId ? { userId: user.oidcId } : undefined,
@@ -123,11 +146,31 @@ const CategoriesPage = () => {
     }
   };
 
-  const handleDeleteCategory = async (id: string) => {
+  const client = useClient(); // Get the Urql client
+
+  const initiateDeleteCategory = async (category: Category) => {
+    setCategoryToDelete(category);
+  
     if (user?.oidcId) {
-      const result = await deleteCategory({ id });
+      const result = await client
+        .query(CHECK_CATEGORY_TRANSACTIONS, { category_id: category.id })
+        .toPromise();
+  
+      setHasTransactions(result?.data?.transactions?.nodes.length > 0);
+    }
+  
+    setIsDeleteModalOpen(true);
+  };
+  
+  
+
+  const confirmDeleteCategory = async () => {
+    if (categoryToDelete && user?.oidcId) {
+      const result = await deleteCategory({ id: categoryToDelete.id });
       if (result.data?.deleteCategory) {
         refetch();
+        setIsDeleteModalOpen(false);
+        setCategoryToDelete(null);
       }
     }
   };
@@ -283,6 +326,8 @@ const CategoriesPage = () => {
                           style={{
                             backgroundColor: `${category.iconColor}20`,
                             border: `1px solid ${category.iconColor}50`,
+                            borderRadius: "9999px", // Forces full circle shape
+                            overflow: "hidden", 
                           }}
                         >
                           {IconComponent && (
@@ -309,7 +354,7 @@ const CategoriesPage = () => {
                           <IconEdit size={16} />
                         </button>
                         <button
-                          onClick={() => handleDeleteCategory(category.id)}
+                          onClick={() => initiateDeleteCategory(category)}
                           className="rounded-md bg-red-100 p-2 text-red-600 transition-colors hover:bg-red-200"
                           aria-label="Delete category"
                         >
@@ -325,7 +370,7 @@ const CategoriesPage = () => {
         </div>
       </div>
 
-      {/* Add/Edit Category */}
+      {/* Add/Edit Category Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
           <div className="w-full rounded-lg bg-white p-8 shadow-xl sm:w-96">
@@ -362,6 +407,36 @@ const CategoriesPage = () => {
                 className="rounded-md bg-blue-600 px-6 py-2 text-white"
               >
                 {editingCategory ? "Save Changes" : "Add Category"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+            <h3 className="mb-4 text-xl font-bold text-gray-900">
+              Delete Category
+            </h3>
+            <p className="mb-6 text-gray-600">
+              {hasTransactions
+                ? `This category "${categoryToDelete?.name}" has transactions associated with it. Deleting it will affect these transactions. Are you sure you want to proceed?`
+                : `Are you sure you want to delete the category "${categoryToDelete?.name}"?`}
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="rounded-md bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteCategory}
+                className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+              >
+                {hasTransactions ? "Delete Anyway" : "Delete"}
               </button>
             </div>
           </div>

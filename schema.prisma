@@ -34,7 +34,7 @@ model User {
 }
 
 model Category {
-  id           String        @id @unique
+  id           String       @id @unique
   name         String
   icon         String?
   iconColor String? 
@@ -68,6 +68,7 @@ model Budget {
   category_id     String?
   amount          Float?
   month           DateTime?
+  created_at      DateTime? @default(now())
   alert_threshold Int?
   user            User?     @relation(fields: [user_id], references: [oidcId])
   category        Category? @relation(fields: [category_id], references: [id])

@@ -32,7 +32,7 @@ export const icons = [
   { name: "Health", component: IconHeart, color: "#22C55E", value: "health" },
   { name: "Work", component: IconBriefcase, color: "#8B5CF6", value: "work" },
   { name: "Travel", component: IconPlane, color: "#EC4899", value: "travel" },
-  { name: "Gifts", component: IconGift, color: "#FBBF24", value: "gifts" },
+  { name: "Gifts", component: IconGift, color: "#FF7F50", value: "gifts" },
   {
     name: "Medical",
     component: IconHealthRecognition,

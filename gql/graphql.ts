@@ -150,6 +150,8 @@ export type BudgetCondition = {
   budgetId?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `categoryId` field. */
   categoryId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `month` field. */
   month?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `userId` field. */
@@ -161,6 +163,7 @@ export type BudgetDistinctCountAggregateFilter = {
   amount?: InputMaybe<BigIntFilter>;
   budgetId?: InputMaybe<BigIntFilter>;
   categoryId?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
   month?: InputMaybe<BigIntFilter>;
   userId?: InputMaybe<BigIntFilter>;
 };
@@ -181,6 +184,8 @@ export type BudgetFilter = {
   categoryExists?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `categoryId` field. */
   categoryId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `month` field. */
   month?: InputMaybe<DatetimeFilter>;
   /** Negates the expression. */
@@ -200,6 +205,9 @@ export enum BudgetGroupBy {
   AlertThreshold = 'ALERT_THRESHOLD',
   Amount = 'AMOUNT',
   CategoryId = 'CATEGORY_ID',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
   Month = 'MONTH',
   MonthTruncatedToDay = 'MONTH_TRUNCATED_TO_DAY',
   MonthTruncatedToHour = 'MONTH_TRUNCATED_TO_HOUR',
@@ -209,12 +217,14 @@ export enum BudgetGroupBy {
 export type BudgetHavingAverageInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingDistinctCountInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
@@ -236,42 +246,49 @@ export type BudgetHavingInput = {
 export type BudgetHavingMaxInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingMinInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingStddevPopulationInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingStddevSampleInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingSumInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingVariancePopulationInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingVarianceSampleInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
@@ -281,6 +298,7 @@ export type BudgetInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   budgetId: Scalars['String']['input'];
   categoryId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   month?: InputMaybe<Scalars['Datetime']['input']>;
   userId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -301,6 +319,7 @@ export type BudgetPatch = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   budgetId?: InputMaybe<Scalars['String']['input']>;
   categoryId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   month?: InputMaybe<Scalars['Datetime']['input']>;
   userId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -340,6 +359,8 @@ export enum BudgetsOrderBy {
   BudgetIdDesc = 'BUDGET_ID_DESC',
   CategoryIdAsc = 'CATEGORY_ID_ASC',
   CategoryIdDesc = 'CATEGORY_ID_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
   MonthAsc = 'MONTH_ASC',
   MonthDesc = 'MONTH_DESC',
   Natural = 'NATURAL',
@@ -359,6 +380,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdAverageBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_DESC',
   BudgetsByCategoryIdAverageCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC',
   BudgetsByCategoryIdAverageCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdAverageCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CREATED_AT_ASC',
+  BudgetsByCategoryIdAverageCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CREATED_AT_DESC',
   BudgetsByCategoryIdAverageMonthAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_ASC',
   BudgetsByCategoryIdAverageMonthDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_DESC',
   BudgetsByCategoryIdAverageUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC',
@@ -373,6 +396,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdDistinctCountBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_DESC',
   BudgetsByCategoryIdDistinctCountCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
   BudgetsByCategoryIdDistinctCountCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdDistinctCountCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  BudgetsByCategoryIdDistinctCountCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CREATED_AT_DESC',
   BudgetsByCategoryIdDistinctCountMonthAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_ASC',
   BudgetsByCategoryIdDistinctCountMonthDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_DESC',
   BudgetsByCategoryIdDistinctCountUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC',
@@ -385,6 +410,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdMaxBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_DESC',
   BudgetsByCategoryIdMaxCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC',
   BudgetsByCategoryIdMaxCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdMaxCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_CREATED_AT_ASC',
+  BudgetsByCategoryIdMaxCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_CREATED_AT_DESC',
   BudgetsByCategoryIdMaxMonthAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_MONTH_ASC',
   BudgetsByCategoryIdMaxMonthDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_MONTH_DESC',
   BudgetsByCategoryIdMaxUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_ASC',
@@ -397,6 +424,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdMinBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_DESC',
   BudgetsByCategoryIdMinCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC',
   BudgetsByCategoryIdMinCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdMinCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_CREATED_AT_ASC',
+  BudgetsByCategoryIdMinCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_CREATED_AT_DESC',
   BudgetsByCategoryIdMinMonthAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_MONTH_ASC',
   BudgetsByCategoryIdMinMonthDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_MONTH_DESC',
   BudgetsByCategoryIdMinUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_ASC',
@@ -409,6 +438,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdStddevPopulationBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_DESC',
   BudgetsByCategoryIdStddevPopulationCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
   BudgetsByCategoryIdStddevPopulationCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdStddevPopulationCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  BudgetsByCategoryIdStddevPopulationCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CREATED_AT_DESC',
   BudgetsByCategoryIdStddevPopulationMonthAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_ASC',
   BudgetsByCategoryIdStddevPopulationMonthDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_DESC',
   BudgetsByCategoryIdStddevPopulationUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC',
@@ -421,6 +452,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdStddevSampleBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_DESC',
   BudgetsByCategoryIdStddevSampleCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
   BudgetsByCategoryIdStddevSampleCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdStddevSampleCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  BudgetsByCategoryIdStddevSampleCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
   BudgetsByCategoryIdStddevSampleMonthAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_ASC',
   BudgetsByCategoryIdStddevSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_DESC',
   BudgetsByCategoryIdStddevSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC',
@@ -433,6 +466,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdSumBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_DESC',
   BudgetsByCategoryIdSumCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC',
   BudgetsByCategoryIdSumCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdSumCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_CREATED_AT_ASC',
+  BudgetsByCategoryIdSumCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_CREATED_AT_DESC',
   BudgetsByCategoryIdSumMonthAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_MONTH_ASC',
   BudgetsByCategoryIdSumMonthDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_MONTH_DESC',
   BudgetsByCategoryIdSumUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_ASC',
@@ -445,6 +480,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdVariancePopulationBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_DESC',
   BudgetsByCategoryIdVariancePopulationCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
   BudgetsByCategoryIdVariancePopulationCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdVariancePopulationCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  BudgetsByCategoryIdVariancePopulationCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
   BudgetsByCategoryIdVariancePopulationMonthAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_ASC',
   BudgetsByCategoryIdVariancePopulationMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_DESC',
   BudgetsByCategoryIdVariancePopulationUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC',
@@ -457,6 +494,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdVarianceSampleBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC',
   BudgetsByCategoryIdVarianceSampleCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
   BudgetsByCategoryIdVarianceSampleCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdVarianceSampleCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  BudgetsByCategoryIdVarianceSampleCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
   BudgetsByCategoryIdVarianceSampleMonthAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_ASC',
   BudgetsByCategoryIdVarianceSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByCategoryIdVarianceSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
@@ -2598,6 +2637,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdAverageBudgetIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_BUDGET_ID_DESC',
   BudgetsByUserIdAverageCategoryIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_CATEGORY_ID_ASC',
   BudgetsByUserIdAverageCategoryIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_CATEGORY_ID_DESC',
+  BudgetsByUserIdAverageCreatedAtAsc = 'BUDGETS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
+  BudgetsByUserIdAverageCreatedAtDesc = 'BUDGETS_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
   BudgetsByUserIdAverageMonthAsc = 'BUDGETS_BY_USER_ID_AVERAGE_MONTH_ASC',
   BudgetsByUserIdAverageMonthDesc = 'BUDGETS_BY_USER_ID_AVERAGE_MONTH_DESC',
   BudgetsByUserIdAverageUserIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_USER_ID_ASC',
@@ -2612,6 +2653,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdDistinctCountBudgetIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_BUDGET_ID_DESC',
   BudgetsByUserIdDistinctCountCategoryIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
   BudgetsByUserIdDistinctCountCategoryIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  BudgetsByUserIdDistinctCountCreatedAtAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  BudgetsByUserIdDistinctCountCreatedAtDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
   BudgetsByUserIdDistinctCountMonthAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_MONTH_ASC',
   BudgetsByUserIdDistinctCountMonthDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_MONTH_DESC',
   BudgetsByUserIdDistinctCountUserIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
@@ -2624,6 +2667,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdMaxBudgetIdDesc = 'BUDGETS_BY_USER_ID_MAX_BUDGET_ID_DESC',
   BudgetsByUserIdMaxCategoryIdAsc = 'BUDGETS_BY_USER_ID_MAX_CATEGORY_ID_ASC',
   BudgetsByUserIdMaxCategoryIdDesc = 'BUDGETS_BY_USER_ID_MAX_CATEGORY_ID_DESC',
+  BudgetsByUserIdMaxCreatedAtAsc = 'BUDGETS_BY_USER_ID_MAX_CREATED_AT_ASC',
+  BudgetsByUserIdMaxCreatedAtDesc = 'BUDGETS_BY_USER_ID_MAX_CREATED_AT_DESC',
   BudgetsByUserIdMaxMonthAsc = 'BUDGETS_BY_USER_ID_MAX_MONTH_ASC',
   BudgetsByUserIdMaxMonthDesc = 'BUDGETS_BY_USER_ID_MAX_MONTH_DESC',
   BudgetsByUserIdMaxUserIdAsc = 'BUDGETS_BY_USER_ID_MAX_USER_ID_ASC',
@@ -2636,6 +2681,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdMinBudgetIdDesc = 'BUDGETS_BY_USER_ID_MIN_BUDGET_ID_DESC',
   BudgetsByUserIdMinCategoryIdAsc = 'BUDGETS_BY_USER_ID_MIN_CATEGORY_ID_ASC',
   BudgetsByUserIdMinCategoryIdDesc = 'BUDGETS_BY_USER_ID_MIN_CATEGORY_ID_DESC',
+  BudgetsByUserIdMinCreatedAtAsc = 'BUDGETS_BY_USER_ID_MIN_CREATED_AT_ASC',
+  BudgetsByUserIdMinCreatedAtDesc = 'BUDGETS_BY_USER_ID_MIN_CREATED_AT_DESC',
   BudgetsByUserIdMinMonthAsc = 'BUDGETS_BY_USER_ID_MIN_MONTH_ASC',
   BudgetsByUserIdMinMonthDesc = 'BUDGETS_BY_USER_ID_MIN_MONTH_DESC',
   BudgetsByUserIdMinUserIdAsc = 'BUDGETS_BY_USER_ID_MIN_USER_ID_ASC',
@@ -2648,6 +2695,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdStddevPopulationBudgetIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_BUDGET_ID_DESC',
   BudgetsByUserIdStddevPopulationCategoryIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
   BudgetsByUserIdStddevPopulationCategoryIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByUserIdStddevPopulationCreatedAtAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  BudgetsByUserIdStddevPopulationCreatedAtDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
   BudgetsByUserIdStddevPopulationMonthAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_MONTH_ASC',
   BudgetsByUserIdStddevPopulationMonthDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_MONTH_DESC',
   BudgetsByUserIdStddevPopulationUserIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
@@ -2660,6 +2709,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdStddevSampleBudgetIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_BUDGET_ID_DESC',
   BudgetsByUserIdStddevSampleCategoryIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
   BudgetsByUserIdStddevSampleCategoryIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByUserIdStddevSampleCreatedAtAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  BudgetsByUserIdStddevSampleCreatedAtDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
   BudgetsByUserIdStddevSampleMonthAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_MONTH_ASC',
   BudgetsByUserIdStddevSampleMonthDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_MONTH_DESC',
   BudgetsByUserIdStddevSampleUserIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
@@ -2672,6 +2723,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdSumBudgetIdDesc = 'BUDGETS_BY_USER_ID_SUM_BUDGET_ID_DESC',
   BudgetsByUserIdSumCategoryIdAsc = 'BUDGETS_BY_USER_ID_SUM_CATEGORY_ID_ASC',
   BudgetsByUserIdSumCategoryIdDesc = 'BUDGETS_BY_USER_ID_SUM_CATEGORY_ID_DESC',
+  BudgetsByUserIdSumCreatedAtAsc = 'BUDGETS_BY_USER_ID_SUM_CREATED_AT_ASC',
+  BudgetsByUserIdSumCreatedAtDesc = 'BUDGETS_BY_USER_ID_SUM_CREATED_AT_DESC',
   BudgetsByUserIdSumMonthAsc = 'BUDGETS_BY_USER_ID_SUM_MONTH_ASC',
   BudgetsByUserIdSumMonthDesc = 'BUDGETS_BY_USER_ID_SUM_MONTH_DESC',
   BudgetsByUserIdSumUserIdAsc = 'BUDGETS_BY_USER_ID_SUM_USER_ID_ASC',
@@ -2684,6 +2737,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdVariancePopulationBudgetIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_BUDGET_ID_DESC',
   BudgetsByUserIdVariancePopulationCategoryIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
   BudgetsByUserIdVariancePopulationCategoryIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByUserIdVariancePopulationCreatedAtAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  BudgetsByUserIdVariancePopulationCreatedAtDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
   BudgetsByUserIdVariancePopulationMonthAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_MONTH_ASC',
   BudgetsByUserIdVariancePopulationMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_MONTH_DESC',
   BudgetsByUserIdVariancePopulationUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
@@ -2696,6 +2751,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdVarianceSampleBudgetIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC',
   BudgetsByUserIdVarianceSampleCategoryIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
   BudgetsByUserIdVarianceSampleCategoryIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByUserIdVarianceSampleCreatedAtAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  BudgetsByUserIdVarianceSampleCreatedAtDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
   BudgetsByUserIdVarianceSampleMonthAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_ASC',
   BudgetsByUserIdVarianceSampleMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByUserIdVarianceSampleUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
@@ -3376,6 +3433,25 @@ export type Edit_Transaction1MutationVariables = Exact<{
 
 export type Edit_Transaction1Mutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, categoryId?: string | null, description?: string | null, amount: number } | null } | null };
 
+export type Get_Budget_For_CategoryQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+  categoryId: Scalars['String']['input'];
+  month: Scalars['Datetime']['input'];
+}>;
+
+
+export type Get_Budget_For_CategoryQuery = { __typename?: 'Query', budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null }> } | null };
+
+export type Get_Transactions_For_CategoryQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+  categoryId: Scalars['String']['input'];
+  start: Scalars['Datetime']['input'];
+  end: Scalars['Datetime']['input'];
+}>;
+
+
+export type Get_Transactions_For_CategoryQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, amount: number, date?: any | null }>, aggregates?: { __typename?: 'TransactionAggregates', sum?: { __typename?: 'TransactionSumAggregates', amount: number } | null } | null } | null };
+
 export type ProfileFragment = { __typename?: 'User', firstName?: string | null, lastName?: string | null, gender?: UserGender | null, email?: string | null, tel?: string | null, picture?: string | null, date?: any | null } & { ' $fragmentName'?: 'ProfileFragment' };
 
 export type GetUsersDevicesQueryVariables = Exact<{
@@ -3424,7 +3500,7 @@ export type Get_User_CategoriesQueryVariables = Exact<{
 }>;
 
 
-export type Get_User_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null }> } | null };
+export type Get_User_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction }> } | null };
 
 export type AddBudgetMutationVariables = Exact<{
   budget_id: Scalars['String']['input'];
@@ -3433,6 +3509,7 @@ export type AddBudgetMutationVariables = Exact<{
   amount: Scalars['Float']['input'];
   month: Scalars['Datetime']['input'];
   alert_threshold?: InputMaybe<Scalars['Int']['input']>;
+  created_at: Scalars['Datetime']['input'];
 }>;
 
 
@@ -3443,14 +3520,14 @@ export type Get_BudgetsQueryVariables = Exact<{
 }>;
 
 
-export type Get_BudgetsQuery = { __typename?: 'Query', budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null } | null }> } | null };
+export type Get_BudgetsQuery = { __typename?: 'Query', budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null, createdAt?: any | null, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction } | null }> } | null };
 
 export type Get_User_Transactions2QueryVariables = Exact<{
   userId: Scalars['String']['input'];
 }>;
 
 
-export type Get_User_Transactions2Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null } | null }> } | null };
+export type Get_User_Transactions2Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction } | null }> } | null };
 
 export type Delete_BudgetMutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -3470,6 +3547,13 @@ export type Edit_BudgetMutationVariables = Exact<{
 
 
 export type Edit_BudgetMutation = { __typename?: 'Mutation', updateBudget?: { __typename?: 'UpdateBudgetPayload', budget?: { __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null } | null } | null };
+
+export type Check_Category_TransactionsQueryVariables = Exact<{
+  category_id: Scalars['String']['input'];
+}>;
+
+
+export type Check_Category_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string }> } | null };
 
 export type Get_User_Categories3QueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -3536,7 +3620,7 @@ export type Get_Transactions4QueryVariables = Exact<{
 }>;
 
 
-export type Get_Transactions4Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null } | null }> } | null };
+export type Get_Transactions4Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction } | null }> } | null, categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction }> } | null };
 
 export type Delete_TransactionMutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -3612,17 +3696,20 @@ export const ToggleIsReadDocument = {"kind":"Document","definitions":[{"kind":"O
 export const Get_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_CATEGORIES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}}]}}]}}]}}]} as unknown as DocumentNode<Get_CategoriesQuery, Get_CategoriesQueryVariables>;
 export const AddTransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddTransaction"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"transaction_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transaction"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"transaction_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<AddTransactionMutation, AddTransactionMutationVariables>;
 export const Edit_Transaction1Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION1"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_Transaction1Mutation, Edit_Transaction1MutationVariables>;
+export const Get_Budget_For_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_BUDGET_FOR_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"month"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"month"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"month"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"month"}}]}}]}}]}}]} as unknown as DocumentNode<Get_Budget_For_CategoryQuery, Get_Budget_For_CategoryQueryVariables>;
+export const Get_Transactions_For_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS_FOR_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"start"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"end"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"EXPENSE"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"greaterThanOrEqualTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"start"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lessThanOrEqualTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"end"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}},{"kind":"Field","name":{"kind":"Name","value":"aggregates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions_For_CategoryQuery, Get_Transactions_For_CategoryQueryVariables>;
 export const GetUsersDevicesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUsersDevices"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"usersIds"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userDevices"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"usersIds"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]}}]} as unknown as DocumentNode<GetUsersDevicesQuery, GetUsersDevicesQueryVariables>;
 export const NotifyUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"NotifyUsers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"notifications"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NotificationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mnCreateNotification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"mnNotification"},"value":{"kind":"Variable","name":{"kind":"Name","value":"notifications"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<NotifyUsersMutation, NotifyUsersMutationVariables>;
 export const GetProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Profile"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
 export const ProfileSubDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"ProfileSub"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Profile"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<ProfileSubSubscription, ProfileSubSubscriptionVariables>;
 export const Get_User_TransactionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_TRANSACTIONS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_TransactionsQuery, Get_User_TransactionsQueryVariables>;
-export const Get_User_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_CATEGORIES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_CategoriesQuery, Get_User_CategoriesQueryVariables>;
-export const AddBudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddBudget"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"budget_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"month"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"alert_threshold"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budget"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"budget_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"month"},"value":{"kind":"Variable","name":{"kind":"Name","value":"month"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"alertThreshold"},"value":{"kind":"Variable","name":{"kind":"Name","value":"alert_threshold"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<AddBudgetMutation, AddBudgetMutationVariables>;
-export const Get_BudgetsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_BUDGETS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"MONTH_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"alertThreshold"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_BudgetsQuery, Get_BudgetsQueryVariables>;
-export const Get_User_Transactions2Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_TRANSACTIONS2"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_Transactions2Query, Get_User_Transactions2QueryVariables>;
+export const Get_User_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_CATEGORIES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"EXPENSE"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_CategoriesQuery, Get_User_CategoriesQueryVariables>;
+export const AddBudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddBudget"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"budget_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"month"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"alert_threshold"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"created_at"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budget"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"budget_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"month"},"value":{"kind":"Variable","name":{"kind":"Name","value":"month"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"alertThreshold"},"value":{"kind":"Variable","name":{"kind":"Name","value":"alert_threshold"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"createdAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"created_at"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<AddBudgetMutation, AddBudgetMutationVariables>;
+export const Get_BudgetsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_BUDGETS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"CREATED_AT_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"alertThreshold"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_BudgetsQuery, Get_BudgetsQueryVariables>;
+export const Get_User_Transactions2Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_TRANSACTIONS2"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_Transactions2Query, Get_User_Transactions2QueryVariables>;
 export const Delete_BudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_BUDGET"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_BudgetMutation, Delete_BudgetMutationVariables>;
 export const Edit_BudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_BUDGET"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"month"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"alertThreshold"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"month"},"value":{"kind":"Variable","name":{"kind":"Name","value":"month"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"alertThreshold"},"value":{"kind":"Variable","name":{"kind":"Name","value":"alertThreshold"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budget"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"alertThreshold"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_BudgetMutation, Edit_BudgetMutationVariables>;
+export const Check_Category_TransactionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CHECK_CATEGORY_TRANSACTIONS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}}]}}]}}]}}]} as unknown as DocumentNode<Check_Category_TransactionsQuery, Check_Category_TransactionsQueryVariables>;
 export const Get_User_Categories3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_CATEGORIES3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_Categories3Query, Get_User_Categories3QueryVariables>;
 export const Add_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ADD_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"icon"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"icon"},"value":{"kind":"Variable","name":{"kind":"Name","value":"icon"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"iconColor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Add_CategoryMutation, Add_CategoryMutationVariables>;
 export const Delete_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_CategoryMutation, Delete_CategoryMutationVariables>;
@@ -3630,7 +3717,7 @@ export const Update_CategoryDocument = {"kind":"Document","definitions":[{"kind"
 export const NotifsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"Notifs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"notifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"T_DESC"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"t"}},{"kind":"Field","name":{"kind":"Name","value":"isRead"}},{"kind":"Field","name":{"kind":"Name","value":"data"}}]}}]}}]}}]} as unknown as DocumentNode<NotifsSubscription, NotifsSubscriptionVariables>;
 export const Get_Transactions3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions3Query, Get_Transactions3QueryVariables>;
 export const SetUserTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetUserToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ua"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"JSON"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertUserDevice"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userDevice"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"token"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"ua"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ua"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"token"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<SetUserTokenMutation, SetUserTokenMutationVariables>;
-export const Get_Transactions4Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS4"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions4Query, Get_Transactions4QueryVariables>;
+export const Get_Transactions4Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS4"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions4Query, Get_Transactions4QueryVariables>;
 export const Delete_TransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_TRANSACTION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_TransactionMutation, Delete_TransactionMutationVariables>;
 export const Edit_Transaction2Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION2"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_Transaction2Mutation, Edit_Transaction2MutationVariables>;
 export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LOGIN_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"password"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"oidcId"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]}}]}}]} as unknown as DocumentNode<Login_UserQuery, Login_UserQueryVariables>;
@@ -3751,6 +3838,7 @@ export type Budget = Node & {
   /** Reads a single `Category` that is related to this `Budget`. */
   category?: Maybe<Category>;
   categoryId?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['Datetime']['output']>;
   month?: Maybe<Scalars['Datetime']['output']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']['output'];
@@ -3829,6 +3917,8 @@ export type BudgetCondition = {
   budgetId?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `categoryId` field. */
   categoryId?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `month` field. */
   month?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `userId` field. */
@@ -3840,6 +3930,7 @@ export type BudgetDistinctCountAggregateFilter = {
   amount?: InputMaybe<BigIntFilter>;
   budgetId?: InputMaybe<BigIntFilter>;
   categoryId?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
   month?: InputMaybe<BigIntFilter>;
   userId?: InputMaybe<BigIntFilter>;
 };
@@ -3854,6 +3945,8 @@ export type BudgetDistinctCountAggregates = {
   budgetId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of categoryId across the matching connection */
   categoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of month across the matching connection */
   month?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of userId across the matching connection */
@@ -3876,6 +3969,8 @@ export type BudgetFilter = {
   categoryExists?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `categoryId` field. */
   categoryId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `month` field. */
   month?: InputMaybe<DatetimeFilter>;
   /** Negates the expression. */
@@ -3895,6 +3990,9 @@ export enum BudgetGroupBy {
   AlertThreshold = 'ALERT_THRESHOLD',
   Amount = 'AMOUNT',
   CategoryId = 'CATEGORY_ID',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
   Month = 'MONTH',
   MonthTruncatedToDay = 'MONTH_TRUNCATED_TO_DAY',
   MonthTruncatedToHour = 'MONTH_TRUNCATED_TO_HOUR',
@@ -3904,12 +4002,14 @@ export enum BudgetGroupBy {
 export type BudgetHavingAverageInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingDistinctCountInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
@@ -3931,42 +4031,49 @@ export type BudgetHavingInput = {
 export type BudgetHavingMaxInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingMinInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingStddevPopulationInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingStddevSampleInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingSumInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingVariancePopulationInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
 export type BudgetHavingVarianceSampleInput = {
   alertThreshold?: InputMaybe<HavingIntFilter>;
   amount?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
   month?: InputMaybe<HavingDatetimeFilter>;
 };
 
@@ -3976,6 +4083,7 @@ export type BudgetInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   budgetId: Scalars['String']['input'];
   categoryId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   month?: InputMaybe<Scalars['Datetime']['input']>;
   userId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4012,6 +4120,7 @@ export type BudgetPatch = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   budgetId?: InputMaybe<Scalars['String']['input']>;
   categoryId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   month?: InputMaybe<Scalars['Datetime']['input']>;
   userId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4124,6 +4233,8 @@ export enum BudgetsOrderBy {
   BudgetIdDesc = 'BUDGET_ID_DESC',
   CategoryIdAsc = 'CATEGORY_ID_ASC',
   CategoryIdDesc = 'CATEGORY_ID_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
   MonthAsc = 'MONTH_ASC',
   MonthDesc = 'MONTH_DESC',
   Natural = 'NATURAL',
@@ -4176,6 +4287,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdAverageBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_BUDGET_ID_DESC',
   BudgetsByCategoryIdAverageCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_ASC',
   BudgetsByCategoryIdAverageCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdAverageCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CREATED_AT_ASC',
+  BudgetsByCategoryIdAverageCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_CREATED_AT_DESC',
   BudgetsByCategoryIdAverageMonthAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_ASC',
   BudgetsByCategoryIdAverageMonthDesc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_MONTH_DESC',
   BudgetsByCategoryIdAverageUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_AVERAGE_USER_ID_ASC',
@@ -4190,6 +4303,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdDistinctCountBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_BUDGET_ID_DESC',
   BudgetsByCategoryIdDistinctCountCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
   BudgetsByCategoryIdDistinctCountCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdDistinctCountCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  BudgetsByCategoryIdDistinctCountCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_CREATED_AT_DESC',
   BudgetsByCategoryIdDistinctCountMonthAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_ASC',
   BudgetsByCategoryIdDistinctCountMonthDesc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_MONTH_DESC',
   BudgetsByCategoryIdDistinctCountUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_DISTINCT_COUNT_USER_ID_ASC',
@@ -4202,6 +4317,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdMaxBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_BUDGET_ID_DESC',
   BudgetsByCategoryIdMaxCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_ASC',
   BudgetsByCategoryIdMaxCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdMaxCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_CREATED_AT_ASC',
+  BudgetsByCategoryIdMaxCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_CREATED_AT_DESC',
   BudgetsByCategoryIdMaxMonthAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_MONTH_ASC',
   BudgetsByCategoryIdMaxMonthDesc = 'BUDGETS_BY_CATEGORY_ID_MAX_MONTH_DESC',
   BudgetsByCategoryIdMaxUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_MAX_USER_ID_ASC',
@@ -4214,6 +4331,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdMinBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_BUDGET_ID_DESC',
   BudgetsByCategoryIdMinCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_ASC',
   BudgetsByCategoryIdMinCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdMinCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_CREATED_AT_ASC',
+  BudgetsByCategoryIdMinCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_CREATED_AT_DESC',
   BudgetsByCategoryIdMinMonthAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_MONTH_ASC',
   BudgetsByCategoryIdMinMonthDesc = 'BUDGETS_BY_CATEGORY_ID_MIN_MONTH_DESC',
   BudgetsByCategoryIdMinUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_MIN_USER_ID_ASC',
@@ -4226,6 +4345,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdStddevPopulationBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_BUDGET_ID_DESC',
   BudgetsByCategoryIdStddevPopulationCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
   BudgetsByCategoryIdStddevPopulationCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdStddevPopulationCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  BudgetsByCategoryIdStddevPopulationCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_CREATED_AT_DESC',
   BudgetsByCategoryIdStddevPopulationMonthAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_ASC',
   BudgetsByCategoryIdStddevPopulationMonthDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_MONTH_DESC',
   BudgetsByCategoryIdStddevPopulationUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_POPULATION_USER_ID_ASC',
@@ -4238,6 +4359,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdStddevSampleBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_BUDGET_ID_DESC',
   BudgetsByCategoryIdStddevSampleCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
   BudgetsByCategoryIdStddevSampleCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdStddevSampleCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  BudgetsByCategoryIdStddevSampleCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
   BudgetsByCategoryIdStddevSampleMonthAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_ASC',
   BudgetsByCategoryIdStddevSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_MONTH_DESC',
   BudgetsByCategoryIdStddevSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_STDDEV_SAMPLE_USER_ID_ASC',
@@ -4250,6 +4373,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdSumBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_BUDGET_ID_DESC',
   BudgetsByCategoryIdSumCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_ASC',
   BudgetsByCategoryIdSumCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdSumCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_CREATED_AT_ASC',
+  BudgetsByCategoryIdSumCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_CREATED_AT_DESC',
   BudgetsByCategoryIdSumMonthAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_MONTH_ASC',
   BudgetsByCategoryIdSumMonthDesc = 'BUDGETS_BY_CATEGORY_ID_SUM_MONTH_DESC',
   BudgetsByCategoryIdSumUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_SUM_USER_ID_ASC',
@@ -4262,6 +4387,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdVariancePopulationBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_BUDGET_ID_DESC',
   BudgetsByCategoryIdVariancePopulationCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
   BudgetsByCategoryIdVariancePopulationCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdVariancePopulationCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  BudgetsByCategoryIdVariancePopulationCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
   BudgetsByCategoryIdVariancePopulationMonthAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_ASC',
   BudgetsByCategoryIdVariancePopulationMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_MONTH_DESC',
   BudgetsByCategoryIdVariancePopulationUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_POPULATION_USER_ID_ASC',
@@ -4274,6 +4401,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdVarianceSampleBudgetIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC',
   BudgetsByCategoryIdVarianceSampleCategoryIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
   BudgetsByCategoryIdVarianceSampleCategoryIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByCategoryIdVarianceSampleCreatedAtAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  BudgetsByCategoryIdVarianceSampleCreatedAtDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
   BudgetsByCategoryIdVarianceSampleMonthAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_ASC',
   BudgetsByCategoryIdVarianceSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByCategoryIdVarianceSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
@@ -9384,6 +9513,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdAverageBudgetIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_BUDGET_ID_DESC',
   BudgetsByUserIdAverageCategoryIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_CATEGORY_ID_ASC',
   BudgetsByUserIdAverageCategoryIdDesc = 'BUDGETS_BY_USER_ID_AVERAGE_CATEGORY_ID_DESC',
+  BudgetsByUserIdAverageCreatedAtAsc = 'BUDGETS_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
+  BudgetsByUserIdAverageCreatedAtDesc = 'BUDGETS_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
   BudgetsByUserIdAverageMonthAsc = 'BUDGETS_BY_USER_ID_AVERAGE_MONTH_ASC',
   BudgetsByUserIdAverageMonthDesc = 'BUDGETS_BY_USER_ID_AVERAGE_MONTH_DESC',
   BudgetsByUserIdAverageUserIdAsc = 'BUDGETS_BY_USER_ID_AVERAGE_USER_ID_ASC',
@@ -9398,6 +9529,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdDistinctCountBudgetIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_BUDGET_ID_DESC',
   BudgetsByUserIdDistinctCountCategoryIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_ASC',
   BudgetsByUserIdDistinctCountCategoryIdDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CATEGORY_ID_DESC',
+  BudgetsByUserIdDistinctCountCreatedAtAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  BudgetsByUserIdDistinctCountCreatedAtDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
   BudgetsByUserIdDistinctCountMonthAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_MONTH_ASC',
   BudgetsByUserIdDistinctCountMonthDesc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_MONTH_DESC',
   BudgetsByUserIdDistinctCountUserIdAsc = 'BUDGETS_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
@@ -9410,6 +9543,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdMaxBudgetIdDesc = 'BUDGETS_BY_USER_ID_MAX_BUDGET_ID_DESC',
   BudgetsByUserIdMaxCategoryIdAsc = 'BUDGETS_BY_USER_ID_MAX_CATEGORY_ID_ASC',
   BudgetsByUserIdMaxCategoryIdDesc = 'BUDGETS_BY_USER_ID_MAX_CATEGORY_ID_DESC',
+  BudgetsByUserIdMaxCreatedAtAsc = 'BUDGETS_BY_USER_ID_MAX_CREATED_AT_ASC',
+  BudgetsByUserIdMaxCreatedAtDesc = 'BUDGETS_BY_USER_ID_MAX_CREATED_AT_DESC',
   BudgetsByUserIdMaxMonthAsc = 'BUDGETS_BY_USER_ID_MAX_MONTH_ASC',
   BudgetsByUserIdMaxMonthDesc = 'BUDGETS_BY_USER_ID_MAX_MONTH_DESC',
   BudgetsByUserIdMaxUserIdAsc = 'BUDGETS_BY_USER_ID_MAX_USER_ID_ASC',
@@ -9422,6 +9557,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdMinBudgetIdDesc = 'BUDGETS_BY_USER_ID_MIN_BUDGET_ID_DESC',
   BudgetsByUserIdMinCategoryIdAsc = 'BUDGETS_BY_USER_ID_MIN_CATEGORY_ID_ASC',
   BudgetsByUserIdMinCategoryIdDesc = 'BUDGETS_BY_USER_ID_MIN_CATEGORY_ID_DESC',
+  BudgetsByUserIdMinCreatedAtAsc = 'BUDGETS_BY_USER_ID_MIN_CREATED_AT_ASC',
+  BudgetsByUserIdMinCreatedAtDesc = 'BUDGETS_BY_USER_ID_MIN_CREATED_AT_DESC',
   BudgetsByUserIdMinMonthAsc = 'BUDGETS_BY_USER_ID_MIN_MONTH_ASC',
   BudgetsByUserIdMinMonthDesc = 'BUDGETS_BY_USER_ID_MIN_MONTH_DESC',
   BudgetsByUserIdMinUserIdAsc = 'BUDGETS_BY_USER_ID_MIN_USER_ID_ASC',
@@ -9434,6 +9571,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdStddevPopulationBudgetIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_BUDGET_ID_DESC',
   BudgetsByUserIdStddevPopulationCategoryIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_ASC',
   BudgetsByUserIdStddevPopulationCategoryIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByUserIdStddevPopulationCreatedAtAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  BudgetsByUserIdStddevPopulationCreatedAtDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
   BudgetsByUserIdStddevPopulationMonthAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_MONTH_ASC',
   BudgetsByUserIdStddevPopulationMonthDesc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_MONTH_DESC',
   BudgetsByUserIdStddevPopulationUserIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
@@ -9446,6 +9585,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdStddevSampleBudgetIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_BUDGET_ID_DESC',
   BudgetsByUserIdStddevSampleCategoryIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_ASC',
   BudgetsByUserIdStddevSampleCategoryIdDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByUserIdStddevSampleCreatedAtAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  BudgetsByUserIdStddevSampleCreatedAtDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
   BudgetsByUserIdStddevSampleMonthAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_MONTH_ASC',
   BudgetsByUserIdStddevSampleMonthDesc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_MONTH_DESC',
   BudgetsByUserIdStddevSampleUserIdAsc = 'BUDGETS_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
@@ -9458,6 +9599,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdSumBudgetIdDesc = 'BUDGETS_BY_USER_ID_SUM_BUDGET_ID_DESC',
   BudgetsByUserIdSumCategoryIdAsc = 'BUDGETS_BY_USER_ID_SUM_CATEGORY_ID_ASC',
   BudgetsByUserIdSumCategoryIdDesc = 'BUDGETS_BY_USER_ID_SUM_CATEGORY_ID_DESC',
+  BudgetsByUserIdSumCreatedAtAsc = 'BUDGETS_BY_USER_ID_SUM_CREATED_AT_ASC',
+  BudgetsByUserIdSumCreatedAtDesc = 'BUDGETS_BY_USER_ID_SUM_CREATED_AT_DESC',
   BudgetsByUserIdSumMonthAsc = 'BUDGETS_BY_USER_ID_SUM_MONTH_ASC',
   BudgetsByUserIdSumMonthDesc = 'BUDGETS_BY_USER_ID_SUM_MONTH_DESC',
   BudgetsByUserIdSumUserIdAsc = 'BUDGETS_BY_USER_ID_SUM_USER_ID_ASC',
@@ -9470,6 +9613,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdVariancePopulationBudgetIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_BUDGET_ID_DESC',
   BudgetsByUserIdVariancePopulationCategoryIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_ASC',
   BudgetsByUserIdVariancePopulationCategoryIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CATEGORY_ID_DESC',
+  BudgetsByUserIdVariancePopulationCreatedAtAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  BudgetsByUserIdVariancePopulationCreatedAtDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
   BudgetsByUserIdVariancePopulationMonthAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_MONTH_ASC',
   BudgetsByUserIdVariancePopulationMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_MONTH_DESC',
   BudgetsByUserIdVariancePopulationUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
@@ -9482,6 +9627,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdVarianceSampleBudgetIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_BUDGET_ID_DESC',
   BudgetsByUserIdVarianceSampleCategoryIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_ASC',
   BudgetsByUserIdVarianceSampleCategoryIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CATEGORY_ID_DESC',
+  BudgetsByUserIdVarianceSampleCreatedAtAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  BudgetsByUserIdVarianceSampleCreatedAtDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
   BudgetsByUserIdVarianceSampleMonthAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_ASC',
   BudgetsByUserIdVarianceSampleMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByUserIdVarianceSampleUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
@@ -10226,6 +10373,25 @@ export type Edit_Transaction1MutationVariables = Exact<{
 
 export type Edit_Transaction1Mutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'UpdateTransactionPayload', transaction?: { __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, categoryId?: string | null, description?: string | null, amount: number } | null } | null };
 
+export type Get_Budget_For_CategoryQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+  categoryId: Scalars['String']['input'];
+  month: Scalars['Datetime']['input'];
+}>;
+
+
+export type Get_Budget_For_CategoryQuery = { __typename?: 'Query', budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null }> } | null };
+
+export type Get_Transactions_For_CategoryQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+  categoryId: Scalars['String']['input'];
+  start: Scalars['Datetime']['input'];
+  end: Scalars['Datetime']['input'];
+}>;
+
+
+export type Get_Transactions_For_CategoryQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, amount: number, date?: any | null }>, aggregates?: { __typename?: 'TransactionAggregates', sum?: { __typename?: 'TransactionSumAggregates', amount: number } | null } | null } | null };
+
 export type ProfileFragment = { __typename?: 'User', firstName?: string | null, lastName?: string | null, gender?: UserGender | null, email?: string | null, tel?: string | null, picture?: string | null, date?: any | null } & { ' $fragmentName'?: 'ProfileFragment' };
 
 export type GetUsersDevicesQueryVariables = Exact<{
@@ -10274,7 +10440,7 @@ export type Get_User_CategoriesQueryVariables = Exact<{
 }>;
 
 
-export type Get_User_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null }> } | null };
+export type Get_User_CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction }> } | null };
 
 export type AddBudgetMutationVariables = Exact<{
   budget_id: Scalars['String']['input'];
@@ -10283,6 +10449,7 @@ export type AddBudgetMutationVariables = Exact<{
   amount: Scalars['Float']['input'];
   month: Scalars['Datetime']['input'];
   alert_threshold?: InputMaybe<Scalars['Int']['input']>;
+  created_at: Scalars['Datetime']['input'];
 }>;
 
 
@@ -10293,14 +10460,14 @@ export type Get_BudgetsQueryVariables = Exact<{
 }>;
 
 
-export type Get_BudgetsQuery = { __typename?: 'Query', budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null } | null }> } | null };
+export type Get_BudgetsQuery = { __typename?: 'Query', budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null, createdAt?: any | null, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction } | null }> } | null };
 
 export type Get_User_Transactions2QueryVariables = Exact<{
   userId: Scalars['String']['input'];
 }>;
 
 
-export type Get_User_Transactions2Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null } | null }> } | null };
+export type Get_User_Transactions2Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, categoryId?: string | null, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction } | null }> } | null };
 
 export type Delete_BudgetMutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -10320,6 +10487,13 @@ export type Edit_BudgetMutationVariables = Exact<{
 
 
 export type Edit_BudgetMutation = { __typename?: 'Mutation', updateBudget?: { __typename?: 'UpdateBudgetPayload', budget?: { __typename?: 'Budget', budgetId: string, userId?: string | null, categoryId?: string | null, amount?: number | null, month?: any | null, alertThreshold?: number | null } | null } | null };
+
+export type Check_Category_TransactionsQueryVariables = Exact<{
+  category_id: Scalars['String']['input'];
+}>;
+
+
+export type Check_Category_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string }> } | null };
 
 export type Get_User_Categories3QueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -10386,7 +10560,7 @@ export type Get_Transactions4QueryVariables = Exact<{
 }>;
 
 
-export type Get_Transactions4Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null } | null }> } | null };
+export type Get_Transactions4Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction } | null }> } | null, categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction }> } | null };
 
 export type Delete_TransactionMutationVariables = Exact<{
   id: Scalars['String']['input'];
