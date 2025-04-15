@@ -5,8 +5,8 @@ import { Block } from "konsta/react";
 import { useSubscription } from "urql";
 import { NotificationCmp } from "~/components/Notification/Notification";
 import { useMainLayoutProps } from "~/layout/MainLayout";
-import {  userAtom } from "~/store/store";
-
+import { userAtom } from "~/store/store";
+import { Inbox } from "lucide-react";
 
 export default function NotificationsPage() {
   const [user] = useAtom(userAtom);
@@ -30,30 +30,44 @@ export default function NotificationsPage() {
     },
   });
 
+  const notifications = notifs.data?.notifications?.nodes || [];
+  const isLoading = notifs.fetching;
+  const isEmpty = !isLoading && !notifications.length;
+
   return (
-    <Block className="!mt-8 mx-auto max-w-5xl pb-14 pt-8">
-      {notifs.fetching && (
-        <div className="my-2 text-center">
-          <span className="loading loading-ring loading-lg"></span>
+    <Block className="mx-auto max-w-2xl px-4 pt-6 pb-14">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">Notifications</h1>
+      </div>
+
+      {isLoading && (
+        <div className="flex flex-col items-center justify-center py-16">
+          <div className="loading loading-ring loading-lg mb-4"></div>
+          <p className="text-gray-500">Loading notifications...</p>
         </div>
       )}
 
-      {!notifs.fetching && !notifs.data?.notifications?.nodes?.length && (
-        <span className="text-xl opacity-50">Empty </span>
+      {isEmpty && (
+        <div className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 py-16 dark:border-gray-800 dark:bg-gray-900">
+          <Inbox className="mb-4 text-gray-400" size={48} />
+          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">No notifications yet</p>
+          <p className="mt-1 text-sm text-gray-500">When you receive notifications, they'll appear here</p>
+        </div>
       )}
 
       <div className="flex flex-col gap-4">
-        {notifs.data?.notifications?.nodes?.map((item) => (
+        {notifications.map((item) => (
           <NotificationCmp key={item.id} notification={item} />
         ))}
       </div>
-      {(notifs?.data?.notifications?.nodes?.length || undefined) && (
-        <div className="justiyf-between flex items-center">
-          <hr className="w-full" />
-          <p className="flex shrink-0 px-3 py-16 text-sm leading-normal text-gray-500 focus:outline-none">
-            Thats it for now! Check back later for more notifications.
+
+      {notifications.length > 0 && (
+        <div className="mt-10 flex items-center justify-center">
+          <div className="w-20 border-t border-gray-200 dark:border-gray-700"></div>
+          <p className="mx-4 text-sm text-gray-500">
+            You're all caught up!
           </p>
-          <hr className="w-full" />
+          <div className="w-20 border-t border-gray-200 dark:border-gray-700"></div>
         </div>
       )}
     </Block>

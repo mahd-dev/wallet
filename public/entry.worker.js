@@ -627,6 +627,16 @@ var expenseExceeded = (utils, data) => ({
     }
   }
 });
+var expenseNearlyExceeded = (utils, data) => ({
+  title: "Expense nearly exceeded",
+  options: {
+    body: "You have nearly exceeded your budget",
+    requireInteraction: true,
+    data: {
+      link: `${utils.store.origin}/budget`
+    }
+  }
+});
 
 // app/notif/.client/index.ts
 var notification = (_utils, data) => {
@@ -634,7 +644,8 @@ var notification = (_utils, data) => {
 };
 var pushHandlers = {
   notification,
-  expenseExceeded
+  expenseExceeded,
+  expenseNearlyExceeded
 };
 
 // app/notif/.client/pushHandler.ts

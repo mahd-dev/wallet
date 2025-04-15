@@ -1,4 +1,4 @@
-import { expenseExceeded } from "./expenseExceeded";
+import { expenseExceeded, expenseNearlyExceeded } from "./expenseExceeded";
 import { NotfiHandlerUtils, NotifHanderRes } from "./pushHandler";
 
 const notification = (
@@ -12,5 +12,6 @@ const notification = (
 
 export const pushHandlers = {
   notification,
-  expenseExceeded
+  expenseExceeded,
+  expenseNearlyExceeded
 };

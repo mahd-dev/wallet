@@ -17,3 +17,22 @@ export const expenseExceeded = (
     },
   },
 });
+
+
+export const expenseNearlyExceeded = (
+  utils: NotfiHandlerUtils,
+  data: {
+    t: Date;
+    budget?: number;
+    exponse?: number
+  },
+): NotifHanderRes => ({
+  title: "Expense nearly exceeded",
+  options: {
+    body: "You have nearly exceeded your budget",
+    requireInteraction: true,
+    data: {
+      link: `${utils.store.origin}/budget`,
+    },
+  },
+});

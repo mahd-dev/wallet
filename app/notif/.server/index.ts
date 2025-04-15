@@ -2,6 +2,7 @@
 import { Client } from "urql";
 import { notifyUsers } from "./helper";
 import { expenseExeceededEvent } from "./expenseExceededEvent";
+import { expenseNearlyExceededEvent } from "./expenseNearlyExceededEvent";
 
 export type NotifTriggers = {
   [K in keyof typeof notifTriggers]: Parameters<(typeof notifTriggers)[K]>[1];
@@ -18,5 +19,6 @@ const manualUsersNotif = (
 
 export const notifTriggers = {
   manualUsersNotif,
-  expenseExeceededEvent
+  expenseExeceededEvent,
+  expenseNearlyExceededEvent,
 };

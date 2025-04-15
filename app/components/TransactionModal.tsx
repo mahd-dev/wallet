@@ -10,7 +10,6 @@ import { userAtom } from "~/store/store";
 import { icons } from "../routes/CategoryIconPicker";
 import dayjs from "dayjs";
 
-
 const GET_CATEGORIES = gql`
   query GET_CATEGORIES($userId: String!) {
     categories(condition: { userId: $userId }) {
@@ -88,6 +87,7 @@ const EDIT_TRANSACTION = gql`
   }
 `;
 
+// Update the GET_BUDGET_FOR_CATEGORY query to include alert_threshold
 const GET_BUDGET_FOR_CATEGORY = gql`
   query GET_BUDGET_FOR_CATEGORY($userId: String!, $categoryId: String!,$month: Datetime!) {
     budgets(
@@ -100,6 +100,7 @@ const GET_BUDGET_FOR_CATEGORY = gql`
         categoryId
         amount
         month
+        alertThreshold
       }
     }
   }
@@ -204,7 +205,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   
-  // Get the urql client to use in checkBudgetExceeded
+  // Get the urql client to use in checkBudgetStatus
   const client = useClient();
 
   const [{ data }] = useQuery({
@@ -329,9 +330,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     return updatedDate.toISOString();
   };
 
-  // Add this function to check if the transaction exceeds budget - now using the existing client
-  const checkBudgetExceeded = async (categoryId: string, amount: number, transactionDate: string, isExpense: boolean) => {
-    if (!isExpense) return false; // Only check for expense transactions
+  // Modify the checkBudgetExceeded function to return an object with both exceeded conditions
+  const checkBudgetStatus = async (categoryId: string, amount: number, transactionDate: string, isExpense: boolean) => {
+    if (!isExpense) return { exceeded: false, nearlyExceeded: false };
     
     // Get the month of the transaction in YYYY-MM format
     const transactionMonth = new Date(transactionDate).toISOString().substring(0, 7);
@@ -348,11 +349,12 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
       console.log("Budget Result:", budgetResult);
       
       if (!budgetResult.data?.budgets?.nodes || budgetResult.data?.budgets?.nodes?.length === 0) {
-        return false; // No budget found for this category and month
+        return { exceeded: false, nearlyExceeded: false }; // No budget found for this category and month
       }
       
       const budget = budgetResult.data?.budgets?.nodes[0];
       console.log('dayjs(transactionDate).endOf("month").toISOString()', dayjs(transactionDate).endOf("month").toISOString())
+      
       // Fetch all transactions for this category and month
       const transactionsResult = await client.query(GET_TRANSACTIONS_FOR_CATEGORY, {
         userId: user?.oidcId,
@@ -381,18 +383,27 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
       );
       console.log("Total Expenses:", totalExpenses);
       console.log("Budget Amount:", budget.amount);
+      
       // Add the current transaction amount to check if it exceeds the budget
       const newTotal = totalExpenses + amount;
       console.log("New Total:", newTotal);
       
-      // Check if the new total exceeds the budget
-      return newTotal > budget.amount;
+      // Get alert threshold (default to 80% if not specified)
+      const alertThreshold = budget.alert_threshold || 80;
+      const thresholdAmount = (budget.amount * alertThreshold) / 100;
+      
+      // Check both conditions
+      const exceeded = newTotal > budget.amount;
+      const nearlyExceeded = !exceeded && newTotal > thresholdAmount;
+      
+      return { exceeded, nearlyExceeded };
     } catch (error) {
       console.error("Error checking budget:", error);
-      return false;
+      return { exceeded: false, nearlyExceeded: false };
     }
   };
 
+  // Update the handleSubmit function to use the new budget status check
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -402,14 +413,13 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     const isExpenseType = type === "EXPENSE";
 
     try {
-      // Determine if this transaction will exceed the budget
-      let budgetExceeded = false;
+      // Check budget status
+      let budgetStatus = { exceeded: false, nearlyExceeded: false };
       
       if (isEditing) {
-        
         // Check if editing will cause budget to be exceeded (only if it's an expense)
         if (isExpenseType) {
-          budgetExceeded = await checkBudgetExceeded(categoryId, amount, dayjs(editData?.date).format("YYYY-MM-01 00:00"), isExpenseType);
+          budgetStatus = await checkBudgetStatus(categoryId, amount, dayjs(editData?.date).format("YYYY-MM-01 00:00"), isExpenseType);
         }
 
         const editVariables = {
@@ -433,9 +443,8 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
       } else {
         // Check if new transaction will cause budget to be exceeded (only if it's an expense)
         if (isExpenseType) {
-          budgetExceeded = await checkBudgetExceeded(categoryId, amount, dayjs().format("YYYY-MM-01 00:00"), isExpenseType);
-          console.log("Budget Exceeded:", budgetExceeded);
-
+          budgetStatus = await checkBudgetStatus(categoryId, amount, dayjs().format("YYYY-MM-01 00:00"), isExpenseType);
+          console.log("Budget Status:", budgetStatus);
         }
 
         const variables = {
@@ -458,13 +467,25 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         }
       }
 
-      // Only trigger notification event if budget is exceeded and it's an expense transaction
-      if (budgetExceeded && isExpenseType) {
-        triggerNotifEvent("expenseExeceededEvent", {
-          userIds: [user?.oidcId || ""],
-          type: ExpenseExeceededType.Exceeded,
-          categoryId, // This would normally cause an error
-        } as any); // Using type assertion to bypass the type check
+
+      
+      // Trigger appropriate notification events based on budget status
+      if (isExpenseType) {
+        if (budgetStatus.exceeded) {
+          // Budget exceeded notification
+          triggerNotifEvent("expenseExeceededEvent", {
+            userIds: [user?.oidcId || ""],
+            type: ExpenseExeceededType.Exceeded,
+            categoryId,
+          } as any);
+        } else if (budgetStatus.nearlyExceeded) {
+          // Budget nearly exceeded notification
+          triggerNotifEvent("expenseNearlyExceededEvent", {
+            userIds: [user?.oidcId || ""],
+            type: ExpenseExeceededType.NearlyExceeded,
+            categoryId,
+          } as any);
+        }
       }
     } catch (error) {
       console.error("Unexpected Error:", error);
