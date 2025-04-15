@@ -1,24 +1,22 @@
 import { Link, useLocation, useNavigate } from "@remix-run/react";
 import {
   IconBell,
+  IconHome,
   IconLogin2,
+  IconLogout,
   IconMenu3,
   IconUser,
-  IconLogout,
-  IconHome,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import {
   Icon,
   Button as KButton,
-  Link as KLink,
-  Popover as KPopover,
   Dialog as KDialog,
+  Popover as KPopover,
 } from "konsta/react";
 import { useRef, useState } from "react";
 import {
   authAtom,
-  cartAtom,
   mainLayoutPropsAtom,
   mainPanelAtom,
   userAtom,
@@ -42,22 +40,23 @@ export default function MainNavbar() {
   const [userPopover, setUserPopoverOpened] = useState(false);
   const userPopoverRef = useRef(null);
   const [logoutDialogOpened, setLogoutDialogOpened] = useState(false);
-  
+
   const openUserPopover = (targetRef: any) => {
     userPopoverRef.current = targetRef;
     setUserPopoverOpened(true);
   };
 
   const navigate = useNavigate();
-  
+
   const handleLogout = async () => {
     try {
       const response = await fetch("/auth/logout", {
         method: "POST",
         credentials: "include",
       });
-      if (!response.ok) throw new Error(`Logout failed: ${response.statusText}`);
-      
+      if (!response.ok)
+        throw new Error(`Logout failed: ${response.statusText}`);
+
       localStorage.removeItem("connected_user");
       localStorage.removeItem("validOtp");
       window.location.href = "/login";
@@ -70,15 +69,15 @@ export default function MainNavbar() {
     <>
       <nav className="fixed start-0 top-0 z-20 hidden w-full border-b border-gray-200 bg-white lg:block">
         <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-          <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="/logo.svg" className="absolute h-12" alt="GCI" />
+          <a href="/" className="flex items-center rtl:space-x-reverse">
+            <img src="/logoWallet.png" className="absolute h-24" alt="GCI" />
           </a>
           <div className="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
             {user && (
               <div className="relative mr-4">
                 <Link
                   to="/notifications"
-                  className="relative inline-block p-2 text-gray-800 transition-colors hover:text-secondary"
+                  className="hover:text-secondary relative inline-block p-2 text-gray-800 transition-colors"
                 >
                   <IconBell size={24} stroke={1.5} />
                   {notifications > 0 && (
@@ -92,11 +91,14 @@ export default function MainNavbar() {
             {user ? (
               <button
                 type="button"
-                className="user-popover-link text-secondary-content flex items-center gap-2 rounded-lg px-4 py-2 text-center text-sm font-medium hover:text-secondary"
+                className="user-popover-link text-secondary-content hover:text-secondary flex items-center gap-2 rounded-lg px-4 py-2 text-center text-sm font-medium"
                 onClick={() => openUserPopover(".user-popover-link")}
               >
                 <span className="mr-1">{user.firstName}</span>
-                <Icon ios={<IconUser size={24} />} material={<IconUser size={24} />} />
+                <Icon
+                  ios={<IconUser size={24} />}
+                  material={<IconUser size={24} />}
+                />
               </button>
             ) : (
               <button
@@ -108,7 +110,10 @@ export default function MainNavbar() {
               </button>
             )}
           </div>
-          <div className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto" id="navbar-sticky">
+          <div
+            className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"
+            id="navbar-sticky"
+          >
             <ul className="mt-1 flex flex-row rounded-lg border bg-white p-0 font-medium md:space-x-8 md:border-0 rtl:space-x-reverse">
               {menu.map((m, indx) => (
                 <li key={`menu-${indx}`}>
@@ -183,7 +188,10 @@ export default function MainNavbar() {
             onClick={() => openUserPopover(".user-mobile-link")}
             className="user-mobile-link mr-3"
           >
-            <Icon ios={<IconUser size={28} />} material={<IconUser size={28} />} />
+            <Icon
+              ios={<IconUser size={28} />}
+              material={<IconUser size={28} />}
+            />
           </button>
         ) : (
           !location.pathname.startsWith("/auth") && (
@@ -209,9 +217,9 @@ export default function MainNavbar() {
           <div className="bg-blue-600 p-4 text-white">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 border-white/30 bg-white/10">
-                <Icon 
-                  ios={<IconUser size={32} className="text-white" />} 
-                  material={<IconUser size={32} className="text-white" />} 
+                <Icon
+                  ios={<IconUser size={32} className="text-white" />}
+                  material={<IconUser size={32} className="text-white" />}
                 />
               </div>
               <div>
@@ -223,7 +231,7 @@ export default function MainNavbar() {
             </div>
           </div>
           <div className="p-3">
-            <Link 
+            <Link
               to="/profile"
               onClick={() => setUserPopoverOpened(false)}
               className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-gray-800 hover:bg-gray-100"
@@ -231,7 +239,7 @@ export default function MainNavbar() {
               <IconUser size={22} />
               <span>My Profile</span>
             </Link>
-            <Link 
+            <Link
               to="/"
               onClick={() => setUserPopoverOpened(false)}
               className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-gray-800 hover:bg-gray-100"
@@ -239,7 +247,7 @@ export default function MainNavbar() {
               <IconHome size={22} />
               <span>Home</span>
             </Link>
-            <Link 
+            <Link
               to="/notifications"
               onClick={() => setUserPopoverOpened(false)}
               className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-gray-800 hover:bg-gray-100"
@@ -268,34 +276,35 @@ export default function MainNavbar() {
       </KPopover>
 
       {/* Updated Logout Dialog matching ProfilePage style */}
-      <KDialog
-        opened={logoutDialogOpened}
-        onBackdropClick={() => setLogoutDialogOpened(false)}
-        className="max-w-md mx-auto rounded-lg"
-      >
-        <div className="p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Confirm Logout
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Are you sure you want to logout from your account?
-          </p>
-          <div className="flex justify-end gap-4">
-            <KButton
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
-              onClick={() => setLogoutDialogOpened(false)}
-            >
-              Cancel
-            </KButton>
-            <KButton
-              className="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
-              onClick={handleLogout}
-            >
-              Logout
-            </KButton>
+      <div className="flex items-center justify-center">
+        <KDialog
+          opened={logoutDialogOpened}
+          onBackdropClick={() => setLogoutDialogOpened(false)}
+        >
+          <div className="p-6">
+            <h2 className="mb-4 text-xl font-semibold text-gray-800">
+              Confirm Logout
+            </h2>
+            <p className="mb-6 text-gray-600">
+              Are you sure you want to logout from your account?
+            </p>
+            <div className="flex justify-end gap-4">
+              <KButton
+                className="rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200"
+                onClick={() => setLogoutDialogOpened(false)}
+              >
+                Cancel
+              </KButton>
+              <KButton
+                className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                onClick={handleLogout}
+              >
+                Logout
+              </KButton>
+            </div>
           </div>
-        </div>
-      </KDialog>
+        </KDialog>
+      </div>
     </>
   );
 }

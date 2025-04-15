@@ -113,7 +113,7 @@ console.log(user?.oidcId);
         <div className="flex h-full flex-col justify-center space-y-8">
           <img
             className="mx-auto max-w-36 lg:mt-40"
-            src="/logo.svg"
+            src="/logoWallet.png"
             alt="sawi"
           />
           <div>
