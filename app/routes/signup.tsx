@@ -157,43 +157,92 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ errors }, { status: 400 });
   }
 
-  const user = { id: "123", firstName, lastName, email }; // Mock user
-  const session = await getSession(request.headers.get("Cookie"));
-  session.set("userId", user.id);
+  try {
+    // Generate a unique user ID - in a real app this would be handled by the backend
+    const userId = nanoid();
+    
+    // Here you would typically call your backend API to create the user
+    // For now we'll just assume it succeeded and redirect to login
+    
+    const user = { id: userId, firstName, lastName, email };
+    const session = await getSession(request.headers.get("Cookie"));
+    session.set("userId", user.id);
 
-  return redirect("/", {
-    headers: { "Set-Cookie": await commitSession(session) },
-  });
+    return redirect("/login", {
+      headers: { "Set-Cookie": await commitSession(session) },
+    });
+  } catch (error) {
+    console.error("Server error:", error);
+    return json({ errors: { server: "Failed to create account. Please try again." } }, { status: 500 });
+  }
 };
 
 export default function SignupPage() {
   const [, mutate] = useMutation(signup);
   const [, addCategory] = useMutation(createCategory);
-  const transition = useNavigation ();
+  const transition = useNavigation();
   const isSubmitting = transition.state === "submitting";
   const actionData = useActionData<{ errors?: Record<string, string> }>();
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
+
+  const validateForm = (formData: FormData) => {
+    const errors: Record<string, string> = {};
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
+
+    if (!firstName || firstName.trim().length < 2) {
+      errors.firstName = "First name must be at least 2 characters";
+    }
+
+    if (!lastName || lastName.trim().length < 2) {
+      errors.lastName = "Last name must be at least 2 characters";
+    }
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!password || password.trim().length < 6) {
+      errors.password = "Password must be at least 6 characters";
+    }
+
+    if (password !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+
+    return errors;
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const transactionData = Object.fromEntries(formData) as Record<
-      string,
-      string
-    >;
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    
+    // Perform client-side validation
+    const validationErrors = validateForm(formData);
+    setClientErrors(validationErrors);
+    
+    // If there are validation errors, don't proceed with submission
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
     
     // Generate a unique user ID
     const userId = nanoid();
     
     const variables = {
       id: userId,
-      email: transactionData.email,
-      firstName: transactionData.firstName,
-      lastName: transactionData.lastName,
-      password: transactionData.password,
+      email: formData.get("email") as string,
+      firstName: formData.get("firstName") as string,
+      lastName: formData.get("lastName") as string,
+      password: formData.get("password") as string,
     };
     
     try {
@@ -202,6 +251,7 @@ export default function SignupPage() {
       
       if (response.error) {
         console.error("Signup error:", response.error);
+        setClientErrors({ server: "Failed to create account. Please try again." });
       } else {
         console.log("User created successfully", response.data);
         
@@ -228,13 +278,17 @@ export default function SignupPage() {
         
         // Redirect after showing success message
         setTimeout(() => {
-          window.location.href = "/";
+          window.location.href = "/login";
         }, 2000);
       }
     } catch (error) {
       console.error("Unexpected Error:", error);
+      setClientErrors({ server: "An unexpected error occurred. Please try again." });
     }
   };
+
+  // Combine client and server errors
+  const errors = { ...clientErrors, ...actionData?.errors };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 p-6">
@@ -255,6 +309,11 @@ export default function SignupPage() {
             <h2 className="mb-6 text-center text-4xl font-extrabold text-gray-900">
               Sign up
             </h2>
+            {errors.server && (
+              <div className="mb-4 rounded-md bg-red-50 p-3 text-center">
+                <p className="text-sm text-red-600">{errors.server}</p>
+              </div>
+            )}
             <Form onSubmit={handleSubmit} method="post" className="space-y-6">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
@@ -267,12 +326,14 @@ export default function SignupPage() {
                   <input
                     type="text"
                     name="firstName"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className={`mt-1 w-full rounded-lg border ${
+                      errors.firstName ? "border-red-500" : "border-gray-300"
+                    } px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400`}
                     required
                   />
-                  {actionData?.errors?.firstName && (
+                  {errors.firstName && (
                     <p className="mt-1 text-xs text-red-500">
-                      {actionData.errors.firstName}
+                      {errors.firstName}
                     </p>
                   )}
                 </div>
@@ -287,12 +348,14 @@ export default function SignupPage() {
                   <input
                     type="text"
                     name="lastName"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className={`mt-1 w-full rounded-lg border ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
+                    } px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400`}
                     required
                   />
-                  {actionData?.errors?.lastName && (
+                  {errors.lastName && (
                     <p className="mt-1 text-xs text-red-500">
-                      {actionData.errors.lastName}
+                      {errors.lastName}
                     </p>
                   )}
                 </div>
@@ -308,12 +371,14 @@ export default function SignupPage() {
                 <input
                   type="email"
                   name="email"
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className={`mt-1 w-full rounded-lg border ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  } px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400`}
                   required
                 />
-                {actionData?.errors?.email && (
+                {errors.email && (
                   <p className="mt-1 text-xs text-red-500">
-                    {actionData.errors.email}
+                    {errors.email}
                   </p>
                 )}
               </div>
@@ -330,7 +395,9 @@ export default function SignupPage() {
                   <input
                     type={passwordVisible ? "text" : "password"}
                     name="password"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className={`mt-1 w-full rounded-lg border ${
+                      errors.password ? "border-red-500" : "border-gray-300"
+                    } px-3 py-2 pr-10 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400`}
                     required
                   />
                   <button
@@ -341,9 +408,9 @@ export default function SignupPage() {
                     {passwordVisible ? "🙈" : "👁️"}
                   </button>
                 </div>
-                {actionData?.errors?.password && (
+                {errors.password && (
                   <p className="mt-1 text-xs text-red-500">
-                    {actionData.errors.password}
+                    {errors.password}
                   </p>
                 )}
               </div>
@@ -360,7 +427,9 @@ export default function SignupPage() {
                   <input
                     type={confirmPasswordVisible ? "text" : "password"}
                     name="confirmPassword"
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className={`mt-1 w-full rounded-lg border ${
+                      errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                    } px-3 py-2 pr-10 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400`}
                     required
                   />
                   <button
@@ -371,9 +440,9 @@ export default function SignupPage() {
                     {confirmPasswordVisible ? "🙈" : "👁️"}
                   </button>
                 </div>
-                {actionData?.errors?.confirmPassword && (
+                {errors.confirmPassword && (
                   <p className="mt-1 text-xs text-red-500">
-                    {actionData.errors.confirmPassword}
+                    {errors.confirmPassword}
                   </p>
                 )}
               </div>

@@ -37,6 +37,7 @@ export const NotificationCmp = (props: {
   
   // Keep track of the component's mount status to prevent memory leaks
   const isMounted = useRef(true);
+  
 
   // Configure dayjs locale based on user's locale
   useEffect(() => {
@@ -219,7 +220,7 @@ export const NotificationCmp = (props: {
         
         <div className="mt-1 flex items-center gap-2">
           <span className={`inline-block h-2 w-2 rounded-full ${!notification.isRead ? "bg-blue-500" : "bg-transparent"}`}></span>
-          <span className="text-xs text-gray-500">{formattedTime}</span>
+          <span className="text-xs text-gray-500">{dayjs(notification.t).format("llll")}</span>
         </div>
       </div>
       

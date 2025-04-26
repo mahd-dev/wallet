@@ -1,6 +1,6 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "appName": "Live",
+  "appName": "wallet",
   "meet_prejoin_name_placeholder": "Votre nom",
   "meet_prejoin_joinbtn_title": "Rejoindre",
   "reconnecting": "Se reconnecter...\nveuillez vérifier votre accès Internet",

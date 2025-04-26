@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import html2canvas from "html2canvas";
 import { useAtom } from "jotai";
 import { jsPDF } from "jspdf";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import { gql, useQuery } from "urql";
 import { userAtom } from "~/store/store";
@@ -16,6 +16,7 @@ interface Transaction {
   type: "INCOME" | "EXPENSE";
   date: string;
   amount: number;
+  description?: string;
   category: {
     id: string;
     name: string;
@@ -37,6 +38,21 @@ interface ChartData {
   }[];
 }
 
+interface TransactionSummary {
+  totalIncome: number;
+  totalExpense: number;
+  balance: number;
+  incomeTransactions: number;
+  expenseTransactions: number;
+  topExpenseCategory?: { name: string; amount: number };
+  topIncomeCategory?: { name: string; amount: number };
+  averageIncome: number;
+  averageExpense: number;
+  largestIncome?: { amount: number; date: string; category: string };
+  largestExpense?: { amount: number; date: string; category: string };
+  startingBalance?: number; // Added property
+}
+
 // GraphQL Query for fetching transactions
 const GET_TRANSACTIONS = gql`
   query GET_TRANSACTIONS3($userId: String!) {
@@ -46,6 +62,7 @@ const GET_TRANSACTIONS = gql`
         type
         date
         amount
+        description
         category {
           id
           name
@@ -71,11 +88,15 @@ export default function Statistiques() {
   const [viewMode, setViewMode] = useState<"incomeExpense" | "balance">("incomeExpense");
   const [pieChartType, setPieChartType] = useState<"INCOME" | "EXPENSE">("EXPENSE");
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
-  const [summary, setSummary] = useState<{
-    totalIncome: number;
-    totalExpense: number;
-    balance: number;
-  }>({ totalIncome: 0, totalExpense: 0, balance: 0 });
+  const [summary, setSummary] = useState<TransactionSummary>({
+    totalIncome: 0,
+    totalExpense: 0,
+    balance: 0,
+    incomeTransactions: 0,
+    expenseTransactions: 0,
+    averageIncome: 0,
+    averageExpense: 0
+  });
 
   const [filteredPieChartData, setFilteredPieChartData] = useState<ChartData>({
     labels: [],
@@ -111,18 +132,82 @@ export default function Statistiques() {
       ? filteredByYear.filter((tx) => dayjs(tx.date).month() === parseInt(selectedMonth))
       : filteredByYear;
 
-    const totalIncome = filteredTransactions
-      .filter((tx) => tx.type === "INCOME")
-      .reduce((sum, tx) => sum + tx.amount, 0);
+    // Calculate detailed summary
+    const incomeTransactions = filteredTransactions.filter((tx) => tx.type === "INCOME");
+    const expenseTransactions = filteredTransactions.filter((tx) => tx.type === "EXPENSE");
+    
+    const totalIncome = incomeTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+    const totalExpense = expenseTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+    
+    // Calculate average transaction values
+    const averageIncome = incomeTransactions.length > 0 
+      ? totalIncome / incomeTransactions.length 
+      : 0;
+      
+    const averageExpense = expenseTransactions.length > 0 
+      ? totalExpense / expenseTransactions.length 
+      : 0;
 
-    const totalExpense = filteredTransactions
-      .filter((tx) => tx.type === "EXPENSE")
-      .reduce((sum, tx) => sum + tx.amount, 0);
+    // Find top categories
+    const expenseCategoryMap: Record<string, number> = {};
+    const incomeCategoryMap: Record<string, number> = {};
+    
+    filteredTransactions.forEach(({ amount, type, category }) => {
+      if (!category?.name) return;
+      
+      if (type === "INCOME") {
+        incomeCategoryMap[category.name] = (incomeCategoryMap[category.name] || 0) + amount;
+      } else {
+        expenseCategoryMap[category.name] = (expenseCategoryMap[category.name] || 0) + amount;
+      }
+    });
+    
+    // Find top categories
+    let topExpenseCategory: { name: string; amount: number } | undefined;
+    let topIncomeCategory: { name: string; amount: number } | undefined;
+    
+    Object.entries(expenseCategoryMap).forEach(([name, amount]) => {
+      if (!topExpenseCategory || amount > topExpenseCategory.amount) {
+        topExpenseCategory = { name, amount };
+      }
+    });
+    
+    Object.entries(incomeCategoryMap).forEach(([name, amount]) => {
+      if (!topIncomeCategory || amount > topIncomeCategory.amount) {
+        topIncomeCategory = { name, amount };
+      }
+    });
+    
+    // Find largest transactions
+    const largestIncome = incomeTransactions.length > 0 
+      ? incomeTransactions.reduce((max, tx) => 
+          tx.amount > (max?.amount || 0) 
+            ? { amount: tx.amount, date: tx.date, category: tx.category.name } 
+            : max, 
+          undefined as { amount: number; date: string; category: string } | undefined)
+      : undefined;
+      
+    const largestExpense = expenseTransactions.length > 0 
+      ? expenseTransactions.reduce((max, tx) => 
+          tx.amount > (max?.amount || 0) 
+            ? { amount: tx.amount, date: tx.date, category: tx.category.name } 
+            : max, 
+          undefined as { amount: number; date: string; category: string } | undefined)
+      : undefined;
 
+    // Update summary state
     setSummary({
       totalIncome,
       totalExpense,
       balance: totalIncome - totalExpense,
+      incomeTransactions: incomeTransactions.length,
+      expenseTransactions: expenseTransactions.length,
+      topExpenseCategory,
+      topIncomeCategory,
+      averageIncome,
+      averageExpense,
+      largestIncome,
+      largestExpense
     });
 
     let groupedData: Record<number, { income: number; expense: number }> = {};
@@ -207,10 +292,12 @@ export default function Statistiques() {
 
     const categoryDataMap: Record<string, { amount: number; type: "INCOME" | "EXPENSE" }> = {};
     filteredTransactions.forEach(({ amount, type, category }) => {
-      if (!categoryDataMap[category?.name]) {
-        categoryDataMap[category?.name] = { amount: 0, type };
+      if (!category?.name) return;
+      
+      if (!categoryDataMap[category.name]) {
+        categoryDataMap[category.name] = { amount: 0, type };
       }
-      categoryDataMap[category?.name].amount += amount;
+      categoryDataMap[category.name].amount += amount;
     });
 
     const categoryNames = Object.keys(categoryDataMap);
@@ -255,29 +342,386 @@ export default function Statistiques() {
     return amount.toFixed(2) + " TND";
   };
 
-  const exportPDF = async () => {
-    const pdf = new jsPDF("p", "mm", "a4");
-    const charts = document.querySelectorAll(".chart-container");
+  const formatDate = (dateString: string) => {
+    return dayjs(dateString).format("DD/MM/YYYY");
+  };
 
-    if (!charts.length) {
-      alert("No charts to export!");
+ // Fonction d'exportation PDF améliorée
+const exportPDF = async () => {
+  try {
+    // Initialisation du document PDF
+    const pdf = new jsPDF("p", "mm", "a4");
+    const chartElements = document.querySelectorAll(".chart-container");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 15;
+    const contentWidth = pageWidth - 2 * margin;
+
+    // Vérifier si les données sont disponibles
+    if (!summary || !data) {
+      alert("Les données ne sont pas disponibles pour l'exportation");
       return;
     }
 
-    for (let i = 0; i < charts.length; i++) {
-      const chart = charts[i] as HTMLElement;
-      const canvas = await html2canvas(chart);
+    // ---- PAGE DE COUVERTURE ----
+    // En-tête
+    pdf.setFillColor(65, 105, 225); // Bleu royal
+    pdf.rect(0, 0, pageWidth, 40, "F");
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(22);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("RAPPORT FINANCIER", pageWidth / 2, 25, { align: "center" });
+
+    // Informations de période
+    let currentY = 60;
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "normal");
+    
+    pdf.text("Période:", margin, currentY);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(
+      selectedMonth !== null
+        ? `${monthNames[parseInt(selectedMonth)]} ${selectedYear !== "ALL" ? selectedYear : "Toutes les années"}`
+        : `${selectedYear !== "ALL" ? "Année " + selectedYear : "Toutes les années"}`,
+      margin + 35, 
+      currentY
+    );
+    pdf.setFont("helvetica", "normal");
+    
+    currentY += 15;
+    pdf.text("Date d'extraction:", margin, currentY);
+    pdf.text("    " + dayjs().format("DD/MM/YYYY"), margin + 35, currentY);
+
+    currentY += 15;
+    pdf.text("Généré par:", margin, currentY);
+    pdf.text("    " + (user?.firstName  || "Utilisateur"), margin + 35, currentY);
+
+    // Résumé Financier en boîte
+    currentY += 30;
+    pdf.setDrawColor(220, 220, 220);
+    pdf.setFillColor(245, 245, 245);
+    pdf.roundedRect(margin, currentY, contentWidth, 65, 5, 5, "FD");
+    
+    pdf.setFontSize(16);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Résumé financier", pageWidth / 2, currentY + 10, { align: "center" });
+    
+    // Données de résumé en grand format
+    currentY += 25;
+    pdf.setFontSize(18);
+    
+    // Revenus
+    pdf.setTextColor(0, 128, 0); // Vert
+    pdf.text("Revenus:", margin + 10, currentY);
+    pdf.text(formatCurrency(summary.totalIncome), pageWidth - margin - 10, currentY, { align: "right" });
+    
+    // Dépenses
+    currentY += 15;
+    pdf.setTextColor(220, 0, 0); // Rouge
+    pdf.text("Dépenses:", margin + 10, currentY);
+    pdf.text(formatCurrency(summary.totalExpense), pageWidth - margin - 10, currentY, { align: "right" });
+    
+    // Total (Balance)
+    currentY += 15;
+    pdf.setTextColor(0, 0, 150); // Bleu
+    pdf.text("Total:", margin + 10, currentY);
+    pdf.text(formatCurrency(summary.balance), pageWidth - margin - 10, currentY, { align: "right" });
+
+    // Montant total disponible
+    currentY += 35;
+    pdf.setFillColor(230, 237, 245);
+    pdf.roundedRect(margin, currentY, contentWidth, 40, 5, 5, "FD");
+    
+    pdf.setFontSize(14);
+    pdf.setTextColor(70, 70, 70);
+    pdf.setFont("helvetica", "normal");
+    pdf.text("Montant total disponible", pageWidth / 2, currentY + 10, { align: "center" });
+    
+    // Date actuelle vs début de période
+    const currentDate = dayjs().format("DD/MM/YYYY");
+    const periodStart = selectedMonth !== null 
+      ? `01/${(parseInt(selectedMonth) + 1).toString().padStart(2, '0')}/${selectedYear}` 
+      : `01/01/${selectedYear}`;
+    
+    // Montant à la date actuelle
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(0, 0, 0);
+    pdf.text(`${currentDate}: ${formatCurrency(summary.balance + (summary.startingBalance ?? 0))}`, pageWidth / 2, currentY + 25, { align: "center" });
+    
+    // ---- PAGE DES GRAPHIQUES DÉPENSES ET REVENUS ----
+    pdf.addPage();
+    currentY = margin;
+    
+    // En-tête
+    pdf.setFillColor(65, 105, 225);
+    pdf.rect(0, 0, pageWidth, 20, "F");
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("RÉPARTITION PAR CATÉGORIE", pageWidth / 2, 13, { align: "center" });
+    
+    // Graphique des dépenses
+    currentY += 15;
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("DÉPENSES PAR CATÉGORIE", pageWidth / 2, currentY, { align: "center" });
+    
+    if (chartElements.length > 0) {
+      const expenseChart = chartElements[0] as HTMLElement;
+      currentY += 10;
+      
+      // Capture le graphique à une échelle plus élevée pour plus de clarté
+      const canvas = await html2canvas(expenseChart, { scale: 3 });
       const imgData = canvas.toDataURL("image/png");
-      const imgWidth = 190;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      if (i > 0) pdf.addPage();
-      pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+      
+      // Augmenter la taille du graphique pour qu'il soit plus lisible
+      const imgWidth = contentWidth * 0.8; // 80% de la largeur de contenu
+      const imgHeight = imgWidth * 0.75; // Ratio d'aspect adapté
+      
+      // Centrer l'image
+      const leftMargin = (pageWidth - imgWidth) / 2;
+      pdf.addImage(imgData, "PNG", leftMargin, currentY, imgWidth, imgHeight);
+      
+      currentY += imgHeight + 15;
     }
-
-    pdf.save("statistics_report.pdf");
-  };
-
+    
+    // Graphique des revenus
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("REVENUS PAR CATÉGORIE", pageWidth / 2, currentY, { align: "center" });
+    currentY += 10;
+    
+    if (chartElements.length > 1) {
+      const incomeChart = chartElements[1] as HTMLElement;
+      
+      // Capture le graphique à une échelle plus élevée pour plus de clarté
+      const canvas = await html2canvas(incomeChart, { scale: 3 });
+      const imgData = canvas.toDataURL("image/png");
+      
+      // Augmenter la taille du graphique pour qu'il soit plus lisible
+      const imgWidth = contentWidth * 0.8; // 80% de la largeur de contenu
+      const imgHeight = imgWidth * 0.75; // Ratio d'aspect adapté
+      
+      // Centrer l'image
+      const leftMargin = (pageWidth - imgWidth) / 2;
+      pdf.addImage(imgData, "PNG", leftMargin, currentY, imgWidth, imgHeight);
+    }
+    
+    // ---- PAGE DES GRAPHIQUES D'ÉVOLUTION ----
+    pdf.addPage();
+    currentY = margin;
+    
+    // En-tête
+    pdf.setFillColor(65, 105, 225);
+    pdf.rect(0, 0, pageWidth, 20, "F");
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("ÉVOLUTION FINANCIÈRE", pageWidth / 2, 13, { align: "center" });
+    
+    // Titre du premier graphique d'évolution
+    currentY += 15;
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    const periodTitle = selectedMonth !== null 
+      ? `pour ${monthNames[parseInt(selectedMonth)]} ${selectedYear !== "ALL" ? selectedYear : ""}` 
+      : `pour ${selectedYear !== "ALL" ? "l'année " + selectedYear : "toutes les années"}`;
+    pdf.text(`Revenus et dépenses ${periodTitle}`, pageWidth / 2, currentY, { align: "center" });
+    
+    currentY += 10;
+    
+    // Graphique d'évolution Revenus/Dépenses
+    if (chartElements.length > 2) {
+      const revenuesExpensesChart = chartElements[2] as HTMLElement;
+      
+      const canvas = await html2canvas(revenuesExpensesChart, { scale: 3 });
+      const imgData = canvas.toDataURL("image/png");
+      
+      const imgWidth = contentWidth * 0.9; // 90% de la largeur disponible
+      const imgHeight = imgWidth * 0.6; // Ratio adaptés aux graphiques de type barre
+      
+      // Centrer l'image
+      const leftMargin = (pageWidth - imgWidth) / 2;
+      pdf.addImage(imgData, "PNG", leftMargin, currentY, imgWidth, imgHeight);
+      
+      currentY += imgHeight + 20;
+    }
+    
+    // Titre du second graphique d'évolution (Balance)
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(`Balance ${periodTitle}`, pageWidth / 2, currentY, { align: "center" });
+    
+    currentY += 10;
+    
+    // Si nous avons un graphique de balance
+    if (chartElements.length > 3) {
+      const balanceChart = chartElements[3] as HTMLElement;
+      
+      const canvas = await html2canvas(balanceChart, { scale: 3 });
+      const imgData = canvas.toDataURL("image/png");
+      
+      const imgWidth = contentWidth * 0.9; // 90% de la largeur disponible
+      const imgHeight = imgWidth * 0.6; // Ratio adaptés aux graphiques de type barre
+      
+      // Centrer l'image
+      const leftMargin = (pageWidth - imgWidth) / 2;
+      pdf.addImage(imgData, "PNG", leftMargin, currentY, imgWidth, imgHeight);
+    }
+    
+    // ---- PAGE DES TRANSACTIONS ----
+    pdf.addPage();
+    currentY = margin;
+    
+    // En-tête
+    pdf.setFillColor(65, 105, 225);
+    pdf.rect(0, 0, pageWidth, 20, "F");
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("TRANSACTIONS PRINCIPALES", pageWidth / 2, 13, { align: "center" });
+    
+    currentY += 15;
+    
+    // Filtrer les transactions pour la période sélectionnée
+    const filteredByYear =
+      selectedYear === "ALL"
+        ? data.transactions.nodes
+        : data.transactions.nodes.filter((tx) => dayjs(tx.date).year().toString() === selectedYear);
+    
+    const filteredTransactions = selectedMonth
+      ? filteredByYear.filter((tx) => dayjs(tx.date).month() === parseInt(selectedMonth))
+      : filteredByYear;
+    
+    // Top 5 des dépenses
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("TOP 5 DES DÉPENSES", margin, currentY);
+    
+    currentY += 10;
+    
+    // Trier par montant décroissant
+    const topExpenseTransactions = filteredTransactions
+      .filter(tx => tx.type === "EXPENSE")
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 5);
+    
+    // Table header
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(margin, currentY, contentWidth, 10, "F");
+    pdf.setFontSize(10);
+    pdf.text("Montant", margin + 5, currentY + 6);
+    pdf.text("Description", margin + 35, currentY + 6);
+    pdf.text("Catégorie", pageWidth - margin - 50, currentY + 6);
+    pdf.text("Date", pageWidth - margin - 20, currentY + 6);
+    
+    currentY += 10;
+    
+    // Table rows
+    pdf.setFont("helvetica", "normal");
+    if (topExpenseTransactions.length === 0) {
+      pdf.text("Aucune transaction trouvée", margin + 5, currentY + 5);
+      currentY += 10;
+    } else {
+      topExpenseTransactions.forEach((tx, index) => {
+        pdf.setFillColor(index % 2 === 0 ? 255 : 252, index % 2 === 0 ? 245 : 245, index % 2 === 0 ? 245 : 248);
+        pdf.rect(margin, currentY, contentWidth, 10, "F");
+        
+        pdf.setTextColor(220, 0, 0);
+        pdf.text(formatCurrency(tx.amount), margin + 5, currentY + 6);
+        
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(tx.description?.substring(0, 25) || "N/A", margin + 35, currentY + 6);
+        pdf.text(tx.category?.name || "Inconnu", pageWidth - margin - 50, currentY + 6);
+        pdf.text(dayjs(tx.date).format("DD/MM/YYYY"), pageWidth - margin - 20, currentY + 6);
+        
+        currentY += 10;
+      });
+    }
+    
+    currentY += 10;
+    
+    // Top 5 des revenus
+    pdf.setFont("helvetica", "bold");
+    pdf.text("TOP 5 DES REVENUS", margin, currentY);
+    
+    currentY += 10;
+    
+    // Trier par montant décroissant
+    const topIncomeTransactions = filteredTransactions
+      .filter(tx => tx.type === "INCOME")
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 5);
+    
+    // Table header
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(margin, currentY, contentWidth, 10, "F");
+    pdf.setFontSize(10);
+    pdf.text("Montant", margin + 5, currentY + 6);
+    pdf.text("Description", margin + 35, currentY + 6);
+    pdf.text("Catégorie", pageWidth - margin - 50, currentY + 6);
+    pdf.text("Date", pageWidth - margin - 20, currentY + 6);
+    
+    currentY += 10;
+    
+    // Table rows
+    pdf.setFont("helvetica", "normal");
+    if (topIncomeTransactions.length === 0) {
+      pdf.text("Aucune transaction trouvée", margin + 5, currentY + 5);
+      currentY += 10;
+    } else {
+      topIncomeTransactions.forEach((tx, index) => {
+        pdf.setFillColor(index % 2 === 0 ? 245 : 245, index % 2 === 0 ? 255 : 252, index % 2 === 0 ? 245 : 245);
+        pdf.rect(margin, currentY, contentWidth, 10, "F");
+        
+        pdf.setTextColor(0, 128, 0);
+        pdf.text(formatCurrency(tx.amount), margin + 5, currentY + 6);
+        
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(tx.description?.substring(0, 25) || "N/A", margin + 35, currentY + 6);
+        pdf.text(tx.category?.name || "Inconnu", pageWidth - margin - 50, currentY + 6);
+        pdf.text(dayjs(tx.date).format("DD/MM/YYYY"), pageWidth - margin - 20, currentY + 6);
+        
+        currentY += 10;
+      });
+    }
+  
+    // Pied de page sur toutes les pages
+    const totalPages = pdf.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+      pdf.setPage(i);
+      pdf.setFontSize(8);
+      pdf.setTextColor(150, 150, 150);
+      pdf.text(
+        `RAPPORT ${
+          selectedMonth !== null 
+            ? monthNames[parseInt(selectedMonth)].toUpperCase() 
+            : ""
+        } ${selectedYear}`,
+        margin,
+        pageHeight - 10
+      );
+      pdf.text(
+        `${dayjs().format("DD/MM/YYYY")} ${i} / ${totalPages}`,
+        pageWidth - margin,
+        pageHeight - 10,
+        { align: "right" }
+      );
+    }
+    
+    // Télécharger le PDF
+    pdf.save("rapport_financier.pdf");
+  } catch (error) {
+    console.error("Erreur lors de l'exportation du PDF:", error);
+    alert("Une erreur est survenue lors de l'exportation du PDF. Veuillez réessayer.");
+  }
+};
   const monthNames = [
     "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
     "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"

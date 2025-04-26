@@ -43,6 +43,7 @@ model Category {
   Budgets      Budget[]
   userId      String?
   user        User?         @relation(fields: [userId], references: [oidcId])
+  createdAt   DateTime? @default(now())
 }
 
 enum Typetransaction {

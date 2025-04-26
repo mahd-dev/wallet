@@ -29,7 +29,9 @@ export const pushToUsers = async (props: {
     }),
     {},
   );
-  return await Promise.all([
+
+  console.log("==>pushToUsers notifications", data);
+  const result =  await Promise.all([
     gqlClient
       .query(
         gql(`
@@ -74,6 +76,10 @@ export const pushToUsers = async (props: {
         )
       : undefined,
   ]);
+
+
+  console.log("==>pushToUsers result", result);
+  return result
 };
 
 export const notifyUsers = (

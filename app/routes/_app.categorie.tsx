@@ -12,7 +12,12 @@ const CHECK_CATEGORY_TRANSACTIONS = gql`
   query CHECK_CATEGORY_TRANSACTIONS($category_id: String!) {
     transactions(condition: { categoryId: $category_id }) {
       nodes {
-       transactionId
+        transactionId
+      }
+    }
+    budgets(condition: { categoryId: $category_id }) {
+      nodes {
+        budgetId
       }
     }
   }
@@ -21,7 +26,7 @@ const CHECK_CATEGORY_TRANSACTIONS = gql`
 // GraphQL queries and mutations
 const GET_CATEGORIES = gql`
   query GET_USER_CATEGORIES3($userId: String!) {
-    categories(condition: { userId: $userId }) {
+    categories(condition: { userId: $userId }, orderBy: CREATED_AT_DESC) {
       nodes {
         id
         name
@@ -62,6 +67,22 @@ const ADD_CATEGORY = gql`
 const DELETE_CATEGORY = gql`
   mutation DELETE_CATEGORY($id: String!) {
     deleteCategory(input: { id: $id }) {
+      clientMutationId
+    }
+  }
+`;
+
+const DELETE_TRANSACTION = gql`
+  mutation DELETE_TRANSACTION($id: String!) {
+    deleteTransaction(input: { transactionId: $id }) {
+      clientMutationId
+    }
+  }
+`;
+
+const DELETE_BUDGET = gql`
+  mutation DELETE_BUDGET($id: String!) {
+    deleteBudget(input: { budgetId: $id }) {
       clientMutationId
     }
   }
@@ -110,6 +131,8 @@ const CategoriesPage = () => {
   const [, addCategory] = useMutation(ADD_CATEGORY);
   const [, deleteCategory] = useMutation(DELETE_CATEGORY);
   const [, updateCategory] = useMutation(UPDATE_CATEGORY);
+  const [, deleteTransaction] = useMutation(DELETE_TRANSACTION);
+  const [, deleteBudget] = useMutation(DELETE_BUDGET);
   const [checkTransactionsResult, checkCategoryTransactions] = useQuery({
     query: CHECK_CATEGORY_TRANSACTIONS,
     pause: true, // Start paused so it only runs when we call it
@@ -166,15 +189,37 @@ const CategoriesPage = () => {
 
   const confirmDeleteCategory = async () => {
     if (categoryToDelete && user?.oidcId) {
-      const result = await deleteCategory({ id: categoryToDelete.id });
-      if (result.data?.deleteCategory) {
+      try {
+        // First, fetch all transactions and budgets for this category
+        const result = await client
+          .query(CHECK_CATEGORY_TRANSACTIONS, { category_id: categoryToDelete.id })
+          .toPromise();
+        
+        // Delete all associated transactions
+        const transactions = result.data?.transactions?.nodes || [];
+        for (const transaction of transactions) {
+          await deleteTransaction({ id: transaction.transactionId });
+        }
+
+      // Delete all associated budgets
+      const budgets = result.data?.budgets?.nodes || [];
+      for (const budget of budgets) {
+        await deleteBudget({ id: budget.budgetId });
+      }
+      // Finally delete the category
+      const deleteCategoryResult = await deleteCategory({ id: categoryToDelete.id });
+      
+      if (deleteCategoryResult.data?.deleteCategory) {
         refetch();
         setIsDeleteModalOpen(false);
         setCategoryToDelete(null);
       }
+    } catch (error) {
+      console.error("Error deleting category and related items:", error);
+      // Consider showing an error message to the user
     }
-  };
-
+  }
+};
   const handleUpdateCategory = async () => {
     if (
       editingCategory &&

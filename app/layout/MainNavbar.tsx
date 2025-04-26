@@ -14,13 +14,27 @@ import {
   Dialog as KDialog,
   Popover as KPopover,
 } from "konsta/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   authAtom,
   mainLayoutPropsAtom,
   mainPanelAtom,
   userAtom,
 } from "~/store/store";
+import { gql, useMutation, useQuery } from "urql";
+
+// Create a global reference to store the refresh function
+let notificationRefreshFunction: (() => void) | null = null;
+
+// Update this function in MainNavbar.js
+export function refreshNotifications() {
+  if (notificationRefreshFunction) {
+    console.log("Executing notification refresh function");
+    notificationRefreshFunction();
+  } else {
+    console.warn("Notification refresh function not available");
+  }
+}
 
 const menu = [
   { path: "/", name: "Acceuil" },
@@ -30,18 +44,117 @@ const menu = [
   { path: "/budget", name: "budget" },
 ];
 
+// GraphQL query to get unread notifications count
+const GET_UNREAD_NOTIFICATIONS = gql`
+  query GetUnreadNotifications ($userId: String!){
+    notifications(filter: { isRead: { equalTo: false }, userId: { equalTo: $userId } }) {
+      totalCount
+      nodes {
+        id
+        isRead
+      }
+    }
+  }
+`;
+
+// Mutation to toggle notification read status
+const TOGGLE_IS_READ = gql`
+  mutation ToggleIsRead($id: String!, $isRead: Boolean!) {
+    updateNotification(input: {id: $id, patch: {isRead: $isRead}}) {
+      clientMutationId
+    }
+  }
+`;
+
 export default function MainNavbar() {
   const [auth] = useAtom(authAtom);
   const [mainPanel, setMainPanel] = useAtom(mainPanelAtom);
   const [propsAtm] = useAtom(mainLayoutPropsAtom);
   const location = useLocation();
   const [user] = useAtom(userAtom);
-  const [notifications, setNotifications] = useState(3);
+  const [notifications, setNotifications] = useState(0);
   const [userPopover, setUserPopoverOpened] = useState(false);
-  const userPopoverRef = useRef(null);
+  const userPopoverRef = useRef<HTMLElement | null>(null);
   const [logoutDialogOpened, setLogoutDialogOpened] = useState(false);
 
-  const openUserPopover = (targetRef: any) => {
+  // URQL hooks for notifications
+  const [notificationsResult, reexecuteQuery] = useQuery({
+    query: GET_UNREAD_NOTIFICATIONS,
+    variables: { userId: user?.oidcId || "" },
+    pause: !user, // Pause query if no user is logged in
+    requestPolicy: 'network-only' // Make sure we always get fresh data
+  });
+
+  const { data: notificationsData, fetching: notificationsLoading } = notificationsResult;
+
+  const [toggleIsReadResult, toggleIsRead] = useMutation(TOGGLE_IS_READ);
+
+  // Store the refresh function in the global reference
+
+useEffect(() => {
+  console.log("Setting up notification refresh function for user:", user?.oidcId);
+  
+  notificationRefreshFunction = () => {
+    if (user) {
+      console.log("Refreshing notifications for user:", user.oidcId);
+      reexecuteQuery({ requestPolicy: 'network-only' });
+    } else {
+      console.warn("Cannot refresh notifications - no user logged in");
+    }
+  };
+
+  // Initial fetch when component mounts (if user is logged in)
+  if (user) {
+    reexecuteQuery({ requestPolicy: 'network-only' });
+  }
+
+  return () => {
+    notificationRefreshFunction = null;
+  };
+}, [user, reexecuteQuery]);
+
+  // Update notifications count whenever data changes
+  useEffect(() => {
+    if (notificationsData && notificationsData.notifications) {
+      setNotifications(notificationsData.notifications.totalCount);
+    }
+  }, [notificationsData]);
+
+
+
+  const markNotificationAsRead = async (id: string) => {
+    try {
+      await toggleIsRead({
+        id,
+        isRead: true
+      });
+      // Refetch to update the unread count
+      reexecuteQuery({ requestPolicy: 'network-only' });
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
+
+  const markAllNotificationsAsRead = async () => {
+    if (notificationsData && notificationsData.notifications) {
+      const promises = notificationsData.notifications.nodes.map((notification: { id: string; isRead: boolean }) => 
+        toggleIsRead({
+          id: notification.id,
+          isRead: true
+        })
+      );
+      
+      try {
+        await Promise.all(promises);
+        // Refetch to update the unread count
+        reexecuteQuery({ requestPolicy: 'network-only' });
+      } catch (error) {
+        console.error("Error marking all notifications as read:", error);
+      }
+    }
+  };
+
+  const openUserPopover = (targetRef: HTMLElement | null) => {
     userPopoverRef.current = targetRef;
     setUserPopoverOpened(true);
   };
@@ -78,9 +191,10 @@ export default function MainNavbar() {
                 <Link
                   to="/notifications"
                   className="hover:text-secondary relative inline-block p-2 text-gray-800 transition-colors"
+                  onClick={() => notifications > 0 && markAllNotificationsAsRead()}
                 >
                   <IconBell size={24} stroke={1.5} />
-                  {notifications > 0 && (
+                  {notifications > 0 && !notificationsLoading && (
                     <span className="absolute -right-1 -top-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                       {notifications}
                     </span>
@@ -92,7 +206,7 @@ export default function MainNavbar() {
               <button
                 type="button"
                 className="user-popover-link text-secondary-content hover:text-secondary flex items-center gap-2 rounded-lg px-4 py-2 text-center text-sm font-medium"
-                onClick={() => openUserPopover(".user-popover-link")}
+                onClick={() => openUserPopover(document.querySelector(".user-popover-link"))}
               >
                 <span className="mr-1">{user.firstName}</span>
                 <Icon
@@ -166,6 +280,7 @@ export default function MainNavbar() {
             <Link
               to="/notifications"
               className={`relative ${mainPanel ? "opacity-0" : ""}`}
+              onClick={() => notifications > 0 && markAllNotificationsAsRead()}
             >
               <div
                 className="absolute inset-0 -z-10 rounded-full backdrop-blur-md"
@@ -175,7 +290,7 @@ export default function MainNavbar() {
                 }}
               />
               <IconBell stroke={1.5} size={28} className="m-4" />
-              {notifications > 0 && (
+              {notifications > 0 && !notificationsLoading && (
                 <span className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                   {notifications}
                 </span>
@@ -185,7 +300,7 @@ export default function MainNavbar() {
         )}
         {user ? (
           <button
-            onClick={() => openUserPopover(".user-mobile-link")}
+            onClick={() => openUserPopover(document.querySelector(".user-mobile-link"))}
             className="user-mobile-link mr-3"
           >
             <Icon
@@ -249,12 +364,15 @@ export default function MainNavbar() {
             </Link>
             <Link
               to="/notifications"
-              onClick={() => setUserPopoverOpened(false)}
+              onClick={() => {
+                setUserPopoverOpened(false);
+                if (notifications > 0) markAllNotificationsAsRead();
+              }}
               className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-gray-800 hover:bg-gray-100"
             >
               <IconBell size={22} />
               <span>Notifications</span>
-              {notifications > 0 && (
+              {notifications > 0 && !notificationsLoading && (
                 <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                   {notifications}
                 </span>

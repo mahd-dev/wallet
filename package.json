@@ -1,5 +1,5 @@
 {
-  "name": "live",
+  "name": "wallet",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -68,6 +68,7 @@
     "@types/ua-parser-js": "^0.7.39",
     "array.prototype.tosorted": "^1.1.4",
     "chart.js": "^4.4.8",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "compression": "^1.7.4",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",

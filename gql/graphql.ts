@@ -500,6 +500,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdVarianceSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByCategoryIdVarianceSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
   BudgetsByCategoryIdVarianceSampleUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
   IconAsc = 'ICON_ASC',
   IconColorAsc = 'ICON_COLOR_ASC',
   IconColorDesc = 'ICON_COLOR_DESC',
@@ -658,6 +660,8 @@ export type CategoryAggregatesFilter = {
  * for equality and combined with a logical ‘and.’
  */
 export type CategoryCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `icon` field. */
   icon?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `iconColor` field. */
@@ -673,6 +677,7 @@ export type CategoryCondition = {
 };
 
 export type CategoryDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
   icon?: InputMaybe<BigIntFilter>;
   iconColor?: InputMaybe<BigIntFilter>;
   id?: InputMaybe<BigIntFilter>;
@@ -689,6 +694,8 @@ export type CategoryFilter = {
   budgetsByCategoryId?: InputMaybe<CategoryToManyBudgetFilter>;
   /** Some related `budgetsByCategoryId` exist. */
   budgetsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `icon` field. */
   icon?: InputMaybe<StringFilter>;
   /** Filter by the object’s `iconColor` field. */
@@ -717,6 +724,9 @@ export type CategoryFilter = {
 
 /** Grouping methods for `Category` for usage during aggregation. */
 export enum CategoryGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
   Icon = 'ICON',
   IconColor = 'ICON_COLOR',
   Name = 'NAME',
@@ -724,14 +734,60 @@ export enum CategoryGroupBy {
   UserId = 'USER_ID'
 }
 
+export type CategoryHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
 /** Conditions for `Category` aggregates. */
 export type CategoryHavingInput = {
   AND?: InputMaybe<Array<CategoryHavingInput>>;
   OR?: InputMaybe<Array<CategoryHavingInput>>;
+  average?: InputMaybe<CategoryHavingAverageInput>;
+  distinctCount?: InputMaybe<CategoryHavingDistinctCountInput>;
+  max?: InputMaybe<CategoryHavingMaxInput>;
+  min?: InputMaybe<CategoryHavingMinInput>;
+  stddevPopulation?: InputMaybe<CategoryHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<CategoryHavingStddevSampleInput>;
+  sum?: InputMaybe<CategoryHavingSumInput>;
+  variancePopulation?: InputMaybe<CategoryHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<CategoryHavingVarianceSampleInput>;
+};
+
+export type CategoryHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
 };
 
 /** An input for mutations affecting `Category` */
 export type CategoryInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   icon?: InputMaybe<Scalars['String']['input']>;
   iconColor?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['String']['input'];
@@ -742,6 +798,7 @@ export type CategoryInput = {
 
 /** Represents an update to a `Category`. Fields that are set will be updated. */
 export type CategoryPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   icon?: InputMaybe<Scalars['String']['input']>;
   iconColor?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
@@ -2757,6 +2814,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdVarianceSampleMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByUserIdVarianceSampleUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
   BudgetsByUserIdVarianceSampleUserIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  CategoriesByUserIdAverageCreatedAtAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
+  CategoriesByUserIdAverageCreatedAtDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
   CategoriesByUserIdAverageIconAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_ASC',
   CategoriesByUserIdAverageIconColorAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_ASC',
   CategoriesByUserIdAverageIconColorDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_DESC',
@@ -2771,6 +2830,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdAverageUserIdDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_USER_ID_DESC',
   CategoriesByUserIdCountAsc = 'CATEGORIES_BY_USER_ID_COUNT_ASC',
   CategoriesByUserIdCountDesc = 'CATEGORIES_BY_USER_ID_COUNT_DESC',
+  CategoriesByUserIdDistinctCountCreatedAtAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  CategoriesByUserIdDistinctCountCreatedAtDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
   CategoriesByUserIdDistinctCountIconAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_ASC',
   CategoriesByUserIdDistinctCountIconColorAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_ASC',
   CategoriesByUserIdDistinctCountIconColorDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_DESC',
@@ -2783,6 +2844,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdDistinctCountTypeDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_TYPE_DESC',
   CategoriesByUserIdDistinctCountUserIdAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
   CategoriesByUserIdDistinctCountUserIdDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  CategoriesByUserIdMaxCreatedAtAsc = 'CATEGORIES_BY_USER_ID_MAX_CREATED_AT_ASC',
+  CategoriesByUserIdMaxCreatedAtDesc = 'CATEGORIES_BY_USER_ID_MAX_CREATED_AT_DESC',
   CategoriesByUserIdMaxIconAsc = 'CATEGORIES_BY_USER_ID_MAX_ICON_ASC',
   CategoriesByUserIdMaxIconColorAsc = 'CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_ASC',
   CategoriesByUserIdMaxIconColorDesc = 'CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_DESC',
@@ -2795,6 +2858,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdMaxTypeDesc = 'CATEGORIES_BY_USER_ID_MAX_TYPE_DESC',
   CategoriesByUserIdMaxUserIdAsc = 'CATEGORIES_BY_USER_ID_MAX_USER_ID_ASC',
   CategoriesByUserIdMaxUserIdDesc = 'CATEGORIES_BY_USER_ID_MAX_USER_ID_DESC',
+  CategoriesByUserIdMinCreatedAtAsc = 'CATEGORIES_BY_USER_ID_MIN_CREATED_AT_ASC',
+  CategoriesByUserIdMinCreatedAtDesc = 'CATEGORIES_BY_USER_ID_MIN_CREATED_AT_DESC',
   CategoriesByUserIdMinIconAsc = 'CATEGORIES_BY_USER_ID_MIN_ICON_ASC',
   CategoriesByUserIdMinIconColorAsc = 'CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_ASC',
   CategoriesByUserIdMinIconColorDesc = 'CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_DESC',
@@ -2807,6 +2872,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdMinTypeDesc = 'CATEGORIES_BY_USER_ID_MIN_TYPE_DESC',
   CategoriesByUserIdMinUserIdAsc = 'CATEGORIES_BY_USER_ID_MIN_USER_ID_ASC',
   CategoriesByUserIdMinUserIdDesc = 'CATEGORIES_BY_USER_ID_MIN_USER_ID_DESC',
+  CategoriesByUserIdStddevPopulationCreatedAtAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  CategoriesByUserIdStddevPopulationCreatedAtDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
   CategoriesByUserIdStddevPopulationIconAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_ASC',
   CategoriesByUserIdStddevPopulationIconColorAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_ASC',
   CategoriesByUserIdStddevPopulationIconColorDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_DESC',
@@ -2819,6 +2886,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdStddevPopulationTypeDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_TYPE_DESC',
   CategoriesByUserIdStddevPopulationUserIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
   CategoriesByUserIdStddevPopulationUserIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  CategoriesByUserIdStddevSampleCreatedAtAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  CategoriesByUserIdStddevSampleCreatedAtDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
   CategoriesByUserIdStddevSampleIconAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_ASC',
   CategoriesByUserIdStddevSampleIconColorAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_ASC',
   CategoriesByUserIdStddevSampleIconColorDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_DESC',
@@ -2831,6 +2900,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdStddevSampleTypeDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_TYPE_DESC',
   CategoriesByUserIdStddevSampleUserIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
   CategoriesByUserIdStddevSampleUserIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  CategoriesByUserIdSumCreatedAtAsc = 'CATEGORIES_BY_USER_ID_SUM_CREATED_AT_ASC',
+  CategoriesByUserIdSumCreatedAtDesc = 'CATEGORIES_BY_USER_ID_SUM_CREATED_AT_DESC',
   CategoriesByUserIdSumIconAsc = 'CATEGORIES_BY_USER_ID_SUM_ICON_ASC',
   CategoriesByUserIdSumIconColorAsc = 'CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_ASC',
   CategoriesByUserIdSumIconColorDesc = 'CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_DESC',
@@ -2843,6 +2914,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdSumTypeDesc = 'CATEGORIES_BY_USER_ID_SUM_TYPE_DESC',
   CategoriesByUserIdSumUserIdAsc = 'CATEGORIES_BY_USER_ID_SUM_USER_ID_ASC',
   CategoriesByUserIdSumUserIdDesc = 'CATEGORIES_BY_USER_ID_SUM_USER_ID_DESC',
+  CategoriesByUserIdVariancePopulationCreatedAtAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  CategoriesByUserIdVariancePopulationCreatedAtDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
   CategoriesByUserIdVariancePopulationIconAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_ASC',
   CategoriesByUserIdVariancePopulationIconColorAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_ASC',
   CategoriesByUserIdVariancePopulationIconColorDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_DESC',
@@ -2855,6 +2928,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdVariancePopulationTypeDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_TYPE_DESC',
   CategoriesByUserIdVariancePopulationUserIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
   CategoriesByUserIdVariancePopulationUserIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  CategoriesByUserIdVarianceSampleCreatedAtAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  CategoriesByUserIdVarianceSampleCreatedAtDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
   CategoriesByUserIdVarianceSampleIconAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_ASC',
   CategoriesByUserIdVarianceSampleIconColorAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_ASC',
   CategoriesByUserIdVarianceSampleIconColorDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_DESC',
@@ -3454,6 +3529,13 @@ export type Get_Transactions_For_CategoryQuery = { __typename?: 'Query', transac
 
 export type ProfileFragment = { __typename?: 'User', firstName?: string | null, lastName?: string | null, gender?: UserGender | null, email?: string | null, tel?: string | null, picture?: string | null, date?: any | null } & { ' $fragmentName'?: 'ProfileFragment' };
 
+export type GetUnreadNotificationsQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetUnreadNotificationsQuery = { __typename?: 'Query', notifications?: { __typename?: 'NotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Notification', id: string, isRead: boolean }> } | null };
+
 export type GetUsersDevicesQueryVariables = Exact<{
   usersIds: Array<Scalars['String']['input']> | Scalars['String']['input'];
 }>;
@@ -3553,7 +3635,7 @@ export type Check_Category_TransactionsQueryVariables = Exact<{
 }>;
 
 
-export type Check_Category_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string }> } | null };
+export type Check_Category_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string }> } | null, budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string }> } | null };
 
 export type Get_User_Categories3QueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -3581,6 +3663,13 @@ export type Delete_CategoryMutationVariables = Exact<{
 
 export type Delete_CategoryMutation = { __typename?: 'Mutation', deleteCategory?: { __typename?: 'DeleteCategoryPayload', clientMutationId?: string | null } | null };
 
+export type Delete_TransactionMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type Delete_TransactionMutation = { __typename?: 'Mutation', deleteTransaction?: { __typename?: 'DeleteTransactionPayload', clientMutationId?: string | null } | null };
+
 export type Update_CategoryMutationVariables = Exact<{
   id: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -3604,7 +3693,7 @@ export type Get_Transactions3QueryVariables = Exact<{
 }>;
 
 
-export type Get_Transactions3Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
+export type Get_Transactions3Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number, description?: string | null, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
 
 export type SetUserTokenMutationVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -3621,13 +3710,6 @@ export type Get_Transactions4QueryVariables = Exact<{
 
 
 export type Get_Transactions4Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction } | null }> } | null, categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction }> } | null };
-
-export type Delete_TransactionMutationVariables = Exact<{
-  id: Scalars['String']['input'];
-}>;
-
-
-export type Delete_TransactionMutation = { __typename?: 'Mutation', deleteTransaction?: { __typename?: 'DeleteTransactionPayload', clientMutationId?: string | null } | null };
 
 export type Edit_Transaction2MutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -3693,11 +3775,12 @@ export type SignupMutation = { __typename?: 'Mutation', createUser?: { __typenam
 export const ProfileFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<ProfileFragment, unknown>;
 export const InitProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InitProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tel"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"picture"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"firstName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lastName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"tel"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tel"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"picture"},"value":{"kind":"Variable","name":{"kind":"Name","value":"picture"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<InitProfileMutation, InitProfileMutationVariables>;
 export const ToggleIsReadDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ToggleIsRead"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isRead"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateNotification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"isRead"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isRead"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<ToggleIsReadMutation, ToggleIsReadMutationVariables>;
-export const Get_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_CATEGORIES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}}]}}]}}]}}]} as unknown as DocumentNode<Get_CategoriesQuery, Get_CategoriesQueryVariables>;
+export const Get_CategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_CATEGORIES"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"CREATED_AT_DESC"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}}]}}]}}]}}]} as unknown as DocumentNode<Get_CategoriesQuery, Get_CategoriesQueryVariables>;
 export const AddTransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddTransaction"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"transaction_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transaction"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"transaction_id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<AddTransactionMutation, AddTransactionMutationVariables>;
 export const Edit_Transaction1Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION1"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_Transaction1Mutation, Edit_Transaction1MutationVariables>;
 export const Get_Budget_For_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_BUDGET_FOR_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"month"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"month"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"month"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"alertThreshold"}}]}}]}}]}}]} as unknown as DocumentNode<Get_Budget_For_CategoryQuery, Get_Budget_For_CategoryQueryVariables>;
 export const Get_Transactions_For_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS_FOR_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"start"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"end"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"EXPENSE"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"greaterThanOrEqualTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"start"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lessThanOrEqualTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"end"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}},{"kind":"Field","name":{"kind":"Name","value":"aggregates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions_For_CategoryQuery, Get_Transactions_For_CategoryQueryVariables>;
+export const GetUnreadNotificationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUnreadNotifications"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"notifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"isRead"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"BooleanValue","value":false}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalCount"}},{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isRead"}}]}}]}}]}}]} as unknown as DocumentNode<GetUnreadNotificationsQuery, GetUnreadNotificationsQueryVariables>;
 export const GetUsersDevicesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUsersDevices"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"usersIds"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userDevices"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"usersIds"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]}}]} as unknown as DocumentNode<GetUsersDevicesQuery, GetUsersDevicesQueryVariables>;
 export const NotifyUsersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"NotifyUsers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"notifications"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NotificationInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mnCreateNotification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"mnNotification"},"value":{"kind":"Variable","name":{"kind":"Name","value":"notifications"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<NotifyUsersMutation, NotifyUsersMutationVariables>;
 export const GetProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"oidcId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"oidcId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Profile"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Profile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"tel"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]} as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
@@ -3709,16 +3792,16 @@ export const Get_BudgetsDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const Get_User_Transactions2Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_TRANSACTIONS2"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_Transactions2Query, Get_User_Transactions2QueryVariables>;
 export const Delete_BudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_BUDGET"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_BudgetMutation, Delete_BudgetMutationVariables>;
 export const Edit_BudgetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_BUDGET"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"month"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"alertThreshold"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateBudget"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"month"},"value":{"kind":"Variable","name":{"kind":"Name","value":"month"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"alertThreshold"},"value":{"kind":"Variable","name":{"kind":"Name","value":"alertThreshold"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"budgetId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budget"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"month"}},{"kind":"Field","name":{"kind":"Name","value":"alertThreshold"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_BudgetMutation, Edit_BudgetMutationVariables>;
-export const Check_Category_TransactionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CHECK_CATEGORY_TRANSACTIONS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}}]}}]}}]}}]} as unknown as DocumentNode<Check_Category_TransactionsQuery, Check_Category_TransactionsQueryVariables>;
-export const Get_User_Categories3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_CATEGORIES3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_Categories3Query, Get_User_Categories3QueryVariables>;
+export const Check_Category_TransactionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CHECK_CATEGORY_TRANSACTIONS"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"budgets"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"category_id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"budgetId"}}]}}]}}]}}]} as unknown as DocumentNode<Check_Category_TransactionsQuery, Check_Category_TransactionsQueryVariables>;
+export const Get_User_Categories3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_USER_CATEGORIES3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"CREATED_AT_DESC"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]} as unknown as DocumentNode<Get_User_Categories3Query, Get_User_Categories3QueryVariables>;
 export const Add_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ADD_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"icon"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"icon"},"value":{"kind":"Variable","name":{"kind":"Name","value":"icon"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"iconColor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Add_CategoryMutation, Add_CategoryMutationVariables>;
 export const Delete_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_CategoryMutation, Delete_CategoryMutationVariables>;
+export const Delete_TransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_TRANSACTION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_TransactionMutation, Delete_TransactionMutationVariables>;
 export const Update_CategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UPDATE_CATEGORY"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"icon"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"icon"},"value":{"kind":"Variable","name":{"kind":"Name","value":"icon"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"iconColor"},"value":{"kind":"Variable","name":{"kind":"Name","value":"iconColor"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Update_CategoryMutation, Update_CategoryMutationVariables>;
 export const NotifsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"Notifs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"notifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"T_DESC"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"t"}},{"kind":"Field","name":{"kind":"Name","value":"isRead"}},{"kind":"Field","name":{"kind":"Name","value":"data"}}]}}]}}]}}]} as unknown as DocumentNode<NotifsSubscription, NotifsSubscriptionVariables>;
-export const Get_Transactions3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions3Query, Get_Transactions3QueryVariables>;
+export const Get_Transactions3Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS3"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions3Query, Get_Transactions3QueryVariables>;
 export const SetUserTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetUserToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"token"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ua"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"JSON"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertUserDevice"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userDevice"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"token"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"ua"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ua"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"token"},"value":{"kind":"Variable","name":{"kind":"Name","value":"token"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<SetUserTokenMutation, SetUserTokenMutationVariables>;
 export const Get_Transactions4Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_TRANSACTIONS4"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"DATE_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"condition"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}},{"kind":"Field","name":{"kind":"Name","value":"iconColor"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]} as unknown as DocumentNode<Get_Transactions4Query, Get_Transactions4QueryVariables>;
-export const Delete_TransactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DELETE_TRANSACTION"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"clientMutationId"}}]}}]}}]} as unknown as DocumentNode<Delete_TransactionMutation, Delete_TransactionMutationVariables>;
 export const Edit_Transaction2Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EDIT_TRANSACTION2"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"amount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Datetime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Typetransaction"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTransaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"patch"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"amount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"amount"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"transactionId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"clientMutationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"clientMutationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transaction"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]} as unknown as DocumentNode<Edit_Transaction2Mutation, Edit_Transaction2MutationVariables>;
 export const Login_UserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LOGIN_USER"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalTo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"password"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"oidcId"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]}}]}}]} as unknown as DocumentNode<Login_UserQuery, Login_UserQueryVariables>;
 export const CreateOtpVerificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOtpVerification"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateOtpVerificationInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOtpVerification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"otpVerification"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"otp"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<CreateOtpVerificationMutation, CreateOtpVerificationMutationVariables>;
@@ -4407,6 +4490,8 @@ export enum CategoriesOrderBy {
   BudgetsByCategoryIdVarianceSampleMonthDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByCategoryIdVarianceSampleUserIdAsc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_ASC',
   BudgetsByCategoryIdVarianceSampleUserIdDesc = 'BUDGETS_BY_CATEGORY_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
   IconAsc = 'ICON_ASC',
   IconColorAsc = 'ICON_COLOR_ASC',
   IconColorDesc = 'ICON_COLOR_DESC',
@@ -4556,6 +4641,7 @@ export type Category = Node & {
   __typename?: 'Category';
   /** Reads and enables pagination through a set of `Budget`. */
   budgetsByCategoryId: BudgetsConnection;
+  createdAt?: Maybe<Scalars['Datetime']['output']>;
   icon?: Maybe<Scalars['String']['output']>;
   iconColor?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
@@ -4614,6 +4700,8 @@ export type CategoryAggregatesFilter = {
  * for equality and combined with a logical ‘and.’
  */
 export type CategoryCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `icon` field. */
   icon?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `iconColor` field. */
@@ -4629,6 +4717,7 @@ export type CategoryCondition = {
 };
 
 export type CategoryDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
   icon?: InputMaybe<BigIntFilter>;
   iconColor?: InputMaybe<BigIntFilter>;
   id?: InputMaybe<BigIntFilter>;
@@ -4639,6 +4728,8 @@ export type CategoryDistinctCountAggregateFilter = {
 
 export type CategoryDistinctCountAggregates = {
   __typename?: 'CategoryDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of icon across the matching connection */
   icon?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of iconColor across the matching connection */
@@ -4661,6 +4752,8 @@ export type CategoryFilter = {
   budgetsByCategoryId?: InputMaybe<CategoryToManyBudgetFilter>;
   /** Some related `budgetsByCategoryId` exist. */
   budgetsByCategoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `icon` field. */
   icon?: InputMaybe<StringFilter>;
   /** Filter by the object’s `iconColor` field. */
@@ -4689,6 +4782,9 @@ export type CategoryFilter = {
 
 /** Grouping methods for `Category` for usage during aggregation. */
 export enum CategoryGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
   Icon = 'ICON',
   IconColor = 'ICON_COLOR',
   Name = 'NAME',
@@ -4696,14 +4792,60 @@ export enum CategoryGroupBy {
   UserId = 'USER_ID'
 }
 
+export type CategoryHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
 /** Conditions for `Category` aggregates. */
 export type CategoryHavingInput = {
   AND?: InputMaybe<Array<CategoryHavingInput>>;
   OR?: InputMaybe<Array<CategoryHavingInput>>;
+  average?: InputMaybe<CategoryHavingAverageInput>;
+  distinctCount?: InputMaybe<CategoryHavingDistinctCountInput>;
+  max?: InputMaybe<CategoryHavingMaxInput>;
+  min?: InputMaybe<CategoryHavingMinInput>;
+  stddevPopulation?: InputMaybe<CategoryHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<CategoryHavingStddevSampleInput>;
+  sum?: InputMaybe<CategoryHavingSumInput>;
+  variancePopulation?: InputMaybe<CategoryHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<CategoryHavingVarianceSampleInput>;
+};
+
+export type CategoryHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type CategoryHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
 };
 
 /** An input for mutations affecting `Category` */
 export type CategoryInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   icon?: InputMaybe<Scalars['String']['input']>;
   iconColor?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['String']['input'];
@@ -4714,6 +4856,7 @@ export type CategoryInput = {
 
 /** Represents an update to a `Category`. Fields that are set will be updated. */
 export type CategoryPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   icon?: InputMaybe<Scalars['String']['input']>;
   iconColor?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
@@ -9633,6 +9776,8 @@ export enum UsersOrderBy {
   BudgetsByUserIdVarianceSampleMonthDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_MONTH_DESC',
   BudgetsByUserIdVarianceSampleUserIdAsc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_ASC',
   BudgetsByUserIdVarianceSampleUserIdDesc = 'BUDGETS_BY_USER_ID_VARIANCE_SAMPLE_USER_ID_DESC',
+  CategoriesByUserIdAverageCreatedAtAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_CREATED_AT_ASC',
+  CategoriesByUserIdAverageCreatedAtDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_CREATED_AT_DESC',
   CategoriesByUserIdAverageIconAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_ASC',
   CategoriesByUserIdAverageIconColorAsc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_ASC',
   CategoriesByUserIdAverageIconColorDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_ICON_COLOR_DESC',
@@ -9647,6 +9792,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdAverageUserIdDesc = 'CATEGORIES_BY_USER_ID_AVERAGE_USER_ID_DESC',
   CategoriesByUserIdCountAsc = 'CATEGORIES_BY_USER_ID_COUNT_ASC',
   CategoriesByUserIdCountDesc = 'CATEGORIES_BY_USER_ID_COUNT_DESC',
+  CategoriesByUserIdDistinctCountCreatedAtAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  CategoriesByUserIdDistinctCountCreatedAtDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
   CategoriesByUserIdDistinctCountIconAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_ASC',
   CategoriesByUserIdDistinctCountIconColorAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_ASC',
   CategoriesByUserIdDistinctCountIconColorDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_ICON_COLOR_DESC',
@@ -9659,6 +9806,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdDistinctCountTypeDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_TYPE_DESC',
   CategoriesByUserIdDistinctCountUserIdAsc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_ASC',
   CategoriesByUserIdDistinctCountUserIdDesc = 'CATEGORIES_BY_USER_ID_DISTINCT_COUNT_USER_ID_DESC',
+  CategoriesByUserIdMaxCreatedAtAsc = 'CATEGORIES_BY_USER_ID_MAX_CREATED_AT_ASC',
+  CategoriesByUserIdMaxCreatedAtDesc = 'CATEGORIES_BY_USER_ID_MAX_CREATED_AT_DESC',
   CategoriesByUserIdMaxIconAsc = 'CATEGORIES_BY_USER_ID_MAX_ICON_ASC',
   CategoriesByUserIdMaxIconColorAsc = 'CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_ASC',
   CategoriesByUserIdMaxIconColorDesc = 'CATEGORIES_BY_USER_ID_MAX_ICON_COLOR_DESC',
@@ -9671,6 +9820,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdMaxTypeDesc = 'CATEGORIES_BY_USER_ID_MAX_TYPE_DESC',
   CategoriesByUserIdMaxUserIdAsc = 'CATEGORIES_BY_USER_ID_MAX_USER_ID_ASC',
   CategoriesByUserIdMaxUserIdDesc = 'CATEGORIES_BY_USER_ID_MAX_USER_ID_DESC',
+  CategoriesByUserIdMinCreatedAtAsc = 'CATEGORIES_BY_USER_ID_MIN_CREATED_AT_ASC',
+  CategoriesByUserIdMinCreatedAtDesc = 'CATEGORIES_BY_USER_ID_MIN_CREATED_AT_DESC',
   CategoriesByUserIdMinIconAsc = 'CATEGORIES_BY_USER_ID_MIN_ICON_ASC',
   CategoriesByUserIdMinIconColorAsc = 'CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_ASC',
   CategoriesByUserIdMinIconColorDesc = 'CATEGORIES_BY_USER_ID_MIN_ICON_COLOR_DESC',
@@ -9683,6 +9834,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdMinTypeDesc = 'CATEGORIES_BY_USER_ID_MIN_TYPE_DESC',
   CategoriesByUserIdMinUserIdAsc = 'CATEGORIES_BY_USER_ID_MIN_USER_ID_ASC',
   CategoriesByUserIdMinUserIdDesc = 'CATEGORIES_BY_USER_ID_MIN_USER_ID_DESC',
+  CategoriesByUserIdStddevPopulationCreatedAtAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_ASC',
+  CategoriesByUserIdStddevPopulationCreatedAtDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_CREATED_AT_DESC',
   CategoriesByUserIdStddevPopulationIconAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_ASC',
   CategoriesByUserIdStddevPopulationIconColorAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_ASC',
   CategoriesByUserIdStddevPopulationIconColorDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_ICON_COLOR_DESC',
@@ -9695,6 +9848,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdStddevPopulationTypeDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_TYPE_DESC',
   CategoriesByUserIdStddevPopulationUserIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_ASC',
   CategoriesByUserIdStddevPopulationUserIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_POPULATION_USER_ID_DESC',
+  CategoriesByUserIdStddevSampleCreatedAtAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_ASC',
+  CategoriesByUserIdStddevSampleCreatedAtDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_CREATED_AT_DESC',
   CategoriesByUserIdStddevSampleIconAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_ASC',
   CategoriesByUserIdStddevSampleIconColorAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_ASC',
   CategoriesByUserIdStddevSampleIconColorDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_ICON_COLOR_DESC',
@@ -9707,6 +9862,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdStddevSampleTypeDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_TYPE_DESC',
   CategoriesByUserIdStddevSampleUserIdAsc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_ASC',
   CategoriesByUserIdStddevSampleUserIdDesc = 'CATEGORIES_BY_USER_ID_STDDEV_SAMPLE_USER_ID_DESC',
+  CategoriesByUserIdSumCreatedAtAsc = 'CATEGORIES_BY_USER_ID_SUM_CREATED_AT_ASC',
+  CategoriesByUserIdSumCreatedAtDesc = 'CATEGORIES_BY_USER_ID_SUM_CREATED_AT_DESC',
   CategoriesByUserIdSumIconAsc = 'CATEGORIES_BY_USER_ID_SUM_ICON_ASC',
   CategoriesByUserIdSumIconColorAsc = 'CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_ASC',
   CategoriesByUserIdSumIconColorDesc = 'CATEGORIES_BY_USER_ID_SUM_ICON_COLOR_DESC',
@@ -9719,6 +9876,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdSumTypeDesc = 'CATEGORIES_BY_USER_ID_SUM_TYPE_DESC',
   CategoriesByUserIdSumUserIdAsc = 'CATEGORIES_BY_USER_ID_SUM_USER_ID_ASC',
   CategoriesByUserIdSumUserIdDesc = 'CATEGORIES_BY_USER_ID_SUM_USER_ID_DESC',
+  CategoriesByUserIdVariancePopulationCreatedAtAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_ASC',
+  CategoriesByUserIdVariancePopulationCreatedAtDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_CREATED_AT_DESC',
   CategoriesByUserIdVariancePopulationIconAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_ASC',
   CategoriesByUserIdVariancePopulationIconColorAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_ASC',
   CategoriesByUserIdVariancePopulationIconColorDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_ICON_COLOR_DESC',
@@ -9731,6 +9890,8 @@ export enum UsersOrderBy {
   CategoriesByUserIdVariancePopulationTypeDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_TYPE_DESC',
   CategoriesByUserIdVariancePopulationUserIdAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_ASC',
   CategoriesByUserIdVariancePopulationUserIdDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_POPULATION_USER_ID_DESC',
+  CategoriesByUserIdVarianceSampleCreatedAtAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_ASC',
+  CategoriesByUserIdVarianceSampleCreatedAtDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_CREATED_AT_DESC',
   CategoriesByUserIdVarianceSampleIconAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_ASC',
   CategoriesByUserIdVarianceSampleIconColorAsc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_ASC',
   CategoriesByUserIdVarianceSampleIconColorDesc = 'CATEGORIES_BY_USER_ID_VARIANCE_SAMPLE_ICON_COLOR_DESC',
@@ -10394,6 +10555,13 @@ export type Get_Transactions_For_CategoryQuery = { __typename?: 'Query', transac
 
 export type ProfileFragment = { __typename?: 'User', firstName?: string | null, lastName?: string | null, gender?: UserGender | null, email?: string | null, tel?: string | null, picture?: string | null, date?: any | null } & { ' $fragmentName'?: 'ProfileFragment' };
 
+export type GetUnreadNotificationsQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetUnreadNotificationsQuery = { __typename?: 'Query', notifications?: { __typename?: 'NotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Notification', id: string, isRead: boolean }> } | null };
+
 export type GetUsersDevicesQueryVariables = Exact<{
   usersIds: Array<Scalars['String']['input']> | Scalars['String']['input'];
 }>;
@@ -10493,7 +10661,7 @@ export type Check_Category_TransactionsQueryVariables = Exact<{
 }>;
 
 
-export type Check_Category_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string }> } | null };
+export type Check_Category_TransactionsQuery = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string }> } | null, budgets?: { __typename?: 'BudgetsConnection', nodes: Array<{ __typename?: 'Budget', budgetId: string }> } | null };
 
 export type Get_User_Categories3QueryVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -10521,6 +10689,13 @@ export type Delete_CategoryMutationVariables = Exact<{
 
 export type Delete_CategoryMutation = { __typename?: 'Mutation', deleteCategory?: { __typename?: 'DeleteCategoryPayload', clientMutationId?: string | null } | null };
 
+export type Delete_TransactionMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type Delete_TransactionMutation = { __typename?: 'Mutation', deleteTransaction?: { __typename?: 'DeleteTransactionPayload', clientMutationId?: string | null } | null };
+
 export type Update_CategoryMutationVariables = Exact<{
   id: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -10544,7 +10719,7 @@ export type Get_Transactions3QueryVariables = Exact<{
 }>;
 
 
-export type Get_Transactions3Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
+export type Get_Transactions3Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, date?: any | null, amount: number, description?: string | null, category?: { __typename?: 'Category', id: string, name: string } | null }> } | null };
 
 export type SetUserTokenMutationVariables = Exact<{
   userId: Scalars['String']['input'];
@@ -10561,13 +10736,6 @@ export type Get_Transactions4QueryVariables = Exact<{
 
 
 export type Get_Transactions4Query = { __typename?: 'Query', transactions?: { __typename?: 'TransactionsConnection', nodes: Array<{ __typename?: 'Transaction', transactionId: string, type: Typetransaction, userId?: string | null, categoryId?: string | null, date?: any | null, description?: string | null, amount: number, category?: { __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction } | null }> } | null, categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', id: string, name: string, icon?: string | null, iconColor?: string | null, type: Typetransaction }> } | null };
-
-export type Delete_TransactionMutationVariables = Exact<{
-  id: Scalars['String']['input'];
-}>;
-
-
-export type Delete_TransactionMutation = { __typename?: 'Mutation', deleteTransaction?: { __typename?: 'DeleteTransactionPayload', clientMutationId?: string | null } | null };
 
 export type Edit_Transaction2MutationVariables = Exact<{
   id: Scalars['String']['input'];

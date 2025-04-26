@@ -9,10 +9,11 @@ import { ExpenseExeceededType } from "~/notif/types";
 import { userAtom } from "~/store/store";
 import { icons } from "../routes/CategoryIconPicker";
 import dayjs from "dayjs";
+import { refreshNotifications } from "~/layout/MainNavbar";
 
 const GET_CATEGORIES = gql`
   query GET_CATEGORIES($userId: String!) {
-    categories(condition: { userId: $userId }) {
+    categories(condition: { userId: $userId },orderBy: CREATED_AT_DESC) {
       nodes {
         type
         id
@@ -87,9 +88,8 @@ const EDIT_TRANSACTION = gql`
   }
 `;
 
-// Update the GET_BUDGET_FOR_CATEGORY query to include alert_threshold
 const GET_BUDGET_FOR_CATEGORY = gql`
-  query GET_BUDGET_FOR_CATEGORY($userId: String!, $categoryId: String!,$month: Datetime!) {
+  query GET_BUDGET_FOR_CATEGORY($userId: String!, $categoryId: String!, $month: Datetime!) {
     budgets(
       condition: { userId: $userId, categoryId: $categoryId }
       filter: { month: { equalTo: $month } }
@@ -108,22 +108,22 @@ const GET_BUDGET_FOR_CATEGORY = gql`
 
 const GET_TRANSACTIONS_FOR_CATEGORY = gql`
   query GET_TRANSACTIONS_FOR_CATEGORY($userId: String!, $categoryId: String!, $start: Datetime!, $end: Datetime!) {
-  transactions(
-    condition: {userId: $userId, categoryId: $categoryId, type: EXPENSE}
-    filter: {date: {greaterThanOrEqualTo: $start, lessThanOrEqualTo: $end}}
-  ) {
-    nodes {
-      transactionId
-      amount
-      date
-    }
-    aggregates {
-      sum {
+    transactions(
+      condition: { userId: $userId, categoryId: $categoryId, type: EXPENSE }
+      filter: { date: { greaterThanOrEqualTo: $start, lessThanOrEqualTo: $end } }
+    ) {
+      nodes {
+        transactionId
         amount
+        date
+      }
+      aggregates {
+        sum {
+          amount
+        }
       }
     }
   }
-}
 `;
 
 const DynamicIcon = ({
@@ -204,15 +204,14 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   const amountInputRef = useRef<HTMLInputElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  
-  // Get the urql client to use in checkBudgetStatus
+
   const client = useClient();
 
   const [{ data }] = useQuery({
     query: GET_CATEGORIES,
-    variables: user ? { userId: user.oidcId } : undefined, // Pass the userId here
-    pause: !user, // Pause until user is available
-    requestPolicy: "network-only", // Ensure we always fetch fresh data
+    variables: user ? { userId: user.oidcId } : undefined,
+    pause: !user,
+    requestPolicy: "network-only",
   });
 
   const [result, mutate] = useMutation(ADD_TRANSACTION_MUTATION);
@@ -223,7 +222,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node) &&
-        !modalRef.current?.contains(event.target as Node) // Check if the click is inside the modal
+        !modalRef.current?.contains(event.target as Node)
       ) {
         setShowCategoryDropdown(false);
       }
@@ -246,9 +245,14 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
   useEffect(() => {
     if (!categoryId && data?.categories?.nodes?.length > 0) {
-      setCategoryId(data.categories.nodes[0].id);
+      const filteredCategories = data.categories.nodes.filter(
+        (cat: any) => cat.type === type || !cat.type,
+      );
+      if (filteredCategories.length > 0) {
+        setCategoryId(filteredCategories[0].id);
+      }
     }
-  }, [data, categoryId]);
+  }, [data, categoryId, type]);
 
   useEffect(() => {
     if (isEditing && editData) {
@@ -297,14 +301,12 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     return true;
   };
 
-  // Helper function to update only year, month, and day, preserving original time exactly
   const updateDatePreserveTime = (
     newDateStr: string,
     originalDateStr: string | undefined,
   ): string => {
     if (!originalDateStr) return new Date().toISOString();
 
-    // Parse the original date string directly
     const originalParts = originalDateStr.match(
       /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/,
     );
@@ -313,10 +315,8 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     const [, , , , originalHours, originalMinutes, originalSeconds] =
       originalParts;
 
-    // Parse the new date from the date picker
     const [newYear, newMonth, newDay] = newDateStr.split("-").map(Number);
 
-    // Construct a new ISO string with new date and original time
     const updatedDate = new Date(
       Date.UTC(
         newYear,
@@ -330,80 +330,74 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     return updatedDate.toISOString();
   };
 
-  // Modify the checkBudgetExceeded function to return an object with both exceeded conditions
-  const checkBudgetStatus = async (categoryId: string, amount: number, transactionDate: string, isExpense: boolean) => {
+  const checkBudgetStatus = async (
+    categoryId: string,
+    amount: number,
+    transactionDate: string,
+    isExpense: boolean,
+    isEditing: boolean = false,
+    previousAmount: number = 0,
+  ) => {
     if (!isExpense) return { exceeded: false, nearlyExceeded: false };
-    
-    // Get the month of the transaction in YYYY-MM format
-    const transactionMonth = new Date(transactionDate).toISOString().substring(0, 7);
-    console.log("transactionDate:", transactionDate);
-    
+
+    const transactionMonth = dayjs(transactionDate).format("YYYY-MM-01T00:00:00.000Z");
+
     try {
-      // Fetch budget for this category and month using the existing client
-      const budgetResult = await client.query(GET_BUDGET_FOR_CATEGORY, {
-        userId: user?.oidcId,
-        categoryId,
-        month: transactionDate
-      }).toPromise();
+      const budgetResult = await client
+        .query(GET_BUDGET_FOR_CATEGORY, {
+          userId: user?.oidcId,
+          categoryId,
+          month: transactionMonth,
+        })
+        .toPromise();
 
-      console.log("Budget Result:", budgetResult);
-      
-      if (!budgetResult.data?.budgets?.nodes || budgetResult.data?.budgets?.nodes?.length === 0) {
-        return { exceeded: false, nearlyExceeded: false }; // No budget found for this category and month
+      if (!budgetResult.data?.budgets?.nodes?.length) {
+        console.log("No budget found for category:", categoryId);
+        return { exceeded: false, nearlyExceeded: false };
       }
-      
-      const budget = budgetResult.data?.budgets?.nodes[0];
-      console.log('dayjs(transactionDate).endOf("month").toISOString()', dayjs(transactionDate).endOf("month").toISOString())
-      
-      // Fetch all transactions for this category and month
-      const transactionsResult = await client.query(GET_TRANSACTIONS_FOR_CATEGORY, {
-        userId: user?.oidcId,
-        categoryId,
-        start: transactionDate,
-        end: dayjs(transactionDate).endOf("month").toISOString(),
-      }).toPromise();
-      
-      // Filter transactions to match the exact month and exclude the current transaction if editing
-      const relevantTransactions = transactionsResult.data?.transactions.nodes.filter(
-        (transaction: any) => {
-          const transMonth = new Date(transaction.date).toISOString().substring(0, 7);
-          // When editing, exclude the transaction being edited (it will be included with the new amount)
-          if (isEditing && transaction.transactionId === editData?.id) {
-            return false;
-          }
-          return transMonth === transactionMonth;
-        }
-      );
 
-      console.log("transactionsResult.data?.transactions.nodes", transactionsResult?.data?.transactions?.nodes)
-      
-      // Calculate total expenses for this category in this month
-      const totalExpenses = transactionsResult.data?.transactions.nodes?.reduce(
-        (sum: number, transaction: any) => sum + transaction.amount, 0
-      );
+      const budget = budgetResult.data.budgets.nodes[0];
+      console.log("Budget:", budget);
+
+      const transactionsResult = await client
+        .query(GET_TRANSACTIONS_FOR_CATEGORY, {
+          userId: user?.oidcId,
+          categoryId,
+          start: transactionMonth,
+          end: dayjs(transactionMonth).endOf("month").toISOString(),
+        })
+        .toPromise();
+
+      let totalExpenses = transactionsResult.data?.transactions?.nodes?.reduce(
+        (sum: number, transaction: any) => {
+          if (isEditing && transaction.transactionId === editData?.id) {
+            return sum;
+          }
+          return sum + transaction.amount;
+        },
+        0,
+      ) || 0;
+
+      totalExpenses += amount;
+
+      const alertThreshold = budget.alertThreshold ?? 80;
+      const thresholdAmount = (budget.amount * alertThreshold) / 100;
+
       console.log("Total Expenses:", totalExpenses);
       console.log("Budget Amount:", budget.amount);
-      
-      // Add the current transaction amount to check if it exceeds the budget
-      const newTotal = totalExpenses + amount;
-      console.log("New Total:", newTotal);
-      
-      // Get alert threshold (default to 80% if not specified)
-      const alertThreshold = budget.alert_threshold || 80;
-      const thresholdAmount = (budget.amount * alertThreshold) / 100;
-      
-      // Check both conditions
-      const exceeded = newTotal > budget.amount;
-      const nearlyExceeded = !exceeded && newTotal > thresholdAmount;
-      
-      return { exceeded, nearlyExceeded };
+      console.log("Alert Threshold (%):", alertThreshold);
+      console.log("Threshold Amount:", thresholdAmount);
+
+      const exceeded = totalExpenses > budget.amount;
+      const nearlyExceeded = !exceeded && totalExpenses > thresholdAmount;
+
+      return { exceeded, nearlyExceeded, totalExpenses, budgetAmount: budget.amount };
     } catch (error) {
       console.error("Error checking budget:", error);
       return { exceeded: false, nearlyExceeded: false };
     }
   };
 
-  // Update the handleSubmit function to use the new budget status check
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -413,13 +407,29 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     const isExpenseType = type === "EXPENSE";
 
     try {
-      // Check budget status
       let budgetStatus = { exceeded: false, nearlyExceeded: false };
-      
+
       if (isEditing) {
-        // Check if editing will cause budget to be exceeded (only if it's an expense)
+        let previousBudgetStatus = { exceeded: false, nearlyExceeded: false };
+        if (isExpenseType && editData) {
+          previousBudgetStatus = await checkBudgetStatus(
+            editData.categoryId,
+            editData.amount,
+            dayjs(editData.date).format("YYYY-MM-01T00:00:00.000Z"),
+            isExpenseType,
+            false,
+          );
+        }
+
         if (isExpenseType) {
-          budgetStatus = await checkBudgetStatus(categoryId, amount, dayjs(editData?.date).format("YYYY-MM-01 00:00"), isExpenseType);
+          budgetStatus = await checkBudgetStatus(
+            categoryId,
+            amount,
+            dayjs(editData?.date).format("YYYY-MM-01T00:00:00.000Z"),
+            isExpenseType,
+            true,
+            editData?.amount || 0,
+          );
         }
 
         const editVariables = {
@@ -435,23 +445,54 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         const editResponse = await editMutate(editVariables);
 
         if (editResponse.data?.updateTransaction?.transaction) {
+          if (isExpenseType) {
+            if (budgetStatus.exceeded && !previousBudgetStatus.exceeded) {
+              triggerNotifEvent("expenseExeceededEvent", {
+                userIds: [user?.oidcId || ""],
+                type: ExpenseExeceededType.Exceeded,
+             categoryId,
+              } as any);
+              refreshNotifications();
+            } else if (
+              budgetStatus.nearlyExceeded &&
+              !previousBudgetStatus.nearlyExceeded &&
+              !budgetStatus.exceeded
+            ) {
+              triggerNotifEvent("expenseNearlyExceededEvent", {
+                userIds: [user?.oidcId || ""],
+                type: ExpenseExeceededType.NearlyExceeded,
+                categoryId,
+              } as any);
+              refreshNotifications();
+            } else if (
+              !budgetStatus.exceeded &&
+              !budgetStatus.nearlyExceeded &&
+              (previousBudgetStatus.exceeded || previousBudgetStatus.nearlyExceeded)
+            ) {
+              console.log("Budget no longer exceeded or nearly exceeded");
+            }
+          }
+
           onSuccess();
           handleClose();
         } else {
           console.error("Edit Mutation Error:", editResponse.error);
         }
       } else {
-        // Check if new transaction will cause budget to be exceeded (only if it's an expense)
         if (isExpenseType) {
-          budgetStatus = await checkBudgetStatus(categoryId, amount, dayjs().format("YYYY-MM-01 00:00"), isExpenseType);
-          console.log("Budget Status:", budgetStatus);
+          budgetStatus = await checkBudgetStatus(
+            categoryId,
+            amount,
+            dayjs().format("YYYY-MM-01T00:00:00.000Z"),
+            isExpenseType,
+          );
         }
 
         const variables = {
           user_id: user?.oidcId,
           category_id: categoryId,
           amount,
-          date: updateDatePreserveTime(date, new Date().toISOString()), // Use selected date with current time
+          date: updateDatePreserveTime(date, new Date().toISOString()),
           description: description || "",
           type,
           transaction_id: transactionId,
@@ -460,31 +501,33 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         const response = await mutate(variables);
 
         if (response.data?.createTransaction) {
+          if (isExpenseType) {
+           // In TransactionModal.js, update these sections
+if (budgetStatus.exceeded) {
+  triggerNotifEvent("expenseExeceededEvent", {
+    userIds: [user?.oidcId || ""],
+    type: ExpenseExeceededType.Exceeded,
+    categoryId,
+  } as any);
+  
+  console.log("Budget exceeded, triggering notification refresh");
+  setTimeout(() => refreshNotifications(), 500); // Add small delay to ensure notification is created first
+} else if (budgetStatus.nearlyExceeded) {
+  triggerNotifEvent("expenseNearlyExceededEvent", {
+    userIds: [user?.oidcId || ""],
+    type: ExpenseExeceededType.NearlyExceeded,
+    categoryId,
+  } as any);
+  
+  console.log("Budget nearly exceeded, triggering notification refresh");
+  setTimeout(() => refreshNotifications(), 500);
+}
+          }
+
           onSuccess();
           handleClose();
         } else {
           console.error("Add Mutation Error:", response.error);
-        }
-      }
-
-
-      
-      // Trigger appropriate notification events based on budget status
-      if (isExpenseType) {
-        if (budgetStatus.exceeded) {
-          // Budget exceeded notification
-          triggerNotifEvent("expenseExeceededEvent", {
-            userIds: [user?.oidcId || ""],
-            type: ExpenseExeceededType.Exceeded,
-            categoryId,
-          } as any);
-        } else if (budgetStatus.nearlyExceeded) {
-          // Budget nearly exceeded notification
-          triggerNotifEvent("expenseNearlyExceededEvent", {
-            userIds: [user?.oidcId || ""],
-            type: ExpenseExeceededType.NearlyExceeded,
-            categoryId,
-          } as any);
         }
       }
     } catch (error) {
@@ -492,7 +535,6 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     }
   };
 
-  // Create a click handler for the submit button that submits the form
   const handleButtonSubmit = () => {
     if (formRef.current) {
       formRef.current.dispatchEvent(
@@ -514,20 +556,17 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   });
 
   return (
-    // Custom modal implementation instead of using Dialog directly
     <div
       className={`fixed inset-0 z-50 ${basicOpened ? "block" : "hidden"}`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm"
         onClick={handleClose}
       ></div>
 
-      {/* Modal Content */}
       <div className="pointer-events-none fixed inset-0 flex items-center justify-center p-4">
         <div
           ref={modalRef}
@@ -549,7 +588,6 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
             </button>
           </div>
 
-          {/* Form container with flex-1 and overflow-y-auto to allow scrolling */}
           <div className="mt flex-1 overflow-y-auto">
             <form ref={formRef} onSubmit={handleSubmit} className="p-6">
               <div className="mb-6">
@@ -788,7 +826,6 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
             </form>
           </div>
 
-          {/* Fixed button container at the bottom */}
           <div className="border-t border-gray-200 bg-white p-6 pt-0">
             <div className="flex w-full space-x-4">
               <button

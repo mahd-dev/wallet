@@ -37,7 +37,7 @@ export default function NotificationsPage() {
   return (
     <Block className="mx-auto max-w-2xl px-4 pt-6 pb-14">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Notifications</h1>
+        <h1 className="text-2xl font-bold mt-20"></h1>
       </div>
 
       {isLoading && (

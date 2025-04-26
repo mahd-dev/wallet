@@ -37,16 +37,6 @@ const MainLayout: React.FC<React.HTMLProps<HTMLDivElement>> = ({
 
   return (
     <div>
-      <img
-        className="pointer-events-none fixed -start-10 top-10 w-full max-w-3xl object-fill blur-3xl"
-        src="/images/bg-gradient.svg"
-        alt=""
-      />
-      <img
-        className="pointer-events-none fixed bottom-0 end-[-50%] w-full max-w-3xl object-fill opacity-50 blur-3xl"
-        src="/images/bg-gradient.svg"
-        alt=""
-      />
       <div
         className={`fixed start-0 h-screen w-full transform-gpu transition-all duration-300 lg:hidden lg:w-56 ${mainPanel ? `z-50 backdrop-blur-md lg:z-0` : `pointer-events-none scale-105 opacity-0 lg:pointer-events-auto lg:scale-100 lg:opacity-100 ltr:-translate-x-32 lg:ltr:translate-x-0 rtl:translate-x-32 lg:rtl:translate-x-0`}`}
       >
