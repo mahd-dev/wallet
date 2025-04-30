@@ -72,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     // Create OTP verification entry
     const otpResp = await client
-      .mutation(CREATE_OTP_VERIFICATION, {
+      .mutation<{ createOtpVerification?: { otpVerification?: { id: string; otp: string; expiresAt: string; email: string } }; error?: { message?: string } | null }>(CREATE_OTP_VERIFICATION, {
         input: {
           otpVerification: {
             id: crypto.randomUUID(),
@@ -88,11 +88,11 @@ export const action: ActionFunction = async ({ request }) => {
 
     if (otpResp.error) {
       console.error("OTP Mutation Error:", otpResp.error);
-      return json({ error: otpResp.error.message }, { status: 500 });
+      return json({ error: otpResp.error?.message || "Unknown error" }, { status: 500 });
     }
 
     if (otpResp.error) {
-      return json({ error: otpResp.error.message }, { status: 500 });
+      return json({ error: otpResp.error?.message || "Unknown error" }, { status: 500 });
     }
 
     console.log("Sending OTP to:", user.email);

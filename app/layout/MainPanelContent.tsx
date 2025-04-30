@@ -1,42 +1,27 @@
-// import { useNavigate } from "@remix-run/react";
-// import {
-//   IconChevronLeft,
-//   IconLanguage,
-//   IconLogin2,
-//   IconSearch,
-//   IconSmartHome,
-//   IconUser,
-// } from "@tabler/icons-react";
-// import { useAtom } from "jotai";
-// import { List, ListItem } from "konsta/react";
-// import { authAtom, localeAtom, mainPanelAtom } from "~/store/store";
-
-import { useNavigate } from "@remix-run/react";
+import { useNavigate, useLocation } from "@remix-run/react";
 import {
   IconChartBar,
   IconChevronLeft,
+  IconLanguage,
   IconLogin2,
   IconMoneybag,
   IconSmartHome,
   IconUser,
+  IconWallet,
+  IconList,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { List, ListItem } from "konsta/react";
-import { authAtom, mainPanelAtom } from "~/store/store";
+import { authAtom, localeAtom, mainPanelAtom } from "~/store/store";
 
 export default function MainPanelContent() {
   const [auth] = useAtom(authAtom);
-
   const [, setMainPanel] = useAtom(mainPanelAtom);
-
-  // const [locale, setLocale] = useAtom(localeAtom);
-
+  const [locale, setLocale] = useAtom(localeAtom);
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
-    // <div
-    //   className={`pt-safe pb-safe ps-safe pe-safe flex h-full flex-col place-content-between`}
-    // >
     <div className="flex h-full flex-col place-content-between">
       <div>
         <button
@@ -64,25 +49,51 @@ export default function MainPanelContent() {
           className="overflow-hidden lg:rounded-e-full"
           media={<IconMoneybag />}
           link
-          title={" Transactions"}
+          title={"Transactions"}
           onClick={(e) => {
             e.preventDefault();
             navigate(`/transactions`);
             setMainPanel(false);
           }}
-          linkProps={{ href: "/my-orders" }}
+          linkProps={{ href: "/transactions" }}
+        />
+        {/* Added Budget Section */}
+        <ListItem
+          className="overflow-hidden lg:rounded-e-full"
+          media={<IconWallet />}
+          link
+          title={"Budget"}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(`/budget`);
+            setMainPanel(false);
+          }}
+          linkProps={{ href: "/budget" }}
+        />
+        {/* Added Categories Section */}
+        <ListItem
+          className="overflow-hidden lg:rounded-e-full"
+          media={<IconList />}
+          link
+          title={"Catégories"}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(`/categorie`);
+            setMainPanel(false);
+          }}
+          linkProps={{ href: "/categorie" }}
         />
         <ListItem
           className="overflow-hidden lg:rounded-e-full"
           media={<IconChartBar />}
           link
-          title={" statistiques"}
+          title={"Statistiques"}
           onClick={(e) => {
             e.preventDefault();
             navigate(`/statistiques`);
             setMainPanel(false);
           }}
-          linkProps={{ href: "/favorites" }}
+          linkProps={{ href: "/statistiques" }}
         />
         {auth && (
           <>
@@ -115,26 +126,7 @@ export default function MainPanelContent() {
           />
         )}
       </List>
-      <div>
-        {/* <form className="mx-3 mb-3 flex text-sm">
-          <label htmlFor="lang">
-            <IconLanguage />
-          </label>
-          <div className="w-4"></div>
-          <select
-            className="flex-1 bg-transparent"
-            id="lang"
-            value={locale}
-            onChange={(e) => {
-              document.cookie = `locale=${e.currentTarget.value}; secure; SameSite=Strict; expires=Thu, 01 Jan 10000 00:00:00 UTC; path=/;`;
-              setLocale(e.currentTarget.value);
-            }}
-          >
-            <option value={"en"}>English</option>
-            <option value={"fr"}>Français</option>
-          </select>
-        </form> */}
-      </div>
+      <div></div>
     </div>
   );
 }

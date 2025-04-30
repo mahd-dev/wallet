@@ -58,7 +58,7 @@ interface Transaction {
 // GraphQL queries and mutations
 const GET_CATEGORIES = gql`
   query GET_USER_CATEGORIES($userId: String!) {
-    categories(condition: { userId: $userId, type: EXPENSE }) {
+    categories(condition: { userId: $userId, type: EXPENSE }, orderBy: CREATED_AT_DESC) {
       nodes {
         id
         name
@@ -326,10 +326,7 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
   ].sort((a, b) => dayjs(b).diff(dayjs(a)));
 
   return (
-    <div className="mx-auto max-w-2xl p-6">
-      <h1 className="mb-6 mt-20 text-2xl font-bold text-gray-800">
-        BUDGETS MENSUELS
-      </h1>
+    <div className="mx-auto max-w-2xl p-6 mt-16">
 
       {/* Improved Summary Card */}
       {budgets.length > 0 && (

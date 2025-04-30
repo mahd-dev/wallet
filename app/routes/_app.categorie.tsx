@@ -1,11 +1,10 @@
-import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconPlus, IconTrash, IconAlertCircle } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { gql, useMutation, useQuery } from "urql";
 import { userAtom } from "~/store/store";
 import CategoryIconPicker, { icons } from "./CategoryIconPicker";
 import { useClient } from "urql";
-
 
 // GraphQL query to check if a category has transactions
 const CHECK_CATEGORY_TRANSACTIONS = gql`
@@ -115,6 +114,8 @@ type Category = {
   type: "EXPENSE" | "INCOME";
 };
 
+import { useEffect, useRef } from "react";
+
 const CategoriesPage = () => {
   const [user] = useAtom(userAtom);
   const [activeTab, setActiveTab] = useState<"EXPENSE" | "INCOME">("EXPENSE");
@@ -126,6 +127,14 @@ const CategoriesPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
   const [hasTransactions, setHasTransactions] = useState(false);
+  const [hasBudgets, setHasBudgets] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{
+    name?: string;
+    icon?: string;
+  }>({});
+  
+  // Refs for modal click-outside handling
+  const modalRef = useRef<HTMLDivElement>(null);
   
   // Mutations and queries
   const [, addCategory] = useMutation(ADD_CATEGORY);
@@ -145,8 +154,30 @@ const CategoriesPage = () => {
     requestPolicy: "network-only",
   });
 
+  // Helper for generating softer colors
+  const generateSofterColor = (type: "EXPENSE" | "INCOME") => {
+    return type === "EXPENSE" ? "#FF8A8A" : "#98E5B0"; // Lighter red for expense, even softer green for income
+  };
+
+  const validateForm = () => {
+    const errors: {name?: string; icon?: string} = {};
+    
+    if (!categoryName.trim()) {
+      errors.name = "Category name is required";
+    }
+    
+    if (!selectedIcon) {
+      errors.icon = "Please select an icon";
+    }
+    
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleAddCategory = async () => {
-    if (categoryName.trim() && selectedIcon && user?.oidcId) {
+    if (!validateForm()) return;
+
+    if (user?.oidcId) {
       const iconColor =
         icons.find((icon) => icon.value === selectedIcon)?.color || "";
 
@@ -154,7 +185,7 @@ const CategoriesPage = () => {
         id: crypto.randomUUID(),
         userId: user.oidcId,
         name: categoryName,
-        icon: selectedIcon,
+        icon: selectedIcon as string,
         iconColor: iconColor,
         type: activeTab, // Ensure correct type is used
       });
@@ -165,6 +196,7 @@ const CategoriesPage = () => {
         setSelectedIcon(null);
         setSelectedColor(null);
         setIsModalOpen(false);
+        setValidationErrors({});
       }
     }
   };
@@ -179,14 +211,16 @@ const CategoriesPage = () => {
         .query(CHECK_CATEGORY_TRANSACTIONS, { category_id: category.id })
         .toPromise();
   
-      setHasTransactions(result?.data?.transactions?.nodes.length > 0);
+      const transactionsExist = result?.data?.transactions?.nodes.length > 0;
+      const budgetsExist = result?.data?.budgets?.nodes.length > 0;
+      
+      setHasTransactions(transactionsExist);
+      setHasBudgets(budgetsExist);
     }
   
     setIsDeleteModalOpen(true);
   };
   
-  
-
   const confirmDeleteCategory = async () => {
     if (categoryToDelete && user?.oidcId) {
       try {
@@ -201,39 +235,37 @@ const CategoriesPage = () => {
           await deleteTransaction({ id: transaction.transactionId });
         }
 
-      // Delete all associated budgets
-      const budgets = result.data?.budgets?.nodes || [];
-      for (const budget of budgets) {
-        await deleteBudget({ id: budget.budgetId });
+        // Delete all associated budgets
+        const budgets = result.data?.budgets?.nodes || [];
+        for (const budget of budgets) {
+          await deleteBudget({ id: budget.budgetId });
+        }
+        // Finally delete the category
+        const deleteCategoryResult = await deleteCategory({ id: categoryToDelete.id });
+        
+        if (deleteCategoryResult.data?.deleteCategory) {
+          refetch();
+          setIsDeleteModalOpen(false);
+          setCategoryToDelete(null);
+        }
+      } catch (error) {
+        console.error("Error deleting category and related items:", error);
+        // Consider showing an error message to the user
       }
-      // Finally delete the category
-      const deleteCategoryResult = await deleteCategory({ id: categoryToDelete.id });
-      
-      if (deleteCategoryResult.data?.deleteCategory) {
-        refetch();
-        setIsDeleteModalOpen(false);
-        setCategoryToDelete(null);
-      }
-    } catch (error) {
-      console.error("Error deleting category and related items:", error);
-      // Consider showing an error message to the user
     }
-  }
-};
+  };
+
   const handleUpdateCategory = async () => {
-    if (
-      editingCategory &&
-      categoryName.trim() &&
-      selectedIcon &&
-      user?.oidcId
-    ) {
+    if (!validateForm()) return;
+
+    if (editingCategory && user?.oidcId) {
       const iconColor =
         icons.find((icon) => icon.value === selectedIcon)?.color || "";
 
       const result = await updateCategory({
         id: editingCategory.id,
         name: categoryName,
-        icon: selectedIcon,
+        icon: selectedIcon as string,
         iconColor: iconColor,
         type: activeTab,
       });
@@ -245,6 +277,7 @@ const CategoriesPage = () => {
         setSelectedColor(null);
         setEditingCategory(null);
         setIsModalOpen(false);
+        setValidationErrors({});
       }
     }
   };
@@ -254,15 +287,41 @@ const CategoriesPage = () => {
     setCategoryName(category.name);
     setSelectedIcon(category.icon);
     setSelectedColor(category.iconColor);
+    setActiveTab(category.type); // Set the active tab based on the category type
     setIsModalOpen(true);
+    setValidationErrors({});
   };
 
+  // Function to handle clicks outside modal
+  const handleClickOutside = (event: MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      setIsModalOpen(false);
+      setIsDeleteModalOpen(false);
+      setValidationErrors({});
+    }
+  };
+
+  // Set up event listener for clicking outside modal
+  useEffect(() => {
+    if (isModalOpen || isDeleteModalOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen, isDeleteModalOpen]);
+  
   const handleAddNew = () => {
     setEditingCategory(null);
     setCategoryName("");
     setSelectedIcon(null);
     setSelectedColor(null);
     setIsModalOpen(true);
+    setValidationErrors({});
   };
 
   // Filter categories based on the active tab
@@ -271,72 +330,69 @@ const CategoriesPage = () => {
   );
 
   return (
-    <div className="mx-auto mt-10 max-w-4xl px-4 pb-12 pt-8 sm:px-6">
+    <div className="mx-auto mt-12 max-w-4xl px-3 pb-12 pt-4 sm:mt-16 sm:px-6">
       {/* Tabs */}
-      <div className="mb-8 overflow-hidden rounded-xl bg-white shadow-lg">
+      <div className="overflow-hidden rounded-xl bg-white shadow-lg">
         <div className="flex border-b">
           <button
             onClick={() => setActiveTab("EXPENSE")}
-            className={`flex-1 py-4 text-lg font-medium transition-colors duration-200 ${
+            className={`flex-1 py-3 text-base font-medium transition-colors duration-200 sm:py-4 sm:text-lg ${
               activeTab === "EXPENSE"
-                ? "border-b-2 border-blue-600 bg-blue-50 text-blue-600"
+                ? "border-b-2 border-red-400 bg-red-50 text-red-500"
                 : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
             }`}
           >
-            EXPENSE
+            Expense
           </button>
           <button
             onClick={() => setActiveTab("INCOME")}
-            className={`flex-1 py-4 text-lg font-medium transition-colors duration-200 ${
+            className={`flex-1 py-3 text-base font-medium transition-colors duration-200 sm:py-4 sm:text-lg ${
               activeTab === "INCOME"
-                ? "border-b-2 border-green-600 bg-green-50 text-green-600"
+                ? "border-b-2 border-green-500 bg-green-50 text-green-500"
                 : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
             }`}
           >
-            INCOME
+            Income
           </button>
         </div>
 
-        <div className="p-6">
-          {/* Header and Add Button */}
-          <div className="mb-8 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">
-              {activeTab === "EXPENSE"
-                ? "EXPENSE CATEGORIES"
-                : "INCOME CATEGORIES"}
-            </h1>
+        <div className="p-4 sm:p-6">
+          {/* Center Add Button */}
+          <div className="mb-6 flex items-center justify-center">
             <button
               onClick={handleAddNew}
-              className={`flex transform items-center gap-2 rounded-lg px-5 py-2.5 font-medium text-white shadow-md transition hover:scale-105 ${
+              className={`flex transform items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-white shadow-md transition hover:scale-105 sm:text-base ${
                 activeTab === "EXPENSE"
-                  ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-green-600 hover:bg-green-700"
+                  ? "bg-red-400 hover:bg-red-500"
+                  : "bg-green-500 hover:bg-green-600"
               }`}
             >
-              <IconPlus size={20} />
-              <span>Add {activeTab === "EXPENSE" ? "EXPENSE" : "INCOME"}</span>
+              <IconPlus size={18} />
+              <span>
+                {activeTab === "EXPENSE" ? "Ajouter une dépense" : "Ajouter un revenu"}
+              </span>
             </button>
           </div>
 
           {/* Category Grid */}
           {fetching ? (
             <div className="flex justify-center py-12">
-              <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-gray-900"></div>
+              <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900 sm:h-12 sm:w-12"></div>
             </div>
           ) : error ? (
             <div className="rounded-lg bg-red-100 p-4 text-red-700">
               <p>Error: {error.message}</p>
             </div>
           ) : filteredCategories?.length === 0 ? (
-            <div className="rounded-lg bg-gray-50 py-12 text-center">
-              <p className="mb-4 text-gray-600">
-                No {activeTab} categories found
+            <div className="rounded-lg bg-gray-50 py-8 text-center sm:py-12">
+              <p className="mb-4 text-sm text-gray-600 sm:text-base">
+                No categories found
               </p>
               <button
                 onClick={handleAddNew}
-                className={`rounded-lg px-5 py-2.5 font-medium text-white shadow ${
+                className={`rounded-lg px-4 py-2 text-sm font-medium text-white shadow sm:px-5 sm:py-2.5 sm:text-base ${
                   activeTab === "EXPENSE"
-                    ? "bg-blue-600 hover:bg-blue-700"
+                    ? "bg-red-400 hover:bg-red-500"
                     : "bg-green-600 hover:bg-green-700"
                 }`}
               >
@@ -344,7 +400,7 @@ const CategoriesPage = () => {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
               {filteredCategories?.map((category: Category) => {
                 // Find the icon component for the current category
                 const IconComponent = icons.find(
@@ -354,56 +410,66 @@ const CategoriesPage = () => {
                 return (
                   <div
                     key={category.id}
-                    className={`overflow-hidden rounded-xl shadow-md transition-all duration-200 hover:shadow-lg ${
+                    className={`overflow-hidden rounded-lg shadow-md transition-all duration-200 hover:shadow-lg sm:rounded-xl ${
                       category.type === "EXPENSE"
-                        ? "border-l-4 border-blue-500"
-                        : "border-l-4 border-green-500"
+                        ? "border-l-4 border-red-400"
+                        : "border-l-4 border-green-400"
                     }`}
                     style={{
                       background: `linear-gradient(135deg, ${category.iconColor}15 0%, white 100%)`,
                     }}
                   >
-                    <div className="p-5">
-                      <div className="mb-3 flex items-center">
-                        {/* Icon */}
+                    <div className="p-3 sm:p-4">
+                      <div className="mb-2 flex items-start sm:mb-3">
+                        {/* Icon - Fixed size and position */}
                         <div
-                          className="mr-4 flex h-12 w-12 items-center justify-center rounded-full shadow-sm"
+                          className="mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full shadow-sm sm:h-12 sm:w-12"
                           style={{
                             backgroundColor: `${category.iconColor}20`,
                             border: `1px solid ${category.iconColor}50`,
-                            borderRadius: "9999px", // Forces full circle shape
-                            overflow: "hidden", 
+                            borderRadius: "9999px",
+                            minWidth: "2.5rem", // Ensure minimum width on mobile
                           }}
                         >
                           {IconComponent && (
                             <IconComponent
-                              size={24}
+                              size={20}
+                              className="sm:text-2xl"
                               style={{ color: category.iconColor }}
                             />
                           )}
                         </div>
 
-                        {/* Name */}
-                        <h3 className="text-lg font-medium text-gray-800">
-                          {category.name}
+                        {/* Name - Use CSS responsive classes instead of JS measurement */}
+                        <h3 className="break-words text-sm font-medium text-gray-800 sm:text-lg">
+                          <span className="sm:hidden" style={{
+                            fontSize: category.name.length > 15 ? (
+                              category.name.length > 25 ? '0.7rem' : '0.8rem'
+                            ) : '0.875rem',
+                          }}>
+                            {category.name}
+                          </span>
+                          <span className="hidden sm:inline">
+                            {category.name}
+                          </span>
                         </h3>
                       </div>
 
                       {/* Actions */}
-                      <div className="mt-4 flex justify-end gap-2">
+                      <div className="mt-2 flex justify-end gap-1 sm:mt-3 sm:gap-2">
                         <button
                           onClick={() => handleEditCategory(category)}
-                          className="rounded-md bg-gray-100 p-2 text-gray-700 transition-colors hover:bg-gray-200"
+                          className="rounded-md bg-gray-100 p-1.5 text-gray-700 transition-colors hover:bg-gray-200 sm:p-2"
                           aria-label="Edit category"
                         >
-                          <IconEdit size={16} />
+                          <IconEdit size={14} className="sm:h-4 sm:w-4" />
                         </button>
                         <button
                           onClick={() => initiateDeleteCategory(category)}
-                          className="rounded-md bg-red-100 p-2 text-red-600 transition-colors hover:bg-red-200"
+                          className="rounded-md bg-red-100 p-1.5 text-red-600 transition-colors hover:bg-red-200 sm:p-2"
                           aria-label="Delete category"
                         >
-                          <IconTrash size={16} />
+                          <IconTrash size={14} className="sm:h-4 sm:w-4" />
                         </button>
                       </div>
                     </div>
@@ -417,9 +483,9 @@ const CategoriesPage = () => {
 
       {/* Add/Edit Category Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="w-full rounded-lg bg-white p-8 shadow-xl sm:w-96">
-            <h3 className="mb-6 text-xl font-bold">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-3 sm:p-4">
+          <div ref={modalRef} className="w-full max-w-xs rounded-lg bg-white p-4 shadow-xl sm:max-w-sm sm:p-6">
+            <h3 className="mb-4 text-lg font-bold sm:mb-6 sm:text-xl">
               {editingCategory ? "Edit Category" : "Add Category"}
             </h3>
             <div className="mb-4">
@@ -427,10 +493,14 @@ const CategoriesPage = () => {
                 type="text"
                 value={categoryName}
                 onChange={(e) => setCategoryName(e.target.value)}
-                className="w-full rounded-lg border p-3"
+                className={`w-full rounded-lg border p-2.5 sm:p-3 ${
+                  validationErrors.name ? "border-red-500" : "border-gray-300"
+                }`}
                 placeholder="Category Name"
-                required
               />
+              {validationErrors.name && (
+                <p className="mt-1 text-xs text-red-500">{validationErrors.name}</p>
+              )}
             </div>
             <CategoryIconPicker
               selectedIcon={selectedIcon}
@@ -438,9 +508,15 @@ const CategoriesPage = () => {
               selectedColor={selectedColor}
               setSelectedColor={setSelectedColor}
             />
+            {validationErrors.icon && (
+              <p className="mt-1 text-xs text-red-500">{validationErrors.icon}</p>
+            )}
             <div className="mt-4 flex justify-between">
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setValidationErrors({});
+                }}
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
                 Cancel
@@ -449,7 +525,11 @@ const CategoriesPage = () => {
                 onClick={
                   editingCategory ? handleUpdateCategory : handleAddCategory
                 }
-                className="rounded-md bg-blue-600 px-6 py-2 text-white"
+                className={`rounded-md px-4 py-2 text-sm text-white sm:px-6 sm:text-base ${
+                  activeTab === "EXPENSE"
+                    ? "bg-red-400 hover:bg-red-500"
+                    : "bg-green-600 hover:bg-green-700"
+                }`}
               >
                 {editingCategory ? "Save Changes" : "Add Category"}
               </button>
@@ -458,30 +538,48 @@ const CategoriesPage = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Confirmation Modal - Enhanced with better warnings */}
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-            <h3 className="mb-4 text-xl font-bold text-gray-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-3 sm:p-4">
+          <div ref={modalRef} className="w-full max-w-xs rounded-lg bg-white p-4 shadow-xl sm:max-w-md sm:p-6">
+            <h3 className="mb-3 text-lg font-bold text-gray-900 sm:mb-4 sm:text-xl">
               Delete Category
             </h3>
-            <p className="mb-6 text-gray-600">
-              {hasTransactions
-                ? `This category "${categoryToDelete?.name}" has transactions associated with it. Deleting it will affect these transactions. Are you sure you want to proceed?`
-                : `Are you sure you want to delete the category "${categoryToDelete?.name}"?`}
+            
+            {/* Enhanced warning message */}
+            {(hasTransactions || hasBudgets) && (
+              <div className="mb-4 flex items-start gap-2 rounded-lg bg-red-50 p-3 sm:p-4">
+                <IconAlertCircle size={24} className="mt-1 flex-shrink-0 text-red-500" />
+                <div>
+                  <h4 className="font-medium text-red-600">Warning!</h4>
+                  <p className="mt-1 text-sm text-gray-700">
+                    {hasTransactions && hasBudgets
+                      ? "This will permanently delete all transactions and budgets associated with this category."
+                      : hasTransactions
+                      ? "This will permanently delete all transactions associated with this category."
+                      : "This will permanently delete all budgets associated with this category."}
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            <p className="mb-4 text-sm text-gray-600 sm:mb-6 sm:text-base">
+              Are you sure you want to delete <span className="font-medium">"{categoryToDelete?.name}"</span>?
+              {!hasTransactions && !hasBudgets && " This action cannot be undone."}
             </p>
-            <div className="flex justify-end gap-4">
+            
+            <div className="flex justify-end gap-3 sm:gap-4">
               <button
                 onClick={() => setIsDeleteModalOpen(false)}
-                className="rounded-md bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300"
+                className="rounded-md bg-gray-200 px-3 py-1.5 text-sm text-gray-800 hover:bg-gray-300 sm:px-4 sm:py-2 sm:text-base"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDeleteCategory}
-                className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+                className="rounded-md bg-red-500 px-3 py-1.5 text-sm text-white hover:bg-red-600 sm:px-4 sm:py-2 sm:text-base"
               >
-                {hasTransactions ? "Delete Anyway" : "Delete"}
+                {hasTransactions || hasBudgets ? "Delete All" : "Delete"}
               </button>
             </div>
           </div>

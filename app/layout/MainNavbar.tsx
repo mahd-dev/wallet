@@ -40,7 +40,7 @@ const menu = [
   { path: "/", name: "Acceuil" },
   { path: "/transactions", name: "transactions" },
   { path: "/statistiques", name: "statistiques" },
-  { path: "/categorie", name: "categorie" },
+  { path: "/categorie", name: "categories" },
   { path: "/budget", name: "budget" },
 ];
 

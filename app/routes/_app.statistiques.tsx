@@ -3,39 +3,31 @@ import dayjs from "dayjs";
 import html2canvas from "html2canvas";
 import { useAtom } from "jotai";
 import { jsPDF } from "jspdf";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import { gql, useQuery } from "urql";
 import { userAtom } from "~/store/store";
+import { toast } from "react-toastify";
 
 Chart.register(...registerables);
 
-// Define TypeScript Interfaces
+// TypeScript Interfaces
 interface Transaction {
   transactionId: string;
   type: "INCOME" | "EXPENSE";
   date: string;
   amount: number;
   description?: string;
-  category: {
-    id: string;
-    name: string;
-  };
+  category: { id: string; name: string };
 }
 
 interface TransactionsData {
-  transactions: {
-    nodes: Transaction[];
-  };
+  transactions: { nodes: Transaction[] };
 }
 
 interface ChartData {
   labels: string[];
-  datasets: {
-    label: string;
-    data: number[];
-    backgroundColor: string[];
-  }[];
+  datasets: { label: string; data: number[]; backgroundColor: string[] }[];
 }
 
 interface TransactionSummary {
@@ -50,10 +42,9 @@ interface TransactionSummary {
   averageExpense: number;
   largestIncome?: { amount: number; date: string; category: string };
   largestExpense?: { amount: number; date: string; category: string };
-  startingBalance?: number; // Added property
 }
 
-// GraphQL Query for fetching transactions
+// GraphQL Query
 const GET_TRANSACTIONS = gql`
   query GET_TRANSACTIONS3($userId: String!) {
     transactions(orderBy: DATE_DESC, condition: { userId: $userId }) {
@@ -63,16 +54,18 @@ const GET_TRANSACTIONS = gql`
         date
         amount
         description
-        category {
-          id
-          name
-        }
+        category { id, name }
       }
     }
   }
 `;
 
-export default function Statistiques() {
+const monthNames = [
+  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+];
+
+const Statistiques: React.FC = () => {
   const [user] = useAtom(userAtom);
   const [{ data, fetching, error }] = useQuery<TransactionsData>({
     query: GET_TRANSACTIONS,
@@ -81,13 +74,17 @@ export default function Statistiques() {
   });
 
   const [selectedYear, setSelectedYear] = useState<string>(dayjs().year().toString());
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"incomeExpense" | "balance">("incomeExpense");
+  const [pieChartType, setPieChartType] = useState<"INCOME" | "EXPENSE">("EXPENSE");
   const [incomeExpenseData, setIncomeExpenseData] = useState<ChartData | null>(null);
   const [balanceData, setBalanceData] = useState<ChartData | null>(null);
   const [pieChartData, setPieChartData] = useState<ChartData | null>(null);
+  const [filteredPieChartData, setFilteredPieChartData] = useState<ChartData>({
+    labels: [],
+    datasets: [{ label: "", data: [], backgroundColor: [] }],
+  });
   const [availableYears, setAvailableYears] = useState<string[]>([]);
-  const [viewMode, setViewMode] = useState<"incomeExpense" | "balance">("incomeExpense");
-  const [pieChartType, setPieChartType] = useState<"INCOME" | "EXPENSE">("EXPENSE");
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [summary, setSummary] = useState<TransactionSummary>({
     totalIncome: 0,
     totalExpense: 0,
@@ -95,29 +92,33 @@ export default function Statistiques() {
     incomeTransactions: 0,
     expenseTransactions: 0,
     averageIncome: 0,
-    averageExpense: 0
+    averageExpense: 0,
   });
+  const [isExporting, setIsExporting] = useState<boolean>(false);
 
-  const [filteredPieChartData, setFilteredPieChartData] = useState<ChartData>({
-    labels: [],
-    datasets: [{ label: "", data: [], backgroundColor: [] }],
-  });
+  const barChartRef = useRef<HTMLDivElement>(null);
+  const pieChartRef = useRef<HTMLDivElement>(null);
 
-  // Function to generate unique colors (used for Pie Chart)
-  const generateColors = (count: number) => {
+  // Utility Functions
+  const generateColors = useCallback((count: number): string[] => {
     const colors: string[] = [];
-    const hueStep = 360 / count;
+    const hueStep = 360 / Math.max(count, 1);
     for (let i = 0; i < count; i++) {
-      const color = `hsl(${i * hueStep}, 70%, 60%)`;
-      colors.push(color);
+      colors.push(`hsl(${i * hueStep}, 70%, 60%)`);
     }
     return colors;
+  }, []);
+
+  const formatCurrency = (amount: number): string => {
+    return amount.toFixed(2) + " TND";
   };
 
-  useEffect(() => {
-    if (!data) return;
+  const formatDate = (dateString: string): string => {
+    return dayjs(dateString).format("DD/MM/YYYY");
+  };
 
-    const transactions = data.transactions.nodes;
+  // Data Processing
+  const processTransactions = useCallback((transactions: Transaction[]) => {
     const uniqueYears = Array.from(
       new Set(transactions.map((tx) => dayjs(tx.date).year().toString()))
     );
@@ -132,70 +133,49 @@ export default function Statistiques() {
       ? filteredByYear.filter((tx) => dayjs(tx.date).month() === parseInt(selectedMonth))
       : filteredByYear;
 
-    // Calculate detailed summary
+    // Calculate Summary
     const incomeTransactions = filteredTransactions.filter((tx) => tx.type === "INCOME");
     const expenseTransactions = filteredTransactions.filter((tx) => tx.type === "EXPENSE");
-    
     const totalIncome = incomeTransactions.reduce((sum, tx) => sum + tx.amount, 0);
     const totalExpense = expenseTransactions.reduce((sum, tx) => sum + tx.amount, 0);
-    
-    // Calculate average transaction values
-    const averageIncome = incomeTransactions.length > 0 
-      ? totalIncome / incomeTransactions.length 
-      : 0;
-      
-    const averageExpense = expenseTransactions.length > 0 
-      ? totalExpense / expenseTransactions.length 
-      : 0;
+    const averageIncome = incomeTransactions.length ? totalIncome / incomeTransactions.length : 0;
+    const averageExpense = expenseTransactions.length ? totalExpense / expenseTransactions.length : 0;
 
-    // Find top categories
-    const expenseCategoryMap: Record<string, number> = {};
-    const incomeCategoryMap: Record<string, number> = {};
-    
-    filteredTransactions.forEach(({ amount, type, category }) => {
-      if (!category?.name) return;
-      
-      if (type === "INCOME") {
-        incomeCategoryMap[category.name] = (incomeCategoryMap[category.name] || 0) + amount;
-      } else {
-        expenseCategoryMap[category.name] = (expenseCategoryMap[category.name] || 0) + amount;
-      }
-    });
-    
-    // Find top categories
-    let topExpenseCategory: { name: string; amount: number } | undefined;
-    let topIncomeCategory: { name: string; amount: number } | undefined;
-    
-    Object.entries(expenseCategoryMap).forEach(([name, amount]) => {
-      if (!topExpenseCategory || amount > topExpenseCategory.amount) {
-        topExpenseCategory = { name, amount };
-      }
-    });
-    
-    Object.entries(incomeCategoryMap).forEach(([name, amount]) => {
-      if (!topIncomeCategory || amount > topIncomeCategory.amount) {
-        topIncomeCategory = { name, amount };
-      }
-    });
-    
-    // Find largest transactions
-    const largestIncome = incomeTransactions.length > 0 
-      ? incomeTransactions.reduce((max, tx) => 
-          tx.amount > (max?.amount || 0) 
-            ? { amount: tx.amount, date: tx.date, category: tx.category.name } 
-            : max, 
-          undefined as { amount: number; date: string; category: string } | undefined)
-      : undefined;
-      
-    const largestExpense = expenseTransactions.length > 0 
-      ? expenseTransactions.reduce((max, tx) => 
-          tx.amount > (max?.amount || 0) 
-            ? { amount: tx.amount, date: tx.date, category: tx.category.name } 
-            : max, 
-          undefined as { amount: number; date: string; category: string } | undefined)
-      : undefined;
+    const categoryMap = filteredTransactions.reduce(
+      (acc, { amount, type, category }) => {
+        if (!category?.name) return acc;
+        acc[type][category.name] = (acc[type][category.name] || 0) + amount;
+        return acc;
+      },
+      { INCOME: {}, EXPENSE: {} } as Record<"INCOME" | "EXPENSE", Record<string, number>>
+    );
 
-    // Update summary state
+    const topExpenseCategory = Object.entries(categoryMap.EXPENSE).reduce(
+      (max, [name, amount]) => (amount > (max?.amount || 0) ? { name, amount } : max),
+      undefined as { name: string; amount: number } | undefined
+    );
+
+    const topIncomeCategory = Object.entries(categoryMap.INCOME).reduce(
+      (max, [name, amount]) => (amount > (max?.amount || 0) ? { name, amount } : max),
+      undefined as { name: string; amount: number } | undefined
+    );
+
+    const largestIncome = incomeTransactions.reduce(
+      (max, tx) =>
+        tx.amount > (max?.amount || 0)
+          ? { amount: tx.amount, date: tx.date, category: tx.category.name }
+          : max,
+      undefined as { amount: number; date: string; category: string } | undefined
+    );
+
+    const largestExpense = expenseTransactions.reduce(
+      (max, tx) =>
+        tx.amount > (max?.amount || 0)
+          ? { amount: tx.amount, date: tx.date, category: tx.category.name }
+          : max,
+      undefined as { amount: number; date: string; category: string } | undefined
+    );
+
     setSummary({
       totalIncome,
       totalExpense,
@@ -207,93 +187,71 @@ export default function Statistiques() {
       averageIncome,
       averageExpense,
       largestIncome,
-      largestExpense
+      largestExpense,
     });
 
+    // Chart Data
     let groupedData: Record<number, { income: number; expense: number }> = {};
-    if (selectedMonth !== null) {
-      for (let day = 1; day <= 31; day++) {
-        groupedData[day] = { income: 0, expense: 0 };
-      }
-      filteredTransactions.forEach(({ amount, type, date }) => {
-        const dayIndex = dayjs(date).date();
-        if (type === "INCOME") {
-          groupedData[dayIndex].income += amount;
-        } else {
-          groupedData[dayIndex].expense += amount;
-        }
-      });
-    } else {
-      for (let i = 0; i < 12; i++) {
-        groupedData[i] = { income: 0, expense: 0 };
-      }
-      filteredTransactions.forEach(({ amount, type, date }) => {
-        const monthIndex = dayjs(date).month();
-        if (type === "INCOME") {
-          groupedData[monthIndex].income += amount;
-        } else {
-          groupedData[monthIndex].expense += amount;
-        }
-      });
+    const isMonthly = selectedMonth !== null;
+    const range = isMonthly ? 31 : 12;
+
+    for (let i = 0; i < range; i++) {
+      groupedData[i + (isMonthly ? 1 : 0)] = { income: 0, expense: 0 };
     }
 
-    const incomeData =
-      selectedMonth !== null
-        ? Array(31)
-            .fill(0)
-            .map((_, index) => groupedData[index + 1]?.income || 0)
-        : Array(12)
-            .fill(0)
-            .map((_, index) => groupedData[index]?.income || 0);
+    filteredTransactions.forEach(({ amount, type, date }) => {
+      const index = isMonthly ? dayjs(date).date() : dayjs(date).month();
+      if (type === "INCOME") {
+        groupedData[index].income += amount;
+      } else {
+        groupedData[index].expense += amount;
+      }
+    });
 
-    const expenseData =
-      selectedMonth !== null
-        ? Array(31)
-            .fill(0)
-            .map((_, index) => groupedData[index + 1]?.expense || 0)
-        : Array(12)
-            .fill(0)
-            .map((_, index) => groupedData[index]?.expense || 0);
+    const incomeData = Array(range)
+      .fill(0)
+      .map((_, i) => groupedData[i + (isMonthly ? 1 : 0)]?.income || 0);
+    const expenseData = Array(range)
+      .fill(0)
+      .map((_, i) => groupedData[i + (isMonthly ? 1 : 0)]?.expense || 0);
 
     setIncomeExpenseData({
-      labels:
-        selectedMonth !== null
-          ? Array.from({ length: 31 }, (_, i) => `${i + 1}`)
-          : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels: isMonthly
+        ? Array.from({ length: 31 }, (_, i) => `${i + 1}`)
+        : ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"],
       datasets: [
         {
-          label: "Income",
+          label: "Revenus",
           data: incomeData,
-          backgroundColor: Array(incomeData.length).fill("hsl(120, 70%, 60%)"), // Greenish hue
+          backgroundColor: Array(range).fill("hsl(120, 70%, 60%)"),
         },
         {
-          label: "Expenses",
+          label: "Dépenses",
           data: expenseData,
-          backgroundColor: Array(expenseData.length).fill("hsl(0, 70%, 60%)"), // Reddish hue
+          backgroundColor: Array(range).fill("hsl(0, 70%, 60%)"),
         },
       ],
     });
 
     setBalanceData({
-      labels:
-        selectedMonth !== null
-          ? Array.from({ length: 31 }, (_, i) => `${i + 1}`)
-          : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels: isMonthly
+        ? Array.from({ length: 31 }, (_, i) => `${i + 1}`)
+        : ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"],
       datasets: [
         {
           label: "Balance",
-          data: incomeData.map((income, index) => income - expenseData[index]),
-          backgroundColor: incomeData.map((income, index) =>
-            income - expenseData[index] >= 0 ? "hsl(220, 70%, 60%)" : "hsl(0, 70%, 60%)" // Blue for positive, Red for negative
+          data: incomeData.map((income, i) => income - expenseData[i]),
+          backgroundColor: incomeData.map((income, i) =>
+            income - expenseData[i] >= 0 ? "hsl(220, 70%, 60%)" : "hsl(0, 70%, 60%)"
           ),
         },
       ],
     });
 
+    // Pie Chart Data
     const categoryDataMap: Record<string, { amount: number; type: "INCOME" | "EXPENSE" }> = {};
     filteredTransactions.forEach(({ amount, type, category }) => {
       if (!category?.name) return;
-      
       if (!categoryDataMap[category.name]) {
         categoryDataMap[category.name] = { amount: 0, type };
       }
@@ -301,431 +259,638 @@ export default function Statistiques() {
     });
 
     const categoryNames = Object.keys(categoryDataMap);
+    const colors = generateColors(categoryNames.length);
     const categoryColorsMap: Record<string, string> = {};
-    const uniqueColors = generateColors(categoryNames.length);
-    categoryNames.forEach((name, index) => {
-      categoryColorsMap[name] = uniqueColors[index];
+    categoryNames.forEach((name, i) => {
+      categoryColorsMap[name] = colors[i];
     });
-
-    const expenseCategories = categoryNames.filter((name) => categoryDataMap[name].type === "EXPENSE");
-    const incomeCategories = categoryNames.filter((name) => categoryDataMap[name].type === "INCOME");
-
-    const expenseColors = expenseCategories.map((name) => categoryColorsMap[name]);
-    const incomeColors = incomeCategories.map((name) => categoryColorsMap[name]);
 
     setPieChartData({
       labels: categoryNames,
       datasets: [
         {
-          label: "Category Breakdown",
+          label: "Répartition par Catégorie",
           data: categoryNames.map((name) => categoryDataMap[name].amount),
           backgroundColor: categoryNames.map((name) => categoryColorsMap[name]),
         },
       ],
     });
 
+    const filteredCategories = categoryNames.filter(
+      (name) => categoryDataMap[name].type === pieChartType
+    );
     setFilteredPieChartData({
-      labels: pieChartType === "EXPENSE" ? expenseCategories : incomeCategories,
+      labels: filteredCategories,
       datasets: [
         {
-          label: `${pieChartType === "EXPENSE" ? "Expenses" : "Income"} by Category`,
-          data: (pieChartType === "EXPENSE" ? expenseCategories : incomeCategories).map(
-            (name) => categoryDataMap[name].amount
-          ),
-          backgroundColor: pieChartType === "EXPENSE" ? expenseColors : incomeColors,
+          label: `${pieChartType === "EXPENSE" ? "Dépenses" : "Revenus"} par Catégorie`,
+          data: filteredCategories.map((name) => categoryDataMap[name].amount),
+          backgroundColor: filteredCategories.map((name) => categoryColorsMap[name]),
         },
       ],
     });
-  }, [data, selectedYear, pieChartType, selectedMonth]);
+  }, [selectedYear, selectedMonth, pieChartType, generateColors]);
 
-  const formatCurrency = (amount: number) => {
-    return amount.toFixed(2) + " TND";
-  };
-
-  const formatDate = (dateString: string) => {
-    return dayjs(dateString).format("DD/MM/YYYY");
-  };
-
- // Fonction d'exportation PDF améliorée
-const exportPDF = async () => {
-  try {
-    // Initialisation du document PDF
-    const pdf = new jsPDF("p", "mm", "a4");
-    const chartElements = document.querySelectorAll(".chart-container");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 15;
-    const contentWidth = pageWidth - 2 * margin;
-
-    // Vérifier si les données sont disponibles
-    if (!summary || !data) {
-      alert("Les données ne sont pas disponibles pour l'exportation");
-      return;
+  useEffect(() => {
+    if (data?.transactions?.nodes) {
+      processTransactions(data.transactions.nodes);
     }
+  }, [data, processTransactions]);
 
-    // ---- PAGE DE COUVERTURE ----
-    // En-tête
-    pdf.setFillColor(65, 105, 225); // Bleu royal
-    pdf.rect(0, 0, pageWidth, 40, "F");
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(22);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("RAPPORT FINANCIER", pageWidth / 2, 25, { align: "center" });
+  const exportPDF = useCallback(async () => {
+    setIsExporting(true);
+    const toastId = toast.loading("Exportation en cours...");
 
-    // Informations de période
-    let currentY = 60;
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "normal");
-    
-    pdf.text("Période:", margin, currentY);
-    pdf.setFont("helvetica", "bold");
-    pdf.text(
-      selectedMonth !== null
-        ? `${monthNames[parseInt(selectedMonth)]} ${selectedYear !== "ALL" ? selectedYear : "Toutes les années"}`
-        : `${selectedYear !== "ALL" ? "Année " + selectedYear : "Toutes les années"}`,
-      margin + 35, 
-      currentY
-    );
-    pdf.setFont("helvetica", "normal");
-    
-    currentY += 15;
-    pdf.text("Date d'extraction:", margin, currentY);
-    pdf.text("    " + dayjs().format("DD/MM/YYYY"), margin + 35, currentY);
+    try {
+      if (!summary || !data?.transactions?.nodes || !barChartRef.current || !pieChartRef.current) {
+        toast.update(toastId, {
+          render: "Données ou graphiques non disponibles pour l'exportation",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+        setIsExporting(false);
+        return;
+      }
 
-    currentY += 15;
-    pdf.text("Généré par:", margin, currentY);
-    pdf.text("    " + (user?.firstName  || "Utilisateur"), margin + 35, currentY);
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 15;
+      const contentWidth = pageWidth - 2 * margin;
 
-    // Résumé Financier en boîte
-    currentY += 30;
-    pdf.setDrawColor(220, 220, 220);
-    pdf.setFillColor(245, 245, 245);
-    pdf.roundedRect(margin, currentY, contentWidth, 65, 5, 5, "FD");
-    
-    pdf.setFontSize(16);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("Résumé financier", pageWidth / 2, currentY + 10, { align: "center" });
-    
-    // Données de résumé en grand format
-    currentY += 25;
-    pdf.setFontSize(18);
-    
-    // Revenus
-    pdf.setTextColor(0, 128, 0); // Vert
-    pdf.text("Revenus:", margin + 10, currentY);
-    pdf.text(formatCurrency(summary.totalIncome), pageWidth - margin - 10, currentY, { align: "right" });
-    
-    // Dépenses
-    currentY += 15;
-    pdf.setTextColor(220, 0, 0); // Rouge
-    pdf.text("Dépenses:", margin + 10, currentY);
-    pdf.text(formatCurrency(summary.totalExpense), pageWidth - margin - 10, currentY, { align: "right" });
-    
-    // Total (Balance)
-    currentY += 15;
-    pdf.setTextColor(0, 0, 150); // Bleu
-    pdf.text("Total:", margin + 10, currentY);
-    pdf.text(formatCurrency(summary.balance), pageWidth - margin - 10, currentY, { align: "right" });
+      // Compute pie chart data for both expense and income
+      const categoryDataMap: Record<string, { amount: number; type: "INCOME" | "EXPENSE" }> = {};
+      const filteredByYear =
+        selectedYear === "ALL"
+          ? data.transactions.nodes
+          : data.transactions.nodes.filter((tx) => dayjs(tx.date).year().toString() === selectedYear);
+      const filteredTransactions = selectedMonth
+        ? filteredByYear.filter((tx) => dayjs(tx.date).month() === parseInt(selectedMonth))
+        : filteredByYear;
 
-    // Montant total disponible
-    currentY += 35;
-    pdf.setFillColor(230, 237, 245);
-    pdf.roundedRect(margin, currentY, contentWidth, 40, 5, 5, "FD");
-    
-    pdf.setFontSize(14);
-    pdf.setTextColor(70, 70, 70);
-    pdf.setFont("helvetica", "normal");
-    pdf.text("Montant total disponible", pageWidth / 2, currentY + 10, { align: "center" });
-    
-    // Date actuelle vs début de période
-    const currentDate = dayjs().format("DD/MM/YYYY");
-    const periodStart = selectedMonth !== null 
-      ? `01/${(parseInt(selectedMonth) + 1).toString().padStart(2, '0')}/${selectedYear}` 
-      : `01/01/${selectedYear}`;
-    
-    // Montant à la date actuelle
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.setTextColor(0, 0, 0);
-    pdf.text(`${currentDate}: ${formatCurrency(summary.balance + (summary.startingBalance ?? 0))}`, pageWidth / 2, currentY + 25, { align: "center" });
-    
-    // ---- PAGE DES GRAPHIQUES DÉPENSES ET REVENUS ----
-    pdf.addPage();
-    currentY = margin;
-    
-    // En-tête
-    pdf.setFillColor(65, 105, 225);
-    pdf.rect(0, 0, pageWidth, 20, "F");
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("RÉPARTITION PAR CATÉGORIE", pageWidth / 2, 13, { align: "center" });
-    
-    // Graphique des dépenses
-    currentY += 15;
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("DÉPENSES PAR CATÉGORIE", pageWidth / 2, currentY, { align: "center" });
-    
-    if (chartElements.length > 0) {
-      const expenseChart = chartElements[0] as HTMLElement;
-      currentY += 10;
-      
-      // Capture le graphique à une échelle plus élevée pour plus de clarté
-      const canvas = await html2canvas(expenseChart, { scale: 3 });
-      const imgData = canvas.toDataURL("image/png");
-      
-      // Augmenter la taille du graphique pour qu'il soit plus lisible
-      const imgWidth = contentWidth * 0.8; // 80% de la largeur de contenu
-      const imgHeight = imgWidth * 0.75; // Ratio d'aspect adapté
-      
-      // Centrer l'image
-      const leftMargin = (pageWidth - imgWidth) / 2;
-      pdf.addImage(imgData, "PNG", leftMargin, currentY, imgWidth, imgHeight);
-      
-      currentY += imgHeight + 15;
-    }
-    
-    // Graphique des revenus
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("REVENUS PAR CATÉGORIE", pageWidth / 2, currentY, { align: "center" });
-    currentY += 10;
-    
-    if (chartElements.length > 1) {
-      const incomeChart = chartElements[1] as HTMLElement;
-      
-      // Capture le graphique à une échelle plus élevée pour plus de clarté
-      const canvas = await html2canvas(incomeChart, { scale: 3 });
-      const imgData = canvas.toDataURL("image/png");
-      
-      // Augmenter la taille du graphique pour qu'il soit plus lisible
-      const imgWidth = contentWidth * 0.8; // 80% de la largeur de contenu
-      const imgHeight = imgWidth * 0.75; // Ratio d'aspect adapté
-      
-      // Centrer l'image
-      const leftMargin = (pageWidth - imgWidth) / 2;
-      pdf.addImage(imgData, "PNG", leftMargin, currentY, imgWidth, imgHeight);
-    }
-    
-    // ---- PAGE DES GRAPHIQUES D'ÉVOLUTION ----
-    pdf.addPage();
-    currentY = margin;
-    
-    // En-tête
-    pdf.setFillColor(65, 105, 225);
-    pdf.rect(0, 0, pageWidth, 20, "F");
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("ÉVOLUTION FINANCIÈRE", pageWidth / 2, 13, { align: "center" });
-    
-    // Titre du premier graphique d'évolution
-    currentY += 15;
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    const periodTitle = selectedMonth !== null 
-      ? `pour ${monthNames[parseInt(selectedMonth)]} ${selectedYear !== "ALL" ? selectedYear : ""}` 
-      : `pour ${selectedYear !== "ALL" ? "l'année " + selectedYear : "toutes les années"}`;
-    pdf.text(`Revenus et dépenses ${periodTitle}`, pageWidth / 2, currentY, { align: "center" });
-    
-    currentY += 10;
-    
-    // Graphique d'évolution Revenus/Dépenses
-    if (chartElements.length > 2) {
-      const revenuesExpensesChart = chartElements[2] as HTMLElement;
-      
-      const canvas = await html2canvas(revenuesExpensesChart, { scale: 3 });
-      const imgData = canvas.toDataURL("image/png");
-      
-      const imgWidth = contentWidth * 0.9; // 90% de la largeur disponible
-      const imgHeight = imgWidth * 0.6; // Ratio adaptés aux graphiques de type barre
-      
-      // Centrer l'image
-      const leftMargin = (pageWidth - imgWidth) / 2;
-      pdf.addImage(imgData, "PNG", leftMargin, currentY, imgWidth, imgHeight);
-      
-      currentY += imgHeight + 20;
-    }
-    
-    // Titre du second graphique d'évolution (Balance)
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.text(`Balance ${periodTitle}`, pageWidth / 2, currentY, { align: "center" });
-    
-    currentY += 10;
-    
-    // Si nous avons un graphique de balance
-    if (chartElements.length > 3) {
-      const balanceChart = chartElements[3] as HTMLElement;
-      
-      const canvas = await html2canvas(balanceChart, { scale: 3 });
-      const imgData = canvas.toDataURL("image/png");
-      
-      const imgWidth = contentWidth * 0.9; // 90% de la largeur disponible
-      const imgHeight = imgWidth * 0.6; // Ratio adaptés aux graphiques de type barre
-      
-      // Centrer l'image
-      const leftMargin = (pageWidth - imgWidth) / 2;
-      pdf.addImage(imgData, "PNG", leftMargin, currentY, imgWidth, imgHeight);
-    }
-    
-    // ---- PAGE DES TRANSACTIONS ----
-    pdf.addPage();
-    currentY = margin;
-    
-    // En-tête
-    pdf.setFillColor(65, 105, 225);
-    pdf.rect(0, 0, pageWidth, 20, "F");
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("TRANSACTIONS PRINCIPALES", pageWidth / 2, 13, { align: "center" });
-    
-    currentY += 15;
-    
-    // Filtrer les transactions pour la période sélectionnée
-    const filteredByYear =
-      selectedYear === "ALL"
-        ? data.transactions.nodes
-        : data.transactions.nodes.filter((tx) => dayjs(tx.date).year().toString() === selectedYear);
-    
-    const filteredTransactions = selectedMonth
-      ? filteredByYear.filter((tx) => dayjs(tx.date).month() === parseInt(selectedMonth))
-      : filteredByYear;
-    
-    // Top 5 des dépenses
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("TOP 5 DES DÉPENSES", margin, currentY);
-    
-    currentY += 10;
-    
-    // Trier par montant décroissant
-    const topExpenseTransactions = filteredTransactions
-      .filter(tx => tx.type === "EXPENSE")
-      .sort((a, b) => b.amount - a.amount)
-      .slice(0, 5);
-    
-    // Table header
-    pdf.setFillColor(240, 240, 240);
-    pdf.rect(margin, currentY, contentWidth, 10, "F");
-    pdf.setFontSize(10);
-    pdf.text("Montant", margin + 5, currentY + 6);
-    pdf.text("Description", margin + 35, currentY + 6);
-    pdf.text("Catégorie", pageWidth - margin - 50, currentY + 6);
-    pdf.text("Date", pageWidth - margin - 20, currentY + 6);
-    
-    currentY += 10;
-    
-    // Table rows
-    pdf.setFont("helvetica", "normal");
-    if (topExpenseTransactions.length === 0) {
-      pdf.text("Aucune transaction trouvée", margin + 5, currentY + 5);
-      currentY += 10;
-    } else {
-      topExpenseTransactions.forEach((tx, index) => {
-        pdf.setFillColor(index % 2 === 0 ? 255 : 252, index % 2 === 0 ? 245 : 245, index % 2 === 0 ? 245 : 248);
-        pdf.rect(margin, currentY, contentWidth, 10, "F");
-        
-        pdf.setTextColor(220, 0, 0);
-        pdf.text(formatCurrency(tx.amount), margin + 5, currentY + 6);
-        
-        pdf.setTextColor(0, 0, 0);
-        pdf.text(tx.description?.substring(0, 25) || "N/A", margin + 35, currentY + 6);
-        pdf.text(tx.category?.name || "Inconnu", pageWidth - margin - 50, currentY + 6);
-        pdf.text(dayjs(tx.date).format("DD/MM/YYYY"), pageWidth - margin - 20, currentY + 6);
-        
-        currentY += 10;
+      filteredTransactions.forEach(({ amount, type, category }) => {
+        if (!category?.name) return;
+        if (!categoryDataMap[category.name]) {
+          categoryDataMap[category.name] = { amount: 0, type };
+        }
+        categoryDataMap[category.name].amount += amount;
       });
-    }
-    
-    currentY += 10;
-    
-    // Top 5 des revenus
-    pdf.setFont("helvetica", "bold");
-    pdf.text("TOP 5 DES REVENUS", margin, currentY);
-    
-    currentY += 10;
-    
-    // Trier par montant décroissant
-    const topIncomeTransactions = filteredTransactions
-      .filter(tx => tx.type === "INCOME")
-      .sort((a, b) => b.amount - a.amount)
-      .slice(0, 5);
-    
-    // Table header
-    pdf.setFillColor(240, 240, 240);
-    pdf.rect(margin, currentY, contentWidth, 10, "F");
-    pdf.setFontSize(10);
-    pdf.text("Montant", margin + 5, currentY + 6);
-    pdf.text("Description", margin + 35, currentY + 6);
-    pdf.text("Catégorie", pageWidth - margin - 50, currentY + 6);
-    pdf.text("Date", pageWidth - margin - 20, currentY + 6);
-    
-    currentY += 10;
-    
-    // Table rows
-    pdf.setFont("helvetica", "normal");
-    if (topIncomeTransactions.length === 0) {
-      pdf.text("Aucune transaction trouvée", margin + 5, currentY + 5);
-      currentY += 10;
-    } else {
-      topIncomeTransactions.forEach((tx, index) => {
-        pdf.setFillColor(index % 2 === 0 ? 245 : 245, index % 2 === 0 ? 255 : 252, index % 2 === 0 ? 245 : 245);
-        pdf.rect(margin, currentY, contentWidth, 10, "F");
-        
-        pdf.setTextColor(0, 128, 0);
-        pdf.text(formatCurrency(tx.amount), margin + 5, currentY + 6);
-        
-        pdf.setTextColor(0, 0, 0);
-        pdf.text(tx.description?.substring(0, 25) || "N/A", margin + 35, currentY + 6);
-        pdf.text(tx.category?.name || "Inconnu", pageWidth - margin - 50, currentY + 6);
-        pdf.text(dayjs(tx.date).format("DD/MM/YYYY"), pageWidth - margin - 20, currentY + 6);
-        
-        currentY += 10;
+
+      const categoryNames = Object.keys(categoryDataMap);
+      const colors = generateColors(categoryNames.length);
+      const categoryColorsMap: Record<string, string> = {};
+      categoryNames.forEach((name, i) => {
+        categoryColorsMap[name] = colors[i];
       });
-    }
+
+      const expensePieData: ChartData = {
+        labels: categoryNames.filter((name) => categoryDataMap[name].type === "EXPENSE"),
+        datasets: [
+          {
+            label: "Dépenses par Catégorie",
+            data: categoryNames
+              .filter((name) => categoryDataMap[name].type === "EXPENSE")
+              .map((name) => categoryDataMap[name].amount),
+            backgroundColor: categoryNames
+              .filter((name) => categoryDataMap[name].type === "EXPENSE")
+              .map((name) => categoryColorsMap[name]),
+          },
+        ],
+      };
+
+      const incomePieData: ChartData = {
+        labels: categoryNames.filter((name) => categoryDataMap[name].type === "INCOME"),
+        datasets: [
+          {
+            label: "Revenus par Catégorie",
+            data: categoryNames
+              .filter((name) => categoryDataMap[name].type === "INCOME")
+              .map((name) => categoryDataMap[name].amount),
+            backgroundColor: categoryNames
+              .filter((name) => categoryDataMap[name].type === "INCOME")
+              .map((name) => categoryColorsMap[name]),
+          },
+        ],
+      };
+
+      const captureChart = async (
+        mode: "incomeExpense" | "balance" | "pieExpense" | "pieIncome"
+      ): Promise<string | null> => {
+        try {
+          if (mode === "pieExpense" || mode === "pieIncome") {
+            setPieChartType(mode === "pieExpense" ? "EXPENSE" : "INCOME");
+            // Check if there's data for this chart type
+            const hasData = mode === "pieExpense" 
+              ? categoryNames.filter(name => categoryDataMap[name].type === "EXPENSE").length > 0
+              : categoryNames.filter(name => categoryDataMap[name].type === "INCOME").length > 0;
+
+            if (!hasData) {
+              // Create an empty placeholder chart with gray color
+              setFilteredPieChartData({
+                labels: ["Aucune donnée"],
+                datasets: [{
+                  label: `${mode === "pieExpense" ? "Dépenses" : "Revenus"} par Catégorie`,
+                  data: [1],
+                  backgroundColor: ["#e0e0e0"] // Light gray
+                }]
+              });
+            }
+            await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for chart update
+            if (!pieChartRef.current) return null;
+            const canvas = await html2canvas(pieChartRef.current, {
+              scale: 3, // Increased scale for better clarity
+              backgroundColor: "#ffffff",
+              useCORS: true,
+            });
+            return canvas.toDataURL("image/png");
+          } else {
+            setViewMode(mode);
+            await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for chart update
+            if (!barChartRef.current) return null;
+            const canvas = await html2canvas(barChartRef.current, {
+              scale: 3, // Increased scale for better clarity
+              backgroundColor: "#ffffff",
+              useCORS: true,
+            });
+            return canvas.toDataURL("image/png");
+          }
+        } catch (err) {
+          console.error(`Erreur lors de la capture du graphique ${mode}:`, err);
+          return null;
+        }
+      };
+
+      const charts = {
+        incomeExpense: await captureChart("incomeExpense"),
+        balance: await captureChart("balance"),
+        pieExpense: await captureChart("pieExpense"),
+        pieIncome: await captureChart("pieIncome"),
+      };
+
+      if (!charts.incomeExpense || !charts.balance || !charts.pieExpense || !charts.pieIncome) {
+        toast.update(toastId, {
+          render: "Erreur lors de la capture des graphiques",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+        setIsExporting(false);
+        return;
+      }
+
+      // ---- PAGE DE COUVERTURE ----
+      const headerHeight = 50;
+      pdf.setFillColor(41, 82, 163);
+      pdf.rect(0, 0, pageWidth, headerHeight, "F");
+      
+      pdf.setFillColor(65, 105, 225);
+      pdf.rect(0, headerHeight - 8, pageWidth, 8, "F");
+      
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(28);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("RAPPORT FINANCIER", pageWidth / 2, 30, { align: "center" });
+      
+      pdf.setFontSize(10);
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`Généré le ${dayjs().format("DD/MM/YYYY")}`, pageWidth / 2, headerHeight - 12, { align: "center" });
+
+      let currentY = 70;
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFontSize(16);
+      pdf.setFont("helvetica", "bold");
+      
+      let periodTitle;
+      if (selectedMonth !== null) {
+        periodTitle = `${monthNames[parseInt(selectedMonth)]} ${selectedYear !== "ALL" ? selectedYear : ""}`;
+      } else {
+        periodTitle = selectedYear !== "ALL" ? `Année ${selectedYear}` : "Toutes les données";
+      }
+      pdf.text(`Analyse financière : ${periodTitle}`, pageWidth / 2, currentY, { align: "center" });
+      
+      currentY += 20;
+      const infoBoxHeight = 55;
+      pdf.setDrawColor(220, 220, 220);
+      pdf.setFillColor(245, 247, 250);
+      pdf.roundedRect(margin, currentY, contentWidth, infoBoxHeight, 4, 4, "FD");
+      
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(70, 70, 70);
+      
+      currentY += 15;
+      pdf.text("Période analysée:", margin + 10, currentY);
+      pdf.setFont("helvetica", "bold");
+      pdf.text(periodTitle, margin + 60, currentY);
+      
+      pdf.setFont("helvetica", "normal");
+      currentY += 12;
+      pdf.text("Nombre de transactions:", margin + 10, currentY);
+      pdf.setFont("helvetica", "bold");
+      pdf.text(`${summary.incomeTransactions + summary.expenseTransactions}`, margin + 60, currentY);
+      
+      pdf.setFont("helvetica", "normal");
+      currentY += 12;
+      pdf.text("Utilisateur:", margin + 10, currentY);
+      pdf.setFont("helvetica", "bold");
+      pdf.text(user?.firstName || "Utilisateur", margin + 60, currentY);
+
+      // Résumé Financier
+      currentY += 30;
+      pdf.setFontSize(14);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(41, 82, 163);
+      pdf.text("RÉSUMÉ FINANCIER", pageWidth / 2, currentY, { align: "center" });
+      
+      currentY += 15;
+      const flowHeight = 90;
+      pdf.setDrawColor(230, 230, 230);
+      pdf.setFillColor(250, 250, 250);
+      pdf.roundedRect(margin, currentY, contentWidth, flowHeight, 4, 4, "FD");
+      
+      const boxWidth = contentWidth / 3 - 10;
+      const boxHeight = 70;
+      pdf.setFillColor(235, 245, 235);
+      pdf.setDrawColor(210, 230, 210);
+      pdf.roundedRect(margin + 5, currentY + 10, boxWidth, boxHeight, 4, 4, "FD");
+      
+      pdf.setTextColor(0, 128, 0);
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("REVENUS", margin + boxWidth/2 + 5, currentY + 25, { align: "center" });
+      pdf.setFontSize(16);
+      pdf.text(formatCurrency(summary.totalIncome), margin + boxWidth/2 + 5, currentY + 45, { align: "center" });
+      pdf.setFontSize(10);
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`${summary.incomeTransactions} transactions`, margin + boxWidth/2 + 5, currentY + 60, { align: "center" });
+      
+      pdf.setFillColor(245, 235, 235);
+      pdf.setDrawColor(230, 210, 210);
+      pdf.roundedRect(pageWidth - margin - boxWidth - 5, currentY + 10, boxWidth, boxHeight, 4, 4, "FD");
+      
+      pdf.setTextColor(180, 0, 0);
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("DÉPENSES", pageWidth - margin - boxWidth/2 - 5, currentY + 25, { align: "center" });
+      pdf.setFontSize(16);
+      pdf.text(formatCurrency(summary.totalExpense), pageWidth - margin - boxWidth/2 - 5, currentY + 45, { align: "center" });
+      pdf.setFontSize(10);
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`${summary.expenseTransactions} transactions`, pageWidth - margin - boxWidth/2 - 5, currentY + 60, { align: "center" });
+      
+      pdf.setFillColor(235, 235, 245);
+      pdf.setDrawColor(210, 210, 230);
+      pdf.roundedRect(margin + boxWidth + 15, currentY + 20, boxWidth, boxHeight - 20, 4, 4, "FD");
+      
+      pdf.setTextColor(0, 0, 150);
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "bold");
+      pdf.text("BALANCE", margin + boxWidth + 15 + boxWidth/2, currentY + 35, { align: "center" });
+      pdf.setFontSize(18);
+      pdf.text(formatCurrency(summary.balance), margin + boxWidth + 15 + boxWidth/2, currentY + 55, { align: "center" });
+      
+      pdf.setDrawColor(0, 128, 0);
+      pdf.setLineWidth(0.5);
+      pdf.line(margin + boxWidth + 5, currentY + 45, margin + boxWidth + 15, currentY + 45);
+      pdf.line(margin + boxWidth + 15, currentY + 45, margin + boxWidth + 13, currentY + 43);
+      pdf.line(margin + boxWidth + 15, currentY + 45, margin + boxWidth + 13, currentY + 47);
+      
+      pdf.setDrawColor(180, 0, 0);
+      pdf.line(pageWidth - margin - boxWidth - 5, currentY + 45, pageWidth - margin - boxWidth - 15, currentY + 45);
+      pdf.line(pageWidth - margin - boxWidth - 15, currentY + 45, pageWidth - margin - boxWidth - 13, currentY + 43);
+      pdf.line(pageWidth - margin - boxWidth - 15, currentY + 45, pageWidth - margin - boxWidth - 13, currentY + 47);
+
+      // Points forts
+      currentY += flowHeight + 20;
+      pdf.setFontSize(14);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(41, 82, 163);
+      pdf.text("POINTS CLÉS", pageWidth / 2, currentY, { align: "center" });
+      
+      currentY += 15;
+      const highlightsHeight = 60;
+      pdf.setDrawColor(230, 230, 230);
+      pdf.setFillColor(250, 250, 250);
+      pdf.roundedRect(margin, currentY, contentWidth, highlightsHeight, 4, 4, "FD");
+      
+      pdf.setFontSize(10);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(70, 70, 70);
+      
+      let highlightsX = margin + 10;
+      let highlightsY = currentY + 15;
+      
+      if (summary.topExpenseCategory) {
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Principale catégorie de dépenses:", highlightsX, highlightsY);
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`${summary.topExpenseCategory.name} (${formatCurrency(summary.topExpenseCategory.amount)})`, 
+          highlightsX, highlightsY + 10);
+      }
+      
+      highlightsY += 25;
+      if (summary.topIncomeCategory) {
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Principale catégorie de revenus:", highlightsX, highlightsY);
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`${summary.topIncomeCategory.name} (${formatCurrency(summary.topIncomeCategory.amount)})`, 
+          highlightsX, highlightsY + 10);
+      }
+      
+      highlightsX = pageWidth / 2;
+      highlightsY = currentY + 15;
+      
+      if (summary.largestExpense) {
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Plus grande dépense:", highlightsX, highlightsY);
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`${formatCurrency(summary.largestExpense.amount)} (${summary.largestExpense.category})`, 
+          highlightsX, highlightsY + 10);
+      }
+      
+      highlightsY += 25;
+      if (summary.largestIncome) {
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Plus grand revenu:", highlightsX, highlightsY);
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`${formatCurrency(summary.largestIncome.amount)} (${summary.largestIncome.category})`, 
+          highlightsX, highlightsY + 10);
+      }
+
+      // Helper: Get image natural dimensions
+function getImageSize(imgDataUrl: string): Promise<{ width: number; height: number }> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve({ width: img.width, height: img.height });
+    img.src = imgDataUrl;
+  });
+}
+
+// ---- PAGE DES GRAPHIQUES DE CATÉGORIES (PIE CHARTS ONLY) ----
+pdf.addPage();
+
+// Header
+pdf.setFillColor(41, 82, 163);
+pdf.rect(0, 0, pageWidth, 20, "F");
+pdf.setTextColor(255);
+pdf.setFontSize(14);
+pdf.text("RÉPARTITION PAR CATÉGORIE", pageWidth / 2, 13, { align: "center" });
+
+currentY = margin + 25;
+pdf.setTextColor(100, 100, 100);
+pdf.setFontSize(10);
+pdf.text(`Rapport pour la période: ${periodTitle}`, pageWidth / 2, currentY, { align: "center" });
+
+// Check if mobile
+const isMobile = window.innerWidth <= 768;
+
+if (isMobile) {
+  const imageWidth = (pageWidth - margin * 2 - 10) / 2;
+  const x1 = margin;
+  const x2 = margin + imageWidth + 10;
+
+  currentY += 5;
+
+  // Titles
+  pdf.setFontSize(12);
+  pdf.setTextColor(60);
+  pdf.text("DÉPENSES", x1 + imageWidth / 2, currentY, { align: "center" });
+  pdf.text("REVENUS", x2 + imageWidth / 2, currentY, { align: "center" });
+
+  currentY += 2; // Smaller space after title
+
+  // Get actual image sizes
+  const [expenseSize, incomeSize] = await Promise.all([
+    getImageSize(charts.pieExpense),
+    getImageSize(charts.pieIncome),
+  ]);
+
+  const expenseHeight = (expenseSize.height / expenseSize.width) * imageWidth;
+  const incomeHeight = (incomeSize.height / incomeSize.width) * imageWidth;
+
+  const maxHeight = Math.max(expenseHeight, incomeHeight);
+
+  // Draw both charts at the same Y coordinate
+  pdf.addImage(charts.pieExpense, "PNG", x1, currentY, imageWidth, expenseHeight);
+  pdf.addImage(charts.pieIncome, "PNG", x2, currentY, imageWidth, incomeHeight);
+
+  // Move currentY *precisely* just below the taller image
+  currentY += maxHeight + 2; // only 2px gap after the charts
+}
+
   
-    // Pied de page sur toutes les pages
-    const totalPages = pdf.getNumberOfPages();
-    for (let i = 1; i <= totalPages; i++) {
-      pdf.setPage(i);
+else {
+  // Desktop layout
+  const pieWidth = contentWidth;
+  const pieHeight = 80;
+  const pieX = (pageWidth - pieWidth) / 2;
+
+  currentY += 15;
+  pdf.setTextColor(180, 0, 0);
+  pdf.setFontSize(14);
+  pdf.text("DÉPENSES PAR CATÉGORIE", pageWidth / 2, currentY, { align: "center" });
+  pdf.addImage(charts.pieExpense, "PNG", pieX, currentY + 10, pieWidth, pieHeight);
+
+  currentY += pieHeight + 30;
+  pdf.setTextColor(0, 128, 0);
+  pdf.setFontSize(14);
+  pdf.text("REVENUS PAR CATÉGORIE", pageWidth / 2, currentY, { align: "center" });
+  pdf.addImage(charts.pieIncome, "PNG", pieX, currentY + 10, pieWidth, pieHeight);
+}
+
+
+
+      // ---- PAGE DES GRAPHIQUES D'ÉVOLUTION ----
+      pdf.addPage();
+      pdf.setFillColor(41, 82, 163);
+      pdf.rect(0, 0, pageWidth, 20, "F");
+      pdf.setTextColor(255);
+      pdf.setFontSize(14);
+      pdf.text("ÉVOLUTION FINANCIÈRE", pageWidth / 2, 13, { align: "center" });
+
+      currentY = margin + 20;
+      pdf.setTextColor(0);
+      pdf.setFontSize(16);
+      const evolutionTitle = selectedMonth
+        ? `pour ${monthNames[parseInt(selectedMonth)]} ${selectedYear}`
+        : `pour ${selectedYear !== "ALL" ? "l'année " + selectedYear : "toutes les années"}`;
+      pdf.text(`Revenus et Dépenses ${evolutionTitle}`, pageWidth / 2, currentY, { align: "center" });
+
+      pdf.setTextColor(100, 100, 100);
+      pdf.setFontSize(10);
+      const periodLabel = selectedMonth ? "Jour par jour" : "Mois par mois";
+      pdf.text(`Évolution ${periodLabel}`, pageWidth / 2, currentY + 10, { align: "center" });
+
+      currentY += 20;
+      if (charts.incomeExpense) {
+        const imgWidth = contentWidth * 0.9;
+        const imgHeight = 80;
+        const leftMargin = (pageWidth - imgWidth) / 2;
+        pdf.addImage(charts.incomeExpense, "PNG", leftMargin, currentY, imgWidth, imgHeight);
+      }
+
+      currentY += 100;
+      pdf.setTextColor(0);
+      pdf.setFontSize(16);
+      pdf.text(`Balance ${evolutionTitle}`, pageWidth / 2, currentY, { align: "center" });
+
+      pdf.setTextColor(100, 100, 100);
+      pdf.setFontSize(10);
+      pdf.text(`Évolution ${periodLabel}`, pageWidth / 2, currentY + 10, { align: "center" });
+
+      currentY += 20;
+      if (charts.balance) {
+        const imgWidth = contentWidth * 0.9;
+        const imgHeight = 80;
+        const leftMargin = (pageWidth - imgWidth) / 2;
+        pdf.addImage(charts.balance, "PNG", leftMargin, currentY, imgWidth, imgHeight);
+      }
+
+      // ---- PAGE DES TRANSACTIONS ----
+      pdf.addPage();
+      currentY = margin;
+      pdf.setFillColor(41, 82, 163);
+      pdf.rect(0, 0, pageWidth, 20, "F");
+      pdf.setTextColor(255);
+      pdf.setFontSize(14);
+      pdf.text("TRANSACTIONS PRINCIPALES", pageWidth / 2, 13, { align: "center" });
+
+      currentY += 15;
+      pdf.setTextColor(0);
+      pdf.setFontSize(14);
+      const topTransactionsTitle = selectedMonth
+        ? `pour ${monthNames[parseInt(selectedMonth)]} ${selectedYear}`
+        : `pour ${selectedYear !== "ALL" ? "l'année " + selectedYear : "toutes les périodes"}`;
+      pdf.text(`Principales transactions ${topTransactionsTitle}`, pageWidth / 2, currentY, { align: "center" });
+
+      currentY += 15;
+      pdf.setTextColor(180, 0, 0);
+      pdf.text("TOP 5 DES DÉPENSES", margin, currentY);
+
+      currentY += 10;
+      const topExpenseTransactions = filteredTransactions
+        .filter((tx) => tx.type === "EXPENSE")
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 5);
+
+      pdf.setFillColor(240, 240, 240);
+      pdf.rect(margin, currentY, contentWidth, 12, "F");
+      pdf.setFontSize(10);
+      pdf.setTextColor(70, 70, 70);
+      pdf.text("Montant", margin + 5, currentY + 8);
+      pdf.text("Description", margin + 40, currentY + 8);
+      pdf.text("Catégorie", pageWidth - margin - 60, currentY + 8);
+      pdf.text("Date", pageWidth - margin - 25, currentY + 8);
+
+      currentY += 12;
+      if (topExpenseTransactions.length === 0) {
+        pdf.setFillColor(250, 250, 250);
+        pdf.rect(margin, currentY, contentWidth, 12, "F");
+        pdf.setTextColor(100, 100, 100);
+        pdf.text("Aucune transaction trouvée", margin + 5, currentY + 8);
+        currentY += 12;
+      } else {
+        topExpenseTransactions.forEach((tx, index) => {
+          pdf.setFillColor(index % 2 === 0 ? 255 : 250, index % 2 === 0 ? 245 : 245, index % 2 === 0 ? 245 : 250);
+          pdf.rect(margin, currentY, contentWidth, 12, "F");
+          pdf.setTextColor(180, 0, 0);
+          pdf.text(formatCurrency(tx.amount), margin + 5, currentY + 8);
+          pdf.setTextColor(0);
+          const description = tx.description || "N/A";
+          const maxLength = 25;
+          const truncatedDesc = description.length > maxLength
+            ? description.substring(0, maxLength) + "..."
+            : description;
+          pdf.text(truncatedDesc, margin + 40, currentY + 8);
+          pdf.text(tx.category?.name || "Inconnu", pageWidth - margin - 60, currentY + 8);
+          pdf.text(dayjs(tx.date).format("DD/MM/YYYY"), pageWidth - margin - 25, currentY + 8);
+          currentY += 12;
+        });
+      }
+
+      currentY += 15;
+      pdf.setTextColor(0, 128, 0);
+      pdf.text("TOP 5 DES REVENUS", margin, currentY);
+
+      currentY += 10;
+      const topIncomeTransactions = filteredTransactions
+        .filter((tx) => tx.type === "INCOME")
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 5);
+
+      pdf.setFillColor(240, 240, 240);
+      pdf.rect(margin, currentY, contentWidth, 12, "F");
+      pdf.setFontSize(10);
+      pdf.setTextColor(70, 70, 70);
+      pdf.text("Montant", margin + 5, currentY + 8);
+      pdf.text("Description", margin + 40, currentY + 8);
+      pdf.text("Catégorie", pageWidth - margin - 60, currentY + 8);
+      pdf.text("Date", pageWidth - margin - 25, currentY + 8);
+
+      currentY += 12;
+      if (topIncomeTransactions.length === 0) {
+        pdf.setFillColor(250, 250, 250);
+        pdf.rect(margin, currentY, contentWidth, 12, "F");
+        pdf.setTextColor(100, 100, 100);
+        pdf.text("Aucune transaction trouvée", margin + 5, currentY + 8);
+        currentY += 12;
+      } else {
+        topIncomeTransactions.forEach((tx, index) => {
+          pdf.setFillColor(index % 2 === 0 ? 245 : 245, index % 2 === 0 ? 255 : 250, index % 2 === 0 ? 245 : 245);
+          pdf.rect(margin, currentY, contentWidth, 12, "F");
+          pdf.setTextColor(0, 128, 0);
+          pdf.text(formatCurrency(tx.amount), margin + 5, currentY + 8);
+          pdf.setTextColor(0);
+          const description = tx.description || "N/A";
+          const maxLength = 25;
+          const truncatedDesc = description.length > maxLength
+            ? description.substring(0, maxLength) + "..."
+            : description;
+          pdf.text(truncatedDesc, margin + 40, currentY + 8);
+          pdf.text(tx.category?.name || "Inconnu", pageWidth - margin - 60, currentY + 8);
+          pdf.text(dayjs(tx.date).format("DD/MM/YYYY"), pageWidth - margin - 25, currentY + 8);
+          currentY += 12;
+        });
+      }
+
+      // Footer
+      const footerY = pageHeight - 15;
+      pdf.setDrawColor(200, 200, 200);
+      pdf.setFillColor(240, 240, 240);
+      pdf.rect(0, footerY - 10, pageWidth, 20, "F");
+      pdf.setTextColor(100, 100, 100);
       pdf.setFontSize(8);
-      pdf.setTextColor(150, 150, 150);
       pdf.text(
-        `RAPPORT ${
-          selectedMonth !== null 
-            ? monthNames[parseInt(selectedMonth)].toUpperCase() 
-            : ""
-        } ${selectedYear}`,
-        margin,
-        pageHeight - 10
+        `Rapport financier généré le ${dayjs().format("DD/MM/YYYY à HH:mm")}`,
+        pageWidth / 2,
+        footerY,
+        { align: "center" }
       );
-      pdf.text(
-        `${dayjs().format("DD/MM/YYYY")} ${i} / ${totalPages}`,
-        pageWidth - margin,
-        pageHeight - 10,
-        { align: "right" }
-      );
+
+      // Save PDF
+      const fileName = `Rapport_Financier_${selectedYear}${
+        selectedMonth ? "_" + monthNames[parseInt(selectedMonth)] : ""
+      }_${dayjs().format("YYYYMMDD")}.pdf`;
+      pdf.save(fileName);
+      toast.update(toastId, {
+        render: "Rapport exporté avec succès",
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    } catch (error) {
+      console.error("Erreur lors de l'exportation PDF:", error);
+      toast.update(toastId, {
+        render: "Erreur lors de l'exportation PDF",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    } finally {
+      setIsExporting(false);
     }
-    
-    // Télécharger le PDF
-    pdf.save("rapport_financier.pdf");
-  } catch (error) {
-    console.error("Erreur lors de l'exportation du PDF:", error);
-    alert("Une erreur est survenue lors de l'exportation du PDF. Veuillez réessayer.");
-  }
-};
-  const monthNames = [
-    "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-    "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
-  ];
+  }, [summary, data, selectedYear, selectedMonth, generateColors]);
 
   if (fetching) {
     return (
@@ -783,21 +948,30 @@ const exportPDF = async () => {
             </div>
             <button
               onClick={exportPDF}
-              className="flex items-center rounded-md bg-white px-6 py-3 font-medium text-blue-700 shadow-md transition hover:bg-gray-100"
+              disabled={isExporting}
+              className={`flex items-center rounded-md px-6 py-3 font-medium shadow-md transition ${
+                isExporting
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-white text-blue-700 hover:bg-gray-100"
+              }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="mr-2 h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 17a1 1 0 001 1h12a1 1 0 001-1V9.5a1 1 0 00-1-1h-4.586a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 008.586 6.5H4a1 1 0 00-1 1V17zm7-14a1 1 0 11-2 0 1 1 0 012 0zm7 14V7.414L12.586 3H7.414L3 7.414V17a1 1 0 001 1h12a1 1 0 001-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Exporter en PDF
+              {isExporting ? (
+                <div className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="mr-2 h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3 17a1 1 0 001 1h12a1 1 0 001-1V9.5a1 1 0 00-1-1h-4.586a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 008.586 6.5H4a1 1 0 00-1 1V17zm7-14a1 1 0 11-2 0 1 1 0 012 0zm7 14V7.414L12.586 3H7.414L3 7.414V17a1 1 0 001 1h12a1 1 0 001-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+              {isExporting ? "Exportation..." : "Exporter en PDF"}
             </button>
           </div>
         </div>
@@ -879,7 +1053,7 @@ const exportPDF = async () => {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414 l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -979,147 +1153,151 @@ const exportPDF = async () => {
 
         {/* Pie Chart Section */}
         {pieChartData && (
-          <div className="mb-8 overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg">
-            <div className="border-b border-gray-100 p-6">
-              <h2 className="text-center text-2xl font-bold text-gray-800">Répartition par Catégorie</h2>
-            </div>
-            <div className="border-b border-gray-100 p-6">
-              <div className="mx-auto flex w-fit overflow-hidden rounded-lg bg-gray-100">
-                <button
-                  onClick={() => setPieChartType("EXPENSE")}
-                  className={`px-8 py-3 font-medium transition ${
-                    pieChartType === "EXPENSE" ? "bg-red-600 text-white" : "text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  Dépenses
-                </button>
-                <button
-                  onClick={() => setPieChartType("INCOME")}
-                  className={`px-8 py-3 font-medium transition ${
-                    pieChartType === "INCOME" ? "bg-green-600 text-white" : "text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  Revenus
-                </button>
-              </div>
-            </div>
-            <div className="chart-container p-6">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-8">
-                <div className="mb-8 lg:mb-0 lg:w-1/2">
-                  {/* Increased Pie Chart Size */}
-                  <div className="h-96 md:h-[450px]">
-                    <Pie
-                      data={filteredPieChartData}
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                          tooltip: {
-                            callbacks: {
-                              label: (tooltipItem) => {
-                                const value = tooltipItem.raw as number;
-                                const total = filteredPieChartData.datasets[0].data.reduce(
-                                  (sum, val) => sum + val,
-                                  0
-                                );
-                                const percentage = ((value / total) * 100).toFixed(1);
-                                return `${tooltipItem.label}: ${value.toFixed(2)} TND (${percentage}%)`;
-                              },
-                            },
-                          },
-                          legend: { display: false },
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="lg:w-1/2">
-                  <div className="rounded-lg bg-gray-50 p-4">
-                    <h3 className="mb-4 border-b border-gray-200 pb-2 text-lg font-bold text-gray-800">
-                      {pieChartType === "EXPENSE" ? "Détail des Dépenses" : "Détail des Revenus"}
-                    </h3>
-                    {filteredPieChartData.labels.length === 0 ? (
-                      <div className="flex h-40 items-center justify-center">
-                        <p className="text-center text-gray-500">
-                          Aucune donnée disponible pour la période sélectionnée
-                        </p>
-                      </div>
-                    ) : (
-                      <div>
-                        <div className="space-y-3">
-                          {filteredPieChartData.labels.map((label, index) => {
-                            const amount = filteredPieChartData.datasets[0].data[index];
-                            const total = filteredPieChartData.datasets[0].data.reduce(
-                              (sum, val) => sum + val,
-                              0
-                            );
-                            const percentage = ((amount / total) * 100).toFixed(1);
-
-                            return (
-                              <div
-                                key={label}
-                                className="flex items-center justify-between rounded-md p-2 transition hover:bg-gray-100"
-                              >
-                                <div className="flex items-center">
-                                  <div
-                                    className="mr-3 h-4 w-4 rounded"
-                                    style={{
-                                      backgroundColor:
-                                        filteredPieChartData.datasets[0].backgroundColor[index],
-                                    }}
-                                  />
-                                  <span className="font-medium text-gray-800">{label}</span>
-                                </div>
-                                <div className="flex items-center">
-                                  <span className="mr-3 rounded-full bg-gray-200 px-2 py-1 text-xs font-bold text-gray-700">
-                                    {percentage}%
-                                  </span>
-                                  <span
-                                    className={`font-medium ${
-                                      pieChartType === "EXPENSE" ? "text-red-600" : "text-green-600"
-                                    }`}
-                                  >
-                                    {pieChartType === "EXPENSE"
-                                      ? `- ${amount.toFixed(2)} TND`
-                                      : `+ ${amount.toFixed(2)} TND`}
-                                  </span>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                        <div className="mt-6 border-t border-gray-200 pt-4">
-                          <div className="flex items-center justify-between">
-                            <span className="text-lg font-bold text-gray-800">Total:</span>
-                            <span
-                              className={`text-lg font-bold ${
-                                pieChartType === "EXPENSE" ? "text-red-600" : "text-green-600"
-                              }`}
-                            >
-                              {pieChartType === "EXPENSE" ? "- " : "+ "}
-                              {filteredPieChartData.datasets[0].data
-                                .reduce((sum, val) => sum + val, 0)
-                                .toFixed(2)}{" "}
-                              TND
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+  <div className="mb-4 overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg">
+    {/* Reduced mb-8 to mb-4 for less bottom margin */}
+    <div className="border-b border-gray-100 p-6">
+      <h2 className="text-center text-lg md:text-2xl font-bold text-gray-800">Répartition par Catégorie</h2>
+    </div>
+    <div className="border-b border-gray-100 p-6">
+      <div className="mx-auto flex w-fit overflow-hidden rounded-lg bg-gray-100">
+        <button
+          onClick={() => setPieChartType("EXPENSE")}
+          className={`px-8 py-3 font-medium transition ${
+            pieChartType === "EXPENSE" ? "bg-red-600 text-white" : "text-gray-700 hover:bg-gray-200"
+          }`}
+        >
+          Dépenses
+        </button>
+        <button
+          onClick={() => setPieChartType("INCOME")}
+          className={`px-8 py-3 font-medium transition ${
+            pieChartType === "INCOME" ? "bg-green-600 text-white" : "text-gray-700 hover:bg-gray-200"
+          }`}
+        >
+          Revenus
+        </button>
+      </div>
+    </div>
+    <div className="chart-container p-4 sm:p-6">
+      {/* Reduced p-6 to p-4 for mobile, kept p-6 for larger screens */}
+      <div ref={pieChartRef} className="flex flex-col lg:flex-row lg:items-center lg:space-x-8">
+        <div className="mb-4 lg:mb-0 lg:w-1/2">
+          {/* Reduced mb-8 to mb-4 for mobile */}
+          <div className="h-96 md:h-[450px]">
+            <Pie
+              data={filteredPieChartData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: (tooltipItem) => {
+                        const value = tooltipItem.raw as number;
+                        const total = filteredPieChartData.datasets[0].data.reduce(
+                          (sum, val) => sum + val,
+                          0
+                        );
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        return `${tooltipItem.label}: ${value.toFixed(2)} TND (${percentage}%)`;
+                      },
+                    },
+                  },
+                  legend: { display: false },
+                },
+              }}
+            />
           </div>
-        )}
+        </div>
+        <div className="lg:w-1/2">
+          <div className="rounded-lg bg-gray-50 p-2 sm:p-4">
+            {/* Reduced p-4 to p-2 for mobile, kept p-4 for larger screens */}
+            <h3 className="mb-4 border-b border-gray-200 pb-2 text-lg font-bold text-gray-800">
+              {pieChartType === "EXPENSE" ? "Détail des Dépenses" : "Détail des Revenus"}
+            </h3>
+            {filteredPieChartData.labels.length === 0 ? (
+              <div className="flex h-40 items-center justify-center">
+                <p className="text-center text-gray-500">
+                  Aucune donnée disponible pour la période sélectionnée
+                </p>
+              </div>
+            ) : (
+              <div>
+                <div className="space-y-1 sm:space-y-2 md:space-y-3">
+                  {/* Reduced space-y-2 to space-y-1 for mobile */}
+                  {filteredPieChartData.labels.map((label, index) => {
+                    const amount = filteredPieChartData.datasets[0].data[index];
+                    const total = filteredPieChartData.datasets[0].data.reduce(
+                      (sum, val) => sum + val,
+                      0
+                    );
+                    const percentage = ((amount / total) * 100).toFixed(1);
+
+                    return (
+                      <div
+                        key={label}
+                        className="flex items-center justify-between rounded-md p-1 sm:p-2 transition hover:bg-gray-100"
+                      >
+                        <div className="flex items-center">
+                          <div
+                            className="mr-2 h-3 w-3 sm:h-4 sm:w-4 rounded"
+                            style={{
+                              backgroundColor:
+                                filteredPieChartData.datasets[0].backgroundColor[index],
+                            }}
+                          />
+                          <span className="text-sm sm:text-base font-medium text-gray-800">{label}</span>
+                        </div>
+                        <div className="flex items-center space-x-2 sm:space-x-3">
+                          <span className="rounded-full bg-gray-200 px-1.5 py-0.5 sm:px-2 sm:py-1 text-xs font-bold text-gray-700">
+                            {percentage}%
+                          </span>
+                          <span
+                            className={`text-sm sm:text-base font-medium ${
+                              pieChartType === "EXPENSE" ? "text-red-600" : "text-green-600"
+                            }`}
+                          >
+                            {pieChartType === "EXPENSE"
+                              ? `-${amount.toFixed(2)} TND`
+                              : `+${amount.toFixed(2)} TND`}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-2 sm:mt-4 md:mt-6 border-t border-gray-200 pt-2 sm:pt-3 md:pt-4">
+                  {/* Reduced mt-4 to mt-2 and pt-3 to pt-2 for mobile */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm sm:text-lg font-bold text-gray-800">Total:</span>
+                    <span
+                      className={`text-sm sm:text-lg font-bold ${
+                        pieChartType === "EXPENSE" ? "text-red-600" : "text-green-600"
+                      }`}
+                    >
+                      {pieChartType === "EXPENSE" ? "-" : "+"}
+                      {filteredPieChartData.datasets[0].data
+                        .reduce((sum, val) => sum + val, 0)
+                        .toFixed(2)} TND
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
         {/* Bar Chart Section */}
         <div className="mb-8 overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg">
           <div className="border-b border-gray-100 p-6">
-            <h2 className="text-center text-2xl font-bold text-gray-800">Évolution Financière</h2>
+          <h2 className="text-center text-lg md:text-2xl font-bold text-gray-800">Évolution Financière</h2>
           </div>
           <div className="border-b border-gray-100 p-6">
-            <div className="mx-auto flex w-fit overflow-hidden rounded-lg border border-gray-200">
+          <div className="mx-auto flex w-fit flex-col md:flex-row overflow-hidden rounded-lg border border-gray-200">
               <button
                 onClick={() => setViewMode("incomeExpense")}
                 className={`px-8 py-3 font-medium transition ${
@@ -1143,8 +1321,7 @@ const exportPDF = async () => {
             </div>
           </div>
           <div className="chart-container p-6">
-            {/* Increased Bar Chart Size */}
-            <div className="h-96 md:h-[500px]">
+            <div ref={barChartRef} className="h-96 md:h-[500px]">
               {viewMode === "incomeExpense" && incomeExpenseData ? (
                 <Bar
                   data={incomeExpenseData}
@@ -1271,4 +1448,6 @@ const exportPDF = async () => {
       </div>
     </div>
   );
-}
+};
+
+export default Statistiques;

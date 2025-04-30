@@ -107,15 +107,10 @@ const MainTabBar = (props: { disabled?: boolean }) => {
       <TabBarItem
         active={location.pathname.startsWith("/categorie")}
         icon={<IconList stroke={1} size={32} />}
-        label={"categorie"}
+        label={"categories"}
         to="/categorie"
       />
-            <TabBarItem
-        active={location.pathname.startsWith("/budget")}
-        icon={<IconWallet stroke={1} size={32} />}
-        label={"budget"}
-        to="/budget"
-      />
+
     </div>
     
   );
