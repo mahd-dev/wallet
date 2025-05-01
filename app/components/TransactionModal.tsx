@@ -159,6 +159,7 @@ interface TransactionModalProps {
   setEditData: React.Dispatch<React.SetStateAction<any>>;
   handleEdit: () => Promise<void>;
   onSuccess: () => void;
+  selectedMonth: dayjs.Dayjs; // Added selectedMonth prop
 }
 
 const TransactionModal: React.FC<TransactionModalProps> = ({
@@ -170,10 +171,23 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   setEditData,
   handleEdit,
   onSuccess,
+  selectedMonth,
 }) => {
-  const currentDate = new Date().toISOString().split("T")[0];
+  // Function to get default date based on selectedMonth
+  const getDefaultDateForSelectedMonth = (): string => {
+    // If editing, use the original date
+    if (isEditing && editData?.date) {
+      return parseDate(editData.date);
+    }
+    
+    // Get current day but use selected month and year
+    const today = dayjs();
+    const day = Math.min(today.date(), selectedMonth.daysInMonth());
+    return selectedMonth.date(day).format('YYYY-MM-DD');
+  };
+  
   const parseDate = (dateString: string | undefined) => {
-    if (!dateString) return currentDate;
+    if (!dateString) return getDefaultDateForSelectedMonth();
     return new Date(dateString).toISOString().split("T")[0];
   };
 
@@ -264,11 +278,12 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     }
   }, [isEditing, editData]);
 
+  // Updated to include selectedMonth as dependency
   useEffect(() => {
     if (basicOpened && !isEditing) {
       resetForm();
     }
-  }, [basicOpened, isEditing]);
+  }, [basicOpened, isEditing, selectedMonth]);
 
   const resetForm = () => {
     setAmount(0);
@@ -278,7 +293,8 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     setCategoryId(filteredCategories?.[0]?.id || "");
     setType("EXPENSE");
     setDescription("");
-    setDate(new Date().toISOString().split("T")[0]);
+    // Use selected month instead of current date
+    setDate(getDefaultDateForSelectedMonth());
     setAmountError("");
     setSearchTerm("");
     setShowCategoryDropdown(false);
@@ -450,7 +466,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
               triggerNotifEvent("expenseExeceededEvent", {
                 userIds: [user?.oidcId || ""],
                 type: ExpenseExeceededType.Exceeded,
-             categoryId,
+                categoryId,
               } as any);
               refreshNotifications();
             } else if (
@@ -480,10 +496,11 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         }
       } else {
         if (isExpenseType) {
+          // Use the selected date for budget checking
           budgetStatus = await checkBudgetStatus(
             categoryId,
             amount,
-            dayjs().format("YYYY-MM-01T00:00:00.000Z"),
+            dayjs(date).format("YYYY-MM-01T00:00:00.000Z"),
             isExpenseType,
           );
         }
@@ -502,26 +519,25 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
         if (response.data?.createTransaction) {
           if (isExpenseType) {
-           // In TransactionModal.js, update these sections
-if (budgetStatus.exceeded) {
-  triggerNotifEvent("expenseExeceededEvent", {
-    userIds: [user?.oidcId || ""],
-    type: ExpenseExeceededType.Exceeded,
-    categoryId,
-  } as any);
+            if (budgetStatus.exceeded) {
+              triggerNotifEvent("expenseExeceededEvent", {
+                userIds: [user?.oidcId || ""],
+                type: ExpenseExeceededType.Exceeded,
+                categoryId,
+              } as any);
   
-  console.log("Budget exceeded, triggering notification refresh");
-  setTimeout(() => refreshNotifications(), 500); // Add small delay to ensure notification is created first
-} else if (budgetStatus.nearlyExceeded) {
-  triggerNotifEvent("expenseNearlyExceededEvent", {
-    userIds: [user?.oidcId || ""],
-    type: ExpenseExeceededType.NearlyExceeded,
-    categoryId,
-  } as any);
+              console.log("Budget exceeded, triggering notification refresh");
+              setTimeout(() => refreshNotifications(), 500);
+            } else if (budgetStatus.nearlyExceeded) {
+              triggerNotifEvent("expenseNearlyExceededEvent", {
+                userIds: [user?.oidcId || ""],
+                type: ExpenseExeceededType.NearlyExceeded,
+                categoryId,
+              } as any);
   
-  console.log("Budget nearly exceeded, triggering notification refresh");
-  setTimeout(() => refreshNotifications(), 500);
-}
+              console.log("Budget nearly exceeded, triggering notification refresh");
+              setTimeout(() => refreshNotifications(), 500);
+            }
           }
 
           onSuccess();
@@ -804,18 +820,21 @@ if (budgetStatus.exceeded) {
                 />
               </div>
 
+              {/* Date picker with calendar icon */}
               <div className="mb-5">
-                <div className="relative rounded-lg border border-gray-300 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
+                <div className="flex items-center rounded-lg border border-gray-300 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
+                  <div className="flex items-center justify-center px-4 py-3 bg-gray-50">
+                    <Calendar size={20} className="text-gray-500" />
+                  </div>
                   <input
                     id="date"
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full rounded-lg border-0 py-3 pl-4 pr-10 text-base text-gray-700 focus:outline-none focus:ring-0"
+                    min={selectedMonth.startOf('month').format('YYYY-MM-DD')}
+                    max={selectedMonth.endOf('month').format('YYYY-MM-DD')}
+                    className="w-full border-0 px-4 py-3 text-base text-gray-700 focus:outline-none focus:ring-0"
                   />
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-                    <Calendar size={18} className="text-gray-400" />
-                  </div>
                 </div>
                 <p className="mt-1.5 text-xs text-gray-500">
                   {isEditing

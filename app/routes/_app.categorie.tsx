@@ -1,10 +1,9 @@
 import { IconEdit, IconPlus, IconTrash, IconAlertCircle } from "@tabler/icons-react";
 import { useAtom } from "jotai";
-import { useState } from "react";
-import { gql, useMutation, useQuery } from "urql";
+import { useState, useEffect, useRef } from "react";
+import { gql, useMutation, useQuery, useClient } from "urql";
 import { userAtom } from "~/store/store";
 import CategoryIconPicker, { icons } from "./CategoryIconPicker";
-import { useClient } from "urql";
 
 // GraphQL query to check if a category has transactions
 const CHECK_CATEGORY_TRANSACTIONS = gql`
@@ -114,8 +113,6 @@ type Category = {
   type: "EXPENSE" | "INCOME";
 };
 
-import { useEffect, useRef } from "react";
-
 const CategoriesPage = () => {
   const [user] = useAtom(userAtom);
   const [activeTab, setActiveTab] = useState<"EXPENSE" | "INCOME">("EXPENSE");
@@ -133,9 +130,10 @@ const CategoriesPage = () => {
     icon?: string;
   }>({});
   
-  // Refs for modal click-outside handling
+  // Refs for modal click-outside handling and scroll preservation
   const modalRef = useRef<HTMLDivElement>(null);
-  
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // Mutations and queries
   const [, addCategory] = useMutation(ADD_CATEGORY);
   const [, deleteCategory] = useMutation(DELETE_CATEGORY);
@@ -144,23 +142,35 @@ const CategoriesPage = () => {
   const [, deleteBudget] = useMutation(DELETE_BUDGET);
   const [checkTransactionsResult, checkCategoryTransactions] = useQuery({
     query: CHECK_CATEGORY_TRANSACTIONS,
-    pause: true, // Start paused so it only runs when we call it
+    pause: true,
   });
   
   const [{ data, error, fetching }, refetch] = useQuery({
     query: GET_CATEGORIES,
     variables: user?.oidcId ? { userId: user.oidcId } : undefined,
-    pause: !user?.oidcId, // Ensures query runs only when user is available
-    requestPolicy: "network-only",
+    pause: !user?.oidcId,
+    requestPolicy: "cache-and-network",
   });
+
+  // Preserve scroll position during refetch
+  useEffect(() => {
+    if (fetching && containerRef.current) {
+      const scrollTop = containerRef.current.scrollTop;
+      return () => {
+        if (containerRef.current) {
+          containerRef.current.scrollTop = scrollTop;
+        }
+      };
+    }
+  }, [fetching]);
 
   // Helper for generating softer colors
   const generateSofterColor = (type: "EXPENSE" | "INCOME") => {
-    return type === "EXPENSE" ? "#FF8A8A" : "#98E5B0"; // Lighter red for expense, even softer green for income
+    return type === "EXPENSE" ? "#FF8A8A" : "#98E5B0";
   };
 
   const validateForm = () => {
-    const errors: {name?: string; icon?: string} = {};
+    const errors: { name?: string; icon?: string } = {};
     
     if (!categoryName.trim()) {
       errors.name = "Category name is required";
@@ -187,11 +197,11 @@ const CategoriesPage = () => {
         name: categoryName,
         icon: selectedIcon as string,
         iconColor: iconColor,
-        type: activeTab, // Ensure correct type is used
+        type: activeTab,
       });
 
       if (result.data?.createCategory) {
-        refetch();
+        refetch({ requestPolicy: "network-only" });
         setCategoryName("");
         setSelectedIcon(null);
         setSelectedColor(null);
@@ -201,7 +211,7 @@ const CategoriesPage = () => {
     }
   };
 
-  const client = useClient(); // Get the Urql client
+  const client = useClient();
 
   const initiateDeleteCategory = async (category: Category) => {
     setCategoryToDelete(category);
@@ -224,33 +234,29 @@ const CategoriesPage = () => {
   const confirmDeleteCategory = async () => {
     if (categoryToDelete && user?.oidcId) {
       try {
-        // First, fetch all transactions and budgets for this category
         const result = await client
           .query(CHECK_CATEGORY_TRANSACTIONS, { category_id: categoryToDelete.id })
           .toPromise();
         
-        // Delete all associated transactions
         const transactions = result.data?.transactions?.nodes || [];
         for (const transaction of transactions) {
           await deleteTransaction({ id: transaction.transactionId });
         }
 
-        // Delete all associated budgets
         const budgets = result.data?.budgets?.nodes || [];
         for (const budget of budgets) {
           await deleteBudget({ id: budget.budgetId });
         }
-        // Finally delete the category
+
         const deleteCategoryResult = await deleteCategory({ id: categoryToDelete.id });
         
         if (deleteCategoryResult.data?.deleteCategory) {
-          refetch();
+          refetch({ requestPolicy: "network-only" });
           setIsDeleteModalOpen(false);
           setCategoryToDelete(null);
         }
       } catch (error) {
         console.error("Error deleting category and related items:", error);
-        // Consider showing an error message to the user
       }
     }
   };
@@ -271,7 +277,7 @@ const CategoriesPage = () => {
       });
 
       if (result.data?.updateCategory) {
-        refetch();
+        refetch({ requestPolicy: "network-only" });
         setCategoryName("");
         setSelectedIcon(null);
         setSelectedColor(null);
@@ -287,12 +293,11 @@ const CategoriesPage = () => {
     setCategoryName(category.name);
     setSelectedIcon(category.icon);
     setSelectedColor(category.iconColor);
-    setActiveTab(category.type); // Set the active tab based on the category type
+    setActiveTab(category.type);
     setIsModalOpen(true);
     setValidationErrors({});
   };
 
-  // Function to handle clicks outside modal
   const handleClickOutside = (event: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
       setIsModalOpen(false);
@@ -301,7 +306,6 @@ const CategoriesPage = () => {
     }
   };
 
-  // Set up event listener for clicking outside modal
   useEffect(() => {
     if (isModalOpen || isDeleteModalOpen) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -309,7 +313,6 @@ const CategoriesPage = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     }
     
-    // Cleanup on unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -324,14 +327,15 @@ const CategoriesPage = () => {
     setValidationErrors({});
   };
 
-  // Filter categories based on the active tab
   const filteredCategories = data?.categories?.nodes?.filter(
     (category: Category) => category.type === activeTab,
   );
 
   return (
-    <div className="mx-auto mt-12 max-w-4xl px-3 pb-12 pt-4 sm:mt-16 sm:px-6">
-      {/* Tabs */}
+    <div
+      ref={containerRef}
+      className="mx-auto mt-12 max-w-4xl px-3 pb-12 pt-4 sm:mt-16 sm:px-6 overflow-auto"
+    >
       <div className="overflow-hidden rounded-xl bg-white shadow-lg">
         <div className="flex border-b">
           <button
@@ -357,7 +361,6 @@ const CategoriesPage = () => {
         </div>
 
         <div className="p-4 sm:p-6">
-          {/* Center Add Button */}
           <div className="mb-6 flex items-center justify-center">
             <button
               onClick={handleAddNew}
@@ -374,8 +377,7 @@ const CategoriesPage = () => {
             </button>
           </div>
 
-          {/* Category Grid */}
-          {fetching ? (
+          {fetching && !data ? (
             <div className="flex justify-center py-12">
               <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900 sm:h-12 sm:w-12"></div>
             </div>
@@ -402,7 +404,6 @@ const CategoriesPage = () => {
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
               {filteredCategories?.map((category: Category) => {
-                // Find the icon component for the current category
                 const IconComponent = icons.find(
                   (icon) => icon.value === category.icon,
                 )?.component;
@@ -421,14 +422,13 @@ const CategoriesPage = () => {
                   >
                     <div className="p-3 sm:p-4">
                       <div className="mb-2 flex items-start sm:mb-3">
-                        {/* Icon - Fixed size and position */}
                         <div
                           className="mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full shadow-sm sm:h-12 sm:w-12"
                           style={{
                             backgroundColor: `${category.iconColor}20`,
                             border: `1px solid ${category.iconColor}50`,
                             borderRadius: "9999px",
-                            minWidth: "2.5rem", // Ensure minimum width on mobile
+                            minWidth: "2.5rem",
                           }}
                         >
                           {IconComponent && (
@@ -440,13 +440,15 @@ const CategoriesPage = () => {
                           )}
                         </div>
 
-                        {/* Name - Use CSS responsive classes instead of JS measurement */}
                         <h3 className="break-words text-sm font-medium text-gray-800 sm:text-lg">
-                          <span className="sm:hidden" style={{
-                            fontSize: category.name.length > 15 ? (
-                              category.name.length > 25 ? '0.7rem' : '0.8rem'
-                            ) : '0.875rem',
-                          }}>
+                          <span
+                            className="sm:hidden"
+                            style={{
+                              fontSize: category.name.length > 15 ? (
+                                category.name.length > 25 ? '0.7rem' : '0.8rem'
+                              ) : '0.875rem',
+                            }}
+                          >
                             {category.name}
                           </span>
                           <span className="hidden sm:inline">
@@ -455,7 +457,6 @@ const CategoriesPage = () => {
                         </h3>
                       </div>
 
-                      {/* Actions */}
                       <div className="mt-2 flex justify-end gap-1 sm:mt-3 sm:gap-2">
                         <button
                           onClick={() => handleEditCategory(category)}
@@ -481,7 +482,6 @@ const CategoriesPage = () => {
         </div>
       </div>
 
-      {/* Add/Edit Category Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-3 sm:p-4">
           <div ref={modalRef} className="w-full max-w-xs rounded-lg bg-white p-4 shadow-xl sm:max-w-sm sm:p-6">
@@ -538,7 +538,6 @@ const CategoriesPage = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal - Enhanced with better warnings */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-3 sm:p-4">
           <div ref={modalRef} className="w-full max-w-xs rounded-lg bg-white p-4 shadow-xl sm:max-w-md sm:p-6">
@@ -546,7 +545,6 @@ const CategoriesPage = () => {
               Delete Category
             </h3>
             
-            {/* Enhanced warning message */}
             {(hasTransactions || hasBudgets) && (
               <div className="mb-4 flex items-start gap-2 rounded-lg bg-red-50 p-3 sm:p-4">
                 <IconAlertCircle size={24} className="mt-1 flex-shrink-0 text-red-500" />

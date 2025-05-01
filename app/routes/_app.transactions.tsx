@@ -7,13 +7,18 @@ import {
   IconShoppingCart,
   IconSortAscending,
   IconTrash,
+  IconCalendar,
+  IconChevronLeft,
+  IconChevronRight,
+  IconArrowUp,
+  IconArrowDown
 } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { Typetransaction } from "gql/graphql";
 import { useAtom } from "jotai";
 import { Fab } from "konsta/react";
 import { nanoid } from "nanoid";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { gql, useMutation, useQuery } from "urql";
 import TransactionModal from "~/components/TransactionModal";
 import { userAtom } from "~/store/store";
@@ -154,12 +159,18 @@ const TransactionsList = () => {
   // Get the current user from atom store
   const [user] = useAtom(userAtom);
 
-  // Updated to use userId condition like in budget component
+  // Ref to track the container element
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Month selection state
+  const [selectedMonth, setSelectedMonth] = useState(dayjs());
+
+  // Query hook with refetch function
   const [{ data, fetching, error }, refetch] = useQuery<TransactionsData>({
     query: GET_TRANSACTIONS,
     variables: user ? { userId: user.oidcId } : undefined,
-    pause: !user, // Pause the query until we have a user
-    requestPolicy: "network-only",
+    pause: !user,
+    requestPolicy: "cache-and-network",
   });
 
   const [, deleteTransaction] = useMutation(DELETE_TRANSACTION);
@@ -190,10 +201,27 @@ const TransactionsList = () => {
     balance: 0,
   });
 
-  // Calculate summary data when transactions change
+  // Navigate to previous month
+  const previousMonth = () => {
+    setSelectedMonth(selectedMonth.subtract(1, 'month'));
+  };
+
+  // Navigate to next month
+  const nextMonth = () => {
+    setSelectedMonth(selectedMonth.add(1, 'month'));
+  };
+
+  // Calculate summary data when transactions and selectedMonth change
   useEffect(() => {
     if (data?.transactions?.nodes) {
-      const totals = data.transactions.nodes.reduce(
+      // Filter transactions by selected month
+      const monthTransactions = data.transactions.nodes.filter(tx => {
+        const txDate = dayjs(tx.date);
+        return txDate.month() === selectedMonth.month() && 
+               txDate.year() === selectedMonth.year();
+      });
+
+      const totals = monthTransactions.reduce(
         (acc, tx) => {
           if (tx.type === "INCOME") {
             acc.totalIncome += tx.amount;
@@ -211,18 +239,29 @@ const TransactionsList = () => {
         balance: totals.totalIncome - totals.totalExpense,
       });
     }
-  }, [data]);
+  }, [data, selectedMonth]);
+
+  // Preserve scroll position during refetch
+  useEffect(() => {
+    if (fetching && containerRef.current) {
+      const scrollTop = containerRef.current.scrollTop;
+      // Store scroll position before refetch
+      return () => {
+        if (containerRef.current) {
+          containerRef.current.scrollTop = scrollTop;
+        }
+      };
+    }
+  }, [fetching]);
 
   // Filter categories based on active tab
   const filteredCategories = useMemo(() => {
     if (!data?.categories?.nodes) return [];
 
-    // If we're on the "all" tab, return all categories
     if (activeTab === "tout") {
       return data.categories.nodes;
     }
     
-    // Filter by type based on the active tab
     const categoryType = activeTab === "revenus" ? "INCOME" : "EXPENSE";
     return data.categories.nodes.filter(cat => cat.type === categoryType);
   }, [data, activeTab]);
@@ -230,14 +269,15 @@ const TransactionsList = () => {
   const handleDelete = async (id: string) => {
     setShowDeleteConfirm(false);
     console.log("Deleting transaction with ID:", id);
-
+  
     const result = await deleteTransaction({ id });
-
+  
     console.log("Delete result:", result);
-
+  
     if (result.data?.deleteTransaction) {
       console.log("Transaction deleted successfully.");
-      refetch();
+      // Refetch data
+      refetch({ requestPolicy: "network-only" });
     } else {
       console.error("Failed to delete transaction:", result.error?.message);
     }
@@ -245,7 +285,7 @@ const TransactionsList = () => {
 
   const handleEdit = async () => {
     console.log("Editing transaction:", editData);
-
+  
     const result = await editTransaction({
       id: editData.id,
       amount: editData.amount,
@@ -255,17 +295,20 @@ const TransactionsList = () => {
       type: editData.type,
       clientMutationId: nanoid(),
     });
-
+  
     console.log("Edit result:", result);
-
+  
     if (result.data?.updateTransaction?.transaction) {
       console.log(
         "Transaction updated successfully:",
         result.data.updateTransaction.transaction,
       );
-      refetch();
+      
       setIsEditing(false);
       setBasicOpened(false);
+      
+      // Refetch data
+      refetch({ requestPolicy: "network-only" });
     } else {
       console.error("Failed to update transaction:", result.error?.message);
     }
@@ -286,7 +329,7 @@ const TransactionsList = () => {
     setSelectedCategory("");
   };
 
-  if (fetching)
+  if (fetching && !data)
     return (
       <div className="flex h-screen items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
@@ -322,7 +365,13 @@ const TransactionsList = () => {
   // Filter and sort transactions
   let displayedTransactions = [...(data?.transactions?.nodes || [])];
 
-  // Apply type filter
+  // Filter by selected month
+  displayedTransactions = displayedTransactions.filter(tx => {
+    const txDate = dayjs(tx.date);
+    return txDate.month() === selectedMonth.month() && 
+           txDate.year() === selectedMonth.year();
+  });
+
   if (activeTab === "revenus") {
     displayedTransactions = displayedTransactions.filter(
       (tx) => tx.type === "INCOME",
@@ -333,14 +382,12 @@ const TransactionsList = () => {
     );
   }
 
-  // Apply category filter
   if (selectedCategory) {
     displayedTransactions = displayedTransactions.filter(
       (tx) => tx.category?.id === selectedCategory,
     );
   }
 
-  // Apply search filter
   if (searchQuery.trim()) {
     const query = searchQuery.toLowerCase().trim();
     displayedTransactions = displayedTransactions.filter(
@@ -350,21 +397,18 @@ const TransactionsList = () => {
     );
   }
 
-  // Apply sort
   displayedTransactions.sort((a, b) => {
     const dateA = new Date(a.date).getTime();
     const dateB = new Date(b.date).getTime();
     return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
   });
 
-  // Define the group type
   interface TransactionGroup {
     date: string;
     formattedDate: string;
     transactions: Transaction[];
   }
 
-  // Group transactions by date
   const groupTransactionsByDate = (
     transactions: Transaction[],
   ): TransactionGroup[] => {
@@ -388,42 +432,83 @@ const TransactionsList = () => {
   const groupedTransactions = groupTransactionsByDate(displayedTransactions);
 
   return (
-    <div className="mx-auto mb-20 min-h-screen max-w-lg bg-gray-50 p-4">
-      {/* Enhanced Dashboard Header */}
-      <div className="mb-8 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg mt-10">
-        <div className="p-6">
-          <div className="mb-6 mt-10 flex flex-col items-center justify-center">
-            <p className="mb-2 text-xs uppercase tracking-wider text-blue-200">
-              SOLDE ACTUEL
-            </p>
-            <p
-              className={`text-3xl font-bold ${summaryData.balance >= 0 ? "text-green-300" : "text-red-300"}`}
-            >
-              {summaryData.balance >= 0 ? "+" : ""}
-              {summaryData.balance.toFixed(2)} TND
-            </p>
-          </div>
+    <div
+      ref={containerRef}
+      className="mx-auto mb-20 max-w-lg md:max-w-2xl lg:max-w-4xl min-h-screen bg-gray-50 p-4 overflow-auto"
+    >
 
-          <div className="grid grid-cols-2 gap-4 pt-2">
-            <div className="rounded-lg bg-blue-500/30 p-4 text-center">
-              <p className="mb-1 text-xs uppercase tracking-wider text-blue-100">
-                REVENUS
-              </p>
-              <p className="text-xl font-bold text-green-300">
-                +{summaryData.totalIncome.toFixed(2)} TND
-              </p>
-            </div>
-            <div className="rounded-lg bg-blue-500/30 p-4 text-center">
-              <p className="mb-1 text-xs uppercase tracking-wider text-blue-100">
-                DÉPENSES
-              </p>
-              <p className="text-xl font-bold text-red-300">
-                -{summaryData.totalExpense.toFixed(2)} TND
-              </p>
-            </div>
-          </div>
-        </div>
+
+      {/* Enhanced Dashboard Header */}
+      <div className="mb-8 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg mt-20">
+  <div className="p-6">
+    {/* Month Selection integrated in header */}
+    <div className="flex items-center justify-between mb-6">
+      <button 
+        onClick={previousMonth}
+        className="rounded-full p-2 text-white/80 hover:bg-blue-500/30 transition-colors"
+        aria-label="Mois précédent"
+      >
+        <IconChevronLeft size={20} />
+      </button>
+      
+      <div className="flex items-center space-x-2">
+        <IconCalendar size={20} className="text-white" />
+        <h2 className="text-lg font-medium text-white">
+          {selectedMonth.format('MMMM YYYY')}
+        </h2>
       </div>
+      
+      <button 
+        onClick={nextMonth}
+        className="rounded-full p-2 text-white/80 hover:bg-blue-500/30 transition-colors"
+        aria-label="Mois suivant"
+      >
+        <IconChevronRight size={20} />
+      </button>
+    </div>
+
+    <div className="mb-6 mt-4 flex flex-col items-center justify-center">
+      <p className="mb-2 text-xs uppercase tracking-wider text-blue-200">
+        SOLDE
+      </p>
+      <p
+        className={`text-3xl font-bold ${summaryData.balance >= 0 ? "text-green-300" : "text-red-300"}`}
+      >
+        {summaryData.balance >= 0 ? "+" : ""}
+        {summaryData.balance.toFixed(2)} TND
+      </p>
+    </div>
+
+    <div className="grid grid-cols-2 gap-4 pt-2">
+      <div className="rounded-lg bg-blue-500/30 p-4">
+        <div className="flex items-center justify-center mb-1">
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-400/20 mr-2">
+            <IconArrowUp size={18} className="text-green-300" />
+          </div>
+          <p className="text-xs uppercase tracking-wider text-blue-100">
+            REVENUS
+          </p>
+        </div>
+        <p className="text-xl font-bold text-green-300 text-center">
+          +{summaryData.totalIncome.toFixed(2)} TND
+        </p>
+      </div>
+      <div className="rounded-lg bg-blue-500/30 p-4">
+        <div className="flex items-center justify-center mb-1">
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-400/20 mr-2">
+            <IconArrowDown size={18} className="text-red-300" />
+          </div>
+          <p className="text-xs uppercase tracking-wider text-blue-100">
+            DÉPENSES
+          </p>
+        </div>
+        <p className="text-xl font-bold text-red-300 text-center">
+          -{summaryData.totalExpense.toFixed(2)} TND
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* Search Bar */}
       <div className="mb-6">
@@ -593,10 +678,10 @@ const TransactionsList = () => {
             {searchQuery
               ? "Aucune transaction ne correspond à votre recherche."
               : activeTab === "tout"
-                ? "Commencez à ajouter vos transactions pour suivre vos finances."
+                ? `Aucune transaction pour ${selectedMonth.format('MMMM YYYY')}.`
                 : activeTab === "revenus"
-                  ? "Aucun revenu enregistré jusqu'à présent."
-                  : "Aucune dépense enregistrée jusqu'à présent."}
+                  ? `Aucun revenu pour ${selectedMonth.format('MMMM YYYY')}.`
+                  : `Aucune dépense pour ${selectedMonth.format('MMMM YYYY')}.`}
           </p>
           <button
             onClick={() => {
@@ -621,83 +706,85 @@ const TransactionsList = () => {
                 </h3>
               </div>
 
-              {group.transactions.map((tx) => (
-                <div
-                  key={tx.transactionId}
-                  className="overflow-hidden rounded-xl bg-white shadow transition-all hover:shadow-md"
-                >
-                  <div className="flex items-start p-4">
-                    <div
-                      className="mr-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full"
-                      style={{
-                        backgroundColor: tx.category?.iconColor
-                          ? `${tx.category.iconColor}20`
-                          : "#f3f4f6",
-                      }}
-                    >
-                      <DynamicIcon
-                        iconName={tx.category?.icon || "shopping"}
-                        color={tx.category?.iconColor}
-                        size={24}
-                      />
-                    </div>
-
-                    <div className="flex-grow">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-gray-900">
-                          {tx.description || tx.category?.name || "Transaction"}
-                        </h4>
-                        <p
-                          className={`text-lg font-bold ${tx.type === "INCOME" ? "text-green-600" : "text-red-600"}`}
-                        >
-                          {tx.type === "INCOME" ? "+" : "-"}
-                          {tx.amount.toFixed(2)} TND
-                        </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {group.transactions.map((tx) => (
+                  <div
+                    key={tx.transactionId}
+                    className="overflow-hidden rounded-xl bg-white shadow transition-all hover:shadow-md"
+                  >
+                    <div className="flex items-start p-4">
+                      <div
+                        className="mr-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full"
+                        style={{
+                          backgroundColor: tx.category?.iconColor
+                            ? `${tx.category.iconColor}20`
+                            : "#f3f4f6",
+                        }}
+                      >
+                        <DynamicIcon
+                          iconName={tx.category?.icon || "shopping"}
+                          color={tx.category?.iconColor}
+                          size={24}
+                        />
                       </div>
 
-                      <div className="mt-1 flex items-center justify-between">
-                        <div className="flex items-center">
-                          <span className="text-sm text-gray-500">
-                            {tx.category?.name}
-                          </span>
-                          <span className="mx-2 text-xs text-gray-400">•</span>
-                          <span className="text-sm text-gray-500">
-                            {dayjs(tx.date).format("HH:mm")}
-                          </span>
+                      <div className="flex-grow">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-medium text-gray-900">
+                            {tx.description || tx.category?.name || "Transaction"}
+                          </h4>
+                          <p
+                            className={`text-lg font-bold ${tx.type === "INCOME" ? "text-green-600" : "text-red-600"}`}
+                          >
+                            {tx.type === "INCOME" ? "+" : "-"}
+                            {tx.amount.toFixed(2)} TND
+                          </p>
                         </div>
 
-                        <div className="flex space-x-1">
-                          <button
-                            className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-blue-500"
-                            onClick={() => {
-                              setEditData({
-                                id: tx.transactionId,
-                                type: tx.type as Typetransaction,
-                                categoryId: tx.category.id,
-                                date: tx.date,
-                                description: tx.description || "",
-                                amount: tx.amount,
-                              });
-                              setIsEditing(true);
-                              setBasicOpened(true);
-                            }}
-                            aria-label="Modifier"
-                          >
-                            <IconPencil size={18} />
-                          </button>
-                          <button
-                            className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-red-500"
-                            onClick={() => confirmDelete(tx)}
-                            aria-label="Supprimer"
-                          >
-                            <IconTrash size={18} />
-                          </button>
+                        <div className="mt-1 flex items-center justify-between">
+                          <div className="flex items-center">
+                            <span className="text-sm text-gray-500">
+                              {tx.category?.name}
+                            </span>
+                            <span className="mx-2 text-xs text-gray-400">•</span>
+                            <span className="text-sm text-gray-500">
+                              {dayjs(tx.date).format("HH:mm")}
+                            </span>
+                          </div>
+
+                          <div className="flex space-x-1">
+                            <button
+                              className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-blue-500"
+                              onClick={() => {
+                                setEditData({
+                                  id: tx.transactionId,
+                                  type: tx.type as Typetransaction,
+                                  categoryId: tx.category.id,
+                                  date: tx.date,
+                                  description: tx.description || "",
+                                  amount: tx.amount,
+                                });
+                                setIsEditing(true);
+                                setBasicOpened(true);
+                              }}
+                              aria-label="Modifier"
+                            >
+                              <IconPencil size={18} />
+                            </button>
+                            <button
+                              className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-red-500"
+                              onClick={() => confirmDelete(tx)}
+                              aria-label="Supprimer"
+                            >
+                              <IconTrash size={18} />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -742,8 +829,12 @@ const TransactionsList = () => {
           editData={editData}
           setEditData={setEditData}
           handleEdit={handleEdit}
-          onSuccess={() => refetch()}
-        />
+          selectedMonth={selectedMonth}
+          onSuccess={() => {
+            // Refetch data
+            refetch({ requestPolicy: "network-only" });
+            }}
+          />
       )}
 
       {/* FAB Button */}
@@ -752,7 +843,7 @@ const TransactionsList = () => {
           setIsEditing(false);
           setBasicOpened(true);
         }}
-        className="fixed bottom-6 right-6 z-50 rounded-full bg-blue-500 p-5 text-white shadow-xl hover:scale-110 hover:bg-blue-600"
+        className="fixed bottom-10 sm:bottom-6 right-4 sm:right-6 z-40  transform rounded-full bg-blue-500  p-4 sm:p-5 text-white shadow-xl hover:scale-110 hover:bg-blue-600 transition-transform"
         icon={<IconPlus size={24} />}
       />
     </div>

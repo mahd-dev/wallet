@@ -9,6 +9,8 @@ import {
   IconX,
   IconCheck,
   IconFilter,
+  IconTrendingUp,
+  IconTarget
 } from "@tabler/icons-react";
 import {
   BarElement,
@@ -21,10 +23,10 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { Fab } from "konsta/react";
 import { nanoid } from "nanoid";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { gql, useMutation, useQuery } from "urql";
 import { userAtom } from "~/store/store";
-import { icons } from "./CategoryIconPicker"; // Import icons from CategoryIconPicker
+import { icons } from "./CategoryIconPicker";
 
 // Define types
 interface Category {
@@ -43,7 +45,7 @@ interface Budget {
   month: string;
   alertThreshold?: number;
   category?: Category;
-  createdAt?: string; // Added to track newly created budgets
+  createdAt?: string;
 }
 
 interface Transaction {
@@ -222,17 +224,16 @@ function BudgetPage() {
   const [, editBudget] = useMutation(EDIT_BUDGET);
 
   // Filter categories to only show EXPENSE type
-// Filter categories to only show EXPENSE type
-const expenseCategories: Category[] = categoryData?.categories.nodes
-  ? categoryData.categories.nodes.filter((cat: Category) => cat.type === "EXPENSE")
-  : [];
-  const budgets: Budget[] = budgetData?.budgets.nodes || [];
-  const transactions: Transaction[] = transactionData?.transactions.nodes || [];
+  const expenseCategories = categoryData?.categories.nodes
+    ? categoryData.categories.nodes.filter((cat: Category) => cat.type === "EXPENSE")
+    : [];
+  const budgets = budgetData?.budgets.nodes || [];
+  const transactions = transactionData?.transactions.nodes || [];
 
   // Set selected icon when a category is chosen
   useEffect(() => {
     if (categoryId) {
-      const selectedCategory = expenseCategories.find((cat) => cat.id === categoryId);
+      const selectedCategory = expenseCategories.find((cat: Category) => cat.id === categoryId);
       if (selectedCategory && selectedCategory.icon) {
         setSelectedIcon(selectedCategory.icon);
       }
@@ -260,12 +261,12 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
       // Add new budget with a createdAt timestamp
       await addBudget({
         budget_id: nanoid(),
-        user_id: user?.oidcId,
+        user_id: user?.oidcId || "",
         category_id: categoryId,
         amount: parseFloat(amount),
         month: new Date(month).toISOString(),
         alert_threshold: alertThreshold,
-        created_at: new Date().toISOString(), // Add timestamp for sorting
+        created_at: new Date().toISOString(),
       });
     }
     setIsModalOpen(false);
@@ -287,26 +288,31 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
 
   // Get all budgets for the selected month
   const selectedMonthBudgets = budgets.filter(
-    (budget) => dayjs(budget.month).format("YYYY-MM") === selectedMonth,
+    (budget: Budget) => dayjs(budget.month).format("YYYY-MM") === selectedMonth,
   );
 
   // Get budget category IDs to filter transactions
-  const budgetCategoryIds = selectedMonthBudgets.map(budget => budget.categoryId);
+  const budgetCategoryIds = selectedMonthBudgets.map((budget: Budget) => budget.categoryId);
 
   // Get total spent for selected month - Only for EXPENSE transactions in categories with budgets
   const selectedMonthSpent = transactions
-    .filter((t) => 
+    .filter((t: Transaction) => 
       dayjs(t.date).format("YYYY-MM") === selectedMonth && 
       t.type === "EXPENSE" &&
-      budgetCategoryIds.includes(t.categoryId) // Only include categories with budgets
+      budgetCategoryIds.includes(t.categoryId)
     )
-    .reduce((sum, t) => sum + t.amount, 0);
+    .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
 
   // Get total budget for selected month
   const selectedMonthBudgetTotal = selectedMonthBudgets.reduce(
-    (sum, b) => sum + b.amount,
+    (sum: number, b: Budget) => sum + b.amount,
     0,
   );
+
+  // Calculate percentage for summary (properly handling values over 100%)
+  const summaryPercentage = selectedMonthBudgetTotal > 0
+    ? (selectedMonthSpent / selectedMonthBudgetTotal) * 100
+    : 0;
 
   // Navigate to previous month
   const goToPreviousMonth = () => {
@@ -320,115 +326,150 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
     setSelectedMonth(dayjs(selectedMonth).add(1, "month").format("YYYY-MM"));
   };
 
+  // Set month in modal to match the selected month
+  const openAddModal = () => {
+    setCategoryId("");
+    setAmount("");
+    setMonth(selectedMonth);
+    setAlertThreshold(80);
+    setEditingBudget(null);
+    setIsModalOpen(true);
+  };
+
   // Get unique months from budgets for grouping
   const uniqueMonths = [
-    ...new Set(budgets.map((budget) => dayjs(budget.month).format("YYYY-MM"))),
-  ].sort((a, b) => dayjs(b).diff(dayjs(a)));
+    ...new Set(budgets.map((budget: Budget) => dayjs(budget.month).format("YYYY-MM"))),
+  ].sort((a, b) => dayjs(String(b)).diff(dayjs(String(a))));
+
+  // For budget insights
+  const categoryTotals = budgetCategoryIds.length > 0 
+    ? budgetCategoryIds.map((catId: string) => {
+        const catBudget = selectedMonthBudgets.find((b: Budget) => b.categoryId === catId);
+        const catSpent: number = transactions
+          .filter((t: Transaction) => 
+            t.categoryId === catId && 
+            dayjs(t.date).format("YYYY-MM") === selectedMonth && 
+            t.type === "EXPENSE"
+          )
+          .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
+        
+        return {
+          id: catId,
+          name: catBudget?.category?.name || "Unknown",
+          budget: catBudget?.amount || 0,
+          spent: catSpent,
+          icon: catBudget?.category?.icon,
+          iconColor: catBudget?.category?.iconColor,
+          percentage: catBudget?.amount ? (catSpent / catBudget.amount) * 100 : 0
+        };
+      })
+    : [];
+
+  // Sort by percentage (highest first)
+  const sortedCategories = [...categoryTotals].sort((a, b) => b.percentage - a.percentage);
+  const topCategories = sortedCategories.slice(0, 3); // Top 3 categories by percentage
 
   return (
-    <div className="mx-auto max-w-2xl p-6 mt-16">
-
-      {/* Improved Summary Card */}
-      {budgets.length > 0 && (
-        <div className="mb-8 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 shadow-xl transition-all hover:shadow-2xl">
-          <div className="p-6 text-white">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold tracking-tight">Résumé Mensuel</h2>
-              <div className="flex items-center space-x-3">
-                <button
-                  onClick={goToPreviousMonth}
-                  className="rounded-full bg-white bg-opacity-10 p-2 transition-all hover:bg-opacity-20"
-                >
-                  <IconChevronLeft size={20} />
-                </button>
-                <span className="rounded-lg bg-white bg-opacity-10 px-3 py-1 text-sm font-medium">
-                  {dayjs(selectedMonth).format("MMMM YYYY")}
-                </span>
-                <button
-                  onClick={goToNextMonth}
-                  className="rounded-full bg-white bg-opacity-10 p-2 transition-all hover:bg-opacity-20"
-                >
-                  <IconChevronRight size={20} />
-                </button>
-              </div>
+    <div className="container mx-auto max-w-4xl px-2 sm:px-4 py-4 sm:py-8">
+      {/* Summary Card - More compact and responsive */}
+      <div className="mb-4 sm:mb-6 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 shadow-lg transition-all hover:shadow-xl mt-16">
+        <div className="p-3 sm:p-4 md:p-5 text-white">
+          <div className="mb-2 sm:mb-3 flex items-center justify-between">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold tracking-tight">Résumé Mensuel</h2>
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <button
+                onClick={goToPreviousMonth}
+                className="rounded-full bg-white bg-opacity-10 p-1 sm:p-1.5 transition-all hover:bg-opacity-20"
+              >
+                <IconChevronLeft size={16} className="sm:w-5 sm:h-5" />
+              </button>
+              <span className="rounded-lg bg-white bg-opacity-10 px-2 py-0.5 sm:px-3 sm:py-1 text-xs sm:text-sm font-medium">
+                {dayjs(selectedMonth).format("MMMM YYYY")}
+              </span>
+              <button
+                onClick={goToNextMonth}
+                className="rounded-full bg-white bg-opacity-10 p-1 sm:p-1.5 transition-all hover:bg-opacity-20"
+              >
+                <IconChevronRight size={16} className="sm:w-5 sm:h-5" />
+              </button>
             </div>
+          </div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="rounded-lg bg-white bg-opacity-10 p-4">
-                <p className="mb-2 text-sm text-blue-100 opacity-90">Total Budgeté </p>
-                <p className="text-3xl font-bold tracking-tight">
-                  {selectedMonthBudgetTotal.toFixed(2)} <span className="text-lg">TND</span>
-                </p>
-              </div>
-              <div className="rounded-lg bg-white bg-opacity-10 p-4">
-                <p className="mb-2 text-sm text-blue-100 opacity-90">Total Dépensé</p>
-                <p className="text-3xl font-bold tracking-tight">
-                  {selectedMonthSpent.toFixed(2)} <span className="text-lg">TND</span>
-                </p>
-                <p className="mt-1 text-xs text-blue-100 opacity-75">
-                  *Catégories budgétées uniquement
-                </p>
-              </div>
+          <div className="grid grid-cols-2 gap-2 sm:gap-4">
+            <div className="rounded-lg bg-white bg-opacity-10 p-2 sm:p-3">
+              <p className="mb-1 text-xs sm:text-sm text-blue-100 opacity-90">Total Budgeté</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight">
+                {selectedMonthBudgetTotal.toFixed(2)} <span className="text-xs sm:text-sm">TND</span>
+              </p>
             </div>
+            <div className="rounded-lg bg-white bg-opacity-10 p-2 sm:p-3">
+              <p className="mb-1 text-xs sm:text-sm text-blue-100 opacity-90">Total Dépensé</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight">
+                {selectedMonthSpent.toFixed(2)} <span className="text-xs sm:text-sm">TND</span>
+              </p>
+            </div>
+          </div>
 
-            <div className="mt-6">
-              <div className="mb-2 flex justify-between text-sm">
-                <span className="font-medium">Progression</span>
-                <span className="font-bold">
-                  {selectedMonthBudgetTotal > 0
-                    ? Math.min(
-                        (selectedMonthSpent / selectedMonthBudgetTotal) * 100,
-                        100,
-                      ).toFixed(0)
-                    : "0"}%
+          {/* Refined, slimmer progress bar */}
+          <div className="mt-3 sm:mt-4 relative">
+            <div className="mb-1 flex justify-between text-xs sm:text-sm">
+              <span className="font-medium">Progression</span>
+              <span className="font-bold">
+                {summaryPercentage.toFixed(0)}%
+              </span>
+            </div>
+            <div className="h-3 sm:h-4 w-full rounded-full bg-white bg-opacity-20 relative">
+              <div
+                className="h-3 sm:h-4 rounded-full bg-gradient-to-r from-green-400 to-blue-400 transition-all duration-500 flex items-center justify-center"
+                style={{
+                  width: Math.min(summaryPercentage, 100) + "%",
+                }}
+              >
+                {summaryPercentage >= 35 && (
+                  <span className="text-xs font-bold text-white">
+                    {summaryPercentage.toFixed(0)}%
+                  </span>
+                )}
+              </div>
+              {summaryPercentage < 35 && (
+                <span className="absolute inset-0 flex items-center justify-start px-2 text-xs font-bold text-white">
+                  {summaryPercentage.toFixed(0)}%
                 </span>
-              </div>
-              <div className="h-3 w-full rounded-full bg-white bg-opacity-20">
-                <div
-                  className="h-3 rounded-full bg-gradient-to-r from-green-400 to-blue-400 transition-all duration-500"
-                  style={{
-                    width:
-                      selectedMonthBudgetTotal > 0
-                        ? `${Math.min((selectedMonthSpent / selectedMonthBudgetTotal) * 100, 100)}%`
-                        : "0%",
-                  }}
-                ></div>
-              </div>
+              )}
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Display budgets for the selected month */}
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-bold text-gray-700">
+      <div className="mb-3 sm:mb-4 flex items-center justify-between">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-700">
           Budgets pour {dayjs(selectedMonth).format("MMMM YYYY")}
         </h2>
         <div className="flex items-center">
-          <IconFilter size={18} className="mr-2 text-gray-400" />
-          <span className="text-sm text-gray-500">Filtrer par mois</span>
+          <IconFilter size={16} className="mr-1 sm:mr-2 text-gray-400" />
+          <span className="text-xs sm:text-sm text-gray-500">Filtrer par mois</span>
         </div>
       </div>
 
       {/* Display budgets for selected month */}
-      <div className="space-y-4">
-        {fetchingBudgets ? (
-          <div className="flex items-center justify-center py-8">
-            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"></div>
+      {fetchingBudgets ? (
+        <div className="flex items-center justify-center py-8 sm:py-12">
+          <div className="h-8 w-8 sm:h-10 sm:w-10 animate-spin rounded-full border-b-2 border-blue-500"></div>
+        </div>
+      ) : selectedMonthBudgets.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 py-8 sm:py-12 text-center">
+          <div className="mb-3 sm:mb-4 flex justify-center">
+            <IconPigMoney size={36} className="sm:w-12 sm:h-12 text-gray-300" />
           </div>
-        ) : selectedMonthBudgets.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 py-12 text-center">
-            <div className="mb-4 flex justify-center">
-              <IconPigMoney size={48} className="text-gray-300" />
-            </div>
-            <p className="mb-2 text-gray-500">Aucun budget pour {dayjs(selectedMonth).format("MMMM YYYY")}</p>
-            <p className="text-sm text-gray-400">
-              Cliquez sur le bouton + pour ajouter un budget
-            </p>
-          </div>
-        ) : (
-          selectedMonthBudgets.map((budget: Budget) => {
-            // Only consider EXPENSE transactions for the specific category
+          <p className="mb-1 sm:mb-2 text-base sm:text-lg text-gray-500">Aucun budget pour {dayjs(selectedMonth).format("MMMM YYYY")}</p>
+          <p className="text-xs sm:text-sm text-gray-400">
+            Cliquez sur le bouton + pour ajouter un budget
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+          {selectedMonthBudgets.map((budget: Budget) => {
             const spent = transactions
               .filter(
                 (t: Transaction) =>
@@ -438,7 +479,8 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
               )
               .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
 
-            const progress = Math.min((spent / budget.amount) * 100, 100);
+            const actualProgress = (spent / budget.amount) * 100;
+            const displayProgress = Math.min(actualProgress, 100);
             const remaining = budget.amount - spent;
             const isOverspent = remaining < 0;
 
@@ -446,16 +488,16 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
             let statusIcon = null;
             let statusClass = "text-green-500";
 
-            if (progress >= (budget.alertThreshold || 80) && progress < 100) {
+            if (actualProgress >= (budget.alertThreshold || 80) && actualProgress < 100) {
               progressColor = "bg-yellow-500";
-              statusIcon = <IconAlertTriangle size={16} className="text-yellow-500" />;
+              statusIcon = <IconAlertTriangle size={14} className="sm:w-4 sm:h-4 text-yellow-500" />;
               statusClass = "text-yellow-500";
-            } else if (progress >= 100) {
+            } else if (actualProgress >= 100) {
               progressColor = "bg-red-500";
-              statusIcon = <IconX size={16} className="text-red-500" />;
+              statusIcon = <IconX size={14} className="sm:w-4 sm:h-4 text-red-500" />;
               statusClass = "text-red-500";
             } else {
-              statusIcon = <IconCheck size={16} className="text-green-500" />;
+              statusIcon = <IconCheck size={14} className="sm:w-4 sm:h-4 text-green-500" />;
               statusClass = "text-green-500";
             }
 
@@ -471,21 +513,21 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
             return (
               <div
                 key={budget.budgetId}
-                className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-shadow hover:shadow-lg"
+                className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-shadow hover:shadow-xl"
               >
-                <div className="p-5">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
+                <div className="p-3 sm:p-4">
+                  <div className="mb-2 sm:mb-3 flex items-center justify-between">
+                    <div className="flex items-center space-x-2 sm:space-x-3">
                       {IconComponent && (
                         <div
-                          className="flex h-12 w-12 items-center justify-center rounded-full"
+                          className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full"
                           style={{ backgroundColor: `${iconColor}20` }}
                         >
-                          <IconComponent size={24} style={{ color: iconColor }} />
+                          <IconComponent size={18} className="sm:w-5 sm:h-5" style={{ color: iconColor }} />
                         </div>
                       )}
                       <div>
-                        <h2 className="text-lg font-bold text-gray-800">
+                        <h2 className="text-base sm:text-lg font-bold text-gray-800">
                           {budget.category?.name}
                         </h2>
                         <div className="mt-0.5 text-xs text-gray-500">
@@ -493,314 +535,371 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end">
-                      <div className={`text-lg font-bold ${isOverspent ? "text-red-500" : "text-green-700"}`}>
-                        {Math.abs(remaining).toFixed(2)} TND
-                      </div>
-                      <div className={`text-xs ${isOverspent ? "text-red-400" : "text-green-600"}`}>
-                        {isOverspent ? "Dépassement" : "Restant"}
-                      </div>
-                    </div>
                   </div>
 
-                  <div className="mb-3">
-                    <div className="mb-2 h-3 w-full overflow-hidden rounded-full bg-gray-100">
-                      <div
-                        className={`${progressColor} h-3 rounded-full transition-all duration-500 ease-in-out`}
-                        style={{ width: `${progress}%` }}
-                      ></div>
-                    </div>
-
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center space-x-1.5">
+                  <div className="mb-2 sm:mb-3">
+                    <div className="flex items-center justify-between mb-1 text-xs sm:text-sm">
+                      <div className="flex items-center space-x-1">
                         {statusIcon}
                         <span className={`font-medium ${statusClass}`}>
-                          {progress.toFixed(0)}%
+                          Alerte à {budget.alertThreshold || 80}%
                         </span>
                       </div>
-                      <div className="font-medium text-gray-700">
-                        {spent.toFixed(2)} / {budget.amount.toFixed(2)} TND
+                      <div className={`font-bold ${isOverspent ? "text-red-500" : "text-green-700"}`}>
+                        {Math.abs(remaining).toFixed(2)} <span className="text-xs">TND</span>
+                        <span className="ml-1 text-xs">
+                          {isOverspent ? "Dépassement" : "Restant"}
+                        </span>
                       </div>
+                    </div>
+
+                    {/* More refined progress bar with smaller height */}
+                    <div className="h-5 sm:h-6 w-full overflow-hidden rounded-full bg-gray-100 relative">
+                      <div
+                        className={`${progressColor} h-5 sm:h-6 rounded-full transition-all duration-500 flex items-center justify-center`}
+                        style={{ width: `${displayProgress}%` }}
+                      >
+                        {displayProgress >= 35 && (
+                          <span className="text-xs font-bold text-white">
+                            {actualProgress.toFixed(0)}%
+                          </span>
+                        )}
+                      </div>
+                      {displayProgress < 35 && (
+                        <span className="absolute inset-0 flex items-center justify-start px-2 text-xs font-bold text-gray-600">
+                          {actualProgress.toFixed(0)}%
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="mt-1 flex justify-end items-center font-medium text-gray-700 text-xs sm:text-sm">
+                      {spent.toFixed(2)} / {budget.amount.toFixed(2)} TND
                     </div>
                   </div>
 
-                  <div className="mt-3 flex items-center text-xs text-gray-500">
-                    <IconAlertTriangle size={14} className="mr-1.5" />
-                    <span>Alerte à {budget.alertThreshold || 80}% de consommation</span>
+                  <div className="flex border-t border-gray-100">
+                    <button
+                      className="flex flex-1 items-center justify-center space-x-1 py-2 text-xs sm:text-sm font-medium text-indigo-600 transition-colors hover:bg-indigo-50"
+                      onClick={() => {
+                        setCategoryId(budget.categoryId);
+                        setAmount(budget.amount.toString());
+                        setMonth(dayjs(budget.month).format("YYYY-MM"));
+                        setAlertThreshold(budget.alertThreshold || 80);
+                        setEditingBudget(budget);
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      <IconPencil size={14} className="sm:w-4 sm:h-4" />
+                      <span>Modifier</span>
+                    </button>
+                    <button
+                      className="flex flex-1 items-center justify-center space-x-1 py-2 text-xs sm:text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+                      onClick={() => setConfirmDelete(budget.budgetId)}
+                    >
+                      <IconTrash size={14} className="sm:w-4 sm:h-4" />
+                      <span>Supprimer</span>
+                    </button>
                   </div>
-                </div>
-
-                <div className="flex border-t border-gray-100">
-                  <button
-                    className="flex flex-1 items-center justify-center space-x-1.5 py-3 font-medium text-indigo-600 transition-colors hover:bg-indigo-50"
-                    onClick={() => {
-                      setCategoryId(budget.categoryId);
-                      setAmount(budget.amount.toString());
-                      setMonth(dayjs(budget.month).format("YYYY-MM"));
-                      setAlertThreshold(budget.alertThreshold || 80);
-                      setEditingBudget(budget);
-                      setIsModalOpen(true);
-                    }}
-                  >
-                    <IconPencil size={16} />
-                    <span>Modifier</span>
-                  </button>
-                  <button
-                    className="flex flex-1 items-center justify-center space-x-1.5 py-3 font-medium text-red-600 transition-colors hover:bg-red-50"
-                    onClick={() => setConfirmDelete(budget.budgetId)}
-                  >
-                    <IconTrash size={16} />
-                    <span>Supprimer</span>
-                  </button>
                 </div>
               </div>
             );
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
 
-      {/* Show all months section (collapsible) */}
-      {budgets.length > 0 && uniqueMonths.length > 0 && (
-        <div className="mt-8">
-          <h2 className="mb-4 border-b pb-2 text-lg font-bold text-gray-700">
-            Historique des budgets
+      {/* Budget Insights - Made more compact and responsive */}
+      {budgets.length > 0 && (
+        <div className="mt-6 sm:mt-8">
+          <h2 className="mb-4 sm:mb-6 pb-2 text-lg sm:text-xl font-bold text-gray-700 border-b border-gray-200">
+            <div className="flex items-center">
+              <IconTarget className="mr-2 text-indigo-500 sm:w-6 sm:h-6" size={20} />
+              Objectifs Financiers
+            </div>
           </h2>
-          
-          <div className="space-y-8">
-            {uniqueMonths.map((monthGroup) => {
-              const monthBudgets = budgets.filter(
-                (budget) => dayjs(budget.month).format("YYYY-MM") === monthGroup,
-              );
 
-              if (monthBudgets.length === 0) return null;
-
-              return (
-                <div key={monthGroup} className="pb-4">
-                  <h3 className="mb-4 text-md font-semibold text-gray-700 border-l-4 border-indigo-500 pl-3">
-                    {dayjs(monthGroup).format("MMMM YYYY")}
-                  </h3>
-                  <div className="space-y-2 pl-2">
-                    {monthBudgets.map((budget) => {
-                      const IconComponent = budget.category?.icon
-                        ? getIconComponent(budget.category.icon)
-                        : null;
-                      
-                      const iconColor = budget.category?.iconColor || 
-                        icons.find((i) => i.value === budget.category?.icon)?.color || 
-                        "#gray";
-                      
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+            {/* Insight Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 p-3 sm:p-5">
+              {/* Monthly Saving Target */}
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-lg p-3 sm:p-4 border border-emerald-100">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="flex items-center">
+                    <div className="bg-emerald-100 p-1.5 sm:p-2 rounded-full mr-2 sm:mr-3">
+                      <IconPigMoney size={16} className="sm:w-5 sm:h-5 text-emerald-600" />
+                    </div>
+                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-800">Objectif d'épargne</h3>
+                  </div>
+                </div>
+                
+                <div className="mb-2 sm:mb-3">
+                  <div className="flex justify-between items-center mb-1 text-xs">
+                    <span className="font-medium text-gray-600">Progression</span>
+                    <span className="font-bold text-gray-800">25%</span>
+                  </div>
+                  {/* Slimmer progress bar */}
+                  <div className="h-2 sm:h-3 w-full bg-white rounded-full overflow-hidden">
+                    <div 
+                      className="h-2 sm:h-3 bg-emerald-500 rounded-full" 
+                      style={{ width: "25%" }}
+                    ></div>
+                  </div>
+                </div>
+                
+                <div className="text-xs sm:text-sm text-gray-600">
+                  <p>Économisez 2000 TND jusqu'à la fin de l'année 2025</p>
+                  <p className="mt-1 sm:mt-2 font-semibold text-emerald-600">Restant: 1500 TND</p>
+                </div>
+              </div>
+              
+              {/* Spending Overview */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-3 sm:p-4 border border-blue-100">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="flex items-center">
+                    <div className="bg-blue-100 p-1.5 sm:p-2 rounded-full mr-2 sm:mr-3">
+                      <IconTrendingUp size={16} className="sm:w-5 sm:h-5 text-blue-600" />
+                    </div>
+                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-800">Tendances de dépenses</h3>
+                  </div>
+                </div>
+                
+                {topCategories.length > 0 ? (
+                  <div className="space-y-2 sm:space-y-3">
+                    {topCategories.map(cat => {
+                      const IconComp = cat.icon ? getIconComponent(cat.icon) : null;
                       return (
-                        <div 
-                          key={budget.budgetId} 
-                          className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50"
-                        >
-                          <div className="flex items-center">
-                            {IconComponent && (
-                              <div
-                                className="flex h-8 w-8 items-center justify-center rounded-full mr-3"
-                                style={{ backgroundColor: `${iconColor}20` }}
-                              >
-                                <IconComponent size={16} style={{ color: iconColor }} />
-                              </div>
-                            )}
-                            <span className="font-medium text-gray-700">{budget.category?.name}</span>
+                        <div key={cat.id} className="flex items-center">
+                          {IconComp && (
+                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center mr-2 sm:mr-3" 
+                                 style={{ backgroundColor: `${cat.iconColor || "#6B7280"}20` }}>
+                              <IconComp size={12} className="sm:w-4 sm:h-4" style={{ color: cat.iconColor || "#6B7280" }} />
+                            </div>
+                          )}
+                          <div className="flex-1">
+                            <div className="flex justify-between text-xs mb-1">
+                              <span className="font-medium text-gray-700">{cat.name}</span>
+                              <span className="font-bold text-gray-800">{cat.percentage.toFixed(0)}%</span>
+                            </div>
+                            {/* Slimmer category progress bars */}
+                            <div className="h-1.5 sm:h-2 w-full bg-white rounded-full overflow-hidden">
+                              <div 
+                                className={`h-1.5 sm:h-2 ${cat.percentage >= 100 ? 'bg-red-500' : cat.percentage >= 80 ? 'bg-yellow-500' : 'bg-green-500'} rounded-full`}
+                                style={{ width: `${Math.min(cat.percentage, 100)}%` }}
+                              ></div>
+                            </div>
                           </div>
-                          <span className="font-bold text-gray-800">{budget.amount.toFixed(2)} TND</span>
                         </div>
                       );
                     })}
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Floating Action Button */}
-      <Fab
-        className="fixed bottom-6 right-6 z-40 transform rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 p-5 text-white shadow-xl transition-transform hover:scale-110"
-        onClick={() => {
-          setCategoryId("");
-          setAmount("");
-          setMonth(dayjs().format("YYYY-MM"));
-          setAlertThreshold(80);
-          setEditingBudget(null);
-          setIsModalOpen(true);
-        }}
-        icon={<IconPlus />}
-      />
-
-      {/* Enhanced Modal with improved dropdown */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 backdrop-blur-sm">
-          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b p-5">
-              <h2 className="text-2xl font-semibold text-gray-800">
-                {editingBudget ? "Modifier le budget" : "Ajouter un budget"}
-              </h2>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="text-gray-400 transition-colors hover:text-gray-600"
-              >
-                <IconX size={20} />
-              </button>
+                ) : (
+                  <p className="text-sm text-gray-600 italic">Pas encore de données disponibles</p>
+                )}
+              </div>
             </div>
-
-            <form onSubmit={handleSubmit} className="p-5">
-  <div className="space-y-5">
-    {/* Category selection with icon in dropdown */}
-    <div>
-      <label className="mb-2 block font-medium text-gray-700">
-        Catégorie:
-      </label>
-      <div className="relative">
-      <select
-  className="w-full appearance-none rounded-lg border bg-white p-3 pl-10 shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300"
-  value={categoryId}
-  onChange={(e) => {
-    setCategoryId(e.target.value);
-    const selectedCat = expenseCategories.find(
-      (cat) => cat.id === e.target.value,
-    );
-    if (selectedCat && selectedCat.icon) {
-      setSelectedIcon(selectedCat.icon);
-    }
-  }}
-  required
->
-  <option value="">Sélectionner une catégorie</option>
-  {/* Make sure we're only mapping over EXPENSE categories */}
-  {expenseCategories.map((cat) => (
-    <option 
-      key={cat.id} 
-      value={cat.id} 
-      className="py-2 pl-8"
-      data-icon={cat.icon}
-    >
-      {cat.name}
-    </option>
-  ))}
-</select>
-        {/* Display icon for selected category */}
-        {selectedIcon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 transform">
-            {(() => {
-              const IconComp = getIconComponent(selectedIcon);
-              const iconColor = icons.find(
-                (i) => i.value === selectedIcon,
-              )?.color;
-              return IconComp ? (
-                <IconComp size={20} style={{ color: iconColor }} />
-              ) : null;
-            })()}
-          </div>
-        )}
-
-        {/* Custom dropdown arrow */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-          <svg
-            className="h-5 w-5 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 9l-7 7-7-7"
-            ></path>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-                {/* Amount field */}
-                <div>
-                  <label className="mb-2 block font-medium text-gray-700">
-                    Montant (TND):
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      className="w-full rounded-lg border bg-white p-3 pl-16 shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      placeholder="0.00"
-                      step="0.01"
-                      min="0"
-                      required
-                    />
-                    <div className="absolute left-3 top-1/2 flex -translate-y-1/2 transform items-center text-gray-500">
-                      <span className="font-medium">TND</span>
-                      <span className="mx-1">|</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Month selection */}
-                <div>
-                  <label className="mb-2 block font-medium text-gray-700">
-                    Mois:
-                  </label>
-                  <input
-                    type="month"
-                    className="w-full rounded-lg border bg-white p-3 shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300"
-                    value={month}
-                    onChange={(e) => setMonth(e.target.value)}
-                    required
-                  />
-                </div>
-
-                {/* Alert threshold slider */}
-                <div>
-                  <div className="mb-2 flex justify-between">
-                    <label className="font-medium text-gray-700">
-                      Seuil d'alerte:
-                    </label>
-                    <span className="text-sm font-medium text-blue-600">
-                      {alertThreshold}%
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 accent-blue-500"
-                    min="0"
-                    max="100"
-                    step="5"
-                    value={alertThreshold}
-                    onChange={(e) => setAlertThreshold(Number(e.target.value))}
-                  />
-                  <div className="mt-1 flex justify-between text-xs text-gray-500">
-                    <span>0%</span>
-                    <span>50%</span>
-                    <span>100%</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action buttons */}
-              <div className="mt-6 flex justify-end space-x-3 pt-5">
-                <button
-                  type="button"
-                  className="rounded-lg bg-gray-100 px-5 py-2.5 font-medium text-gray-700 transition-colors hover:bg-gray-200"
-                  onClick={() => setIsModalOpen(false)}
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  className="rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-2.5 font-medium text-white transition-opacity hover:opacity-90"
-                >
-                  {editingBudget ? "Mettre à jour" : "Enregistrer"}
-                </button>
-              </div>
-            </form>
+            
+            {/* Quick Tips */}
+            <div className="bg-gray-50 p-5 border-t border-gray-200">
+              <h4 className="font-semibold text-gray-700 mb-3">Conseils budgétaires</h4>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li className="flex items-start">
+                  <span className="text-indigo-500 mr-2">•</span>
+                  Essayez de maintenir vos dépenses sous 50% du budget total pour les deux premières semaines du mois
+                </li>
+                <li className="flex items-start">
+                  <span className="text-indigo-500 mr-2">•</span>
+                  Révisez vos budgets chaque mois en fonction de vos habitudes de dépenses réelles
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       )}
+
+      {/* Fixed Position Action Button */}
+      <div className="fixed bottom-6 right-6">
+        <Fab
+          onClick={openAddModal}
+          className="h-14 w-14 bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <IconPlus size={24} color="#fff" />
+        </Fab>
+      </div>
+
+
+      {/* Enhanced Modal with Responsive Fixes for Tablet */}
+      {isModalOpen && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 p-4 sm:p-6 backdrop-blur-sm">
+    <div className="max-h-[90vh] w-full max-w-[22rem] sm:max-w-md md:max-w-lg overflow-y-auto rounded-2xl bg-white shadow-2xl">
+      <div className="flex items-center justify-between border-b pl-4 pr-2 py-3 sm:pl-5 sm:pr-3 sm:py-4 mt-10">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
+          {editingBudget ? "Modifier le budget" : "Ajouter un budget"}
+        </h2>
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="text-gray-400 transition-colors hover:text-gray-600"
+        >
+          <IconX size={20} className="sm:h-6 sm:w-6" />
+        </button>
+      </div>
+
+      <form onSubmit={handleSubmit} className="p-4 sm:p-5 md:p-6">
+        <div className="space-y-4 sm:space-y-5 md:space-y-6">
+          {/* Category Selection */}
+          <div>
+            <label className="mb-1.5 sm:mb-2 block text-sm sm:text-base font-medium text-gray-700">
+              Catégorie:
+            </label>
+            <div className="relative">
+              <select
+                className="w-full appearance-none rounded-lg border bg-white p-2.5 sm:p-3 md:p-3.5 pl-9 sm:pl-10 md:pl-12 shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 text-sm sm:text-base"
+                value={categoryId}
+                onChange={(e) => {
+                  setCategoryId(e.target.value);
+                  const selectedCat = expenseCategories.find(
+                    (cat: Category) => cat.id === e.target.value,
+                  );
+                  if (selectedCat && selectedCat.icon) {
+                    setSelectedIcon(selectedCat.icon);
+                  } else {
+                    setSelectedIcon(null);
+                  }
+                }}
+                required
+              >
+                <option value="">Sélectionner une catégorie</option>
+                {expenseCategories.map((cat: Category) => (
+                  <option
+                    key={cat.id}
+                    value={cat.id}
+                    className="py-2 pl-8 sm:pl-10 md:pl-12"
+                    data-icon={cat.icon}
+                  >
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+
+              {selectedIcon && (
+                <div className="absolute left-2.5 sm:left-3 md:left-4 top-1/2 -translate-y-1/2 transform">
+                  {(() => {
+                    const IconComp = getIconComponent(selectedIcon);
+                    const iconColor = icons.find(
+                      (i) => i.value === selectedIcon,
+                    )?.color;
+                    return IconComp ? (
+                      <IconComp
+                        size={16}
+                        className="sm:h-5 sm:w-5 md:h-6 md:w-6"
+                        style={{ color: iconColor }}
+                      />
+                    ) : null;
+                  })()}
+                </div>
+              )}
+
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 sm:px-3">
+                <svg
+                  className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Amount Field */}
+          <div>
+            <label className="mb-1.5 sm:mb-2 block text-sm sm:text-base font-medium text-gray-700">
+              Montant (TND):
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                className="w-full rounded-lg border bg-white p-2.5 sm:p-3 md:p-3.5 pl-16 sm:pl-16 md:pl-20 shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 text-sm sm:text-base"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                required
+              />
+              <div className="absolute left-2 sm:left-3 md:left-4 top-1/2 flex -translate-y-1/2 transform items-center text-gray-500">
+                <span className="font-medium text-sm sm:text-base">TND</span>
+                <span className="mx-1 sm:mx-2">|</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Month Selection */}
+          <div>
+            <label className="mb-1.5 sm:mb-2 block text-sm sm:text-base font-medium text-gray-700">
+              Mois:
+            </label>
+            <input
+              type="month"
+              className="w-full rounded-lg border bg-white p-2.5 sm:p-3 md:p-3.5 shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 text-sm sm:text-base"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Alert Threshold Slider */}
+          <div>
+            <div className="mb-1.5 sm:mb-2 flex justify-between">
+              <label className="text-sm sm:text-base font-medium text-gray-700">
+                Seuil d'alerte:
+              </label>
+              <span className="text-sm sm:text-base font-medium text-blue-600">
+                {alertThreshold}%
+              </span>
+            </div>
+            <input
+              type="range"
+              className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 accent-blue-500"
+              min="0"
+              max="100"
+              step="5"
+              value={alertThreshold}
+              onChange={(e) => setAlertThreshold(Number(e.target.value))}
+            />
+            <div className="mt-1 flex justify-between text-xs sm:text-sm text-gray-500">
+              <span>0%</span>
+              <span>50%</span>
+              <span>100%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="mt-6 sm:mt-8 flex justify-end space-x-3 pt-4 sm:pt-5">
+          <button
+            type="button"
+            className="rounded-lg bg-gray-100 px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base font-medium text-gray-700 transition-colors hover:bg-gray-200"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
+            className="rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base font-medium text-white transition-opacity hover:opacity-90"
+          >
+            {editingBudget ? "Mettre à jour" : "Enregistrer"}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
 
       {/* Confirmation Delete Modal */}
       {confirmDelete && (
@@ -816,8 +915,7 @@ const expenseCategories: Category[] = categoryData?.categories.nodes
                 Confirmer la suppression
               </h3>
               <p className="text-gray-600">
-                Êtes-vous sûr de vouloir supprimer ce budget ? Cette action est
-                irréversible.
+                Êtes-vous sûr de vouloir supprimer ce budget ? Cette action est irréversible.
               </p>
             </div>
 
