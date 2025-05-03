@@ -93,7 +93,8 @@ export const action: ActionFunction = async ({ request }) => {
     }
 
     if (otpResp.error) {
-      return json({ error: otpResp.error.message }, { status: 500 });
+      const errorMessage = (otpResp.error as { message: string }).message || "Unknown error";
+      return json({ error: errorMessage }, { status: 500 });
     }
 
     console.log("Sending OTP to:", user.email);

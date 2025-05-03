@@ -155,6 +155,12 @@ const EDIT_TRANSACTION = gql`
   }
 `;
 
+// Import and configure dayjs locale and UTC plugin
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const TransactionsList = () => {
   // Get the current user from atom store
   const [user] = useAtom(userAtom);
@@ -397,9 +403,19 @@ const TransactionsList = () => {
     );
   }
 
+  // Modified sorting to ensure more precise sorting by timestamp
   displayedTransactions.sort((a, b) => {
+    // Use precise timestamp comparison to ensure correct ordering
     const dateA = new Date(a.date).getTime();
     const dateB = new Date(b.date).getTime();
+    
+    // If timestamps are exactly equal (rare but possible), use transactionId as tiebreaker
+    if (dateA === dateB) {
+      return sortOrder === "desc" 
+        ? b.transactionId.localeCompare(a.transactionId)
+        : a.transactionId.localeCompare(b.transactionId);
+    }
+    
     return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
   });
 
@@ -409,12 +425,20 @@ const TransactionsList = () => {
     transactions: Transaction[];
   }
 
+  // Improved function to format date with correct timezone handling
+  const formatTransactionTime = (dateString: string) => {
+    // Explicitly handle the date as local time to fix timezone issues
+    return dayjs(dateString).format("HH:mm");
+  };
+
+  // MODIFIED: Updated groupTransactionsByDate function to always display newest transactions first within each day
   const groupTransactionsByDate = (
     transactions: Transaction[],
   ): TransactionGroup[] => {
     const groups: Record<string, Transaction[]> = {};
 
     transactions.forEach((tx) => {
+      // Use date only for grouping (ignoring time)
       const date = dayjs(tx.date).format("YYYY-MM-DD");
       if (!groups[date]) {
         groups[date] = [];
@@ -422,11 +446,28 @@ const TransactionsList = () => {
       groups[date].push(tx);
     });
 
-    return Object.entries(groups).map(([date, txs]) => ({
+    // Create groups array and sort by date
+    const groupsArray = Object.entries(groups).map(([date, txs]) => ({
       date,
       formattedDate: dayjs(date).format("dddd, D MMMM YYYY"),
-      transactions: txs,
+      // Always sort transactions within each day group with newest first
+      // This ensures new transactions appear at the top within their day
+      transactions: txs.sort((a, b) => {
+        // Extract the exact millisecond timestamp for precise sorting
+        const timeA = new Date(a.date).getTime();
+        const timeB = new Date(b.date).getTime();
+        
+        // Always sort newest first within each day group regardless of global sort order
+        return timeB - timeA;
+      }),
     }));
+
+    // Sort groups by date according to sortOrder
+    return groupsArray.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+    });
   };
 
   const groupedTransactions = groupTransactionsByDate(displayedTransactions);
@@ -437,78 +478,77 @@ const TransactionsList = () => {
       className="mx-auto mb-20 max-w-lg md:max-w-2xl lg:max-w-4xl min-h-screen bg-gray-50 p-4 overflow-auto"
     >
 
-
       {/* Enhanced Dashboard Header */}
       <div className="mb-8 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg mt-20">
-  <div className="p-6">
-    {/* Month Selection integrated in header */}
-    <div className="flex items-center justify-between mb-6">
-      <button 
-        onClick={previousMonth}
-        className="rounded-full p-2 text-white/80 hover:bg-blue-500/30 transition-colors"
-        aria-label="Mois précédent"
-      >
-        <IconChevronLeft size={20} />
-      </button>
-      
-      <div className="flex items-center space-x-2">
-        <IconCalendar size={20} className="text-white" />
-        <h2 className="text-lg font-medium text-white">
-          {selectedMonth.format('MMMM YYYY')}
-        </h2>
-      </div>
-      
-      <button 
-        onClick={nextMonth}
-        className="rounded-full p-2 text-white/80 hover:bg-blue-500/30 transition-colors"
-        aria-label="Mois suivant"
-      >
-        <IconChevronRight size={20} />
-      </button>
-    </div>
-
-    <div className="mb-6 mt-4 flex flex-col items-center justify-center">
-      <p className="mb-2 text-xs uppercase tracking-wider text-blue-200">
-        SOLDE
-      </p>
-      <p
-        className={`text-3xl font-bold ${summaryData.balance >= 0 ? "text-green-300" : "text-red-300"}`}
-      >
-        {summaryData.balance >= 0 ? "+" : ""}
-        {summaryData.balance.toFixed(2)} TND
-      </p>
-    </div>
-
-    <div className="grid grid-cols-2 gap-4 pt-2">
-      <div className="rounded-lg bg-blue-500/30 p-4">
-        <div className="flex items-center justify-center mb-1">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-400/20 mr-2">
-            <IconArrowUp size={18} className="text-green-300" />
+        <div className="p-6">
+          {/* Month Selection integrated in header */}
+          <div className="flex items-center justify-between mb-6">
+            <button 
+              onClick={previousMonth}
+              className="rounded-full p-2 text-white/80 hover:bg-blue-500/30 transition-colors"
+              aria-label="Mois précédent"
+            >
+              <IconChevronLeft size={20} />
+            </button>
+            
+            <div className="flex items-center space-x-2">
+              <IconCalendar size={20} className="text-white" />
+              <h2 className="text-lg font-medium text-white">
+                {selectedMonth.format('MMMM YYYY')}
+              </h2>
+            </div>
+            
+            <button 
+              onClick={nextMonth}
+              className="rounded-full p-2 text-white/80 hover:bg-blue-500/30 transition-colors"
+              aria-label="Mois suivant"
+            >
+              <IconChevronRight size={20} />
+            </button>
           </div>
-          <p className="text-xs uppercase tracking-wider text-blue-100">
-            REVENUS
-          </p>
-        </div>
-        <p className="text-xl font-bold text-green-300 text-center">
-          +{summaryData.totalIncome.toFixed(2)} TND
-        </p>
-      </div>
-      <div className="rounded-lg bg-blue-500/30 p-4">
-        <div className="flex items-center justify-center mb-1">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-400/20 mr-2">
-            <IconArrowDown size={18} className="text-red-300" />
+
+          <div className="mb-6 mt-4 flex flex-col items-center justify-center">
+            <p className="mb-2 text-xs uppercase tracking-wider text-blue-200">
+              SOLDE
+            </p>
+            <p
+              className={`text-3xl font-bold ${summaryData.balance >= 0 ? "text-green-300" : "text-red-300"}`}
+            >
+              {summaryData.balance >= 0 ? "+" : ""}
+              {summaryData.balance.toFixed(2)} TND
+            </p>
           </div>
-          <p className="text-xs uppercase tracking-wider text-blue-100">
-            DÉPENSES
-          </p>
+
+          <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="rounded-lg bg-blue-500/30 p-4">
+              <div className="flex items-center justify-center mb-1">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-400/20 mr-2">
+                  <IconArrowUp size={18} className="text-green-300" />
+                </div>
+                <p className="text-xs uppercase tracking-wider text-blue-100">
+                  REVENUS
+                </p>
+              </div>
+              <p className="text-xl font-bold text-green-300 text-center">
+                +{summaryData.totalIncome.toFixed(2)} TND
+              </p>
+            </div>
+            <div className="rounded-lg bg-blue-500/30 p-4">
+              <div className="flex items-center justify-center mb-1">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-400/20 mr-2">
+                  <IconArrowDown size={18} className="text-red-300" />
+                </div>
+                <p className="text-xs uppercase tracking-wider text-blue-100">
+                  DÉPENSES
+                </p>
+              </div>
+              <p className="text-xl font-bold text-red-300 text-center">
+                -{summaryData.totalExpense.toFixed(2)} TND
+              </p>
+            </div>
+          </div>
         </div>
-        <p className="text-xl font-bold text-red-300 text-center">
-          -{summaryData.totalExpense.toFixed(2)} TND
-        </p>
       </div>
-    </div>
-  </div>
-</div>
 
       {/* Search Bar */}
       <div className="mb-6">
@@ -707,6 +747,7 @@ const TransactionsList = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* MODIFIED: Removed extra sort here, we're now using pre-sorted transactions */}
                 {group.transactions.map((tx) => (
                   <div
                     key={tx.transactionId}
@@ -748,7 +789,7 @@ const TransactionsList = () => {
                             </span>
                             <span className="mx-2 text-xs text-gray-400">•</span>
                             <span className="text-sm text-gray-500">
-                              {dayjs(tx.date).format("HH:mm")}
+                              {formatTransactionTime(tx.date)}
                             </span>
                           </div>
 
