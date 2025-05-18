@@ -296,7 +296,6 @@ type Query implements Node {
   transaction(transactionId: String!): Transaction
   user(oidcId: String!): User
   userDevice(userId: String!, token: String!): UserDevice
-  userDeviceByToken(token: String!): UserDevice
 
   """Reads a single `Budget` using its globally unique `ID`."""
   budgetByNodeId(
@@ -789,6 +788,7 @@ scalar BigInt
 """Grouping methods for `UserDevice` for usage during aggregation."""
 enum UserDeviceGroupBy {
   USER_ID
+  TOKEN
   UA
 }
 
@@ -4958,14 +4958,6 @@ type Mutation {
     input: UpdateUserDeviceInput!
   ): UpdateUserDevicePayload
 
-  """Updates a single `UserDevice` using a unique key and a patch."""
-  updateUserDeviceByToken(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateUserDeviceByTokenInput!
-  ): UpdateUserDevicePayload
-
   """Deletes a single `Budget` using its globally unique id."""
   deleteBudgetByNodeId(
     """
@@ -5092,14 +5084,6 @@ type Mutation {
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: DeleteUserDeviceInput!
-  ): DeleteUserDevicePayload
-
-  """Deletes a single `UserDevice` using a unique key."""
-  deleteUserDeviceByToken(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteUserDeviceByTokenInput!
   ): DeleteUserDevicePayload
 
   """Creates one or many `Notification`."""
@@ -6172,21 +6156,6 @@ input UpdateUserDeviceInput {
   token: String!
 }
 
-"""All input for the `updateUserDeviceByToken` mutation."""
-input UpdateUserDeviceByTokenInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `UserDevice` being updated.
-  """
-  patch: UserDevicePatch!
-  token: String!
-}
-
 """The output of our delete `Budget` mutation."""
 type DeleteBudgetPayload {
   """
@@ -6596,16 +6565,6 @@ input DeleteUserDeviceInput {
   """
   clientMutationId: String
   userId: String!
-  token: String!
-}
-
-"""All input for the `deleteUserDeviceByToken` mutation."""
-input DeleteUserDeviceByTokenInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
   token: String!
 }
 
@@ -7391,9 +7350,6 @@ type Subscription {
 
   """ (live)"""
   userDevice(userId: String!, token: String!): UserDevice
-
-  """ (live)"""
-  userDeviceByToken(token: String!): UserDevice
 
   """Reads a single `Budget` using its globally unique `ID`. (live)"""
   budgetByNodeId(

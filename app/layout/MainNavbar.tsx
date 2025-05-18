@@ -37,11 +37,11 @@ export function refreshNotifications() {
 }
 
 const menu = [
-  { path: "/", name: "Acceuil" },
-  { path: "/transactions", name: "transactions" },
-  { path: "/statistiques", name: "statistiques" },
-  { path: "/categorie", name: "categories" },
-  { path: "/budget", name: "budget" },
+  { path: "/", name: "Home" },
+  { path: "/transactions", name: "Transactions" },
+  { path: "/statistiques", name: "Statistics" },
+  { path: "/categorie", name: "Categories" },
+  { path: "/budget", name: "Budget" },
 ];
 
 // GraphQL query to get unread notifications count
@@ -90,28 +90,27 @@ export default function MainNavbar() {
   const [toggleIsReadResult, toggleIsRead] = useMutation(TOGGLE_IS_READ);
 
   // Store the refresh function in the global reference
+  useEffect(() => {
+    console.log("Setting up notification refresh function for user:", user?.oidcId);
+    
+    notificationRefreshFunction = () => {
+      if (user) {
+        console.log("Refreshing notifications for user:", user.oidcId);
+        reexecuteQuery({ requestPolicy: 'network-only' });
+      } else {
+        console.warn("Cannot refresh notifications - no user logged in");
+      }
+    };
 
-useEffect(() => {
-  console.log("Setting up notification refresh function for user:", user?.oidcId);
-  
-  notificationRefreshFunction = () => {
+    // Initial fetch when component mounts (if user is logged in)
     if (user) {
-      console.log("Refreshing notifications for user:", user.oidcId);
       reexecuteQuery({ requestPolicy: 'network-only' });
-    } else {
-      console.warn("Cannot refresh notifications - no user logged in");
     }
-  };
 
-  // Initial fetch when component mounts (if user is logged in)
-  if (user) {
-    reexecuteQuery({ requestPolicy: 'network-only' });
-  }
-
-  return () => {
-    notificationRefreshFunction = null;
-  };
-}, [user, reexecuteQuery]);
+    return () => {
+      notificationRefreshFunction = null;
+    };
+  }, [user, reexecuteQuery]);
 
   // Update notifications count whenever data changes
   useEffect(() => {
@@ -119,8 +118,6 @@ useEffect(() => {
       setNotifications(notificationsData.notifications.totalCount);
     }
   }, [notificationsData]);
-
-
 
   const markNotificationAsRead = async (id: string) => {
     try {
@@ -181,68 +178,70 @@ useEffect(() => {
   return (
     <>
       <nav className="fixed start-0 top-0 z-20 hidden w-full border-b border-gray-200 bg-white lg:block">
-        <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-          <a href="/" className="flex items-center rtl:space-x-reverse">
-            <img src="/logoWallet.png" className="absolute h-24" alt="GCI" />
-          </a>
-          <div className="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-            {user && (
-              <div className="relative mr-4">
-                <Link
-                  to="/notifications"
-                  className="hover:text-secondary relative inline-block p-2 text-gray-800 transition-colors"
-                  onClick={() => notifications > 0 && markAllNotificationsAsRead()}
-                >
-                  <IconBell size={24} stroke={1.5} />
-                  {notifications > 0 && !notificationsLoading && (
-                    <span className="absolute -right-1 -top-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-                      {notifications}
-                    </span>
-                  )}
-                </Link>
-              </div>
-            )}
-            {user ? (
-              <button
-                type="button"
-                className="user-popover-link text-secondary-content hover:text-secondary flex items-center gap-2 rounded-lg px-4 py-2 text-center text-sm font-medium"
-                onClick={() => openUserPopover(document.querySelector(".user-popover-link"))}
-              >
-                <span className="mr-1">{user.firstName}</span>
-                <Icon
-                  ios={<IconUser size={24} />}
-                  material={<IconUser size={24} />}
-                />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => navigate("/login")}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300"
-              >
-                <IconLogin2 className="inline w-4" /> Login
-              </button>
-            )}
-          </div>
-          <div
-            className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"
-            id="navbar-sticky"
+  <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
+    <div className="flex items-center rtl:space-x-reverse">
+      <a href="/" className="flex items-center">
+        <img src="/logoWallet.png" className="absolute h-24" alt="GCI" />
+      </a>
+    </div>
+    <div className="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
+      {user && (
+        <div className="relative mr-4">
+          <Link
+            to="/notifications"
+            className="hover:text-secondary relative inline-block p-2 text-gray-800 transition-colors"
+            onClick={() => notifications > 0 && markAllNotificationsAsRead()}
           >
-            <ul className="mt-1 flex flex-row rounded-lg border bg-white p-0 font-medium md:space-x-8 md:border-0 rtl:space-x-reverse">
-              {menu.map((m, indx) => (
-                <li key={`menu-${indx}`}>
-                  <Link
-                    to={m.path}
-                    className={`hover:text-secondary text-gray-800 ${location.pathname === m.path ? "text-secondary" : ""}`}
-                  >
-                    {m.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <IconBell size={24} stroke={1.5} />
+            {notifications > 0 && !notificationsLoading && (
+              <span className="absolute -right-1 -top-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                {notifications}
+              </span>
+            )}
+          </Link>
         </div>
-      </nav>
+      )}
+      {user ? (
+        <button
+          type="button"
+          className="user-popover-link text-secondary-content hover:text-secondary flex items-center gap-2 rounded-lg px-4 py-2 text-center text-sm font-medium"
+          onClick={() => openUserPopover(document.querySelector(".user-popover-link"))}
+        >
+          <span className="mr-1">{user.firstName}</span>
+          <Icon
+            ios={<IconUser size={24} />}
+            material={<IconUser size={24} />}
+          />
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => navigate("/login")}
+          className="rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300"
+        >
+          <IconLogin2 className="inline w-4" /> Login
+        </button>
+      )}
+    </div>
+    <div
+      className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"
+      id="navbar-sticky"
+    >
+      <ul className="mt-1 flex flex-row rounded-lg border bg-white p-0 font-medium md:space-x-8 md:border-0 rtl:space-x-reverse">
+        {menu.map((m, indx) => (
+          <li key={`menu-${indx}`}>
+            <Link
+              to={m.path}
+              className={`hover:text-secondary text-gray-800 ${location.pathname === m.path ? "text-secondary" : ""}`}
+            >
+              {m.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</nav>
 
       {/* Mobile View */}
       <div className="fixed top-0 z-20 flex w-full max-w-full flex-nowrap items-center transition-opacity lg:hidden">
@@ -261,11 +260,11 @@ useEffect(() => {
           <IconMenu3 stroke={1.75} size={32} className="m-4" />
         </button>
         <Link
-          to={propsAtm.navbarLink || ""}
+          to="/"
           className={`grow overflow-x-hidden ${mainPanel ? "opacity-0" : ""}`}
         >
           <div className="mt-2 text-2xl">
-            <h1 className="truncate">{propsAtm.navbarTitle}</h1>
+            <h1 className="truncate">My Wallet</h1>
             <div
               className="absolute -inset-x-16 -inset-y-4 -z-10 rounded-full backdrop-blur-md"
               style={{
@@ -408,7 +407,7 @@ useEffect(() => {
             </p>
             <div className="flex justify-end gap-4">
               <KButton
-                className="rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200"
+                className="rounded-lg bg-gray-400 px-4 py-2 text-gray-900 hover:bg-gray-500"
                 onClick={() => setLogoutDialogOpened(false)}
               >
                 Cancel

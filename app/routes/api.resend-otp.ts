@@ -3,6 +3,7 @@ import { json } from "@remix-run/react";
 import { gql } from "@urql/core";
 import { gqlSsrClient } from "~/utils/gql_ssr_client";
 import { sendEmail } from "./mailer";
+import { nanoid } from "nanoid";
 
 const GET_USER = gql(`  query GET_USER($email: String!) {
     users(
@@ -76,7 +77,7 @@ export const action: ActionFunction = async ({ request }) => {
       .mutation(CREATE_OTP_VERIFICATION, {
         input: {
           otpVerification: {
-            id: crypto.randomUUID(),
+            id: nanoid(),
             userId: user.oidcId,
             otp,
             expiresAt: expiresAt.toISOString(),

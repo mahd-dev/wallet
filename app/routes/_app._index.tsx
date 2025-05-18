@@ -16,6 +16,7 @@ import { Bar, Doughnut, Line } from "react-chartjs-2";
 import { gql, useQuery } from "urql";
 import TransactionModal from "~/components/TransactionModal";
 import { userAtom } from "~/store/store";
+import "dayjs/locale/en";
 
 const GET_TRANSACTIONS = gql`
   query GET_USER_TRANSACTIONS($userId: String!) {
@@ -42,14 +43,14 @@ export default function HomePage() {
   // Ensure user ID is available before making the query
   const [{ data, fetching, error }] = useQuery({
     query: GET_TRANSACTIONS,
-    variables: { userId: user ? user.oidcId : "" }, // Use user ID from the atom
-    pause: !user, // Pause query until user data is available
+    variables: { userId: user ? user.oidcId : "" },
+    pause: !user,
   });
 
-  // Generate available years (current year and 5 years back)
+  // Generate available years (5 years back to 5 years forward)
   const availableYears = useMemo(() => {
     const currentYear = dayjs().year();
-    return Array.from({ length: 6 }, (_, i) => (currentYear - i).toString());
+    return Array.from({ length: 11 }, (_, i) => (currentYear - 5 + i).toString());
   }, []);
 
   // Update month offset when selected year changes
@@ -58,17 +59,17 @@ export default function HomePage() {
     setMonthOffset(yearDiff * 12);
   }, [selectedYear]);
 
-  const currentMonth = dayjs().subtract(monthOffset, "month").format("YYYY-MM");
+  const currentMonth = dayjs().subtract(monthOffset, "month").locale("en").format("YYYY-MM");
   const lastMonth = dayjs()
-    .subtract(monthOffset + 1, "month")
-    .format("YYYY-MM");
+    .locale("en").subtract(monthOffset + 1, "month")
+    .locale("en").format("YYYY-MM");
 
   const currentMonthName = dayjs()
     .subtract(monthOffset, "month")
-    .format("MMMM");
+    .locale("en").format("MMMM");
   const lastMonthName = dayjs()
     .subtract(monthOffset + 1, "month")
-    .format("MMMM");
+    .locale("en").format("MMMM");
   const currentYear = selectedYear;
 
   interface Transaction {
@@ -124,16 +125,15 @@ export default function HomePage() {
     [data, currentYear],
   );
 
-  // Calculate monthly totals for the balance chart - now filtered by selected year
+  // Calculate monthly totals for the balance chart - filtered by selected year
   const monthlyData = useMemo(() => {
     if (!data) return [];
 
-    // Get all months for the selected year
     const months = Array.from({ length: 12 }, (_, i) => {
       const month = dayjs(`${selectedYear}-01-01`).add(i, "month");
       return {
-        label: month.format("MMM"),
-        month: month.format("YYYY-MM"),
+        label: month.locale("en").format("MMM"),
+        month: month.locale("en").format("YYYY-MM"),
       };
     });
 
@@ -235,19 +235,17 @@ export default function HomePage() {
     },
   };
 
-  // Calculate last 7 days' transactions - now filtered by selected year
+  // Calculate last 7 days' transactions - filtered by selected year
   const last7Days = useMemo(() => {
-    // If selected year is current year, use current date
-    // Otherwise use the last 7 days of the selected year
     const baseDate =
       selectedYear === dayjs().format("YYYY")
         ? dayjs()
         : dayjs(`${selectedYear}-12-31`);
 
     return Array.from({ length: 7 }, (_, i) => {
-      const day = baseDate.subtract(i, "day");
+      const day = baseDate.locale("en").subtract(i, "day");
       return {
-        label: day.format("ddd. DD"), // e.g., "Sam. 23"
+        label: day.format("ddd. DD"),
         date: day.format("YYYY-MM-DD"),
       };
     }).reverse();
@@ -278,12 +276,12 @@ export default function HomePage() {
     labels: sevenDaysTotals.map((d) => d.label),
     datasets: [
       {
-        label: "Dépenses",
+        label: "Expenses",
         data: sevenDaysTotals.map((d) => d.expenses),
         backgroundColor: "#ff4d4d",
       },
       {
-        label: "Revenus",
+        label: "Income",
         data: sevenDaysTotals.map((d) => d.income),
         backgroundColor: "#4caf50",
       },
@@ -319,16 +317,21 @@ export default function HomePage() {
 
   const goToPreviousYear = () => {
     const currentIndex = availableYears.indexOf(selectedYear);
-    if (currentIndex < availableYears.length - 1) {
-      setSelectedYear(availableYears[currentIndex + 1]);
+    if (currentIndex > 0) {
+      setSelectedYear(availableYears[currentIndex - 1]);
     }
   };
 
   const goToNextYear = () => {
     const currentIndex = availableYears.indexOf(selectedYear);
-    if (currentIndex > 0) {
-      setSelectedYear(availableYears[currentIndex - 1]);
+    if (currentIndex < availableYears.length - 1) {
+      setSelectedYear(availableYears[currentIndex + 1]);
     }
+  };
+
+  // Function to handle redirection after a successful transaction
+  const handleTransactionSuccess = () => {
+    window.location.href = "/transactions";
   };
 
   return (
@@ -338,65 +341,51 @@ export default function HomePage() {
         <p className="text-center text-red-500">Error fetching transactions.</p>
       )}
 
-      {/* Improved Year Selection */}
-      <div className="mb-6 mt-6 flex items-center justify-between">
-        <div className="mt-10 flex w-full items-center justify-between rounded-lg bg-white px-3 sm:px-5 py-3 shadow-md">
-          <div className="flex items-center">
-            <IconCalendar size={24} className="mr-2 text-blue-600 hidden sm:block" />
-            <IconCalendar size={20} className="mr-1 text-blue-600 sm:hidden" />
-            <h2 className="text-base sm:text-xl font-bold text-gray-800">
-              Dashboard {selectedYear}
-            </h2>
-          </div>
-
-          <div className="flex items-center space-x-1">
-            <button
-              onClick={goToPreviousYear}
-              disabled={
-                availableYears.indexOf(selectedYear) ===
-                availableYears.length - 1
-              }
-              className={`rounded-l-lg p-1 sm:p-2 ${
-                availableYears.indexOf(selectedYear) ===
-                availableYears.length - 1
-                  ? "bg-gray-100 text-gray-400"
-                  : "text-gray-700 hover:bg-blue-100 hover:text-blue-700"
-              } transition-colors`}
-            >
-              <IconChevronLeft size={18} />
-            </button>
-
-            <div className="flex items-center justify-center bg-gray-100 px-2 sm:px-3 py-1 font-semibold text-gray-800 text-sm">
-              {selectedYear}
-            </div>
-
-            <button
-              onClick={goToNextYear}
-              disabled={availableYears.indexOf(selectedYear) === 0}
-              className={`rounded-r-lg p-1 sm:p-2 ${
-                availableYears.indexOf(selectedYear) === 0
-                  ? "bg-gray-100 text-gray-400"
-                  : "text-gray-700 hover:bg-blue-100 hover:text-blue-700"
-              } transition-colors`}
-            >
-              <IconChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Enhanced Summary Card - Improved mobile layout */}
+      {/* Annual Summary Card */}
       <div className="mb-6 flex justify-center">
-        <div className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 p-4 sm:p-6 text-white shadow-lg">
-          <h3 className="mb-4 flex items-center text-lg sm:text-xl font-bold">
-            <IconWallet size={22} className="mr-2" />
-            Sommaire Annuel {selectedYear}
-          </h3>
+        <div className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 p-4 sm:p-6 text-white shadow-lg mt-20">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="flex items-center text-lg sm:text-xl font-bold">
+              <IconWallet size={22} className="mr-2" />
+              Annual Summary
+            </h3>
+            <div className="flex items-center space-x-1">
+              <button
+                onClick={goToPreviousYear}
+                disabled={availableYears.indexOf(selectedYear) === 0}
+                className={`rounded-l-lg p-1 sm:p-2 ${
+                  availableYears.indexOf(selectedYear) === 0
+                    ? "text-gray-400"
+                    : "text-white hover:bg-blue-500 hover:text-white"
+                } transition-colors`}
+              >
+                <IconChevronLeft size={18} />
+              </button>
+              <div className="flex items-center justify-center px-2 sm:px-3 py-1 font-semibold text-white text-sm">
+                {selectedYear}
+              </div>
+              <button
+                onClick={goToNextYear}
+                disabled={
+                  availableYears.indexOf(selectedYear) ===
+                  availableYears.length - 1
+                }
+                className={`rounded-r-lg p-1 sm:p-2 ${
+                  availableYears.indexOf(selectedYear) ===
+                  availableYears.length - 1
+                    ? "text-gray-400"
+                    : "text-white hover:bg-blue-500 hover:text-white"
+                } transition-colors`}
+              >
+                <IconChevronRight size={18} />
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
             {/* Income Card */}
             <div className="transform rounded-lg border border-white border-opacity-20 bg-white bg-opacity-15 p-3 sm:p-4 backdrop-blur-sm transition-all duration-300 hover:scale-105">
               <div className="mb-1 sm:mb-2 flex items-center justify-between">
-                <p className="text-xs sm:text-sm font-medium text-blue-100">Revenus</p>
+                <p className="text-xs sm:text-sm font-medium text-blue-100">Income</p>
                 <div className="flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-green-500 bg-opacity-25">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -429,7 +418,7 @@ export default function HomePage() {
             {/* Expenses Card */}
             <div className="transform rounded-lg border border-white border-opacity-20 bg-white bg-opacity-15 p-3 sm:p-4 backdrop-blur-sm transition-all duration-300 hover:scale-105">
               <div className="mb-1 sm:mb-2 flex items-center justify-between">
-                <p className="text-xs sm:text-sm font-medium text-blue-100">Dépenses</p>
+                <p className="text-xs sm:text-sm font-medium text-blue-100">Expenses</p>
                 <div className="flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-red-500 bg-opacity-25">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -459,7 +448,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Balance Card - Now fits in the grid on mobile */}
+            {/* Balance Card */}
             <div className="col-span-2 sm:col-span-1 transform rounded-lg border border-white border-opacity-20 bg-white bg-opacity-15 p-3 sm:p-4 backdrop-blur-sm transition-all duration-300 hover:scale-105">
               <div className="mb-1 sm:mb-2 flex items-center justify-between">
                 <p className="text-xs sm:text-sm font-medium text-blue-100">Balance</p>
@@ -487,8 +476,8 @@ export default function HomePage() {
                   className={`rounded-full px-1 sm:px-2 py-0.5 sm:py-1 text-xs ${allTimeTotals.income - allTimeTotals.expenses >= 0 ? "bg-blue-600 text-blue-100" : "bg-red-600 text-red-100"}`}
                 >
                   {allTimeTotals.income - allTimeTotals.expenses >= 0
-                    ? "Positif"
-                    : "Négatif"}
+                    ? "Positive"
+                    : "Negative"}
                 </div>
                 <div className="ml-1 sm:ml-2 text-xs text-blue-200">
                   {Math.abs(
@@ -500,7 +489,7 @@ export default function HomePage() {
                       ).toFixed(1),
                     ),
                   )}
-                  % des revenus
+                  % of income
                 </div>
               </div>
             </div>
@@ -508,23 +497,23 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Balance Chart - Enhanced */}
+      {/* Balance Chart */}
       <div className="mb-6 w-full rounded-lg bg-white p-4 sm:p-6 shadow-lg">
         <h3 className="mb-3 sm:mb-4 flex items-center text-base sm:text-lg font-bold text-gray-800">
           <IconChartLine size={20} className="mr-1 sm:mr-2 text-blue-600" />
-          Évolution de la Balance ({selectedYear})
+          Balance Trend ({selectedYear})
         </h3>
         <div className="h-64 sm:h-72 w-full">
           <Line data={balanceChartData} options={balanceChartOptions} />
         </div>
       </div>
 
-      {/* Monthly Comparison - Enhanced UI */}
+      {/* Monthly Comparison */}
       <div className="mb-6">
         <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
           <h3 className="flex items-center text-base sm:text-lg font-bold text-gray-800">
             <IconCalendar size={20} className="mr-1 sm:mr-2 text-blue-600" />
-            Comparaison Mensuelle
+            Monthly Comparison
           </h3>
 
           <div className="flex items-center rounded-lg border border-gray-200 bg-white shadow-sm">
@@ -546,7 +535,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Monthly Cards - Improved Design */}
+        {/* Monthly Cards */}
         <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
           {[
             { name: currentMonthName, totals: currentMonthTotals },
@@ -574,7 +563,7 @@ export default function HomePage() {
                 {total === 0 ? (
                   <div className="flex h-32 sm:h-40 flex-col items-center justify-center text-gray-400">
                     <IconCalendar size={30} className="mb-2 opacity-50" />
-                    <p className="text-sm">Pas de transactions</p>
+                    <p className="text-sm">No transactions</p>
                   </div>
                 ) : (
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
@@ -585,7 +574,7 @@ export default function HomePage() {
                       />
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <p className="mb-1 text-xs sm:text-sm font-semibold">
-                          Répartition
+                          Breakdown
                         </p>
                         <div className="flex gap-1 text-xs">
                           <span className="rounded bg-red-100 px-1 text-red-600">
@@ -603,7 +592,7 @@ export default function HomePage() {
                       <div className="mb-2 sm:mb-3 rounded-lg bg-gray-50 p-2 sm:p-3">
                         <div className="mb-1 sm:mb-2 flex items-center justify-between">
                           <span className="text-xs sm:text-sm font-medium text-gray-600">
-                            Revenus
+                            Income
                           </span>
                           <span className="text-sm sm:text-base font-bold text-green-600">
                             +{totals.income.toLocaleString()} TND
@@ -622,7 +611,7 @@ export default function HomePage() {
                       <div className="mb-2 sm:mb-3 rounded-lg bg-gray-50 p-2 sm:p-3">
                         <div className="mb-1 sm:mb-2 flex items-center justify-between">
                           <span className="text-xs sm:text-sm font-medium text-gray-600">
-                            Dépenses
+                            Expenses
                           </span>
                           <span className="text-sm sm:text-base font-bold text-red-600">
                             -{totals.expenses.toLocaleString()} TND
@@ -665,11 +654,11 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 7 Last Days Section */}
+      {/* Last 7 Days Section */}
       <div className="mb-6 w-full rounded-lg bg-white p-4 sm:p-6 shadow-lg">
         <h3 className="mb-3 sm:mb-4 flex items-center text-base sm:text-lg font-bold text-gray-800">
-          <IconCalendar size={20} className="mr-1 sm:mr-2 text-blue-600" />7 Derniers
-          Jours{" "}
+          <IconCalendar size={20} className="mr-1 sm:mr-2 text-blue-600" />
+          Last 7 Days{" "}
           {selectedYear !== dayjs().format("YYYY") ? `(${selectedYear})` : ""}
         </h3>
         <div className="h-64 sm:h-72 w-full">
@@ -683,7 +672,7 @@ export default function HomePage() {
           setBasicOpened(true);
           setIsEditing(false);
         }}
-        className="fixed bottom-10 sm:bottom-6 right-4 sm:right-6 z-40  transform rounded-full bg-blue-500  p-4 sm:p-5 text-white shadow-xl hover:scale-110 hover:bg-blue-600 transition-transform"
+        className="fixed bottom-10 sm:bottom-6 right-4 sm:right-6 z-40 transform rounded-full bg-blue-500 p-4 sm:p-5 text-white shadow-xl hover:scale-110 hover:bg-blue-600 transition-transform"
         icon={<IconPlus />}
       />
 
@@ -696,8 +685,8 @@ export default function HomePage() {
           setIsEditing={setIsEditing}
           setEditData={() => {}}
           handleEdit={async () => {}}
-          onSuccess={() => {}}
-          selectedMonth={dayjs(currentMonth)} 
+          onSuccess={handleTransactionSuccess}
+          selectedMonth={dayjs(currentMonth)}
         />
       )}
     </div>

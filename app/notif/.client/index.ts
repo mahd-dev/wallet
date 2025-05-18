@@ -8,7 +8,6 @@ const notification = (
   return data;
 };
 
-// ⬇️⬇️⬇️⬇️⬇️⬇️⬇️ ADD your push handler BELOW ⬇️⬇️⬇️⬇️⬇️⬇️⬇️ //
 
 export const pushHandlers = {
   notification,

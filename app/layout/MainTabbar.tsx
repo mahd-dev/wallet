@@ -71,13 +71,13 @@ const MainTabBar = (props: { disabled?: boolean }) => {
       <TabBarItem
         active={location.pathname === "/"}
         icon={<IconSmartHome stroke={1} size={32} />}
-        label={"Accueil"}
+        label={"Home"}
         to="/"
       />
       <TabBarItem
         active={location.pathname.startsWith("/transaction")}
         icon={<IconMoneybag stroke={1} size={32} />}
-        label={"transactions"}
+        label={"Transactions"}
         to="/transactions"
       />
 
@@ -100,12 +100,12 @@ const MainTabBar = (props: { disabled?: boolean }) => {
             ) : null}
           </div>
         }
-        label={"statistique"}
+        label={"Statistics"}
         to="/statistiques"
       />
 
       <TabBarItem
-        active={location.pathname.startsWith("/categorie")}
+        active={location.pathname.startsWith("/Categorie")}
         icon={<IconList stroke={1} size={32} />}
         label={"categories"}
         to="/categorie"

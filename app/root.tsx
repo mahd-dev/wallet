@@ -180,6 +180,7 @@ export default function App() {
         <link rel="apple-touch-icon" href="/icons/ios/256.png" />
         <link rel="apple-touch-icon" href="/icons/ios/512.png" />
         <link rel="apple-touch-icon" href="/icons/ios/1024.png" />
+        <link rel="icon" type="image/x-icon" href="/logoWallet.png?v=1" />
         <meta
           name="apple-mobile-web-app-status-bar"
           content={"black-translucent"}

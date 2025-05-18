@@ -310,7 +310,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
   const validateForm = (): boolean => {
     if (amount <= 0) {
-      setAmountError("Le montant doit être supérieur à 0");
+      setAmountError("Amount must be greater than 0");
       return false;
     }
     setAmountError("");
@@ -404,8 +404,8 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
       console.log("Alert Threshold (%):", alertThreshold);
       console.log("Threshold Amount:", thresholdAmount);
 
-      const exceeded = totalExpenses > budget.amount;
-      const nearlyExceeded = !exceeded && totalExpenses > thresholdAmount;
+      const exceeded = totalExpenses >= budget.amount;
+      const nearlyExceeded = !exceeded && totalExpenses >= thresholdAmount;
 
       return { exceeded, nearlyExceeded, totalExpenses, budgetAmount: budget.amount };
     } catch (error) {
@@ -462,7 +462,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
         if (editResponse.data?.updateTransaction?.transaction) {
           if (isExpenseType) {
-            if (budgetStatus.exceeded && !previousBudgetStatus.exceeded) {
+            if (budgetStatus.exceeded ) {
               triggerNotifEvent("expenseExeceededEvent", {
                 userIds: [user?.oidcId || ""],
                 type: ExpenseExeceededType.Exceeded,
@@ -591,14 +591,12 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         >
           <div className="mt-10 flex items-center justify-between border-b border-gray-200 px-6 py-4">
             <h2 id="modal-title" className="text-xl font-medium text-gray-800">
-              {isEditing
-                ? "Modifier la transaction"
-                : "Ajouter une transaction"}
+              {isEditing ? "Edit Transaction" : "Add Transaction"}
             </h2>
             <button
               onClick={handleClose}
               className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-              aria-label="Fermer"
+              aria-label="Close"
             >
               <X size={20} />
             </button>
@@ -624,9 +622,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                         : "text-gray-600 hover:bg-gray-200"
                     }`}
                     aria-pressed={type === "EXPENSE"}
-                    aria-label="Type dépense"
+                    aria-label="Expense type"
                   >
-                    Dépense
+                    Expense
                   </button>
                   <button
                     type="button"
@@ -644,9 +642,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                         : "text-gray-600 hover:bg-gray-200"
                     }`}
                     aria-pressed={type === "INCOME"}
-                    aria-label="Type revenu"
+                    aria-label="Income type"
                   >
-                    Revenu
+                    Income
                   </button>
                 </div>
               </div>
@@ -723,7 +721,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                             </>
                           );
                         }
-                        return <span>Sélectionner une catégorie</span>;
+                        return <span>Select a category</span>;
                       })()}
                   </div>
                   <ChevronDown size={18} />
@@ -740,7 +738,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                         <input
                           ref={searchInputRef}
                           type="text"
-                          placeholder="Rechercher une catégorie..."
+                          placeholder="Search for a category..."
                           value={searchTerm}
                           onChange={(e) => setSearchTerm(e.target.value)}
                           className="w-full rounded-md border border-gray-200 py-2 pl-10 pr-3 text-base focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -797,7 +795,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                         </div>
                       ) : (
                         <div className="px-4 py-3 text-center text-base text-gray-500">
-                          Aucune catégorie trouvée
+                          No categories found
                         </div>
                       )}
                     </div>
@@ -813,8 +811,8 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder={
                     type === "EXPENSE"
-                      ? "Pour quoi avez-vous dépensé?"
-                      : "D'où vient ce revenu?"
+                      ? "What did you spend on?"
+                      : "Where did this income come from?"
                   }
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
                 />
@@ -838,8 +836,8 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                 </div>
                 <p className="mt-1.5 text-xs text-gray-500">
                   {isEditing
-                    ? "L'heure d'origine sera préservée lors de la modification"
-                    : "L'heure actuelle sera automatiquement utilisée lors de l'ajout"}
+                    ? "The original time will be preserved when editing"
+                    : "The current time will be automatically used when adding"}
                 </p>
               </div>
             </form>
@@ -852,7 +850,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                 onClick={handleClose}
                 className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50"
               >
-                Annuler
+                Cancel
               </button>
               <button
                 type="button"
@@ -867,10 +865,10 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                 {result.fetching || editResult.fetching ? (
                   <div className="flex items-center justify-center gap-2">
                     <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    <span>{isEditing ? "Modification..." : "Ajout..."}</span>
+                    <span>{isEditing ? "Editing..." : "Adding..."}</span>
                   </div>
                 ) : (
-                  <span>{isEditing ? "Modifier" : "Ajouter"}</span>
+                  <span>{isEditing ? "Edit" : "Add"}</span>
                 )}
               </button>
             </div>

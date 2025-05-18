@@ -15,6 +15,7 @@ import timezone from "dayjs/plugin/timezone";
 import { useAtom } from "jotai";
 import { useMemo, useEffect, useState, useRef } from "react";
 import { localeAtom } from "~/store/store";
+import "dayjs/locale/en";
 
 // Initialize dayjs plugins
 dayjs.extend(relativeTime);
@@ -220,7 +221,7 @@ export const NotificationCmp = (props: {
         
         <div className="mt-1 flex items-center gap-2">
           <span className={`inline-block h-2 w-2 rounded-full ${!notification.isRead ? "bg-blue-500" : "bg-transparent"}`}></span>
-          <span className="text-xs text-gray-500">{dayjs(notification.t).format("llll")}</span>
+          <span className="text-xs text-gray-500">{dayjs(notification.t).utc().locale("en").format("llll")}</span>
         </div>
       </div>
       

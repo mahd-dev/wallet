@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { gql, useMutation, useQuery, useClient } from "urql";
 import { userAtom } from "~/store/store";
 import CategoryIconPicker, { icons } from "./CategoryIconPicker";
+import { nanoid } from "nanoid";
 
 // GraphQL query to check if a category has transactions
 const CHECK_CATEGORY_TRANSACTIONS = gql`
@@ -128,11 +129,14 @@ const CategoriesPage = () => {
   const [validationErrors, setValidationErrors] = useState<{
     name?: string;
     icon?: string;
+    duplicate?: string;
   }>({});
+  const [userLoaded, setUserLoaded] = useState(false);
   
   // Refs for modal click-outside handling and scroll preservation
   const modalRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const addButtonRef = useRef<HTMLButtonElement>(null);
 
   // Mutations and queries
   const [, addCategory] = useMutation(ADD_CATEGORY);
@@ -145,10 +149,18 @@ const CategoriesPage = () => {
     pause: true,
   });
   
+  // Wait for user to be loaded before fetching categories
+  useEffect(() => {
+    if (user?.oidcId) {
+      setUserLoaded(true);
+      console.log("User loaded with ID:", user.oidcId);
+    }
+  }, [user]);
+  
   const [{ data, error, fetching }, refetch] = useQuery({
     query: GET_CATEGORIES,
-    variables: user?.oidcId ? { userId: user.oidcId } : undefined,
-    pause: !user?.oidcId,
+    variables: userLoaded && user?.oidcId ? { userId: user.oidcId } : undefined,
+    pause: !userLoaded || !user?.oidcId,
     requestPolicy: "cache-and-network",
   });
 
@@ -169,8 +181,22 @@ const CategoriesPage = () => {
     return type === "EXPENSE" ? "#FF8A8A" : "#98E5B0";
   };
 
+  const checkDuplicateName = (name: string, type: "EXPENSE" | "INCOME") => {
+    if (!data?.categories?.nodes) return false;
+    
+    const categories = data.categories.nodes as Category[];
+    const isDuplicate = categories.some(
+      (cat: Category) => 
+        cat.name.toLowerCase() === name.toLowerCase() && 
+        cat.type === type && 
+        (!editingCategory || cat.id !== editingCategory.id)
+    );
+    
+    return isDuplicate;
+  };
+
   const validateForm = () => {
-    const errors: { name?: string; icon?: string } = {};
+    const errors: { name?: string; icon?: string; duplicate?: string } = {};
     
     if (!categoryName.trim()) {
       errors.name = "Category name is required";
@@ -178,6 +204,10 @@ const CategoriesPage = () => {
     
     if (!selectedIcon) {
       errors.icon = "Please select an icon";
+    }
+    
+    if (categoryName.trim() && checkDuplicateName(categoryName, activeTab)) {
+      errors.duplicate = "A category with this name already exists";
     }
     
     setValidationErrors(errors);
@@ -188,26 +218,42 @@ const CategoriesPage = () => {
     if (!validateForm()) return;
 
     if (user?.oidcId) {
-      const iconColor =
-        icons.find((icon) => icon.value === selectedIcon)?.color || "";
-
-      const result = await addCategory({
-        id: crypto.randomUUID(),
-        userId: user.oidcId,
-        name: categoryName,
-        icon: selectedIcon as string,
-        iconColor: iconColor,
-        type: activeTab,
-      });
-
-      if (result.data?.createCategory) {
-        refetch({ requestPolicy: "network-only" });
-        setCategoryName("");
-        setSelectedIcon(null);
-        setSelectedColor(null);
-        setIsModalOpen(false);
-        setValidationErrors({});
+      console.log("Adding category for user:", user.oidcId);
+      
+      try {
+        const iconColor =
+          icons.find((icon) => icon.value === selectedIcon)?.color || "";
+          try {
+            const result = await addCategory({
+              id: nanoid(),
+              userId: user.oidcId,
+              name: categoryName,
+              icon: selectedIcon as string,
+              iconColor: iconColor,
+              type: activeTab,
+            });
+            if(result.error) alert(result.error.message);
+    
+            if (result.data?.createCategory) {
+              console.log("Category added successfully");
+              refetch({ requestPolicy: "network-only" });
+              setCategoryName("");
+              setSelectedIcon(null);
+              setSelectedColor(null);
+              setIsModalOpen(false);
+              setValidationErrors({});
+            } else if (result.error) {
+              console.error("Error adding category:", result.error);
+            }
+          } catch (error: any) {
+            alert(`Error in try-catch block: ${error}`);
+          }
+       
+      } catch (err) {
+        console.error("Exception when adding category:", err);
       }
+    } else {
+      console.error("Cannot add category: User ID is not available");
     }
   };
 
@@ -217,15 +263,19 @@ const CategoriesPage = () => {
     setCategoryToDelete(category);
   
     if (user?.oidcId) {
-      const result = await client
-        .query(CHECK_CATEGORY_TRANSACTIONS, { category_id: category.id })
-        .toPromise();
-  
-      const transactionsExist = result?.data?.transactions?.nodes.length > 0;
-      const budgetsExist = result?.data?.budgets?.nodes.length > 0;
-      
-      setHasTransactions(transactionsExist);
-      setHasBudgets(budgetsExist);
+      try {
+        const result = await client
+          .query(CHECK_CATEGORY_TRANSACTIONS, { category_id: category.id })
+          .toPromise();
+    
+        const transactionsExist = result?.data?.transactions?.nodes.length > 0;
+        const budgetsExist = result?.data?.budgets?.nodes.length > 0;
+        
+        setHasTransactions(transactionsExist);
+        setHasBudgets(budgetsExist);
+      } catch (err) {
+        console.error("Error checking category transactions:", err);
+      }
     }
   
     setIsDeleteModalOpen(true);
@@ -265,25 +315,31 @@ const CategoriesPage = () => {
     if (!validateForm()) return;
 
     if (editingCategory && user?.oidcId) {
-      const iconColor =
-        icons.find((icon) => icon.value === selectedIcon)?.color || "";
+      try {
+        const iconColor =
+          icons.find((icon) => icon.value === selectedIcon)?.color || "";
 
-      const result = await updateCategory({
-        id: editingCategory.id,
-        name: categoryName,
-        icon: selectedIcon as string,
-        iconColor: iconColor,
-        type: activeTab,
-      });
+        const result = await updateCategory({
+          id: editingCategory.id,
+          name: categoryName,
+          icon: selectedIcon as string,
+          iconColor: iconColor,
+          type: activeTab,
+        });
 
-      if (result.data?.updateCategory) {
-        refetch({ requestPolicy: "network-only" });
-        setCategoryName("");
-        setSelectedIcon(null);
-        setSelectedColor(null);
-        setEditingCategory(null);
-        setIsModalOpen(false);
-        setValidationErrors({});
+        if (result.data?.updateCategory) {
+          refetch({ requestPolicy: "network-only" });
+          setCategoryName("");
+          setSelectedIcon(null);
+          setSelectedColor(null);
+          setEditingCategory(null);
+          setIsModalOpen(false);
+          setValidationErrors({});
+        } else if (result.error) {
+          console.error("Error updating category:", result.error);
+        }
+      } catch (err) {
+        console.error("Exception when updating category:", err);
       }
     }
   };
@@ -319,6 +375,13 @@ const CategoriesPage = () => {
   }, [isModalOpen, isDeleteModalOpen]);
   
   const handleAddNew = () => {
+    console.log("Add new button clicked");
+    
+    if (!user?.oidcId) {
+      console.error("Cannot add category: User not authenticated");
+      return;
+    }
+    
     setEditingCategory(null);
     setCategoryName("");
     setSelectedIcon(null);
@@ -326,6 +389,25 @@ const CategoriesPage = () => {
     setIsModalOpen(true);
     setValidationErrors({});
   };
+
+  // Add touch event for mobile
+  useEffect(() => {
+    const addBtn = addButtonRef.current;
+    if (addBtn) {
+      // Add touchstart event specifically for mobile
+      const handleTouchStart = (e: TouchEvent) => {
+        e.preventDefault();
+        console.log("Touch start on add button");
+        handleAddNew();
+      };
+      
+      addBtn.addEventListener('touchstart', handleTouchStart);
+      
+      return () => {
+        addBtn.removeEventListener('touchstart', handleTouchStart);
+      };
+    }
+  }, [user?.oidcId]);
 
   const filteredCategories = data?.categories?.nodes?.filter(
     (category: Category) => category.type === activeTab,
@@ -363,8 +445,9 @@ const CategoriesPage = () => {
         <div className="p-4 sm:p-6">
           <div className="mb-6 flex items-center justify-center">
             <button
+              ref={addButtonRef}
               onClick={handleAddNew}
-              className={`flex transform items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-white shadow-md transition hover:scale-105 sm:text-base ${
+              className={`flex transform items-center gap-2 rounded-lg px-4 sm:px-5 py-2.5 text-sm font-medium text-white shadow-md transition hover:scale-105 sm:text-base whitespace-nowrap ${
                 activeTab === "EXPENSE"
                   ? "bg-red-400 hover:bg-red-500"
                   : "bg-green-500 hover:bg-green-600"
@@ -372,12 +455,17 @@ const CategoriesPage = () => {
             >
               <IconPlus size={18} />
               <span>
-                {activeTab === "EXPENSE" ? "Ajouter une dépense" : "Ajouter un revenu"}
+                {activeTab === "EXPENSE" ? "Add Expense Category" : "Add Income Category"}
               </span>
             </button>
           </div>
 
-          {fetching && !data ? (
+          {!userLoaded ? (
+            <div className="flex justify-center py-12">
+              <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900 sm:h-12 sm:w-12"></div>
+              <p className="ml-4 text-gray-600">Loading user data...</p>
+            </div>
+          ) : fetching && !data ? (
             <div className="flex justify-center py-12">
               <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900 sm:h-12 sm:w-12"></div>
             </div>
@@ -386,19 +474,25 @@ const CategoriesPage = () => {
               <p>Error: {error.message}</p>
             </div>
           ) : filteredCategories?.length === 0 ? (
-            <div className="rounded-lg bg-gray-50 py-8 text-center sm:py-12">
-              <p className="mb-4 text-sm text-gray-600 sm:text-base">
+            <div className="rounded-lg bg-gray-50 py-6 sm:py-8 text-center">
+              <div className="mb-4 flex justify-center">
+                <IconPlus size={36} className="text-gray-400 sm:h-12 sm:w-12" />
+              </div>
+              <p className="mb-2 text-sm text-gray-600 sm:text-base">
                 No categories found
+              </p>
+              <p className="mb-4 text-xs text-gray-500 sm:text-sm">
+                Add a category to start managing your expenses and income in the app.
               </p>
               <button
                 onClick={handleAddNew}
-                className={`rounded-lg px-4 py-2 text-sm font-medium text-white shadow sm:px-5 sm:py-2.5 sm:text-base ${
+                className={`rounded-lg px-4 py-2 text-sm font-medium text-white shadow sm:px-5 sm:py-2.5 sm:text-base whitespace-nowrap ${
                   activeTab === "EXPENSE"
                     ? "bg-red-400 hover:bg-red-500"
                     : "bg-green-600 hover:bg-green-700"
                 }`}
               >
-                Create your first category
+                {activeTab === "EXPENSE" ? "Add Expense Category" : "Add Income Category"}
               </button>
             </div>
           ) : (
@@ -494,12 +588,18 @@ const CategoriesPage = () => {
                 value={categoryName}
                 onChange={(e) => setCategoryName(e.target.value)}
                 className={`w-full rounded-lg border p-2.5 sm:p-3 ${
-                  validationErrors.name ? "border-red-500" : "border-gray-300"
+                  validationErrors.name || validationErrors.duplicate ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Category Name"
               />
               {validationErrors.name && (
                 <p className="mt-1 text-xs text-red-500">{validationErrors.name}</p>
+              )}
+              {validationErrors.duplicate && (
+                <div className="mt-2 flex items-start gap-2 rounded-lg bg-red-50 p-2 text-xs">
+                  <IconAlertCircle size={16} className="mt-0.5 flex-shrink-0 text-red-500" />
+                  <p className="text-red-600">{validationErrors.duplicate}</p>
+                </div>
               )}
             </div>
             <CategoryIconPicker

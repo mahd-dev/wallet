@@ -32,7 +32,7 @@ export const sendEmail = async (
 ) => {
   try {
     const mailOptions = {
-      from: `"Your App" <${process.env.EMAIL_USER}>`,
+      from: `"My Wallet" <${process.env.EMAIL_USER}>`,
       to: email,
       subject,
       text: message,

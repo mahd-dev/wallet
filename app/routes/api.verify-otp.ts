@@ -2,6 +2,7 @@ import { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/react";
 import { gql } from "@urql/core";
 import { gqlSsrClient } from "~/utils/gql_ssr_client";
+import { sessionStorage } from "app/session.server";
 
 function isExpired(expirationString: string) {
   const expirationDate = new Date(expirationString + "Z");

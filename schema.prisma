@@ -100,7 +100,7 @@ model OtpVerification {
 model UserDevice {
   User   User   @relation(fields: [userId], references: [oidcId])
   userId String
-  token  String @unique
+  token  String 
   ua     Json?
 
   @@id([userId, token])

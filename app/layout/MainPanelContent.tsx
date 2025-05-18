@@ -37,7 +37,7 @@ export default function MainPanelContent() {
           className="overflow-hidden lg:rounded-e-full"
           media={<IconSmartHome />}
           link
-          title={"Acceuil"}
+          title={"Home"} 
           onClick={(e) => {
             e.preventDefault();
             navigate(`/`);
@@ -75,7 +75,7 @@ export default function MainPanelContent() {
           className="overflow-hidden lg:rounded-e-full"
           media={<IconList />}
           link
-          title={"Catégories"}
+          title={"Categories"}
           onClick={(e) => {
             e.preventDefault();
             navigate(`/categorie`);
@@ -87,7 +87,7 @@ export default function MainPanelContent() {
           className="overflow-hidden lg:rounded-e-full"
           media={<IconChartBar />}
           link
-          title={"Statistiques"}
+          title={"Statistics"}
           onClick={(e) => {
             e.preventDefault();
             navigate(`/statistiques`);
